@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react';
-import PostListView from '../PostListView/PostListView';
-import PostCreateView from '../../components/PostCreateView/PostCreateView';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
+import PostListView from './PostListView';
+import PostCreateView from '../components/PostCreateView';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { connect } from 'react-redux';
-import * as Actions from '../../redux/actions/actions';
+import * as Actions from '../redux/actions';
 
 class PostContainer extends Component {
   constructor(props, context) {

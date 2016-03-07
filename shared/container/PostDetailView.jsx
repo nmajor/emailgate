@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../../redux/actions/actions';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
+import * as Actions from '../redux/actions';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 class PostDetailView extends Component {
 

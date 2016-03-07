@@ -19,7 +19,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // React And Redux Setup
-import { configureStore } from '../shared/redux/store/configureStore';
+import { configureStore } from '../shared/redux/configureStore';
 import { Provider } from 'react-redux';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
