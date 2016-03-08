@@ -1,10 +1,13 @@
 import React from 'react';
 import routes from '../shared/routes';
-import DevTools from '../shared/container/DevTools';
+// import DevTools from '../shared/container/DevTools';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { configureStore } from '../shared/redux/configureStore';
+
+// Pull in the styles for development
+// require('./assets/scss/style.scss');
 
 const store = configureStore(window.__INITIAL_STATE__);
 const history = browserHistory;
@@ -29,7 +32,6 @@ if (process.env.CLIENT) {
     <Provider store={store} key="provider">
       <div>
         <Router history={history} routes={routes} />
-        <DevTools />
       </div>
     </Provider>,
     dest

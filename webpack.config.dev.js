@@ -20,8 +20,8 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.css$/,
-        loader: 'style!css?modules',
+          test: /\.scss$/,
+          loaders: ["style", "css?sourceMap", "sass?sourceMap"]
       },
       {
         test: /\.jsx*$/,
@@ -40,6 +40,6 @@ module.exports = {
       'process.env': {
         CLIENT: JSON.stringify(true)
       }
-    })
+    }),
   ],
 };

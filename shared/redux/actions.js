@@ -3,6 +3,23 @@ import fetch from 'isomorphic-fetch';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${(process.env.PORT || 8000)}`) : '';
 
+export function submitLogin(userData) {
+  return (dispatch) => {
+    fetch(`${baseURL}/login`, {
+      method: 'post',
+      body: JSON.stringify({
+        email: userData.email,
+        password: userData.password,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    }).then((res) => res.json()).then(res => dispatch(res));
+  };
+}
+
+
+// POST EXAMPLES
 export function addPost(post) {
   return {
     type: ActionTypes.ADD_POST,

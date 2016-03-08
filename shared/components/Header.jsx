@@ -1,30 +1,50 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-function Header(props, context) {
-  return (
-    <div className="header">
-      <div className="header-content">
-        <h1 className="site-title">
-          <Link to="/" onClick={props.handleLogoClick}>MERN Starter Blog</Link>
-        </h1>
-        {
-          context.router.isActive('/', true)
-            ? <a className="add-post-button" href="#" onClick={props.onClick}>Add Post</a>
-            : null
-        }
+class Header extends Component {
+  render() {
+    return <div className="navbar navbar-inverse navbar-static-top header">
+      <div className="container-fluid">
+        {this.renderNavbarHeader()}
+        {this.renderNav()}
+        {this.renderUserActions()}
       </div>
     </div>
-  );
+  }
+  renderNavbarHeader() {
+    return <div className="navbar-header">
+      <Link className="navbar-brand" to="/">emailgate</Link>
+    </div>
+  }
+  renderNav() {
+    return <ul className="nav navbar-nav">
+      <li><Link to="/dashboard">Dashboard</Link></li>
+    </ul>
+
+    if (this.state.userLoggedIn && this.state.user) {
+      return <ul className="nav navbar-nav">
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/admin/users">Users</Link></li>
+        <li><Link to="/admin/hobbies/all">Hobbies</Link></li>
+        <li><Link to="/admin/hobbies/new">New Hobby</Link></li>
+      </ul>
+    } else {
+      return null;
+    }
+  }
+  renderUserActions() {
+    return <ul className="nav navbar-nav navbar-right">
+      <li><Link to="/login">Login</Link></li>
+      <li><Link to="/login">Register</Link></li>
+    </ul>
+
+    if (this.state.userLoggedIn && this.state.user) {
+      return <ul className="nav navbar-nav navbar-right">
+        <li><a className="disabled" href="#">{this.state.user.email}</a></li>
+        <li><a href="#" onClick={this.handleLogoutClick}>Log Out</a></li>
+      </ul>
+    }
+  }
 }
-
-Header.contextTypes = {
-  router: React.PropTypes.object,
-};
-
-Header.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  handleLogoClick: PropTypes.func,
-};
 
 export default Header;
