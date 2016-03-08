@@ -34,6 +34,7 @@ import { match, RouterContext } from 'react-router';
 // Import required modules
 import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
+import api from './routes/api.routes';
 import dummyData from './dummyData';
 import serverConfig from './config';
 
@@ -52,6 +53,7 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
+app.use('/api', api);
 
 // Define sessionMiddleware so it can be used in both socket connections and http requests
 const sessionMiddleware = session({
@@ -74,12 +76,6 @@ const socketSessionMiddleware = (socket, next) => {
 
 socketEvents(io);
 io.use(socketSessionMiddleware);
-
-// For monitoring user session variable
-// io.use((socket, next) => {
-//   console.log(socket.request.session);
-//   return next();
-// });
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
