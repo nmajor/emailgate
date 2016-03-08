@@ -10,8 +10,8 @@ class RegisterContainer extends Component {
     this.register = this.register.bind(this);
   }
 
-  register(email, password) {
-    this.props.dispatch(Actions.registerUser({ email, password }));
+  register(name, email, password) {
+    this.props.dispatch(Actions.registerUser({ name, email, password }));
   }
 
   render() {

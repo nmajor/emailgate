@@ -7,6 +7,7 @@ import socket from '../../client/socket';
 export function registerUser(userData) {
   socket.emit(ActionTypes.REGISTER_USER, {
     type: ActionTypes.REGISTER_USER,
+    name: userData.name,
     email: userData.email,
     password: userData.password,
   });

@@ -9,10 +9,11 @@ class RegisterForm extends Component {
   registerUser(e) {
     e.preventDefault();
 
+    const nameRef = this.refs.name;
     const emailRef = this.refs.email;
     const passwordRef = this.refs.password;
-    if (emailRef.value && passwordRef.value) {
-      this.props.registerUser(emailRef.value, passwordRef.value);
+    if (nameRef.value && emailRef.value && passwordRef.value) {
+      this.props.registerUser(nameRef.value, emailRef.value, passwordRef.value);
     }
   }
   handleSubmit(e) {
@@ -21,10 +22,25 @@ class RegisterForm extends Component {
   renderForm() {
     return (
       <form onSubmit={this.handleSubmit}>
+        {this.renderNameFormGroup()}
         {this.renderEmailFormGroup()}
         {this.renderPasswordFormGroup()}
         <button className="btn btn-success btn-block" onClick={this.registerUser}>Register</button>
       </form>
+    );
+  }
+  renderNameFormGroup() {
+    return (
+      <div className="form-group">
+        <label htmlFor="register-name">Name</label>
+          <input
+            ref="name"
+            id="register-name"
+            className="form-control"
+            type="text"
+            placeholder="John Doe"
+          />
+      </div>
     );
   }
   renderEmailFormGroup() {

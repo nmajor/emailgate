@@ -5,6 +5,7 @@ import path from 'path';
 import http from 'http';
 import socketIo from 'socket.io';
 import session from 'express-session';
+import passport from 'passport';
 import connectMango from 'connect-mongo';
 const ConnectMango = connectMango(session);
 
@@ -74,6 +75,12 @@ const socketSessionMiddleware = (socket, next) => {
 socketEvents(io);
 io.use(socketSessionMiddleware);
 
+// For monitoring user session variable
+// io.use((socket, next) => {
+//   console.log(socket.request.session);
+//   return next();
+// });
+
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
   const cssPath = '';
@@ -106,6 +113,13 @@ const renderFullPage = (html, initialState) => {
 
 // Include sessionMiddleware in server requests
 app.use(sessionMiddleware);
+
+import User from './models/user';
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
