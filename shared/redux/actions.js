@@ -2,6 +2,7 @@ import * as ActionTypes from './constants';
 import fetch from 'isomorphic-fetch';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${(process.env.PORT || 8000)}`) : '';
+// import socket from '../../client/socket';
 
 export function submitLogin(userData) {
   return (dispatch) => {

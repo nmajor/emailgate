@@ -2,6 +2,11 @@ import Express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
+import http from 'http';
+import socketIo from 'socket.io';
+import session from 'express-session';
+import connectMango from 'connect-mongo';
+const ConnectMango = connectMango(session);
 
 // Webpack Requirements
 import webpack from 'webpack';
@@ -28,7 +33,6 @@ import { match, RouterContext } from 'react-router';
 // Import required modules
 import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
-import posts from './routes/post.routes';
 import dummyData from './dummyData';
 import serverConfig from './config';
 
@@ -47,7 +51,28 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../static')));
-app.use('/api', posts);
+
+// Define sessionMiddleware so it can be used in both socket connections and http requests
+const sessionMiddleware = session({
+  secret: 'supercat',
+  resave: true,
+  saveUninitialized: false,
+  store: new ConnectMango({
+    url: serverConfig.mongoURL,
+    mongoose_connection: mongoose.connections[0],
+  }),
+});
+
+// Socket.io
+import socketEvents from './events/index';
+
+const io = socketIo();
+const socketSessionMiddleware = (socket, next) => {
+  sessionMiddleware(socket.request, socket.request.res, next);
+};
+
+socketEvents(io);
+io.use(socketSessionMiddleware);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -78,6 +103,9 @@ const renderFullPage = (html, initialState) => {
     </html>
   `;
 };
+
+// Include sessionMiddleware in server requests
+app.use(sessionMiddleware);
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
@@ -111,11 +139,15 @@ app.use((req, res) => {
   });
 });
 
+const server = http.createServer(app);
+io.attach(server);
+
 // start app
-app.listen(serverConfig.port, (error) => {
+server.listen(serverConfig.port, (error) => {
   if (!error) {
     console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
   }
 });
+
 
 export default app;
