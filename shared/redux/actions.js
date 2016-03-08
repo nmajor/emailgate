@@ -2,20 +2,33 @@ import * as ActionTypes from './constants';
 import fetch from 'isomorphic-fetch';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${(process.env.PORT || 8000)}`) : '';
-// import socket from '../../client/socket';
+import socket from '../../client/socket';
 
-export function submitLogin(userData) {
-  return (dispatch) => {
-    fetch(`${baseURL}/login`, {
-      method: 'post',
-      body: JSON.stringify({
-        email: userData.email,
-        password: userData.password,
-      }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    }).then((res) => res.json()).then(res => dispatch(res));
+export function registerUser(userData) {
+  socket.emit(ActionTypes.REGISTER_USER, {
+    type: ActionTypes.REGISTER_USER,
+    email: userData.email,
+    password: userData.password,
+  });
+
+  return {
+    type: ActionTypes.REGISTER_USER,
+    eamil: userData.email,
+    fetching: true,
+  };
+}
+
+export function loginUser(userData) {
+  socket.emit(ActionTypes.LOGIN_USER, {
+    type: ActionTypes.LOGIN_USER,
+    email: userData.email,
+    password: userData.password,
+  });
+
+  return {
+    type: ActionTypes.LOGIN_USER,
+    eamil: userData.email,
+    fetching: true,
   };
 }
 

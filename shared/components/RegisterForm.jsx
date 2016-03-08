@@ -1,18 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 
-class LoginForm extends Component {
+class RegisterForm extends Component {
   constructor(props, context) {
     super(props, context);
-    this.loginUser = this.loginUser.bind(this);
+    this.registerUser = this.registerUser.bind(this);
   }
 
-  loginUser(e) {
+  registerUser(e) {
     e.preventDefault();
 
     const emailRef = this.refs.email;
     const passwordRef = this.refs.password;
     if (emailRef.value && passwordRef.value) {
-      this.props.loginUser(emailRef.value, passwordRef.value);
+      this.props.registerUser(emailRef.value, passwordRef.value);
     }
   }
   handleSubmit(e) {
@@ -23,19 +23,19 @@ class LoginForm extends Component {
       <form onSubmit={this.handleSubmit}>
         {this.renderEmailFormGroup()}
         {this.renderPasswordFormGroup()}
-        <button className="btn btn-success btn-block" onClick={this.loginUser}>Login</button>
+        <button className="btn btn-success btn-block" onClick={this.registerUser}>Register</button>
       </form>
     );
   }
   renderEmailFormGroup() {
     return (
       <div className="form-group">
-        <label htmlFor="login-email">Email</label>
+        <label htmlFor="register-email">Email</label>
           <div className="input-group">
             <span className="input-group-addon">@</span>
             <input
               ref="email"
-              id="login-email"
+              id="register-email"
               className="form-control"
               type="text"
               placeholder="john@example.com"
@@ -47,12 +47,12 @@ class LoginForm extends Component {
   renderPasswordFormGroup() {
     return (
       <div className="form-group">
-        <label htmlFor="login-password">Password</label>
+        <label htmlFor="register-password">Password</label>
         <input
           ref="password"
           className="form-control"
           type="password"
-          id="login-password"
+          id="register-password"
         />
       </div>
     );
@@ -60,15 +60,15 @@ class LoginForm extends Component {
   render() {
     return (
       <div className="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <h1>Login</h1>
+        <h1>Register</h1>
         {this.renderForm()}
       </div>
     );
   }
 }
 
-LoginForm.propTypes = {
-  loginUser: PropTypes.func.isRequired,
+RegisterForm.propTypes = {
+  registerUser: PropTypes.func.isRequired,
 };
 
-export default LoginForm;
+export default RegisterForm;

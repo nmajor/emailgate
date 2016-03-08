@@ -16,12 +16,10 @@ class PostContainer extends Component {
     this.add = this.add.bind(this);
   }
 
-  handleClick(e) {
-    this.setState({
-      showAddPost: !this.state.showAddPost,
-    });
-
-    e.preventDefault();
+  componentDidMount() {
+    if (this.props.posts.length === 0) {
+      this.props.dispatch(Actions.fetchPosts());
+    }
   }
 
   add(name, title, content) {
@@ -31,10 +29,12 @@ class PostContainer extends Component {
     });
   }
 
-  componentDidMount() {
-    if(this.props.posts.length === 0) {
-      this.props.dispatch(Actions.fetchPosts());
-    }
+  handleClick(e) {
+    this.setState({
+      showAddPost: !this.state.showAddPost,
+    });
+
+    e.preventDefault();
   }
 
   render() {
@@ -43,7 +43,8 @@ class PostContainer extends Component {
         <Header onClick={this.handleClick} />
         <div className="container">
           <PostCreateView addPost={this.add}
-            showAddPost={this.state.showAddPost}/>
+            showAddPost={this.state.showAddPost}
+          />
           <PostListView posts={this.props.posts}/>
         </div>
         <Footer />

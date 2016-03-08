@@ -1,3 +1,6 @@
+export const REGISTER_USER = 'REGISTER_USER';
+export const LOGIN_USER = 'LOGIN_USER';
+
 export const ADD_POST = 'ADD_POST';
 export const CHANGE_SELECTED_POST = 'CHANGE_SELECTED_POST';
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
