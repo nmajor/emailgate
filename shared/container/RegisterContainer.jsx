@@ -18,18 +18,21 @@ class RegisterContainer extends Component {
     return (
       <div className="login-container">
         <Header />
-        <RegisterForm registerUser={this.register} />
+        <RegisterForm registerUser={this.register} errors={this.props.user.errors} />
       </div>
     );
   }
 }
 
-// function mapStateToProps(store) {
-//   return {};
-// }
+function mapStateToProps(store) {
+  return {
+    user: store.user,
+  };
+}
 
 RegisterContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  user: PropTypes.object,
 };
 
-export default connect()(RegisterContainer);
+export default connect(mapStateToProps)(RegisterContainer);

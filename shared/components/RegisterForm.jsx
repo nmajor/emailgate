@@ -25,6 +25,7 @@ class RegisterForm extends Component {
         {this.renderNameFormGroup()}
         {this.renderEmailFormGroup()}
         {this.renderPasswordFormGroup()}
+        {this.renderErrors('base')}
         <button className="btn btn-success btn-block" onClick={this.registerUser}>Register</button>
       </form>
     );
@@ -73,6 +74,13 @@ class RegisterForm extends Component {
       </div>
     );
   }
+  renderErrors(type) {
+    if (this.props.errors) {
+      return this.props.errors[type].map((error) => {
+        return <p className="text-danger">{error}</p>;
+      });
+    }
+  }
   render() {
     return (
       <div className="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
@@ -85,6 +93,7 @@ class RegisterForm extends Component {
 
 RegisterForm.propTypes = {
   registerUser: PropTypes.func.isRequired,
+  errors: PropTypes.object,
 };
 
 export default RegisterForm;

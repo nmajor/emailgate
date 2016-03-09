@@ -2,37 +2,92 @@ import * as ActionTypes from './constants';
 import fetch from 'isomorphic-fetch';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${(process.env.PORT || 8000)}`) : '';
-import socket from '../../client/socket';
+// import socket from '../../client/socket';
+
+export function setUser(user) {
+  return {
+    type: ActionTypes.SET_USER,
+    _id: user._id,
+    email: user.email,
+    name: user.name,
+    errors: user.errors,
+  };
+}
+
+export function setUserErrors(errors, reset = false) {
+  return {
+    type: ActionTypes.SET_USER_ERRORS,
+    errors,
+    reset,
+  };
+}
 
 export function registerUser(userData) {
-  socket.emit(ActionTypes.REGISTER_USER, {
-    type: ActionTypes.REGISTER_USER,
-    name: userData.name,
-    email: userData.email,
-    password: userData.password,
-  });
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/register`, {
+      method: 'post',
+      body: JSON.stringify({
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      console.log(res);
+      if (res.status >= 400) {
+        throw new Error('Bad response from server');
+      }
 
-  return {
-    type: ActionTypes.REGISTER_USER,
-    eamil: userData.email,
-    fetching: true,
+      return res.json();
+    })
+    .then((res) => {
+      console.log(res);
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+      dispatch(setUser(res));
+    })
+    .catch((err) => {
+      dispatch(setUserErrors({ base: [err.message] }));
+    });
   };
 }
 
 export function loginUser(userData) {
-  socket.emit(ActionTypes.LOGIN_USER, {
-    type: ActionTypes.LOGIN_USER,
-    email: userData.email,
-    password: userData.password,
-  });
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/login`, {
+      method: 'post',
+      body: JSON.stringify({
+        email: userData.email,
+        password: userData.password,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status === 401) {
+        throw new Error('User not found');
+      } else if (res.status >= 400) {
+        throw new Error('Bad response from server');
+      }
 
-  return {
-    type: ActionTypes.LOGIN_USER,
-    eamil: userData.email,
-    fetching: true,
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+      dispatch(setUser(res));
+    })
+    .catch((err) => {
+      dispatch(setUserErrors({ base: [err.message] }));
+    });
   };
 }
-
 
 // POST EXAMPLES
 export function addPost(post) {

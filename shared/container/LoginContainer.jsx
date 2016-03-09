@@ -18,14 +18,21 @@ class LoginContainer extends Component {
     return (
       <div className="login-container">
         <Header />
-        <LoginForm loginUser={this.login} />
+        <LoginForm loginUser={this.login} errors={this.props.user.errors} />
       </div>
     );
   }
 }
 
+function mapStateToProps(store) {
+  return {
+    user: store.user,
+  };
+}
+
 LoginContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  user: PropTypes.object,
 };
 
-export default connect()(LoginContainer);
+export default connect(mapStateToProps)(LoginContainer);

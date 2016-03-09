@@ -23,6 +23,7 @@ class LoginForm extends Component {
       <form onSubmit={this.handleSubmit}>
         {this.renderEmailFormGroup()}
         {this.renderPasswordFormGroup()}
+        {this.renderErrors('base')}
         <button className="btn btn-success btn-block" onClick={this.loginUser}>Login</button>
       </form>
     );
@@ -57,6 +58,13 @@ class LoginForm extends Component {
       </div>
     );
   }
+  renderErrors(type) {
+    if (this.props.errors) {
+      return this.props.errors[type].map((error) => {
+        return <p className="text-danger">{error}</p>;
+      });
+    }
+  }
   render() {
     return (
       <div className="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
@@ -69,6 +77,7 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   loginUser: PropTypes.func.isRequired,
+  errors: PropTypes.object,
 };
 
 export default LoginForm;

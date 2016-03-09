@@ -1,13 +1,14 @@
 import Express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import http from 'http';
 import socketIo from 'socket.io';
 import session from 'express-session';
 import passport from 'passport';
-import connectMango from 'connect-mongo';
-const ConnectMango = connectMango(session);
+import connectMongo from 'connect-mongo';
+const ConnectMongo = connectMongo(session);
 
 // Webpack Requirements
 import webpack from 'webpack';
@@ -35,47 +36,45 @@ import { match, RouterContext } from 'react-router';
 import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
 import api from './routes/api.routes';
-import dummyData from './dummyData';
 import serverConfig from './config';
 
 // MongoDB Connection
-mongoose.connect(serverConfig.mongoURL, (error) => {
-  if (error) {
-    console.error('Please make sure Mongodb is installed and running!'); // eslint-disable-line no-console
-    throw error;
-  }
+mongoose.connect(serverConfig.mongoURL);
 
-  // feed some dummy data in DB.
-  dummyData();
-});
+import User from './models/user';
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-// Apply body Parser and server public assets and routes
-app.use(bodyParser.json({ limit: '20mb' }));
-app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
-app.use(Express.static(path.resolve(__dirname, '../static')));
-app.use('/api', api);
-
-// Define sessionMiddleware so it can be used in both socket connections and http requests
+// Define session middleware
 const sessionMiddleware = session({
   secret: 'supercat',
   resave: true,
   saveUninitialized: false,
-  store: new ConnectMango({
+  store: new ConnectMongo({
     url: serverConfig.mongoURL,
     mongoose_connection: mongoose.connections[0],
   }),
 });
 
 // Socket.io
-import socketEvents from './events/index';
-
 const io = socketIo();
-const socketSessionMiddleware = (socket, next) => {
-  sessionMiddleware(socket.request, socket.request.res, next);
-};
+io.use((socket, next) => { sessionMiddleware(socket.request, socket.request.res, next); });
 
+import socketEvents from './events/index';
 socketEvents(io);
-io.use(socketSessionMiddleware);
+
+app.use(sessionMiddleware);
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// Apply body Parser and server public assets and routes
+app.use(bodyParser.json({ limit: '20mb' }));
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
+app.use(cookieParser());
+app.use(Express.static(path.resolve(__dirname, '../static')));
+app.use('/api', api);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -106,16 +105,6 @@ const renderFullPage = (html, initialState) => {
     </html>
   `;
 };
-
-// Include sessionMiddleware in server requests
-app.use(sessionMiddleware);
-
-import User from './models/user';
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
