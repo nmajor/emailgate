@@ -10,6 +10,8 @@ import passport from 'passport';
 import connectMongo from 'connect-mongo';
 const ConnectMongo = connectMongo(session);
 
+import initialState from '../shared/initialState';
+
 // Webpack Requirements
 import webpack from 'webpack';
 import config from '../webpack.config.dev';
@@ -77,7 +79,7 @@ app.use(Express.static(path.resolve(__dirname, '../static')));
 app.use('/api', api);
 
 // Render Initial HTML
-const renderFullPage = (html, initialState) => {
+const renderFullPage = (html, renderedState) => {
   const cssPath = '';
   // const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css';
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
@@ -98,7 +100,7 @@ const renderFullPage = (html, initialState) => {
       <body>
         <div id="root">${html}</div>
         <script>
-          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
+          window.__INITIAL_STATE__ = ${JSON.stringify(renderedState)};
         </script>
         <script src="/dist/bundle.js"></script>
       </body>
@@ -116,8 +118,6 @@ app.use((req, res) => {
     if (!renderProps) {
       return res.status(404).end('Not found!');
     }
-
-    const initialState = { posts: [], post: {} };
 
     const store = configureStore(initialState);
 

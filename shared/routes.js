@@ -5,6 +5,7 @@ import React from 'react';
 import App from './container/App';
 import RegisterContainer from './container/RegisterContainer';
 import LoginContainer from './container/LoginContainer';
+import DashboardWrapper from './components/DashboardWrapper';
 // import PostContainer from './container/PostContainer';
 import PostDetailView from './container/PostDetailView';
 
@@ -16,6 +17,7 @@ const routes = (
     <IndexRoute component={Home} />
     <Route path="/register" component={RegisterContainer}/>
     <Route path="/login" component={LoginContainer}/>
+    <Route path="/dashboard" component={DashboardWrapper}/>
     <Route path="/post/:slug" component={PostDetailView}/>
   </Route>
 );
