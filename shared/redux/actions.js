@@ -10,7 +10,7 @@ export function addAccount(account) {
     type: ActionTypes.ADD_ACCOUNT,
     _id: account._id,
     email: account.email,
-    password: account.name,
+    password: account.password,
     host: account.host,
     port: account.port,
   };
@@ -26,13 +26,6 @@ export function setAccounts(accounts) {
 export function setSelectAccount(id) {
   return {
     type: ActionTypes.SET_SELECTED_ACCOUNT,
-    id,
-  };
-}
-
-export function setEditingAccount(id) {
-  return {
-    type: ActionTypes.SET_EDITING_ACCOUNT,
     id,
   };
 }
@@ -62,7 +55,7 @@ export function getAccounts() {
   };
 }
 
-export function createAccount(accountProps) {
+export function createAccount(accountProps, cb) {
   console.log(accountProps);
   return (dispatch) => {
     return fetch(`${baseURL}/api/accounts`, {
@@ -86,7 +79,7 @@ export function createAccount(accountProps) {
       }
 
       dispatch(addAccount(res));
-      dispatch(setEditingAccount(res._id));
+      cb(res);
     })
     .catch((err) => {
       console.log(err);

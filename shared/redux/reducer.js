@@ -12,16 +12,6 @@ const selectedAccount = (state = initialState.selectedAccount, action) => {
   }
 };
 
-const editingAccount = (state = initialState.editingAccount, action) => {
-  switch (action.type) {
-    case ActionTypes.SET_EDITING_ACCOUNT :
-      return action.id;
-
-    default:
-      return state;
-  }
-};
-
 const accounts = (state = initialState.accounts, action) => {
   switch (action.type) {
     case ActionTypes.SET_ACCOUNTS :
@@ -69,4 +59,4 @@ const user = (state = initialState.user, action) => {
   }
 };
 
-export default combineReducers({ user, accounts, selectedAccount, editingAccount });
+export default combineReducers({ user, accounts, selectedAccount });

@@ -9,12 +9,7 @@ class NewAccountContainer extends Component {
     super(props, context);
     this.create = this.create.bind(this);
     this.back = this.back.bind(this);
-  }
-
-  componentDidUpdate() {
-    if (this.props.editingAccount) {
-      this.context.router.push(`/accounts/${this.props.editingAccount}/edit`);
-    }
+    this.redirectToEdit = this.redirectToEdit.bind(this);
   }
 
   create(props) {
@@ -23,7 +18,11 @@ class NewAccountContainer extends Component {
       password: props.password,
       host: props.host,
       port: props.port,
-    }));
+    }, this.redirectToEdit));
+  }
+
+  redirectToEdit(account) {
+    this.context.router.push(`/accounts/${account._id}/edit`);
   }
 
   back() {
@@ -36,17 +35,11 @@ class NewAccountContainer extends Component {
         <Header />
         <div className="container">
           <h1>Connect New Account</h1>
-          <AccountForm submitForm={this.create} cancelForm={this.back} />
+          <AccountForm account={{}} submitForm={this.create} back={this.back} />
         </div>
       </div>
     );
   }
-}
-
-function mapStateToProps(store) {
-  return {
-    editingAccount: store.editingAccount,
-  };
 }
 
 NewAccountContainer.contextTypes = {
@@ -55,7 +48,6 @@ NewAccountContainer.contextTypes = {
 
 NewAccountContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  editingAccount: PropTypes.string,
 };
 
-export default connect(mapStateToProps)(NewAccountContainer);
+export default connect()(NewAccountContainer);

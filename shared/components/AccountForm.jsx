@@ -4,7 +4,7 @@ class AccountForm extends Component {
   constructor(props, context) {
     super(props, context);
     this.submitForm = this.submitForm.bind(this);
-    this.cancelForm = this.cancelForm.bind(this);
+    this.back = this.back.bind(this);
   }
 
   submitForm(e) {
@@ -24,9 +24,9 @@ class AccountForm extends Component {
       });
     }
   }
-  cancelForm(e) {
+  back(e) {
     e.preventDefault();
-    this.props.cancelForm();
+    this.props.back();
   }
   renderForm() {
     return (
@@ -37,7 +37,7 @@ class AccountForm extends Component {
         {this.renderPortFormGroup()}
         {this.renderErrors('base')}
         <button className="btn btn-success" onClick={this.submitForm}>Save</button>
-        <button className="btn btn-danger left-bumper" onClick={this.cancelForm}>Cancel</button>
+        <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
       </form>
     );
   }
@@ -53,7 +53,7 @@ class AccountForm extends Component {
               className="form-control"
               type="text"
               placeholder="john@example.com"
-              defaultValue={`yoda@gmail.com`}
+              defaultValue={this.props.account.email}
             />
           </div>
       </div>
@@ -68,7 +68,7 @@ class AccountForm extends Component {
           className="form-control"
           type="password"
           id="account-password"
-          defaultValue="SuperHappy123"
+          defaultValue={this.props.account.password}
         />
       </div>
     );
@@ -82,7 +82,7 @@ class AccountForm extends Component {
           className="form-control"
           type="text"
           id="account-host"
-          defaultValue="imap.google.com"
+          defaultValue={this.props.account.host}
           placeholder="imap.example.com"
         />
       </div>
@@ -97,7 +97,7 @@ class AccountForm extends Component {
           className="form-control"
           type="text"
           id="account-port"
-          defaultValue="993"
+          defaultValue={this.props.account.port}
           placeholder="993"
         />
       </div>
@@ -122,8 +122,9 @@ class AccountForm extends Component {
 }
 
 AccountForm.propTypes = {
+  account: PropTypes.object,
   submitForm: PropTypes.func.isRequired,
-  cancelForm: PropTypes.func.isRequired,
+  back: PropTypes.func.isRequired,
   errors: PropTypes.object,
 };
 

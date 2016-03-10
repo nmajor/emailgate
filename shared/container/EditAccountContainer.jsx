@@ -11,7 +11,7 @@ class EditAccountContainer extends Component {
     this.update = this.update.bind(this);
     this.back = this.back.bind(this);
 
-    this.account = _.find(this.props.accounts, { _id: this.editingAccount });
+    this.account = _.find(this.props.accounts, { _id: this.props.params.id }) || {};
   }
 
   componentWillUnmount() {
@@ -32,14 +32,12 @@ class EditAccountContainer extends Component {
   }
 
   render() {
-    console.log('rendering edit account container');
-    console.log(this.account);
     return (
       <div className="new-account-container">
         <Header />
         <div className="container">
           <h1>Edit Account</h1>
-          <AccountForm submitForm={this.update} cancelForm={this.back} />
+          <AccountForm account={this.account} submitForm={this.update} back={this.back} />
         </div>
       </div>
     );
@@ -49,7 +47,6 @@ class EditAccountContainer extends Component {
 function mapStateToProps(store) {
   return {
     accounts: store.accounts,
-    editingAccount: store.editingAccount,
   };
 }
 
@@ -60,6 +57,7 @@ EditAccountContainer.contextTypes = {
 EditAccountContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array,
+  params: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(EditAccountContainer);
