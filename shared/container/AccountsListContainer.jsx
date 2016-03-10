@@ -14,7 +14,6 @@ class AccountsContainer extends Component {
   }
 
   render() {
-    console.log(this.props.userAccounts);
     return (
       <div className="accounts-container">
         <h3>Connected Email Accounts</h3>

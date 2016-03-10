@@ -1,7 +1,11 @@
 export default (io) => {
   io.on('connection', (socket) => {
     console.log('a user connected');
-    console.log(socket.request.user);
+
+    socket.on('CREATE_ACCOUNT', () => {
+      console.log('session from socket');
+      console.log(socket.request.session);
+    });
 
     socket.on('disconnect', () => {
       console.log('a user disconnected');

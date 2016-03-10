@@ -5,6 +5,8 @@ const router = express.Router(); // eslint-disable-line new-cap
 import User from '../models/user';
 
 router.get('/user', (req, res) => {
+  console.log('session from routes');
+  console.log(req.session);
   if (req.user) {
     res.json(req.user);
   } else {

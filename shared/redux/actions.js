@@ -2,8 +2,33 @@ import * as ActionTypes from './constants';
 import fetch from 'isomorphic-fetch';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${(process.env.PORT || 8000)}`) : '';
-// import socket from '../../client/socket';
+import socket from '../../client/socket';
 
+// Account Actions
+export function createAccount(accountProps) {
+  console.log(accountProps);
+  return () => {
+    fetch(`${baseURL}/api/user`, {
+      credentials: 'include',
+    });
+    socket.emit('CREATE_ACCOUNT', accountProps);
+  };
+  // return (dispatch) => {
+  //   return fetch(`${baseURL}/api/register`, {
+  //     method: 'post',
+  //     body: JSON.stringify({
+  //       name: userData.name,
+  //       email: userData.email,
+  //       password: userData.password,
+  //     }),
+  //     headers: new Headers({
+  //       'Content-Type': 'application/json',
+  //     }),
+  //   })
+  // }
+}
+
+// User Actions
 export function setUser(user) {
   return {
     type: ActionTypes.SET_USER,
@@ -22,9 +47,69 @@ export function setUserErrors(errors, reset = false) {
   };
 }
 
+export function clearUser() {
+  return {
+    type: ActionTypes.CLEAR_USER,
+  };
+}
+
+export function getUser() {
+  console.log('getting user');
+  return (dispatch) => {
+    fetch(`${baseURL}/api/user`, {
+      credentials: 'include',
+    })
+    .then((res) => {
+      if (res.status === 401) {
+        throw new Error('User not found');
+      } else if (res.status >= 400) {
+        throw new Error('Bad response from server');
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+      dispatch(setUser(res));
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch(clearUser());
+    });
+  };
+}
+
+export function logoutUser() {
+  console.log('logout user');
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/logout`, {
+      credentials: 'include',
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error('Bad response from server when trying to logout.');
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+      dispatch(clearUser());
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  };
+}
+
 export function registerUser(userData) {
   return (dispatch) => {
     return fetch(`${baseURL}/api/register`, {
+      credentials: 'include',
       method: 'post',
       body: JSON.stringify({
         name: userData.name,
@@ -36,7 +121,6 @@ export function registerUser(userData) {
       }),
     })
     .then((res) => {
-      console.log(res);
       if (res.status >= 400) {
         throw new Error('Bad response from server');
       }
@@ -44,7 +128,6 @@ export function registerUser(userData) {
       return res.json();
     })
     .then((res) => {
-      console.log(res);
       if (res.error) {
         throw new Error(res.error.message);
       }
@@ -59,6 +142,7 @@ export function registerUser(userData) {
 export function loginUser(userData) {
   return (dispatch) => {
     return fetch(`${baseURL}/api/login`, {
+      credentials: 'include',
       method: 'post',
       body: JSON.stringify({
         email: userData.email,

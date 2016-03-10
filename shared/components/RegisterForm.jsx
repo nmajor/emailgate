@@ -76,8 +76,8 @@ class RegisterForm extends Component {
   }
   renderErrors(type) {
     if (this.props.errors) {
-      return this.props.errors[type].map((error) => {
-        return <p className="text-danger">{error}</p>;
+      return this.props.errors[type].map((error, index) => {
+        return <p key={index} className="text-danger">{error}</p>;
       });
     }
   }

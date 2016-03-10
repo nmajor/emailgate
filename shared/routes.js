@@ -5,6 +5,7 @@ import React from 'react';
 import App from './container/App';
 import RegisterContainer from './container/RegisterContainer';
 import LoginContainer from './container/LoginContainer';
+import NewAccountContainer from './container/NewAccountContainer';
 import DashboardWrapper from './components/DashboardWrapper';
 // import PostContainer from './container/PostContainer';
 import PostDetailView from './container/PostDetailView';
@@ -18,6 +19,7 @@ const routes = (
     <Route path="/register" component={RegisterContainer}/>
     <Route path="/login" component={LoginContainer}/>
     <Route path="/dashboard" component={DashboardWrapper}/>
+    <Route path="/accounts/new" component={NewAccountContainer}/>
     <Route path="/post/:slug" component={PostDetailView}/>
   </Route>
 );

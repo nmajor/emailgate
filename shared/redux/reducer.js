@@ -2,6 +2,20 @@ import * as ActionTypes from './constants';
 import { combineReducers } from 'redux';
 import initialState from '../initialState';
 
+const userAccounts = (state = initialState.userAccounts, action) => {
+  switch (action.type) {
+    case ActionTypes.ADD_ACCOUNT :
+      return {
+        _id: action._id,
+        email: action.email,
+        name: action.name,
+      };
+
+    default:
+      return state;
+  }
+};
+
 const user = (state = initialState.user, action) => {
   switch (action.type) {
     case ActionTypes.SET_USER :
@@ -19,6 +33,9 @@ const user = (state = initialState.user, action) => {
       return Object.assign({}, state, {
         errors: action.errors,
       });
+
+    case ActionTypes.CLEAR_USER :
+      return {};
 
     default:
       return state;
@@ -67,4 +84,4 @@ const user = (state = initialState.user, action) => {
 //   }
 // };
 
-export default combineReducers({ user });
+export default combineReducers({ user, userAccounts });

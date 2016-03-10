@@ -11,6 +11,7 @@ import connectMongo from 'connect-mongo';
 const ConnectMongo = connectMongo(session);
 
 import initialState from '../shared/initialState';
+import socketEvents from './events/index';
 
 // Webpack Requirements
 import webpack from 'webpack';
@@ -61,10 +62,8 @@ const sessionMiddleware = session({
 
 // Socket.io
 const io = socketIo();
-io.use((socket, next) => { sessionMiddleware(socket.request, socket.request.res, next); });
-
-import socketEvents from './events/index';
 socketEvents(io);
+io.use((socket, next) => { sessionMiddleware(socket.request, socket.request.res, next); });
 
 app.use(sessionMiddleware);
 app.use(passport.initialize());
@@ -129,6 +128,7 @@ app.use((req, res) => {
           </Provider>
         );
         const finalState = store.getState();
+        finalState.user = req.user || {};
 
         res.status(200).end(renderFullPage(initialView, finalState));
       })
