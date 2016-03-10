@@ -53,7 +53,7 @@ class AccountForm extends Component {
               className="form-control"
               type="text"
               placeholder="john@example.com"
-              value={`${Date.now()}@gmail.com`}
+              value={`yoda@gmail.com`}
             />
           </div>
       </div>
