@@ -53,7 +53,7 @@ class AccountForm extends Component {
               className="form-control"
               type="text"
               placeholder="john@example.com"
-              value={`yoda@gmail.com`}
+              defaultValue={`yoda@gmail.com`}
             />
           </div>
       </div>
@@ -68,7 +68,7 @@ class AccountForm extends Component {
           className="form-control"
           type="password"
           id="account-password"
-          value="SuperHappy123"
+          defaultValue="SuperHappy123"
         />
       </div>
     );
@@ -82,7 +82,7 @@ class AccountForm extends Component {
           className="form-control"
           type="text"
           id="account-host"
-          value="imap.google.com"
+          defaultValue="imap.google.com"
           placeholder="imap.example.com"
         />
       </div>
@@ -97,7 +97,7 @@ class AccountForm extends Component {
           className="form-control"
           type="text"
           id="account-port"
-          value="993"
+          defaultValue="993"
           placeholder="993"
         />
       </div>

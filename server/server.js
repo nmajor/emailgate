@@ -118,6 +118,7 @@ app.use((req, res) => {
       return res.status(404).end('Not found!');
     }
 
+    initialState.user = req.user || {};
     const store = configureStore(initialState);
 
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
@@ -128,7 +129,6 @@ app.use((req, res) => {
           </Provider>
         );
         const finalState = store.getState();
-        finalState.user = req.user || {};
 
         res.status(200).end(renderFullPage(initialView, finalState));
       })
