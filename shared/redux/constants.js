@@ -1,3 +1,6 @@
+export const ADD_ACCOUNT = 'ADD_ACCOUNT';
+export const SELECT_ACCOUNT = 'SELECT_ACCOUNT';
+
 export const SET_USER = 'SET_USER';
 export const GET_USER = 'GET_USER';
 export const CLEAR_USER = 'CLEAR_USER';

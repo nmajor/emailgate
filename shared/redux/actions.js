@@ -2,30 +2,57 @@ import * as ActionTypes from './constants';
 import fetch from 'isomorphic-fetch';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${(process.env.PORT || 8000)}`) : '';
-import socket from '../../client/socket';
+// import socket from '../../client/socket';
 
 // Account Actions
+export function addAccount(account) {
+  return {
+    type: ActionTypes.ADD_ACCOUNT,
+    _id: account._id,
+    email: account.email,
+    password: account.name,
+    host: account.host,
+    port: account.port,
+  };
+}
+
+export function selectAccount(account) {
+  return {
+    type: ActionTypes.SELECT_ACCOUNT,
+    _id: account._id,
+  };
+}
+
 export function createAccount(accountProps) {
   console.log(accountProps);
-  return () => {
-    fetch(`${baseURL}/api/user`, {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/accounts`, {
       credentials: 'include',
+      method: 'post',
+      body: JSON.stringify(accountProps),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error('Bad response from server');
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(addAccount(res));
+      dispatch(selectAccount(res));
+    })
+    .catch((err) => {
+      console.log(err);
     });
-    socket.emit('CREATE_ACCOUNT', accountProps);
   };
-  // return (dispatch) => {
-  //   return fetch(`${baseURL}/api/register`, {
-  //     method: 'post',
-  //     body: JSON.stringify({
-  //       name: userData.name,
-  //       email: userData.email,
-  //       password: userData.password,
-  //     }),
-  //     headers: new Headers({
-  //       'Content-Type': 'application/json',
-  //     }),
-  //   })
-  // }
 }
 
 // User Actions

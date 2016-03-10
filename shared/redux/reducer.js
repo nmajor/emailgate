@@ -2,14 +2,41 @@ import * as ActionTypes from './constants';
 import { combineReducers } from 'redux';
 import initialState from '../initialState';
 
+const selectedAccount = (state = initialState.selectedAccount, action) => {
+  switch (action.type) {
+    case ActionTypes.SELECT_ACCOUNT :
+      return action._id;
+
+    default:
+      return state;
+  }
+};
+
 const userAccounts = (state = initialState.userAccounts, action) => {
   switch (action.type) {
     case ActionTypes.ADD_ACCOUNT :
-      return {
-        _id: action._id,
-        email: action.email,
-        name: action.name,
-      };
+      return [
+        ...state,
+        {
+          _id: action._id,
+          email: action.email,
+          password: action.password,
+          host: action.host,
+          port: action.port,
+        },
+      ];
+
+    case ActionTypes.SELECT_ACCOUNT :
+      return [
+        ...state,
+        {
+          _id: action._id,
+          email: action.email,
+          password: action.password,
+          host: action.host,
+          port: action.port,
+        },
+      ];
 
     default:
       return state;
@@ -84,4 +111,4 @@ const user = (state = initialState.user, action) => {
 //   }
 // };
 
-export default combineReducers({ user, userAccounts });
+export default combineReducers({ user, userAccounts, selectedAccount });

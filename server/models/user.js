@@ -5,7 +5,7 @@ const UserSchema = new Schema({
   name: String,
   email: String,
   password: String,
-  accounts: [{ type: Schema.Types.ObjectId, ref: 'Count' }],
+  accounts: [{ type: Schema.Types.ObjectId, ref: 'Account' }],
   compilations: [{ type: Schema.Types.ObjectId, ref: 'Compilation' }],
 });
 

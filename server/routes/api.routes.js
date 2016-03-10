@@ -1,12 +1,11 @@
 import passport from 'passport';
 import express from 'express';
 const router = express.Router(); // eslint-disable-line new-cap
+import * as AccountController from '../controllers/account.controller';
 
 import User from '../models/user';
 
 router.get('/user', (req, res) => {
-  console.log('session from routes');
-  console.log(req.session);
   if (req.user) {
     res.json(req.user);
   } else {
@@ -42,5 +41,21 @@ router.get('/logout', (req, res) => {
 router.get('/health', (req, res) => {
   res.send('OK');
 });
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    console.log('User is authenticated.');
+    next();
+  } else {
+    res.status(401);
+    res.json({ error: { message: 'Unauthorized. User may not be logged in.' } });
+  }
+}
+
+router.get('/accounts', ensureAuthenticated, AccountController.getAccount);
+router.get('/accounts/:id', ensureAuthenticated, AccountController.findOneAccount);
+router.post('/accounts', ensureAuthenticated, AccountController.createAccount);
+router.put('/accounts/:id', ensureAuthenticated, AccountController.patchAccount);
+router.patch('/accounts/:id', ensureAuthenticated, AccountController.patchAccount);
 
 module.exports = router;
