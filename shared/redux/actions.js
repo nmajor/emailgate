@@ -16,10 +16,49 @@ export function addAccount(account) {
   };
 }
 
-export function selectAccount(account) {
+export function setAccounts(accounts) {
   return {
-    type: ActionTypes.SELECT_ACCOUNT,
-    _id: account._id,
+    type: ActionTypes.SET_ACCOUNTS,
+    accounts,
+  };
+}
+
+export function setSelectAccount(id) {
+  return {
+    type: ActionTypes.SET_SELECTED_ACCOUNT,
+    id,
+  };
+}
+
+export function setEditingAccount(id) {
+  return {
+    type: ActionTypes.SET_EDITING_ACCOUNT,
+    id,
+  };
+}
+
+export function getAccounts() {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/accounts`, {
+      credentials: 'include',
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error('Bad response from server');
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(setAccounts(res));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   };
 }
 
@@ -47,7 +86,7 @@ export function createAccount(accountProps) {
       }
 
       dispatch(addAccount(res));
-      dispatch(selectAccount(res));
+      dispatch(setEditingAccount(res._id));
     })
     .catch((err) => {
       console.log(err);

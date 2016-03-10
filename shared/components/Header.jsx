@@ -46,8 +46,6 @@ class Header extends Component {
   }
 }
 
-Header.need = [() => { return Actions.getUser(); }];
-
 function mapStateToProps(store) {
   return {
     user: store.user,

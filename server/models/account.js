@@ -6,6 +6,8 @@ const AccountSchema = new Schema({
   password: String,
   host: String,
   port: String,
+}, {
+  timestamps: true,
 });
 
 export default Mongoose.model('Account', AccountSchema);

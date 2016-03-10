@@ -1,5 +1,5 @@
 {
-  isFetchingUserAccounts: true,
+  isFetchingAccounts: true,
   isFetchingUser: true,
   isFetchingFilteredAccountEmails: true,
   isFetchingCompilations: true,
@@ -11,7 +11,7 @@
     errors: {}
   }
   selectedAccount: 1,
-  userAccounts: [
+  accounts: [
     {
       id: 1,
       email: 'blah@blah.com',

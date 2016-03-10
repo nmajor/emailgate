@@ -4,29 +4,29 @@ import initialState from '../initialState';
 
 const selectedAccount = (state = initialState.selectedAccount, action) => {
   switch (action.type) {
-    case ActionTypes.SELECT_ACCOUNT :
-      return action._id;
+    case ActionTypes.SET_SELECTED_ACCOUNT :
+      return action.id;
 
     default:
       return state;
   }
 };
 
-const userAccounts = (state = initialState.userAccounts, action) => {
+const editingAccount = (state = initialState.editingAccount, action) => {
   switch (action.type) {
-    case ActionTypes.ADD_ACCOUNT :
-      return [
-        ...state,
-        {
-          _id: action._id,
-          email: action.email,
-          password: action.password,
-          host: action.host,
-          port: action.port,
-        },
-      ];
+    case ActionTypes.SET_EDITING_ACCOUNT :
+      return action.id;
 
-    case ActionTypes.SELECT_ACCOUNT :
+    default:
+      return state;
+  }
+};
+
+const accounts = (state = initialState.accounts, action) => {
+  switch (action.type) {
+    case ActionTypes.SET_ACCOUNTS :
+      return action.accounts;
+    case ActionTypes.ADD_ACCOUNT :
       return [
         ...state,
         {
@@ -69,46 +69,4 @@ const user = (state = initialState.user, action) => {
   }
 };
 
-// const post = (state = initialState, action) => {
-//   switch (action.type) {
-//     case ActionTypes.ADD_POST :
-//       return {
-//         posts: [{
-//           name: action.name,
-//           title: action.title,
-//           content: action.content,
-//           slug: action.slug,
-//           cuid: action.cuid,
-//           _id: action._id,
-//         }, ...state.posts],
-//         post: state.post };
-//
-//     case ActionTypes.CHANGE_SELECTED_POST :
-//       return {
-//         posts: state.posts,
-//         post: action.slug,
-//       };
-//
-//     case ActionTypes.ADD_POSTS :
-//       return {
-//         posts: action.posts,
-//         post: state.post,
-//       };
-//
-//     case ActionTypes.ADD_SELECTED_POST :
-//       return {
-//         post: action.post,
-//         posts: state.posts,
-//       };
-//
-//     case ActionTypes.DELETE_POST :
-//       return {
-//         posts: state.posts.filter((post) => post._id !== action.post._id),
-//       };
-//
-//     default:
-//       return state;
-//   }
-// };
-
-export default combineReducers({ user, userAccounts, selectedAccount });
+export default combineReducers({ user, accounts, selectedAccount, editingAccount });

@@ -1,5 +1,8 @@
 export const ADD_ACCOUNT = 'ADD_ACCOUNT';
-export const SELECT_ACCOUNT = 'SELECT_ACCOUNT';
+export const SET_ACCOUNTS = 'SET_ACCOUNTS';
+
+export const SET_SELECTED_ACCOUNT = 'SET_SELECTED_ACCOUNT';
+export const SET_EDITING_ACCOUNT = 'SET_EDITING_ACCOUNT';
 
 export const SET_USER = 'SET_USER';
 export const GET_USER = 'GET_USER';

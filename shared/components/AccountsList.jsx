@@ -9,11 +9,11 @@ class AccountsList extends Component {
   }
 
   renderAccountsList() {
-    if (!this.props.userAccounts.length || this.props.userAccounts.length < 1) {
+    if (!this.props.accounts.length || this.props.accounts.length < 1) {
       return 'No connected accounts';
     }
 
-    return this.props.userAccounts.map((account) => {
+    return this.props.accounts.map((account) => {
       return <AccountListItem key={account._id} account={account} />;
     });
   }
@@ -38,7 +38,7 @@ class AccountsList extends Component {
 }
 
 AccountsList.propTypes = {
-  userAccounts: PropTypes.array.isRequired,
+  accounts: PropTypes.array.isRequired,
 };
 
 export default AccountsList;
