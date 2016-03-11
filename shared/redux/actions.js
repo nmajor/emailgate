@@ -2,28 +2,21 @@ import * as ActionTypes from './constants';
 import fetch from 'isomorphic-fetch';
 
 const baseURL = typeof window === 'undefined' ? process.env.BASE_URL || (`http://localhost:${(process.env.PORT || 8000)}`) : '';
-// import socket from '../../client/socket';
+import socket from '../../client/socket';
 
 // Account Actions
 export function addAccount(account) {
   return {
     type: ActionTypes.ADD_ACCOUNT,
-    _id: account._id,
-    email: account.email,
-    password: account.password,
-    host: account.host,
-    port: account.port,
+    account,
   };
 }
 
 export function updateAccountInAccounts(account) {
+  console.log(account);
   return {
     type: ActionTypes.UPDATE_ACCOUNT_IN_ACCOUNTS,
-    _id: account._id,
-    email: account.email,
-    password: account.password,
-    host: account.host,
-    port: account.port,
+    account,
   };
 }
 
@@ -135,8 +128,6 @@ export function createAccount(accountProps, cb) {
 }
 
 export function updateAccount(id, accountProps, cb) {
-  console.log('updateAccount');
-  console.log(accountProps);
   return (dispatch) => {
     return fetch(`${baseURL}/api/accounts/${id}`, {
       credentials: 'include',
@@ -164,6 +155,13 @@ export function updateAccount(id, accountProps, cb) {
     .catch((err) => {
       console.log(err);
     });
+  };
+}
+
+export function validateAccount(account) {
+  return (dispatch) => {
+    socket.emit('VALIDATE_ACCOUNT', account);
+    dispatch(updateAccountInAccounts(Object.assign({}, account, { validating: true })));
   };
 }
 

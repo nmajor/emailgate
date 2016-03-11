@@ -43,8 +43,6 @@ router.get('/health', (req, res) => {
 });
 
 function ensureAuthenticated(req, res, next) {
-  console.log('BLAH ensureAuthenticated');
-
   if (req.isAuthenticated()) {
     console.log('User is authenticated.');
     next();

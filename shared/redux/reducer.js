@@ -21,26 +21,14 @@ const accounts = (state = initialState.accounts, action) => {
     case ActionTypes.ADD_ACCOUNT :
       return [
         ...state,
-        {
-          _id: action._id,
-          email: action.email,
-          password: action.password,
-          host: action.host,
-          port: action.port,
-        },
+        action.account,
       ];
 
     case ActionTypes.UPDATE_ACCOUNT_IN_ACCOUNTS :
       const accountIndex = _.findIndex(state, { _id: action._id });
       return [
         ...state.slice(0, accountIndex),
-        {
-          _id: action._id,
-          email: action.email,
-          password: action.password,
-          host: action.host,
-          port: action.port,
-        },
+        action.account,
         ...state.slice(accountIndex + 1),
       ];
 

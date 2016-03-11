@@ -18,8 +18,6 @@ class AccountForm extends Component {
     const host = this.refs.host.val;
     const port = this.refs.port.val;
 
-    console.log(`${email} : ${this.props.account.email}`);
-
     if (
       email !== this.props.account.email &&
       password !== this.props.account.password &&
@@ -60,6 +58,7 @@ class AccountForm extends Component {
         {this.renderPasswordFormGroup()}
         {this.renderHostFormGroup()}
         {this.renderPortFormGroup()}
+        {this.renderValidatedStatus()}
         {this.renderErrors('base')}
         <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
         <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
@@ -137,6 +136,13 @@ class AccountForm extends Component {
       return this.props.errors[type].map((error, index) => {
         return <p key={index} className="text-danger">{error}</p>;
       });
+    }
+  }
+  renderValidatedStatus() {
+    if (this.props.account.validating) {
+      return <div>validating ...</div>;
+    } else if (this.props.account.validatedAt >= this.props.account.updatedAt) {
+      return <div>validated</div>;
     }
   }
   render() {
