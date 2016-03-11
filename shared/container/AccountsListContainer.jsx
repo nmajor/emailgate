@@ -6,16 +6,10 @@ import AccountsList from '../components/AccountsList';
 class AccountsContainer extends Component {
   constructor(props, context) {
     super(props, context);
-    this.props.dispatch(Actions.getAccounts());
-    this.addAccount = this.addAccount.bind(this);
-  }
 
-  addAccount(email, password) {
-    this.props.dispatch(Actions.loginUser({ email, password }))
-    .then((account) => {
-      console.log('add account dispatch callback');
-      console.log(account);
-    });
+    if (this.props.accounts.length < 1) {
+      this.props.dispatch(Actions.getAccounts());
+    }
   }
 
   render() {

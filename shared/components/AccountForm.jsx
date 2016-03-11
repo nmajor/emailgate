@@ -3,12 +3,37 @@ import React, { Component, PropTypes } from 'react';
 class AccountForm extends Component {
   constructor(props, context) {
     super(props, context);
+    this.state = { savable: false };
+
     this.submitForm = this.submitForm.bind(this);
     this.back = this.back.bind(this);
+    this.setSaveAbility = this.setSaveAbility.bind(this);
   }
+  componentDidMount() {
+    this.setSaveAbility();
+  }
+  setSaveAbility() {
+    const email = this.refs.email.val;
+    const password = this.refs.password.val;
+    const host = this.refs.host.val;
+    const port = this.refs.port.val;
 
+    console.log(`${email} : ${this.props.account.email}`);
+
+    if (
+      email !== this.props.account.email &&
+      password !== this.props.account.password &&
+      host !== this.props.account.host &&
+      port !== this.props.account.port
+    ) {
+      this.setState({ savable: true });
+    } else {
+      this.setState({ savable: false });
+    }
+  }
   submitForm(e) {
     e.preventDefault();
+    if (!this.state.savable) { return; }
 
     const emailRef = this.refs.email;
     const passwordRef = this.refs.password;
@@ -36,7 +61,7 @@ class AccountForm extends Component {
         {this.renderHostFormGroup()}
         {this.renderPortFormGroup()}
         {this.renderErrors('base')}
-        <button className="btn btn-success" onClick={this.submitForm}>Save</button>
+        <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
         <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
       </form>
     );
@@ -54,6 +79,7 @@ class AccountForm extends Component {
               type="text"
               placeholder="john@example.com"
               defaultValue={this.props.account.email}
+              onChange={this.setSaveAbility}
             />
           </div>
       </div>
@@ -69,6 +95,7 @@ class AccountForm extends Component {
           type="password"
           id="account-password"
           defaultValue={this.props.account.password}
+          onChange={this.setSaveAbility}
         />
       </div>
     );
@@ -84,6 +111,7 @@ class AccountForm extends Component {
           id="account-host"
           defaultValue={this.props.account.host}
           placeholder="imap.example.com"
+          onChange={this.setSaveAbility}
         />
       </div>
     );
@@ -99,6 +127,7 @@ class AccountForm extends Component {
           id="account-port"
           defaultValue={this.props.account.port}
           placeholder="993"
+          onChange={this.setSaveAbility}
         />
       </div>
     );

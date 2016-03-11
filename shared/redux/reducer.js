@@ -1,6 +1,7 @@
 import * as ActionTypes from './constants';
 import { combineReducers } from 'redux';
 import initialState from '../initialState';
+import _ from 'lodash';
 
 const selectedAccount = (state = initialState.selectedAccount, action) => {
   switch (action.type) {
@@ -16,6 +17,7 @@ const accounts = (state = initialState.accounts, action) => {
   switch (action.type) {
     case ActionTypes.SET_ACCOUNTS :
       return action.accounts;
+
     case ActionTypes.ADD_ACCOUNT :
       return [
         ...state,
@@ -26,6 +28,20 @@ const accounts = (state = initialState.accounts, action) => {
           host: action.host,
           port: action.port,
         },
+      ];
+
+    case ActionTypes.UPDATE_ACCOUNT_IN_ACCOUNTS :
+      const accountIndex = _.findIndex(state, { _id: action._id });
+      return [
+        ...state.slice(0, accountIndex),
+        {
+          _id: action._id,
+          email: action.email,
+          password: action.password,
+          host: action.host,
+          port: action.port,
+        },
+        ...state.slice(accountIndex + 1),
       ];
 
     default:

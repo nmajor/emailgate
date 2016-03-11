@@ -43,6 +43,8 @@ router.get('/health', (req, res) => {
 });
 
 function ensureAuthenticated(req, res, next) {
+  console.log('BLAH ensureAuthenticated');
+
   if (req.isAuthenticated()) {
     console.log('User is authenticated.');
     next();
@@ -52,7 +54,7 @@ function ensureAuthenticated(req, res, next) {
   }
 }
 
-router.get('/accounts', ensureAuthenticated, AccountController.getAccount);
+router.get('/accounts', ensureAuthenticated, AccountController.getAccounts);
 router.get('/accounts/:id', ensureAuthenticated, AccountController.findOneAccount);
 router.post('/accounts', ensureAuthenticated, AccountController.createAccount);
 router.put('/accounts/:id', ensureAuthenticated, AccountController.patchAccount);

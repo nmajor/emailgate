@@ -121,7 +121,7 @@ app.use((req, res) => {
     initialState.user = req.user || {};
     const store = configureStore(initialState);
 
-    fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
+    fetchComponentData(store.dispatch, renderProps.components, renderProps.params, req.headers.cookie)
       .then(() => {
         const initialView = renderToString(
           <Provider store={store}>

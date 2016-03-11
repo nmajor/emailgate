@@ -14,12 +14,8 @@ class EditAccountContainer extends Component {
     this.account = _.find(this.props.accounts, { _id: this.props.params.id }) || {};
   }
 
-  componentWillUnmount() {
-    this.props.dispatch(Actions.setEditingAccount(''));
-  }
-
   update(props) {
-    this.props.dispatch(Actions.updateAccount({
+    this.props.dispatch(Actions.updateAccount(this.props.params.id, {
       email: props.email,
       password: props.password,
       host: props.host,
@@ -43,6 +39,10 @@ class EditAccountContainer extends Component {
     );
   }
 }
+
+EditAccountContainer.need = [(params, cookie) => {
+  return Actions.getAccount.bind(null, params.id, cookie)();
+}];
 
 function mapStateToProps(store) {
   return {

@@ -16,6 +16,17 @@ export function addAccount(account) {
   };
 }
 
+export function updateAccountInAccounts(account) {
+  return {
+    type: ActionTypes.UPDATE_ACCOUNT_IN_ACCOUNTS,
+    _id: account._id,
+    email: account.email,
+    password: account.password,
+    host: account.host,
+    port: account.port,
+  };
+}
+
 export function setAccounts(accounts) {
   return {
     type: ActionTypes.SET_ACCOUNTS,
@@ -30,14 +41,20 @@ export function setSelectAccount(id) {
   };
 }
 
-export function getAccounts() {
+export function getAccounts(cookie) {
   return (dispatch) => {
-    return fetch(`${baseURL}/api/accounts`, {
-      credentials: 'include',
-    })
+    const fetchOptions = {};
+
+    if (cookie) {
+      fetchOptions.headers = { cookie };
+    } else {
+      fetchOptions.credentials = 'include';
+    }
+
+    return fetch(`${baseURL}/api/accounts`, fetchOptions)
     .then((res) => {
       if (res.status >= 400) {
-        throw new Error('Bad response from server');
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
       }
 
       return res.json();
@@ -55,8 +72,38 @@ export function getAccounts() {
   };
 }
 
+export function getAccount(id, cookie) {
+  return (dispatch) => {
+    const fetchOptions = {};
+
+    if (cookie) {
+      fetchOptions.headers = { cookie };
+    } else {
+      fetchOptions.credentials = 'include';
+    }
+
+    return fetch(`${baseURL}/api/accounts/${id}`, fetchOptions)
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      return dispatch(addAccount(res));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
 export function createAccount(accountProps, cb) {
-  console.log(accountProps);
   return (dispatch) => {
     return fetch(`${baseURL}/api/accounts`, {
       credentials: 'include',
@@ -68,7 +115,7 @@ export function createAccount(accountProps, cb) {
     })
     .then((res) => {
       if (res.status >= 400) {
-        throw new Error('Bad response from server');
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
       }
 
       return res.json();
@@ -79,6 +126,39 @@ export function createAccount(accountProps, cb) {
       }
 
       dispatch(addAccount(res));
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
+export function updateAccount(id, accountProps, cb) {
+  console.log('updateAccount');
+  console.log(accountProps);
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/accounts/${id}`, {
+      credentials: 'include',
+      method: 'put',
+      body: JSON.stringify(accountProps),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(updateAccountInAccounts(res));
       cb(res);
     })
     .catch((err) => {
@@ -122,7 +202,7 @@ export function getUser() {
       if (res.status === 401) {
         throw new Error('User not found');
       } else if (res.status >= 400) {
-        throw new Error('Bad response from server');
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
       }
 
       return res.json();
@@ -148,7 +228,7 @@ export function logoutUser() {
     })
     .then((res) => {
       if (res.status >= 400) {
-        throw new Error('Bad response from server when trying to logout.');
+        throw new Error(`Bad response from server when trying to logout ${res.status} ${res.statusText}`);
       }
 
       return res.json();
@@ -181,7 +261,7 @@ export function registerUser(userData) {
     })
     .then((res) => {
       if (res.status >= 400) {
-        throw new Error('Bad response from server');
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
       }
 
       return res.json();
@@ -215,7 +295,7 @@ export function loginUser(userData) {
       if (res.status === 401) {
         throw new Error('User not found');
       } else if (res.status >= 400) {
-        throw new Error('Bad response from server');
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
       }
 
       return res.json();

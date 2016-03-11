@@ -7,7 +7,7 @@ export function findOneAccount(req, res) {
   });
 }
 
-export function getAccount(req, res) {
+export function getAccounts(req, res) {
   Account.find({ _user: req.user._id })
   .then((accounts) => {
     res.json(accounts);
