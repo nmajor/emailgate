@@ -43,6 +43,7 @@ import serverConfig from './config';
 
 // MongoDB Connection
 mongoose.connect(serverConfig.mongoURL);
+mongoose.Promise = Promise;
 
 import User from './models/user';
 passport.use(User.createStrategy());

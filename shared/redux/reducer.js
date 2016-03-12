@@ -25,12 +25,15 @@ const accounts = (state = initialState.accounts, action) => {
       ];
 
     case ActionTypes.UPDATE_ACCOUNT_IN_ACCOUNTS :
-      const accountIndex = _.findIndex(state, { _id: action._id });
-      return [
-        ...state.slice(0, accountIndex),
-        action.account,
-        ...state.slice(accountIndex + 1),
-      ];
+      const accountIndex = _.findIndex(state, { _id: action.account._id });
+      if (accountIndex > -1) {
+        return [
+          ...state.slice(0, accountIndex),
+          action.account,
+          ...state.slice(accountIndex + 1),
+        ];
+      }
+      return state;
 
     default:
       return state;

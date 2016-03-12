@@ -10,14 +10,17 @@ class EditAccountContainer extends Component {
     super(props, context);
     this.update = this.update.bind(this);
     this.back = this.back.bind(this);
+    this.checkConnection = this.checkConnection.bind(this);
 
     this.account = _.find(this.props.accounts, { _id: this.props.params.id }) || {};
   }
 
   componentDidMount() {
-    if (!this.account.validatedAt || this.account.validatedAt < this.account.updatedAt) {
-      this.props.dispatch(Actions.validateAccount(this.account));
-    }
+    this.checkConnectionIfNeeded();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.account = _.find(nextProps.accounts, { _id: nextProps.params.id }) || {};
   }
 
   update(props) {
@@ -26,7 +29,21 @@ class EditAccountContainer extends Component {
       password: props.password,
       host: props.host,
       port: props.port,
+    }, () => {
+      this.checkConnectionIfNeeded();
     }));
+  }
+
+  checkConnection() {
+    this.props.dispatch(Actions.checkAccountConnection(this.account));
+  }
+
+  checkConnectionIfNeeded() {
+    if (this.account.checkingConnection) { return; }
+
+    if (!this.account.connectionCheckedAt || this.account.connectionCheckedAt < this.account.updatedAt) {
+      this.checkConnection();
+    }
   }
 
   back() {
@@ -39,7 +56,7 @@ class EditAccountContainer extends Component {
         <Header />
         <div className="container">
           <h1>Edit Account</h1>
-          <AccountForm account={this.account} submitForm={this.update} back={this.back} />
+          <AccountForm checkConnection={this.checkConnection} account={this.account} submitForm={this.update} back={this.back} />
         </div>
       </div>
     );

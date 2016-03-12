@@ -13,7 +13,6 @@ export function addAccount(account) {
 }
 
 export function updateAccountInAccounts(account) {
-  console.log(account);
   return {
     type: ActionTypes.UPDATE_ACCOUNT_IN_ACCOUNTS,
     account,
@@ -158,10 +157,17 @@ export function updateAccount(id, accountProps, cb) {
   };
 }
 
-export function validateAccount(account) {
+export function checkAccountConnection(account) {
+  console.log('checkAccountConnection');
   return (dispatch) => {
-    socket.emit('VALIDATE_ACCOUNT', account);
-    dispatch(updateAccountInAccounts(Object.assign({}, account, { validating: true })));
+    socket.emit('CHECK_ACCOUNT_CONNECTION', account);
+    dispatch(updateAccountInAccounts(Object.assign({}, account, { checkingConnection: true })));
+  };
+}
+
+export function socketUpdateAccount(account) {
+  return (dispatch) => {
+    dispatch(updateAccountInAccounts(account));
   };
 }
 

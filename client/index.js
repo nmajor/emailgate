@@ -4,12 +4,11 @@ import routes from '../shared/routes';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
-import { configureStore } from '../shared/redux/configureStore';
+import store from './store';
 
 // Pull in the styles for development
 require('./assets/scss/style.scss');
 
-const store = configureStore(window.__INITIAL_STATE__);
 const history = browserHistory;
 const dest = document.getElementById('root');
 

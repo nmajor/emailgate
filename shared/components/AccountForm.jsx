@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import AccountConnectionCheckedAt from './AccountConnectionCheckedAt';
 
 class AccountForm extends Component {
   constructor(props, context) {
@@ -13,39 +14,43 @@ class AccountForm extends Component {
     this.setSaveAbility();
   }
   setSaveAbility() {
-    const email = this.refs.email.val;
-    const password = this.refs.password.val;
-    const host = this.refs.host.val;
-    const port = this.refs.port.val;
-
-    if (
-      email !== this.props.account.email &&
-      password !== this.props.account.password &&
-      host !== this.props.account.host &&
-      port !== this.props.account.port
-    ) {
+    if (this.formChanged()) {
       this.setState({ savable: true });
     } else {
       this.setState({ savable: false });
     }
   }
+  formChanged() {
+    const emailRef = this.refs.email || {};
+    const passwordRef = this.refs.password || {};
+    const hostRef = this.refs.host || {};
+    const portRef = this.refs.port || {};
+
+    if (
+      emailRef.value !== this.props.account.email ||
+      passwordRef.value !== this.props.account.password ||
+      hostRef.value !== this.props.account.host ||
+      portRef.value !== this.props.account.port
+    ) {
+      return true;
+    }
+    return false;
+  }
   submitForm(e) {
     e.preventDefault();
     if (!this.state.savable) { return; }
 
-    const emailRef = this.refs.email;
-    const passwordRef = this.refs.password;
-    const hostRef = this.refs.host;
-    const portRef = this.refs.port;
+    const emailRef = this.refs.email || {};
+    const passwordRef = this.refs.password || {};
+    const hostRef = this.refs.host || {};
+    const portRef = this.refs.port || {};
 
-    if (emailRef.value && passwordRef.value && hostRef.value && portRef.value) {
-      this.props.submitForm({
-        email: emailRef.value,
-        password: passwordRef.value,
-        host: hostRef.value,
-        port: portRef.value,
-      });
-    }
+    this.props.submitForm({
+      email: emailRef.value,
+      password: passwordRef.value,
+      host: hostRef.value,
+      port: portRef.value,
+    });
   }
   back(e) {
     e.preventDefault();
@@ -58,12 +63,47 @@ class AccountForm extends Component {
         {this.renderPasswordFormGroup()}
         {this.renderHostFormGroup()}
         {this.renderPortFormGroup()}
-        {this.renderValidatedStatus()}
+
+        {this.renderConnectionStatus()}
+
         {this.renderErrors('base')}
         <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
         <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
       </form>
     );
+  }
+  renderConnectionStatus() {
+    if (this.props.checkConnection) {
+      let status;
+
+      if (this.props.account.checkingConnection) {
+        status = <span>Checking Connection ...</span>;
+      } else if (this.props.account.connectionValid) {
+        status = 'Connection works.';
+      } else {
+        status = 'Could not connect.';
+      }
+
+      return (
+        <div className="connection-status">
+          <div className="form-group">
+            {status}
+            {this.renderConnectionCheckedAt()}
+            {this.renderRefreshButton()}
+          </div>
+        </div>
+      );
+    }
+  }
+  renderConnectionCheckedAt() {
+    if (!this.props.account.checkingConnection && this.props.account.connectionCheckedAt) {
+      return <AccountConnectionCheckedAt connectionCheckedAt={this.props.account.connectionCheckedAt} />;
+    }
+  }
+  renderRefreshButton() {
+    if (!this.props.account.checkingConnection) {
+      return <span className="glyphicon glyphicon-refresh left-bumper" onClick={this.props.checkConnection} aria-hidden="true"></span>;
+    }
   }
   renderEmailFormGroup() {
     return (
@@ -138,13 +178,6 @@ class AccountForm extends Component {
       });
     }
   }
-  renderValidatedStatus() {
-    if (this.props.account.validating) {
-      return <div>validating ...</div>;
-    } else if (this.props.account.validatedAt >= this.props.account.updatedAt) {
-      return <div>validated</div>;
-    }
-  }
   render() {
     return (
       <div className="row">
@@ -161,6 +194,7 @@ AccountForm.propTypes = {
   submitForm: PropTypes.func.isRequired,
   back: PropTypes.func.isRequired,
   errors: PropTypes.object,
+  checkConnection: PropTypes.func,
 };
 
 export default AccountForm;

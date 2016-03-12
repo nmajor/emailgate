@@ -11,6 +11,6 @@ npm start
 - Added sass loaders for webpack: npm install sass-loader node-sass --save-dev
 
 
-Think of a different term for validated account property
-Mabe name it like connection valid or something
-Then have an attribute called lastValidationAttempt;
+### Notes
+
+https://github.com/zippyui/react-date-picker
