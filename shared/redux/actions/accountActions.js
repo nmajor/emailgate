@@ -26,10 +26,10 @@ export function setAccounts(accounts) {
   };
 }
 
-export function setSelectAccount(id) {
+export function setSelectedAccount(accountId) {
   return {
     type: ActionTypes.SET_SELECTED_ACCOUNT,
-    id,
+    accountId,
   };
 }
 

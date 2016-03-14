@@ -9,8 +9,17 @@ class AccountsList extends Component {
       return 'No connected accounts';
     }
 
+    console.log('blahyoda');
+    console.log(this.props.selectedAccount);
+
     return this.props.accounts.map((account) => {
-      return <AccountsListItem key={account._id} account={account} />;
+      return (<AccountsListItem
+        key={account._id}
+        account={account}
+        selectable={this.props.selectable}
+        selected={this.props.selectable && this.props.selectedAccount === account._id}
+        handleClick={this.props.onItemClick}
+      />);
     });
   }
   renderNewAccount() {
@@ -20,10 +29,8 @@ class AccountsList extends Component {
       </Link>
     );
   }
-  renderAccountForm() {
-
-  }
   render() {
+    console.log('renderblah');
     return (
       <div className="accounts-list">
         {this.renderAccountsList()}
@@ -35,6 +42,9 @@ class AccountsList extends Component {
 
 AccountsList.propTypes = {
   accounts: PropTypes.array.isRequired,
+  selectedAccount: PropTypes.string,
+  selectable: PropTypes.bool,
+  onItemClick: PropTypes.func.isRequired,
 };
 
 export default AccountsList;

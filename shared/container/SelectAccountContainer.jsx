@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import AccountsList from '../components/AccountsList';
 
-class AccountsListContainer extends Component {
+class SelectAccountContainer extends Component {
   constructor(props, context) {
     super(props, context);
+    this.handleItemClick = this.handleItemClick.bind(this);
   }
 
   componentDidMount() {
@@ -14,11 +15,20 @@ class AccountsListContainer extends Component {
     }
   }
 
+  handleItemClick(accountId) {
+    this.props.dispatch(Actions.setSelectedAccount(accountId));
+  }
+
   render() {
     return (
       <div className="accounts-list-container">
-        <h3>Connected Email Accounts</h3>
-        <AccountsList accounts={this.props.accounts} />
+        <h3>Select Account</h3>
+        <AccountsList
+          accounts={this.props.accounts}
+          selectable
+          selectedAccount={this.props.selectedAccount}
+          onItemClick={this.handleItemClick}
+        />
       </div>
     );
   }
@@ -27,12 +37,14 @@ class AccountsListContainer extends Component {
 function mapStateToProps(store) {
   return {
     accounts: store.accounts,
+    selectedAccount: store.selectedAccount,
   };
 }
 
-AccountsListContainer.propTypes = {
+SelectAccountContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  selectedAccount: PropTypes.string,
   accounts: PropTypes.array,
 };
 
-export default connect(mapStateToProps)(AccountsListContainer);
+export default connect(mapStateToProps)(SelectAccountContainer);

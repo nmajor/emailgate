@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
+import SelectAccountContainer from './SelectAccountContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
@@ -20,6 +21,7 @@ class CompilationAddEmailsContainer extends Component {
         <Header />
         <div className="container">
           <h1>Add Emails to Compilation</h1>
+          <SelectAccountContainer />
         </div>
       </div>
     );
@@ -33,6 +35,7 @@ CompilationAddEmailsContainer.need = [(params, cookie) => {
 function mapStateToProps(store) {
   return {
     accounts: store.accounts,
+    compilations: store.compilations,
   };
 }
 

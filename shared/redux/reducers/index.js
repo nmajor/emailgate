@@ -9,7 +9,7 @@ import compilations from './compilations';
 const selectedAccount = (state = initialState.selectedAccount, action) => {
   switch (action.type) {
     case ActionTypes.SET_SELECTED_ACCOUNT :
-      return action.id;
+      return action.accountId;
 
     default:
       return state;
