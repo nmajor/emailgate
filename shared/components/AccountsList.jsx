@@ -9,9 +9,6 @@ class AccountsList extends Component {
       return 'No connected accounts';
     }
 
-    console.log('blahyoda');
-    console.log(this.props.selectedAccount);
-
     return this.props.accounts.map((account) => {
       return (<AccountsListItem
         key={account._id}
@@ -30,7 +27,6 @@ class AccountsList extends Component {
     );
   }
   render() {
-    console.log('renderblah');
     return (
       <div className="accounts-list">
         {this.renderAccountsList()}

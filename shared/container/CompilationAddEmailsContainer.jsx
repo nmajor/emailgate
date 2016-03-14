@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
 import SelectAccountContainer from './SelectAccountContainer';
+import FilterContainer from './FilterContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
@@ -22,6 +23,7 @@ class CompilationAddEmailsContainer extends Component {
         <div className="container">
           <h1>Add Emails to Compilation</h1>
           <SelectAccountContainer />
+          <FilterContainer />
         </div>
       </div>
     );
