@@ -1,4 +1,5 @@
 export const ADD_COMPILATION = 'ADD_COMPILATION';
+export const SET_COMPILATIONS = 'SET_COMPILATIONS';
 
 export const ADD_ACCOUNT = 'ADD_ACCOUNT';
 export const SET_ACCOUNTS = 'SET_ACCOUNTS';

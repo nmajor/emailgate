@@ -8,7 +8,7 @@ class CompilationsListContainer extends Component {
     super(props, context);
 
     if (this.props.compilations.length < 1) {
-      this.props.dispatch(Actions.getAccounts());
+      this.props.dispatch(Actions.getCompilations());
     }
   }
 

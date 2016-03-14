@@ -9,9 +9,6 @@ class NewCompilationForm extends Component {
     this.back = this.back.bind(this);
     this.setSaveAbility = this.setSaveAbility.bind(this);
   }
-  componentDidMount() {
-    this.setSaveAbility();
-  }
   setSaveAbility() {
     if (this.formChanged()) {
       this.setState({ savable: true });
@@ -31,16 +28,10 @@ class NewCompilationForm extends Component {
     e.preventDefault();
     if (!this.state.savable) { return; }
 
-    const emailRef = this.refs.email || {};
-    const passwordRef = this.refs.password || {};
-    const hostRef = this.refs.host || {};
-    const portRef = this.refs.port || {};
+    const nameRef = this.refs.name || {};
 
     this.props.submitForm({
-      email: emailRef.value,
-      password: passwordRef.value,
-      host: hostRef.value,
-      port: portRef.value,
+      name: nameRef.value,
     });
   }
   back(e) {

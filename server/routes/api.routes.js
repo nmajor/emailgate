@@ -2,6 +2,7 @@ import passport from 'passport';
 import express from 'express';
 const router = express.Router(); // eslint-disable-line new-cap
 import * as AccountController from '../controllers/account.controller';
+import * as CompilationController from '../controllers/compilation.controller';
 
 import User from '../models/user';
 
@@ -57,5 +58,11 @@ router.get('/accounts/:id', ensureAuthenticated, AccountController.findOneAccoun
 router.post('/accounts', ensureAuthenticated, AccountController.createAccount);
 router.put('/accounts/:id', ensureAuthenticated, AccountController.patchAccount);
 router.patch('/accounts/:id', ensureAuthenticated, AccountController.patchAccount);
+
+router.get('/compilations', ensureAuthenticated, CompilationController.getCompilations);
+router.get('/compilations/:id', ensureAuthenticated, CompilationController.findOneCompilation);
+router.post('/compilations', ensureAuthenticated, CompilationController.createCompilation);
+router.put('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
+router.patch('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
 
 module.exports = router;
