@@ -1,6 +1,6 @@
-import * as ActionTypes from './constants';
+import * as ActionTypes from '../constants';
 import { combineReducers } from 'redux';
-import initialState from '../initialState';
+import initialState from '../../initialState';
 import _ from 'lodash';
 
 const selectedAccount = (state = initialState.selectedAccount, action) => {
@@ -40,6 +40,13 @@ const accounts = (state = initialState.accounts, action) => {
   }
 };
 
+const compilations = (state = initialState.compilations, action) => {
+  switch (action.type) {
+    default:
+      return state;
+  }
+};
+
 const user = (state = initialState.user, action) => {
   switch (action.type) {
     case ActionTypes.SET_USER :
@@ -66,4 +73,4 @@ const user = (state = initialState.user, action) => {
   }
 };
 
-export default combineReducers({ user, accounts, selectedAccount });
+export default combineReducers({ user, accounts, compilations, selectedAccount });

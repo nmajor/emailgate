@@ -1,25 +1,21 @@
 import React, { PropTypes, Component } from 'react';
-import AccountListItem from './AccountListItem';
+import AccountsListItem from './AccountsListItem';
 import { Link } from 'react-router';
 
 
 class AccountsList extends Component {
-  handleNewAccountClick() {
-    this.setState({ showForm: true });
-  }
-
   renderAccountsList() {
     if (!this.props.accounts.length || this.props.accounts.length < 1) {
       return 'No connected accounts';
     }
 
     return this.props.accounts.map((account) => {
-      return <AccountListItem key={account._id} account={account} />;
+      return <AccountsListItem key={account._id} account={account} />;
     });
   }
   renderNewAccount() {
     return (
-      <Link to="/accounts/new" className="btn btn-default add-account" >
+      <Link to="/accounts/new" className="btn btn-default new-account" >
         New Account
       </Link>
     );

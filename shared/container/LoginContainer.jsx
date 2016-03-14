@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
 import LoginForm from '../components/LoginForm';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions';
+import * as Actions from '../redux/actions/index';
 
 class LoginContainer extends Component {
   constructor(props, context) {

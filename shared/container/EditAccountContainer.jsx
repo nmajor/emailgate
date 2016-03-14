@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
 import AccountForm from '../components/AccountForm';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions';
+import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
 
 class EditAccountContainer extends Component {
@@ -52,7 +52,7 @@ class EditAccountContainer extends Component {
 
   render() {
     return (
-      <div className="new-account-container">
+      <div className="edit-account-container">
         <Header />
         <div className="container">
           <h1>Edit Account</h1>

@@ -4,7 +4,7 @@ import PostCreateView from '../components/PostCreateView';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions';
+import * as Actions from '../redux/actions/index';
 
 class PostContainer extends Component {
   constructor(props, context) {

@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
-import AccountForm from '../components/AccountForm';
+import NewCompilationForm from '../components/NewCompilationForm';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 
-class NewAccountContainer extends Component {
+class NewCompilationContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.create = this.create.bind(this);
@@ -13,16 +13,13 @@ class NewAccountContainer extends Component {
   }
 
   create(props) {
-    this.props.dispatch(Actions.createAccount({
-      email: props.email,
-      password: props.password,
-      host: props.host,
-      port: props.port,
+    this.props.dispatch(Actions.createCompilation({
+      name: props.name,
     }, this.redirectToEdit));
   }
 
-  redirectToEdit(account) {
-    this.context.router.push(`/accounts/${account._id}/edit`);
+  redirectToEdit(compilation) {
+    this.context.router.push(`/compilations/${compilation._id}/edit`);
   }
 
   back() {
@@ -31,23 +28,23 @@ class NewAccountContainer extends Component {
 
   render() {
     return (
-      <div className="new-account-container">
+      <div className="new-compilation-container">
         <Header />
         <div className="container">
-          <h1>Connect New Account</h1>
-          <AccountForm account={{}} submitForm={this.create} back={this.back} />
+          <h1>New Compilation</h1>
+          <NewCompilationForm compilation={{}} submitForm={this.create} back={this.back} />
         </div>
       </div>
     );
   }
 }
 
-NewAccountContainer.contextTypes = {
+NewCompilationContainer.contextTypes = {
   router: PropTypes.object.isRequired,
 };
 
-NewAccountContainer.propTypes = {
+NewCompilationContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-export default connect()(NewAccountContainer);
+export default connect()(NewCompilationContainer);

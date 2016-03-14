@@ -17,7 +17,7 @@ const AccountSchema = new Schema({
   timestamps: true,
 });
 
-AccountSchema.methods.checkConnection = function validate() {
+AccountSchema.methods.checkConnection = function checkConnection() {
   return new Promise((resolve) => {
     if (this.kind === 'imap') {
       const imap = initImap({
@@ -36,7 +36,6 @@ AccountSchema.methods.checkConnection = function validate() {
         imap.end();
       });
       imap.on('error', (err) => {
-        console.log(err);
         if (err.toString() === 'Error: read ECONNRESET') {
           this.connectionValid = true;
           this.connectionCheckedAt = Date.now();

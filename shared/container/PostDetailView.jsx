@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions';
+import * as Actions from '../redux/actions/index';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 

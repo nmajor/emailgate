@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import AccountsListContainer from '../container/AccountsListContainer';
+import CompilationsListContainer from '../container/CompilationsListContainer';
 
 class DashboardWrapper extends Component {
   render() {
@@ -10,6 +11,7 @@ class DashboardWrapper extends Component {
         <div className="container">
           <h1>Dashboard</h1>
           <AccountsListContainer />
+          <CompilationsListContainer />
         </div>
       </div>
     );

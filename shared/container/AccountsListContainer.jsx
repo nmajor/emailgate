@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions';
+import * as Actions from '../redux/actions/index';
 import AccountsList from '../components/AccountsList';
 
-class AccountsContainer extends Component {
+class AccountsListContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -14,7 +14,7 @@ class AccountsContainer extends Component {
 
   render() {
     return (
-      <div className="accounts-container">
+      <div className="accounts-list-container">
         <h3>Connected Email Accounts</h3>
         <AccountsList accounts={this.props.accounts} />
       </div>
@@ -28,9 +28,9 @@ function mapStateToProps(store) {
   };
 }
 
-AccountsContainer.propTypes = {
+AccountsListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array,
 };
 
-export default connect(mapStateToProps)(AccountsContainer);
+export default connect(mapStateToProps)(AccountsListContainer);
