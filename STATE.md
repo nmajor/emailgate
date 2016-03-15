@@ -28,6 +28,7 @@
     startDate: Date.now(),
     endDate: Date.now(),
   },
+  filteredAccountEmailsCount: 50,
   filteredAccountEmails: [
     {
       seqno: 424,

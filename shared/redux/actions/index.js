@@ -2,12 +2,21 @@
 import * as ActionTypes from '../constants';
 import baseURL from '../../baseURL';
 
+import socket from '../../../client/socket';
+
 export * from './userActions';
 export * from './accountActions';
 export * from './compilationActions';
 
 // // POST EXAMPLES
 // import fetch from 'isomorphic-fetch';
+
+export function getFilteredAccountEmails(account, filter) {
+  return () => {
+    socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, filter });
+    // dispatch(updateAccountInAccounts(Object.assign({}, account, { gettingMailboxes: true })));
+  };
+}
 
 export function addPost(post) {
   return {

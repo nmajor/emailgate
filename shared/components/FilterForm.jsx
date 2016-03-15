@@ -8,7 +8,6 @@ class FilterForm extends Component {
   }
   submitForm(e) {
     e.preventDefault();
-    if (!this.state.savable) { return; }
 
     const mailboxRef = this.refs.mailbox || {};
     const subjectRef = this.refs.subject || {};
@@ -31,7 +30,7 @@ class FilterForm extends Component {
         {this.renderFromFormGroup()}
 
         {this.renderErrors('base')}
-        <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
+        <button className="btn btn-success" onClick={this.submitForm}>Save</button>
         <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
       </form>
     );
@@ -111,8 +110,8 @@ class FilterForm extends Component {
 }
 
 FilterForm.propTypes = {
-  mailboxes: PropTypes.object.isRequired,
-  submitForm: PropTypes.array.isRequired,
+  mailboxes: PropTypes.array.isRequired,
+  submitForm: PropTypes.func.isRequired,
   errors: PropTypes.object,
 };
 

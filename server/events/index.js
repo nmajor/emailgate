@@ -1,6 +1,8 @@
 import Account from '../models/account';
 import User from '../models/user';
 
+import { imapifyFilter, processEmails } from '../util/helpers';
+
 export default (io) => {
   io.on('connection', (socket) => {
     console.log('a user connected');
@@ -27,6 +29,20 @@ export default (io) => {
       .then(account => account.save())
       .then((account) => {
         socket.emit('UPDATE_ACCOUNT', account);
+      });
+    });
+
+    socket.on('GET_FILTERED_ACCOUNT_EMAILS', (data) => {
+      console.log('GET_FILTERED_ACCOUNT_EMAILS');
+
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
+      .then(account => account.filteredEmailStream(data.filter.mailbox, imapifyFilter(data.filter)))
+      .then((emailStream) => {
+        socket.emit('FILTERED_ACCOUNT_EMAILS_COUNT', emailStream.count);
+
+        const processedEmails = emailStream.stream.pipe(processEmails());
+        socket.emit('FILTERED_ACCOUNT_EMAILS_STREAM', processedEmails);
       });
     });
 
