@@ -6,9 +6,9 @@ import user from './user';
 import accounts from './accounts';
 import compilations from './compilations';
 
-const selectedAccount = (state = initialState.selectedAccount, action) => {
+const selectedAccountId = (state = initialState.selectedAccountId, action) => {
   switch (action.type) {
-    case ActionTypes.SET_SELECTED_ACCOUNT :
+    case ActionTypes.SET_SELECTED_ACCOUNT_ID :
       return action.accountId;
 
     default:
@@ -16,4 +16,4 @@ const selectedAccount = (state = initialState.selectedAccount, action) => {
   }
 };
 
-export default combineReducers({ user, accounts, compilations, selectedAccount });
+export default combineReducers({ user, accounts, compilations, selectedAccountId });

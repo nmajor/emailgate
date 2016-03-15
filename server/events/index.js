@@ -9,15 +9,22 @@ export default (io) => {
       console.log('CHECK_ACCOUNT_CONNECTION');
 
       User.findOne({ email: socket.request.session.passport.user })
-      .then((user) => {
-        return Account.findOne({ _user: user._id, _id: data._id });
-      })
+      .then(user => Account.findOne({ _user: user._id, _id: data._id }))
+      .then(account => account.checkConnection())
+      .then(account => account.save())
       .then((account) => {
-        return account.checkConnection();
-      })
-      .then((account) => {
-        return account.save();
-      })
+        socket.emit('UPDATE_ACCOUNT', account);
+      });
+    });
+
+    socket.on('GET_ACCOUNT_MAILBOXES', (data) => {
+      console.log('GET_ACCOUNT_MAILBOXES');
+
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Account.findOne({ _user: user._id, _id: data._id }))
+      .then(account => account.checkConnection())
+      .then(account => account.getMailboxes())
+      .then(account => account.save())
       .then((account) => {
         socket.emit('UPDATE_ACCOUNT', account);
       });

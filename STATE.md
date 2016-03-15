@@ -10,7 +10,7 @@
     loggedIn: true,
     errors: {}
   }
-  selectedAccount: 1,
+  selectedAccountId: 1,
   accounts: [
     {
       id: 1,

@@ -9,7 +9,7 @@ class AccountListItem extends Component {
   }
   handleClick() {
     if (this.props.handleClick) {
-      this.props.handleClick(this.props.account._id);
+      this.props.handleClick(this.props.account);
     }
   }
   renderEmail() {

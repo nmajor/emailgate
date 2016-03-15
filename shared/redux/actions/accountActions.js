@@ -26,9 +26,9 @@ export function setAccounts(accounts) {
   };
 }
 
-export function setSelectedAccount(accountId) {
+export function setSelectedAccountId(accountId) {
   return {
-    type: ActionTypes.SET_SELECTED_ACCOUNT,
+    type: ActionTypes.SET_SELECTED_ACCOUNT_ID,
     accountId,
   };
 }
@@ -158,7 +158,6 @@ export function updateAccount(id, accountProps, cb) {
 }
 
 export function checkAccountConnection(account) {
-  console.log('checkAccountConnection');
   return (dispatch) => {
     socket.emit('CHECK_ACCOUNT_CONNECTION', account);
     dispatch(updateAccountInAccounts(Object.assign({}, account, { checkingConnection: true })));
@@ -168,5 +167,12 @@ export function checkAccountConnection(account) {
 export function socketUpdateAccount(account) {
   return (dispatch) => {
     dispatch(updateAccountInAccounts(account));
+  };
+}
+
+export function getAccountMailboxes(account) {
+  return (dispatch) => {
+    socket.emit('GET_ACCOUNT_MAILBOXES', account);
+    dispatch(updateAccountInAccounts(Object.assign({}, account, { gettingMailboxes: true })));
   };
 }

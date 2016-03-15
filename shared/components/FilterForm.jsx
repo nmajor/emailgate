@@ -3,45 +3,32 @@ import React, { Component, PropTypes } from 'react';
 class FilterForm extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { savable: false };
 
     this.submitForm = this.submitForm.bind(this);
-    this.setSaveAbility = this.setSaveAbility.bind(this);
-  }
-  componentDidMount() {
-    this.setSaveAbility();
-  }
-  setSaveAbility() {
-    if (this.formChanged()) {
-      this.setState({ savable: true });
-    } else {
-      this.setState({ savable: false });
-    }
-  }
-  formChanged() {
-    const subjectRef = this.refs.subject || {};
-
-    if (
-      subjectRef.value !== this.props.filter.subject
-    ) {
-      return true;
-    }
-    return false;
   }
   submitForm(e) {
     e.preventDefault();
     if (!this.state.savable) { return; }
 
+    const mailboxRef = this.refs.mailbox || {};
     const subjectRef = this.refs.subject || {};
+    const toRef = this.refs.to || {};
+    const fromRef = this.refs.from || {};
 
     this.props.submitForm({
+      mailbox: mailboxRef.value,
       subject: subjectRef.value,
+      to: toRef.value,
+      from: fromRef.value,
     });
   }
   renderForm() {
     return (
       <form onSubmit={this.handleSubmit}>
+        {this.renderMailboxFormGroup()}
         {this.renderSubjectFormGroup()}
+        {this.renderToFormGroup()}
+        {this.renderFromFormGroup()}
 
         {this.renderErrors('base')}
         <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
@@ -52,17 +39,58 @@ class FilterForm extends Component {
   renderSubjectFormGroup() {
     return (
       <div className="form-group">
-        <label htmlFor="filter-subject">Host</label>
+        <label htmlFor="filter-subject">Subject</label>
         <input
           ref="subject"
           className="form-control"
           type="text"
           id="filter-subject"
-          defaultValue={this.props.filter.subject}
           onChange={this.setSaveAbility}
         />
       </div>
     );
+  }
+  renderMailboxFormGroup() {
+    return (<div className="form-group">
+      <label htmlFor="filter-mailbox">Mailbox</label>
+      <select
+        ref="mailbox"
+        className="form-control"
+        id="filter-mailbox"
+        onChange={this.setSaveAbility}
+      >
+        {this.renderMailboxOptions()}
+      </select>
+    </div>);
+  }
+  renderToFormGroup() {
+    return (<div className="form-group">
+      <label htmlFor="filter-to">To Email</label>
+      <input
+        ref="to"
+        type="text"
+        className="form-control"
+        id="filter-to"
+        onChange={this.setSaveAbility}
+      />
+    </div>);
+  }
+  renderFromFormGroup() {
+    return (<div className="form-group">
+      <label htmlFor="filter-from">From Email</label>
+      <input
+        ref="from"
+        type="text"
+        className="form-control"
+        id="filter-from"
+        onChange={this.setSaveAbility}
+      />
+    </div>);
+  }
+  renderMailboxOptions() {
+    return this.props.mailboxes.map((mailbox, index) => {
+      return <option value={mailbox} key={index}>{mailbox}</option>;
+    });
   }
   renderErrors(type) {
     if (this.props.errors) {
@@ -83,8 +111,8 @@ class FilterForm extends Component {
 }
 
 FilterForm.propTypes = {
-  filter: PropTypes.object.isRequired,
-  submitForm: PropTypes.func.isRequired,
+  mailboxes: PropTypes.object.isRequired,
+  submitForm: PropTypes.array.isRequired,
   errors: PropTypes.object,
 };
 

@@ -15,8 +15,9 @@ class SelectAccountContainer extends Component {
     }
   }
 
-  handleItemClick(accountId) {
-    this.props.dispatch(Actions.setSelectedAccount(accountId));
+  handleItemClick(account) {
+    this.props.dispatch(Actions.setSelectedAccountId(account._id));
+    this.props.dispatch(Actions.getAccountMailboxes(account));
   }
 
   render() {
@@ -26,7 +27,7 @@ class SelectAccountContainer extends Component {
         <AccountsList
           accounts={this.props.accounts}
           selectable
-          selectedAccount={this.props.selectedAccount}
+          selectedAccountId={this.props.selectedAccountId}
           onItemClick={this.handleItemClick}
         />
       </div>
@@ -37,13 +38,13 @@ class SelectAccountContainer extends Component {
 function mapStateToProps(store) {
   return {
     accounts: store.accounts,
-    selectedAccount: store.selectedAccount,
+    selectedAccountId: store.selectedAccountId,
   };
 }
 
 SelectAccountContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  selectedAccount: PropTypes.string,
+  selectedAccountId: PropTypes.string,
   accounts: PropTypes.array,
 };
 
