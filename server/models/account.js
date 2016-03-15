@@ -95,9 +95,8 @@ AccountSchema.methods.getMailboxes = function getMailboxes() {
   });
 };
 
-AccountSchema.methods.filteredEmailStream = function filteredEmailStream(mailbox, imapFilter) {
+AccountSchema.methods.filteredEmailsCount = function filteredEmailsCount(mailbox, imapFilter) {
   return new Promise((resolve) => {
-    const emailStream = stream.PassThrough(); // eslint-disable-line new-cap
     const imap = initImap({
       email: this.email,
       password: this.password,
@@ -116,42 +115,85 @@ AccountSchema.methods.filteredEmailStream = function filteredEmailStream(mailbox
 
           if (results.length < 1) {
             imap.end();
-            emailStream.end();
             return;
           }
 
-          resolve({ count: results.length, stream: emailStream });
+          resolve(results.length);
+          imap.end();
+        });
+      });
+    });
+    imap.on('error', (err) => {
+      if (err.toString() !== 'Error: read ECONNRESET') {
+        console.log('imap error happened.');
+      }
+      imap.end();
+      resolve();
+    });
+  });
+};
 
-          const f = imap.seq.fetch(results, { bodies: '' });
-          f.on('message', (msg, seqno) => {
-            // msg.on('body', (msgStream, info) => {
-            msg.on('body', (msgStream) => {
-              const mailparser = new MailParser();
-              mailparser.on('end', (msgObj) => {
-                msgObj.seqno = seqno; // eslint-disable-line no-param-reassign
-                emailStream.write(new Buffer(JSON.stringify(msgObj)));
-              });
+AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(mailbox, imapFilter) {
+  console.log('blah filteredEmailsStream');
+  const emailStream = stream.PassThrough(); // eslint-disable-line new-cap
+  const imap = initImap({
+    email: this.email,
+    password: this.password,
+    host: this.host,
+    port: this.port,
+  });
 
-              msgStream.pipe(mailparser);
+  imap.connect();
+  imap.on('ready', () => {
+    // imap.openBox(mailbox, true, (err, box) => {
+    imap.openBox(mailbox, true, (boxErr) => {
+      if (boxErr) { console.log(`Could not open mailbox ${mailbox} ${boxErr.message}`); return; }
+
+      imap.seq.search(imapFilter, (searchErr, results) => {
+        if (searchErr) { console.log(`problem searching ${searchErr.message}`); return; }
+
+        if (results.length < 1) {
+          imap.end();
+          emailStream.end();
+          return;
+        }
+
+        const f = imap.seq.fetch(results, { bodies: '' });
+        f.on('message', (msg, seqno) => {
+          // msg.on('body', (msgStream, info) => {
+          msg.on('body', (msgStream) => {
+            const mailparser = new MailParser();
+            mailparser.on('end', (msgObj) => {
+              console.log(seqno);
+              msgObj.seqno = seqno; // eslint-disable-line no-param-reassign
+              emailStream.write(new Buffer(JSON.stringify(msgObj)));
             });
-          });
 
-          f.on('error', (err) => {
-            if (err) { console.log(err); return; }
+            msgStream.pipe(mailparser);
           });
-          f.on('end', () => {
-            imap.closeBox(() => {
-              imap.end();
-              emailStream.end();
-            });
+        });
+
+        f.on('error', (err) => {
+          if (err) { console.log(err); return; }
+        });
+        f.on('end', () => {
+          imap.closeBox(() => {
+            imap.end();
+            emailStream.end();
           });
         });
       });
     });
-    imap.on('error', () => {
-      imap.end();
-    });
   });
+  imap.on('error', (err) => {
+    if (err.toString() !== 'Error: read ECONNRESET') {
+      console.log('imap error happened.');
+    }
+    emailStream.end();
+    imap.end();
+  });
+
+  return emailStream;
 };
 
 export default Mongoose.model('Account', AccountSchema);

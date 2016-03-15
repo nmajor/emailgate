@@ -13,6 +13,7 @@ export * from './compilationActions';
 
 export function getFilteredAccountEmails(account, filter) {
   return () => {
+    // socket.emit('GET_FILTERED_ACCOUNT_EMAILS_COUNT', { account, filter });
     socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, filter });
     // dispatch(updateAccountInAccounts(Object.assign({}, account, { gettingMailboxes: true })));
   };

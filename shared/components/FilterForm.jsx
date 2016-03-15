@@ -45,6 +45,7 @@ class FilterForm extends Component {
           type="text"
           id="filter-subject"
           onChange={this.setSaveAbility}
+          defaultValue="isaac"
         />
       </div>
     );
@@ -57,6 +58,7 @@ class FilterForm extends Component {
         className="form-control"
         id="filter-mailbox"
         onChange={this.setSaveAbility}
+        defaultValue="[Gmail]/All Mail"
       >
         {this.renderMailboxOptions()}
       </select>

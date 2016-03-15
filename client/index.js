@@ -6,6 +6,8 @@ import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import store from './store';
 
+require('./events');
+
 // Pull in the styles for development
 require('./assets/scss/style.scss');
 

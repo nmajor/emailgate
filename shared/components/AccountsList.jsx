@@ -40,7 +40,7 @@ AccountsList.propTypes = {
   accounts: PropTypes.array.isRequired,
   selectedAccountId: PropTypes.string,
   selectable: PropTypes.bool,
-  onItemClick: PropTypes.func.isRequired,
+  onItemClick: PropTypes.func,
 };
 
 export default AccountsList;
