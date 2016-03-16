@@ -8,10 +8,24 @@ export * from './userActions';
 export * from './accountActions';
 export * from './compilationActions';
 
+export function setFilteredAccountEmails(emails) {
+  return {
+    type: ActionTypes.SET_FILTERED_ACCOUNT_EMAILS,
+    emails,
+  };
+}
+
 export function addFilteredAccountEmail(email) {
   return {
     type: ActionTypes.ADD_FILTERED_ACCOUNT_EMAIL,
     email,
+  };
+}
+
+export function setFetchingFilteredAccountEmailsCount(val) {
+  return {
+    type: ActionTypes.SET_FETCHING_FILTERED_ACCOUNT_EMAILS_COUNT,
+    val,
   };
 }
 
@@ -29,12 +43,17 @@ export function setFilteredAccountEmailsCount(count) {
   };
 }
 
-export function getFilteredAccountEmails(account, filter) {
-  return () => {
+export function getFilteredAccountEmailsCount(account, filter) {
+  return (dispatch) => {
     socket.emit('GET_FILTERED_ACCOUNT_EMAILS_COUNT', { account, filter });
-    // socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, filter });
-    // dispatch(setFetchingFilteredAccountEmails(true));
-    // dispatch(updateAccountInAccounts(Object.assign({}, account, { gettingMailboxes: true })));
+    dispatch(setFetchingFilteredAccountEmailsCount(true));
+  };
+}
+
+export function getFilteredAccountEmails(account, filter) {
+  return (dispatch) => {
+    socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, filter });
+    dispatch(setFetchingFilteredAccountEmails(true));
   };
 }
 

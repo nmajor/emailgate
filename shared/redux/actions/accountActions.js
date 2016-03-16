@@ -171,6 +171,7 @@ export function socketUpdateAccount(account) {
 }
 
 export function getAccountMailboxes(account) {
+  console.log(account.connectionValid);
   return (dispatch) => {
     socket.emit('GET_ACCOUNT_MAILBOXES', account);
     dispatch(updateAccountInAccounts(Object.assign({}, account, { gettingMailboxes: true })));

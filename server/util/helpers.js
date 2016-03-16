@@ -23,18 +23,17 @@ export function processEmails() {
 
   transformStream._transform = (chunk, enc, next) => {
     const email = JSON.parse(chunk.toString('utf8'));
-    console.log(email);
 
     const processedEmail = {
       seqno: email.seqno,
-      date: email.dage,
-      headers: email.headers,
+      date: email.date,
+      // headers: email.headers,
       to: email.to,
       from: email.from,
       subject: email.subject,
-      messageId: email.messageId,
+      // messageId: email.messageId,
       text: email.text,
-      html: email.html,
+      // html: email.html,
       attachments: email.attachments,
     };
 

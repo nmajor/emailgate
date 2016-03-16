@@ -3,7 +3,6 @@ import Header from '../components/Header';
 import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
-import FilteredAccountEmailsCountContainer from './FilteredAccountEmailsCountContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
@@ -26,7 +25,6 @@ class CompilationAddEmailsContainer extends Component {
           <h1>Add Emails to Compilation</h1>
           <SelectAccountContainer />
           <FilterContainer />
-          <FilteredAccountEmailsCountContainer />
           <FilteredAccountEmailsContainer />
         </div>
       </div>

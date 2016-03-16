@@ -1,8 +1,8 @@
 import Account from '../models/account';
 import User from '../models/user';
 
-// import { imapifyFilter, processEmails } from '../util/helpers';
-import { imapifyFilter } from '../util/helpers';
+import { imapifyFilter, processEmails } from '../util/helpers';
+// import { imapifyFilter } from '../util/helpers';
 
 export default (io) => {
   io.on('connection', (socket) => {
@@ -61,7 +61,7 @@ export default (io) => {
         ss(socket).emit('FILTERED_ACCOUNT_EMAILS_STREAM', resStream);
 
         account.filteredEmailsStream(mailbox, filter)
-        // .pipe(processEmails())
+        .pipe(processEmails())
         .pipe(resStream);
       });
     });

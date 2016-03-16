@@ -32,8 +32,14 @@ class FilterForm extends Component {
         {this.renderErrors('base')}
         <button className="btn btn-success" onClick={this.submitForm}>Submit</button>
         <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
+        <span className="left-bumper">{this.renderFetching()}</span>
       </form>
     );
+  }
+  renderFetching() {
+    if (this.props.fetching) {
+      return 'loading ...';
+    }
   }
   renderSubjectFormGroup() {
     return (
@@ -115,6 +121,7 @@ FilterForm.propTypes = {
   mailboxes: PropTypes.array.isRequired,
   submitForm: PropTypes.func.isRequired,
   errors: PropTypes.object,
+  fetching: PropTypes.bool.isRequired,
 };
 
 export default FilterForm;

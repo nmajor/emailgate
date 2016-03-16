@@ -43,6 +43,7 @@ AccountSchema.methods.checkConnection = function checkConnection() {
           this.connectionCheckedAt = Date.now();
           imap.end();
           resolve(this);
+          return;
         }
 
         this.connectionValid = false;
@@ -134,7 +135,6 @@ AccountSchema.methods.filteredEmailsCount = function filteredEmailsCount(mailbox
 };
 
 AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(mailbox, imapFilter) {
-  console.log('blah filteredEmailsStream');
   const emailStream = stream.PassThrough(); // eslint-disable-line new-cap
   const imap = initImap({
     email: this.email,

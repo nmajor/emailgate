@@ -17,14 +17,14 @@ socket.on('FILTERED_ACCOUNT_EMAILS_COUNT', (count) => {
 
 ss(socket).on('FILTERED_ACCOUNT_EMAILS_STREAM', (emailStream) => {
   console.log('event FILTERED_ACCOUNT_EMAILS_STREAM');
-  console.log(emailStream);
 
   emailStream.on('data', (chunk) => {
     const email = JSON.parse(chunk.toString('utf8'));
-    console.log(email);
+
+    store.dispatch(Actions.addFilteredAccountEmail(email));
   });
 
   emailStream.on('end', () => {
-    console.log('stream ended');
+    store.dispatch(Actions.setFetchingFilteredAccountEmails(false));
   });
 });

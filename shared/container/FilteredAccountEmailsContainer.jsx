@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions/index';
+// import * as Actions from '../redux/actions/index';
+import FilteredAccountEmails from '../components/FilteredAccountEmails';
 
 class FilteredAccountEmailsContainer extends Component {
   constructor(props, context) {
@@ -9,7 +10,7 @@ class FilteredAccountEmailsContainer extends Component {
   render() {
     return (
       <div className="filter-container">
-        <h3>Filtered Account Emails</h3>
+        <FilteredAccountEmails emails={this.props.filteredAccountEmails} />
       </div>
     );
   }

@@ -34,7 +34,7 @@ class FilterContainer extends Component {
     return (
       <div className="filter-container">
         <h3>Filter</h3>
-        <FilterForm submitForm={this.submitForm} mailboxes={this.selectedAccountMailboxes()} />
+        <FilterForm submitForm={this.submitForm} mailboxes={this.selectedAccountMailboxes()} fetching={this.props.fetchingFilteredAccountEmails} />
       </div>
     );
   }
@@ -44,6 +44,7 @@ function mapStateToProps(store) {
   return {
     accounts: store.accounts,
     selectedAccountId: store.selectedAccountId,
+    fetchingFilteredAccountEmails: store.fetchingFilteredAccountEmails,
   };
 }
 
@@ -51,6 +52,7 @@ FilterContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array,
   selectedAccountId: PropTypes.string,
+  fetchingFilteredAccountEmails: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(FilterContainer);
