@@ -8,16 +8,38 @@ export * from './userActions';
 export * from './accountActions';
 export * from './compilationActions';
 
-// // POST EXAMPLES
-// import fetch from 'isomorphic-fetch';
+export function addFilteredAccountEmail(email) {
+  return {
+    type: ActionTypes.ADD_FILTERED_ACCOUNT_EMAIL,
+    email,
+  };
+}
+
+export function setFetchingFilteredAccountEmails(val) {
+  return {
+    type: ActionTypes.SET_FETCHING_FILTERED_ACCOUNT_EMAILS,
+    val,
+  };
+}
+
+export function setFilteredAccountEmailsCount(count) {
+  return {
+    type: ActionTypes.SET_FILTERED_ACCOUNT_EMAILS_COUNT,
+    count,
+  };
+}
 
 export function getFilteredAccountEmails(account, filter) {
   return () => {
-    // socket.emit('GET_FILTERED_ACCOUNT_EMAILS_COUNT', { account, filter });
-    socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, filter });
+    socket.emit('GET_FILTERED_ACCOUNT_EMAILS_COUNT', { account, filter });
+    // socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, filter });
+    // dispatch(setFetchingFilteredAccountEmails(true));
     // dispatch(updateAccountInAccounts(Object.assign({}, account, { gettingMailboxes: true })));
   };
 }
+
+// // POST EXAMPLES
+// import fetch from 'isomorphic-fetch';
 
 export function addPost(post) {
   return {

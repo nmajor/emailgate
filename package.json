@@ -50,6 +50,7 @@
     "react-dom": "^0.14.7",
     "react-redux": "^4.1.2",
     "react-router": "^2.0.0-rc5",
+    "readable-stream": "^2.0.6",
     "redux": "^3.1.5",
     "redux-thunk": "^1.0.3",
     "sanitize-html": "^1.11.3",
@@ -57,7 +58,6 @@
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",
     "socket.io-stream": "^0.9.0",
-    "stream": "0.0.2",
     "util": "^0.10.3"
   },
   "devDependencies": {

@@ -57,11 +57,8 @@ export default (io) => {
         const ss = require('socket.io-stream');
         ss.forceBase64 = true;
 
-        console.log('hey');
         const resStream = ss.createStream();
-        console.log('ho');
-        socket.emit('FILTERED_ACCOUNT_EMAILS_STREAM', resStream);
-        console.log('ha');
+        ss(socket).emit('FILTERED_ACCOUNT_EMAILS_STREAM', resStream);
 
         account.filteredEmailsStream(mailbox, filter)
         // .pipe(processEmails())

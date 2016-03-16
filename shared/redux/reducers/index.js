@@ -16,4 +16,14 @@ const selectedAccountId = (state = initialState.selectedAccountId, action) => {
   }
 };
 
-export default combineReducers({ user, accounts, compilations, selectedAccountId });
+const filteredAccountEmailsCount = (state = initialState.filteredAccountEmailsCount, action) => {
+  switch (action.type) {
+    case ActionTypes.SET_FILTERED_ACCOUNT_EMAILS_COUNT :
+      return action.count;
+
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({ user, accounts, compilations, selectedAccountId, filteredAccountEmailsCount });

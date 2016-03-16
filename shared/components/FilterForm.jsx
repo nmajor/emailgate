@@ -30,7 +30,7 @@ class FilterForm extends Component {
         {this.renderFromFormGroup()}
 
         {this.renderErrors('base')}
-        <button className="btn btn-success" onClick={this.submitForm}>Save</button>
+        <button className="btn btn-success" onClick={this.submitForm}>Submit</button>
         <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
       </form>
     );
