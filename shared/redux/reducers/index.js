@@ -24,6 +24,9 @@ const previewEmailMid = (state = initialState.previewEmailMid, action) => {
 
 const selectedEmails = (state = initialState.selectedEmails, action) => {
   switch (action.type) {
+    case ActionTypes.SET_SELECTED_EMAILS :
+      return action.emails;
+
     case ActionTypes.ADD_EMAIL_TO_SELECTED_EMAILS :
       return [...state, action.email];
 

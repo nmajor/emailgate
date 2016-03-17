@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import EmailsList from '../components/EmailsList';
 import EmailPreview from '../components/EmailPreview';
+import EmailsListActions from '../components/EmailsListActions';
 import _ from 'lodash';
 
 class FilteredAccountEmailsContainer extends Component {
@@ -14,6 +15,10 @@ class FilteredAccountEmailsContainer extends Component {
     this.removeEmailFromSelected = this.removeEmailFromSelected.bind(this);
     this.setPreviewEmail = this.setPreviewEmail.bind(this);
 
+    this.selectAll = this.selectAll.bind(this);
+    this.deselectAll = this.deselectAll.bind(this);
+    this.addSelectedToCompilation = this.addSelectedToCompilation.bind(this);
+
     if (this.props.previewEmailMid) {
       this.previewEmail = _.find(this.props.emails, { mid: this.props.previewEmailMid }) || {};
     } else { this.previewEmail = {}; }
@@ -23,7 +28,6 @@ class FilteredAccountEmailsContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.previewEmailMid !== this.props.previewEmailMid) {
       this.previewEmail = _.find(nextProps.emails, { mid: nextProps.previewEmailMid }) || {};
-      console.log(this.previewEmail);
     }
 
     if (nextProps.selectedEmails !== this.props.selectedEmails) {
@@ -43,11 +47,25 @@ class FilteredAccountEmailsContainer extends Component {
   //   console.log('addEmailToCompilation');
   //   console.log(email);
   // }
+  selectAll() {
+    this.props.dispatch(Actions.setSelectedEmails(this.props.emails));
+  }
+  deselectAll() {
+    this.props.dispatch(Actions.setSelectedEmails([]));
+  }
+  addSelectedToCompilation() {
+    e.log('addSelectedToCompilation clicked');
+  }
   render() {
     return (
       <div className="filter-container row">
         <h3>Filtered Account Emails {this.props.emails.length}</h3>
         <div className="col-md-3">
+          <EmailsListActions
+            selectAll={this.selectAll}
+            deselectAll={this.deselectAll}
+            addSelectedToCompilation={this.addSelectedToCompilation}
+          />
           <EmailsList
             emails={this.props.emails}
             selectedEmailMids={this.selectedEmailMids}

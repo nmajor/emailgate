@@ -29,3 +29,10 @@ export function removeEmailFromSelectedEmails(email) {
     email,
   };
 }
+
+export function setSelectedEmails(emails) {
+  return {
+    type: ActionTypes.SET_SELECTED_EMAILS,
+    emails,
+  };
+}
