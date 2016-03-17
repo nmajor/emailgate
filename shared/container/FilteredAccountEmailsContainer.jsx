@@ -54,29 +54,31 @@ class FilteredAccountEmailsContainer extends Component {
     this.props.dispatch(Actions.setSelectedEmails([]));
   }
   addSelectedToCompilation() {
-    e.log('addSelectedToCompilation clicked');
+    console.log('addSelectedToCompilation clicked');
   }
   render() {
     return (
-      <div className="filter-container row">
+      <div className="filter-container">
         <h3>Filtered Account Emails {this.props.emails.length}</h3>
-        <div className="col-md-3">
-          <EmailsListActions
-            selectAll={this.selectAll}
-            deselectAll={this.deselectAll}
-            addSelectedToCompilation={this.addSelectedToCompilation}
-          />
-          <EmailsList
-            emails={this.props.emails}
-            selectedEmailMids={this.selectedEmailMids}
-            previewEmailMid={this.props.previewEmailMid}
-            removeEmailFromSelected={this.removeEmailFromSelected}
-            addEmailToSelected={this.addEmailToSelected}
-            setPreviewEmail={this.setPreviewEmail}
-          />
-        </div>
-        <div className="col-md-9">
-          <EmailPreview email={this.previewEmail} />
+        <div className="row">
+          <div className="col-md-3">
+            <EmailsListActions
+              selectAll={this.selectAll}
+              deselectAll={this.deselectAll}
+              addSelectedToCompilation={this.addSelectedToCompilation}
+            />
+            <EmailsList
+              emails={this.props.emails}
+              selectedEmailMids={this.selectedEmailMids}
+              previewEmailMid={this.props.previewEmailMid}
+              removeEmailFromSelected={this.removeEmailFromSelected}
+              addEmailToSelected={this.addEmailToSelected}
+              setPreviewEmail={this.setPreviewEmail}
+            />
+          </div>
+          <div className="col-md-9">
+            <EmailPreview email={this.previewEmail} />
+          </div>
         </div>
       </div>
     );

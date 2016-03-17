@@ -31,7 +31,6 @@ class FilterForm extends Component {
 
         {this.renderErrors('base')}
         <button className="btn btn-success" onClick={this.submitForm}>Submit</button>
-        <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
         <span className="left-bumper">{this.renderFetching()}</span>
       </form>
     );
