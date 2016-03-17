@@ -4,13 +4,15 @@ class EmailsListActions extends Component {
   render() {
     return (
       <div className="emails-list-actions">
-        <div className="btn btn-default select-all" onClick={this.props.selectAll}>
+        <div className="btn btn-default select-all btn-block" onClick={this.props.selectAll}>
           <span className="glyphicon glyphicon-check" aria-hidden="true"></span> All
         </div>
-        <div className="btn btn-default deselect-all" onClick={this.props.deselectAll}>
+        <div className="btn btn-default deselect-all btn-block" onClick={this.props.deselectAll}>
           <span className="glyphicon glyphicon-unchecked" aria-hidden="true"></span> All
         </div>
-        <div className="btn btn-success add-selected" onClick={this.props.addSelectedToCompilation}>Add Emails to Compilation</div>
+        <div className="btn btn-success btn-block add-selected" onClick={this.props.addSelectedToCompilation}>
+          Add <span className="glyphicon glyphicon-check" aria-hidden="true"></span> to Compilation
+        </div>
       </div>
     );
   }

@@ -34,7 +34,11 @@ class FilterContainer extends Component {
     return (
       <div className="filter-container">
         <h3>Filter</h3>
-        <FilterForm submitForm={this.submitForm} mailboxes={this.selectedAccountMailboxes()} fetching={this.props.fetchingFilteredAccountEmails} />
+        <FilterForm
+          submitForm={this.submitForm}
+          mailboxes={this.selectedAccountMailboxes()}
+          fetching={this.props.fetchingFilteredAccountEmails}
+        />
       </div>
     );
   }

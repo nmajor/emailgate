@@ -108,7 +108,7 @@ class FilterForm extends Component {
   render() {
     return (
       <div className="row">
-        <div className="col-md-6 col-sm-8">
+        <div className="col-md-12">
           {this.renderForm()}
         </div>
       </div>
