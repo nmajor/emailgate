@@ -164,7 +164,6 @@ AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(mailb
           msg.on('body', (msgStream) => {
             const mailparser = new MailParser();
             mailparser.on('end', (msgObj) => {
-              console.log(seqno);
               msgObj.seqno = seqno; // eslint-disable-line no-param-reassign
               emailStream.write(new Buffer(JSON.stringify(msgObj)));
             });

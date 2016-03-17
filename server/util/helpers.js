@@ -1,4 +1,5 @@
 import stream from 'stream';
+// import crypto from 'crypto';
 
 export function imapifyFilter(filter) {
   const imapFilter = ['ALL'];
@@ -24,9 +25,12 @@ export function processEmails() {
   transformStream._transform = (chunk, enc, next) => {
     const email = JSON.parse(chunk.toString('utf8'));
 
+    // mid should be unique to the message not the object
+    const mid = email.messageId;
+
     const processedEmail = {
-      seqno: email.seqno,
       date: email.date,
+      mid,
       // headers: email.headers,
       to: email.to,
       from: email.from,

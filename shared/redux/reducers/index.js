@@ -1,61 +1,41 @@
 import * as ActionTypes from '../constants';
 import { combineReducers } from 'redux';
 import initialState from '../../initialState';
+import _ from 'lodash';
+
+import * as fetchings from './fetchings';
 
 import user from './user';
 import accounts from './accounts';
 import compilations from './compilations';
+import selectedAccountId from './selectedAccountId';
+import filteredAccountEmails from './filteredAccountEmails';
+import filteredAccountEmailsCount from './filteredAccountEmailsCount';
 
-const selectedAccountId = (state = initialState.selectedAccountId, action) => {
+const previewEmailMid = (state = initialState.previewEmailMid, action) => {
   switch (action.type) {
-    case ActionTypes.SET_SELECTED_ACCOUNT_ID :
-      return action.accountId;
+    case ActionTypes.SET_PREVIEW_EMAIL_HASH_ID :
+      return action.mid;
 
     default:
       return state;
   }
 };
 
-const filteredAccountEmails = (state = initialState.filteredAccountEmails, action) => {
+const selectedEmails = (state = initialState.selectedEmails, action) => {
   switch (action.type) {
-    case ActionTypes.SET_FILTERED_ACCOUNT_EMAILS :
-      return action.emails;
+    case ActionTypes.ADD_EMAIL_TO_SELECTED_EMAILS :
+      return [...state, action.email];
 
-    case ActionTypes.ADD_FILTERED_ACCOUNT_EMAIL :
-      return [
-        ...state,
-        action.email,
-      ];
-
-    default:
+    case ActionTypes.REMOVE_EMAIL_FROM_SELECTED_EMAILS :
+      const accountIndex = _.findIndex(state, { mid: action.email.mid });
+      if (accountIndex > -1) {
+        return [
+          ...state.slice(0, accountIndex),
+          ...state.slice(accountIndex + 1),
+        ];
+      }
       return state;
-  }
-};
-
-const filteredAccountEmailsCount = (state = initialState.filteredAccountEmailsCount, action) => {
-  switch (action.type) {
-    case ActionTypes.SET_FILTERED_ACCOUNT_EMAILS_COUNT :
-      return action.count;
-
-    default:
-      return state;
-  }
-};
-
-const fetchingFilteredAccountEmailsCount = (state = initialState.fetchingFilteredAccountEmailsCount, action) => {
-  switch (action.type) {
-    case ActionTypes.SET_FETCHING_FILTERED_ACCOUNT_EMAILS_COUNT :
-      return action.val;
-
-    default:
-      return state;
-  }
-};
-
-const fetchingFilteredAccountEmails = (state = initialState.fetchingFilteredAccountEmails, action) => {
-  switch (action.type) {
-    case ActionTypes.SET_FETCHING_FILTERED_ACCOUNT_EMAILS :
-      return action.val;
 
     default:
       return state;
@@ -63,12 +43,14 @@ const fetchingFilteredAccountEmails = (state = initialState.fetchingFilteredAcco
 };
 
 export default combineReducers({
+  fetchingFilteredAccountEmailsCount: fetchings.fetchingFilteredAccountEmailsCount,
+  fetchingFilteredAccountEmails: fetchings.fetchingFilteredAccountEmails,
   user,
   accounts,
   compilations,
   selectedAccountId,
   filteredAccountEmails,
   filteredAccountEmailsCount,
-  fetchingFilteredAccountEmailsCount,
-  fetchingFilteredAccountEmails,
+  previewEmailMid,
+  selectedEmails,
 });
