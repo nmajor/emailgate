@@ -1,4 +1,5 @@
 import stream from 'stream';
+import moment from 'moment';
 // import crypto from 'crypto';
 
 export function imapifyFilter(filter) {
@@ -14,6 +15,14 @@ export function imapifyFilter(filter) {
 
   if (filter.from) {
     imapFilter.push(['FROM', filter.from]);
+  }
+
+  if (filter.startDate) {
+    imapFilter.push(['SINCE', moment(filter.startDate).format('LL')]);
+  }
+
+  if (filter.endDate) {
+    imapFilter.push(['BEFORE', moment(filter.endDate).format('LL')]);
   }
 
   return imapFilter;

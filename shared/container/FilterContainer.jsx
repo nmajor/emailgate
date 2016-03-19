@@ -20,6 +20,8 @@ class FilterContainer extends Component {
       subject: props.subject,
       to: props.to,
       from: props.from,
+      startDate: props.startDate,
+      endDate: props.endDate,
     };
 
     this.props.dispatch(Actions.getFilteredAccountEmails(this.selectedAccount, filter));

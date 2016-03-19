@@ -24,7 +24,7 @@ export function addFilteredAccountEmail(email) {
 
 export function getFilteredAccountEmails(account, filter) {
   return (dispatch) => {
-    socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, filter });
     dispatch(setFetchingFilteredAccountEmails(true));
+    socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, filter });
   };
 }

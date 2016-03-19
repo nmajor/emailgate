@@ -17,6 +17,7 @@ socket.on('FILTERED_ACCOUNT_EMAILS_COUNT', (count) => {
 
 ss(socket).on('FILTERED_ACCOUNT_EMAILS_STREAM', (emailStream) => {
   console.log('event FILTERED_ACCOUNT_EMAILS_STREAM');
+  store.dispatch(Actions.setFilteredAccountEmails([]));
 
   emailStream.on('data', (chunk) => {
     const email = JSON.parse(chunk.toString('utf8'));

@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import * as DateData from '../dateData';
+import _ from 'lodash';
 
 class FilterForm extends Component {
   constructor(props, context) {
@@ -14,11 +16,27 @@ class FilterForm extends Component {
     const toRef = this.refs.to || {};
     const fromRef = this.refs.from || {};
 
+    const startDateMonth = this.refs.startDateMonth || {};
+    const startDateDay = this.refs.startDateDay || {};
+    const startDateYear = this.refs.startDateYear || {};
+
+    const endDateMonth = this.refs.endDateMonth || {};
+    const endDateDay = this.refs.endDateDay || {};
+    const endDateYear = this.refs.endDateYear || {};
+
+    let startDate = new Date(`${startDateMonth.value} ${startDateDay.value}, ${startDateYear.value}`);
+    let endDate = new Date(`${endDateMonth.value} ${endDateDay.value}, ${endDateYear.value}`);
+
+    startDate = isNaN(startDate.getTime()) ? null : startDate;
+    endDate = isNaN(endDate.getTime()) ? null : endDate;
+
     this.props.submitForm({
       mailbox: mailboxRef.value,
       subject: subjectRef.value,
       to: toRef.value,
       from: fromRef.value,
+      startDate,
+      endDate,
     });
   }
   renderForm() {
@@ -26,8 +44,24 @@ class FilterForm extends Component {
       <form onSubmit={this.handleSubmit}>
         {this.renderMailboxFormGroup()}
         {this.renderSubjectFormGroup()}
-        {this.renderToFormGroup()}
-        {this.renderFromFormGroup()}
+
+        <div className="row">
+          <div className="col-md-6">
+            {this.renderToFormGroup()}
+          </div>
+          <div className="col-md-6">
+            {this.renderFromFormGroup()}
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-6">
+            {this.renderStartDateFormGroup()}
+          </div>
+          <div className="col-md-6">
+            {this.renderEndDateFormGroup()}
+          </div>
+        </div>
 
         {this.renderErrors('base')}
         <button className="btn btn-success" onClick={this.submitForm}>Submit</button>
@@ -40,7 +74,60 @@ class FilterForm extends Component {
       return 'loading ...';
     }
   }
+  renderStartDateFormGroup() {
+    return (
+      <div className="form-group">
+        <label htmlFor="login-email">Start Date</label>
+        {this.renderDatePicker('startDate')}
+      </div>
+    );
+  }
+  renderEndDateFormGroup() {
+    return (
+      <div className="form-group">
+        <label htmlFor="login-email">End Date</label>
+        {this.renderDatePicker('endDate')}
+      </div>
+    );
+  }
+  renderDatePicker(ref) {
+    const monthOptions = _.map(DateData.months, (val, index) => {
+      return <option key={index} value={val}>{val}</option>;
+    });
+
+    const dayOptions = _.map(DateData.days, (val, index) => {
+      return <option key={index} value={val}>{val}</option>;
+    });
+
+    const yearOptions = _.map(DateData.years, (val, index) => {
+      return <option key={index} value={val}>{val}</option>;
+    });
+
+    return (
+      <div className="row">
+        <div className="col-md-6">
+          <select ref={`${ref}Month`} className="form-control">
+            <option value="">- Month</option>
+            {monthOptions}
+          </select>
+        </div>
+        <div className="col-md-3">
+          <select ref={`${ref}Day`} className="form-control">
+            <option value="">- Day</option>
+            {dayOptions}
+          </select>
+        </div>
+        <div className="col-md-3">
+          <select ref={`${ref}Year`} className="form-control">
+            <option value="">- Year</option>
+            {yearOptions}
+          </select>
+        </div>
+      </div>
+    );
+  }
   renderSubjectFormGroup() {
+    // https://github.com/zippyui/react-date-picker
     return (
       <div className="form-group">
         <label htmlFor="filter-subject">Subject</label>

@@ -10,7 +10,6 @@ class FilteredAccountEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    // this.addEmailToCompilation = this.addEmailToCompilation.bind(this);
     this.addEmailToSelected = this.addEmailToSelected.bind(this);
     this.removeEmailFromSelected = this.removeEmailFromSelected.bind(this);
     this.setPreviewEmail = this.setPreviewEmail.bind(this);
@@ -43,10 +42,6 @@ class FilteredAccountEmailsContainer extends Component {
   removeEmailFromSelected(email) {
     this.props.dispatch(Actions.removeEmailFromSelectedEmails(email));
   }
-  // addEmailToCompilation(email) {
-  //   console.log('addEmailToCompilation');
-  //   console.log(email);
-  // }
   selectAll() {
     this.props.dispatch(Actions.setSelectedEmails(this.props.emails));
   }
@@ -66,6 +61,7 @@ class FilteredAccountEmailsContainer extends Component {
               selectAll={this.selectAll}
               deselectAll={this.deselectAll}
               addSelectedToCompilation={this.addSelectedToCompilation}
+              canAdd={this.props.selectedEmails.length > 0}
             />
             <EmailsList
               emails={this.props.emails}

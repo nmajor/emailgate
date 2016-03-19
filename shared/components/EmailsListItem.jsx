@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import moment from 'moment';
 
 class EmailsListItem extends Component {
   constructor(props, context) {
@@ -44,6 +45,8 @@ class EmailsListItem extends Component {
         {this.renderSelected()}
         <span className={this.props.previewing ? ' text-primary' : ''} onClick={this.preview}>
           {this.props.email.subject}
+          <br />
+          <span className="text-muted">{moment(this.props.email.date).format('LL')}</span>
         </span>
       </div>
     );
