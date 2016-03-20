@@ -29,3 +29,7 @@ ss(socket).on('FILTERED_ACCOUNT_EMAILS_STREAM', (emailStream) => {
     store.dispatch(Actions.setFetchingFilteredAccountEmails(false));
   });
 });
+
+socket.on('COMPILATION_EMAIL', (email) => {
+  console.log(email);
+});

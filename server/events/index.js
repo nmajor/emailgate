@@ -1,5 +1,9 @@
 import Account from '../models/account';
 import User from '../models/user';
+import Compilation from '../models/compilation';
+import Email from '../models/email';
+
+import _ from 'lodash';
 
 import { imapifyFilter, processEmails } from '../util/helpers';
 // import { imapifyFilter } from '../util/helpers';
@@ -63,6 +67,22 @@ export default (io) => {
         account.filteredEmailsStream(mailbox, filter)
         .pipe(processEmails())
         .pipe(resStream);
+      });
+    });
+
+    socket.on('ADD_COMPILATION_EMAILS', (data) => {
+      console.log('ADD_COMPILATION_EMAILS');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then((compilation) => {
+        _.forEach(data.emails, (emailData) => {
+          const newEmail = new Email(emailData);
+          newEmail._compilation = compilation._id;
+          newEmail.save()
+          .then((email) => {
+            socket.emit('COMPILATION_EMAIL', email);
+          });
+        });
       });
     });
 

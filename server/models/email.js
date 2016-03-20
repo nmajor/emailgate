@@ -1,9 +1,14 @@
 import Mongoose, { Schema } from 'mongoose';
 
 const EmailSchema = new Schema({
-  _user: { type: Schema.Types.ObjectId, ref: 'User' },
-  name: String,
-  emails: [{ type: Schema.Types.ObjectId, ref: 'Email' }],
+  _compilation: { type: Schema.Types.ObjectId, ref: 'User' },
+  date: Date,
+  mid: String,
+  to: [],
+  from: [],
+  subject: String,
+  text: String,
+  attachments: [],
 });
 
 export default Mongoose.model('Email', EmailSchema);
