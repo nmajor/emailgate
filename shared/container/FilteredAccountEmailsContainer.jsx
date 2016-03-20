@@ -31,19 +31,19 @@ class FilteredAccountEmailsContainer extends Component {
     this.props.dispatch(Actions.setPreviewEmailMid(email.mid));
   }
   selectEmail(email) {
-    this.props.dispatch(Actions.setSelectedForFilteredAccountEmail(email, true));
+    this.props.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', true));
   }
   deselectEmail(email) {
-    this.props.dispatch(Actions.setSelectedForFilteredAccountEmail(email, false));
+    this.props.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', false));
   }
   selectAll() {
-    this.props.dispatch(Actions.setSelectedForAllFilteredAccountEmails(true));
+    this.props.dispatch(Actions.setPropertyForAllFilteredAccountEmails('selected', true));
   }
   deselectAll() {
-    this.props.dispatch(Actions.setSelectedForAllFilteredAccountEmails(false));
+    this.props.dispatch(Actions.setPropertyForAllFilteredAccountEmails('selected', false));
   }
   addSelectedToCompilation() {
-    // this.props.dispatch(Actions.addEmailsToCompilation());
+    this.props.dispatch(Actions.addEmailsToCompilation(this.props.compilationId, _.filter(this.props.emails, { selected: true })));
   }
   render() {
     return (
@@ -85,6 +85,7 @@ FilteredAccountEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   emails: PropTypes.array.isRequired,
   previewEmailMid: PropTypes.string,
+  compilationId: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(FilteredAccountEmailsContainer);

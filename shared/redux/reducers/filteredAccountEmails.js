@@ -13,11 +13,11 @@ const filteredAccountEmails = (state = initialState.filteredAccountEmails, actio
         action.email,
       ];
 
-    case ActionTypes.SET_SELECTED_FOR_FILTERED_ACCOUNT_EMAIL :
+    case ActionTypes.SET_PROPERTY_FOR_FILTERED_ACCOUNT_EMAIL :
       const emailIndex = _.findIndex(state, { mid: action.email.mid });
       if (emailIndex > -1) {
         const email = state[emailIndex];
-        email.selected = action.val;
+        email[action.prop] = action.val;
         return [
           ...state.slice(0, emailIndex),
           email,
@@ -26,10 +26,10 @@ const filteredAccountEmails = (state = initialState.filteredAccountEmails, actio
       }
       return state;
 
-    case ActionTypes.SET_SELECTED_FOR_ALL_FILTERED_ACCOUNT_EMAILS :
+    case ActionTypes.SET_PROPERTY_FOR_ALL_FILTERED_ACCOUNT_EMAILS :
       return _.map(state, (email) => {
         const newEmail = email;
-        newEmail.selected = action.val;
+        newEmail[action.prop] = action.val;
         return newEmail;
       });
 

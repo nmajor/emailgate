@@ -29,17 +29,19 @@ export function getFilteredAccountEmails(account, filter) {
   };
 }
 
-export function setSelectedForFilteredAccountEmail(email, val) {
+export function setPropertyForFilteredAccountEmail(email, prop, val) {
   return {
-    type: ActionTypes.SET_SELECTED_FOR_FILTERED_ACCOUNT_EMAIL,
+    type: ActionTypes.SET_PROPERTY_FOR_FILTERED_ACCOUNT_EMAIL,
     email,
+    prop,
     val,
   };
 }
 
-export function setSelectedForAllFilteredAccountEmails(val) {
+export function setPropertyForAllFilteredAccountEmails(prop, val) {
   return {
-    type: ActionTypes.SET_SELECTED_FOR_ALL_FILTERED_ACCOUNT_EMAILS,
+    type: ActionTypes.SET_PROPERTY_FOR_ALL_FILTERED_ACCOUNT_EMAILS,
+    prop,
     val,
   };
 }

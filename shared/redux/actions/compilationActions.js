@@ -1,6 +1,7 @@
 import * as ActionTypes from '../constants';
 import fetch from 'isomorphic-fetch';
 import baseURL from '../../baseURL';
+import socket from '../../../client/socket';
 
 // ACTIONS
 export function addCompilation(compilation) {
@@ -14,6 +15,13 @@ export function setCompilations(compilations) {
   return {
     type: ActionTypes.SET_COMPILATIONS,
     compilations,
+  };
+}
+
+export function setCompilationEmails(emails) {
+  return {
+    type: ActionTypes.SET_COMPILATION_EMAILS,
+    emails,
   };
 }
 
@@ -77,5 +85,14 @@ export function getCompilations(cookie) {
     .catch((err) => {
       console.log(err);
     });
+  };
+}
+
+export function addEmailsToCompilation(compilationId, emails) {
+  console.log(emails);
+  console.log(compilationId);
+  return () => {
+    // dispatch(setSavingFor(true));
+    socket.emit('ADD_COMPILATION_EMAILS', { compilationId, emails });
   };
 }

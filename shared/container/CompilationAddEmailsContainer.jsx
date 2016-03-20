@@ -27,7 +27,7 @@ class CompilationAddEmailsContainer extends Component {
           <h1>Add Emails to Compilation</h1>
           <SelectAccountContainer />
           <FilterContainer />
-          <FilteredAccountEmailsContainer />
+          <FilteredAccountEmailsContainer compilationId={this.props.params.id} />
         </div>
       </div>
     );
