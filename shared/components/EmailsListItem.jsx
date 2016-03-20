@@ -10,10 +10,10 @@ class EmailsListItem extends Component {
     this.preview = this.preview.bind(this);
   }
   select() {
-    this.props.addEmailToSelected(this.props.email);
+    this.props.selectEmail(this.props.email);
   }
   unselect() {
-    this.props.removeEmailFromSelected(this.props.email);
+    this.props.deselectEmail(this.props.email);
   }
   preview() {
     this.props.setPreviewEmail(this.props.email);
@@ -57,8 +57,8 @@ EmailsListItem.propTypes = {
   email: PropTypes.object.isRequired,
   previewing: PropTypes.bool,
   selected: PropTypes.bool,
-  addEmailToSelected: PropTypes.func.isRequired,
-  removeEmailFromSelected: PropTypes.func.isRequired,
+  selectEmail: PropTypes.func.isRequired,
+  deselectEmail: PropTypes.func.isRequired,
   setPreviewEmail: PropTypes.func.isRequired,
 };
 

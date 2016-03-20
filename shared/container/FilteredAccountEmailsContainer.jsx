@@ -10,8 +10,8 @@ class FilteredAccountEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.addEmailToSelected = this.addEmailToSelected.bind(this);
-    this.removeEmailFromSelected = this.removeEmailFromSelected.bind(this);
+    this.selectEmail = this.selectEmail.bind(this);
+    this.deselectEmail = this.deselectEmail.bind(this);
     this.setPreviewEmail = this.setPreviewEmail.bind(this);
 
     this.selectAll = this.selectAll.bind(this);
@@ -21,35 +21,29 @@ class FilteredAccountEmailsContainer extends Component {
     if (this.props.previewEmailMid) {
       this.previewEmail = _.find(this.props.emails, { mid: this.props.previewEmailMid }) || {};
     } else { this.previewEmail = {}; }
-
-    this.selectedEmailMids = _.map(this.props.selectedEmails, (email) => { return email.mid; });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.previewEmailMid !== this.props.previewEmailMid) {
       this.previewEmail = _.find(nextProps.emails, { mid: nextProps.previewEmailMid }) || {};
     }
-
-    if (nextProps.selectedEmails !== this.props.selectedEmails) {
-      this.selectedEmailMids = _.map(nextProps.selectedEmails, (email) => { return email.mid; });
-    }
   }
   setPreviewEmail(email) {
     this.props.dispatch(Actions.setPreviewEmailMid(email.mid));
   }
-  addEmailToSelected(email) {
-    this.props.dispatch(Actions.addEmailToSelectedEmails(email));
+  selectEmail(email) {
+    this.props.dispatch(Actions.setSelectedForFilteredAccountEmail(email, true));
   }
-  removeEmailFromSelected(email) {
-    this.props.dispatch(Actions.removeEmailFromSelectedEmails(email));
+  deselectEmail(email) {
+    this.props.dispatch(Actions.setSelectedForFilteredAccountEmail(email, false));
   }
   selectAll() {
-    this.props.dispatch(Actions.setSelectedEmails(this.props.emails));
+    this.props.dispatch(Actions.setSelectedForAllFilteredAccountEmails(true));
   }
   deselectAll() {
-    this.props.dispatch(Actions.setSelectedEmails([]));
+    this.props.dispatch(Actions.setSelectedForAllFilteredAccountEmails(false));
   }
   addSelectedToCompilation() {
-    console.log('addSelectedToCompilation clicked');
+    // this.props.dispatch(Actions.addEmailsToCompilation());
   }
   render() {
     return (
@@ -61,14 +55,13 @@ class FilteredAccountEmailsContainer extends Component {
               selectAll={this.selectAll}
               deselectAll={this.deselectAll}
               addSelectedToCompilation={this.addSelectedToCompilation}
-              canAdd={this.props.selectedEmails.length > 0}
+              canAdd={_.some(this.props.emails, { selected: true })}
             />
             <EmailsList
               emails={this.props.emails}
-              selectedEmailMids={this.selectedEmailMids}
               previewEmailMid={this.props.previewEmailMid}
-              removeEmailFromSelected={this.removeEmailFromSelected}
-              addEmailToSelected={this.addEmailToSelected}
+              deselectEmail={this.deselectEmail}
+              selectEmail={this.selectEmail}
               setPreviewEmail={this.setPreviewEmail}
             />
           </div>
@@ -84,7 +77,6 @@ class FilteredAccountEmailsContainer extends Component {
 function mapStateToProps(store) {
   return {
     emails: store.filteredAccountEmails,
-    selectedEmails: store.selectedEmails,
     previewEmailMid: store.previewEmailMid,
   };
 }
@@ -92,7 +84,6 @@ function mapStateToProps(store) {
 FilteredAccountEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   emails: PropTypes.array.isRequired,
-  selectedEmails: PropTypes.array.isRequired,
   previewEmailMid: PropTypes.string,
 };
 

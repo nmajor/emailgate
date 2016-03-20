@@ -28,3 +28,18 @@ export function getFilteredAccountEmails(account, filter) {
     socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, filter });
   };
 }
+
+export function setSelectedForFilteredAccountEmail(email, val) {
+  return {
+    type: ActionTypes.SET_SELECTED_FOR_FILTERED_ACCOUNT_EMAIL,
+    email,
+    val,
+  };
+}
+
+export function setSelectedForAllFilteredAccountEmails(val) {
+  return {
+    type: ActionTypes.SET_SELECTED_FOR_ALL_FILTERED_ACCOUNT_EMAILS,
+    val,
+  };
+}

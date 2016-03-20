@@ -23,5 +23,4 @@
   filteredAccountEmailsCount: 50,
   filteredAccountEmails: [],
   compilations: [],
-  selectedEmails: []
 }

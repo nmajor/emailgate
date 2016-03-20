@@ -64,5 +64,6 @@ router.get('/compilations/:id', ensureAuthenticated, CompilationController.findO
 router.post('/compilations', ensureAuthenticated, CompilationController.createCompilation);
 router.put('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
 router.patch('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
+// router.patch('/compilations/:id/add-emails', ensureAuthenticated, CompilationController.addEmailsToCompilation);
 
 module.exports = router;

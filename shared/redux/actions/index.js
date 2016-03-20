@@ -15,24 +15,3 @@ export function setPreviewEmailMid(mid) {
     mid,
   };
 }
-
-export function addEmailToSelectedEmails(email) {
-  return {
-    type: ActionTypes.ADD_EMAIL_TO_SELECTED_EMAILS,
-    email,
-  };
-}
-
-export function removeEmailFromSelectedEmails(email) {
-  return {
-    type: ActionTypes.REMOVE_EMAIL_FROM_SELECTED_EMAILS,
-    email,
-  };
-}
-
-export function setSelectedEmails(emails) {
-  return {
-    type: ActionTypes.SET_SELECTED_EMAILS,
-    emails,
-  };
-}

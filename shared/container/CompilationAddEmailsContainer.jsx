@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
+import CompilationNav from '../components/CompilationNav';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
@@ -21,6 +22,7 @@ class CompilationAddEmailsContainer extends Component {
     return (
       <div className="edit-account-container">
         <Header />
+        <CompilationNav compilationId={this.props.params.id} currentPage="add-emails" />
         <div className="container">
           <h1>Add Emails to Compilation</h1>
           <SelectAccountContainer />
