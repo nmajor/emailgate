@@ -1,8 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
-import SelectAccountContainer from './SelectAccountContainer';
-import FilterContainer from './FilterContainer';
-import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
 import CompilationNav from '../components/CompilationNav';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
@@ -14,20 +11,30 @@ class CompilationAddEmailsContainer extends Component {
 
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.id }) || {};
   }
+  componentDidMount() {
+    if (typeof window !== 'undefined' && this.props.compilationEmails.length < 1) {
+      this.props.dispatch(Actions.getCompilationEmails(this.props.params.id));
+    }
+  }
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.id }) || {};
   }
 
+  renderCompilationEmails() {
+    console.log('render emails');
+    console.log(this.props.compilationEmails.length);
+    this.props.compilationEmails.map((email) => {
+      return <div><div>{email.subject}</div><div>{email._id}</div></div>;
+    });
+  }
   render() {
     return (
       <div className="edit-account-container">
         <Header />
-        <CompilationNav compilationId={this.props.params.id} currentPage="add-emails" />
+        <CompilationNav compilationId={this.props.params.id} currentPage="edit-emails" />
         <div className="container">
-          <h1>Add Emails to Compilation</h1>
-          <SelectAccountContainer />
-          <FilterContainer />
-          <FilteredAccountEmailsContainer compilation={this.compilation} />
+          <h1>Edit Compilation Emails</h1>
+          {this.renderCompilationEmails()}
         </div>
       </div>
     );
@@ -35,13 +42,13 @@ class CompilationAddEmailsContainer extends Component {
 }
 
 CompilationAddEmailsContainer.need = [(params, cookie) => {
-  return Actions.getCompilations.bind(null, cookie)();
+  return Actions.getCompilationsAndEmails.bind(null, params.id, cookie)();
 }];
 
 function mapStateToProps(store) {
   return {
-    accounts: store.accounts,
     compilations: store.compilations,
+    compilationEmails: store.compilationEmails,
   };
 }
 
@@ -52,6 +59,7 @@ CompilationAddEmailsContainer.contextTypes = {
 CompilationAddEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilations: PropTypes.array,
+  compilationEmails: PropTypes.array,
   params: PropTypes.object,
 };
 

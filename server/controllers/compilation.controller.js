@@ -41,10 +41,3 @@ export function removeCompilation(req, res) {
     res.json(compilation);
   });
 }
-
-// export function addEmailsToCompilation(req, res) {
-//   Compilation.findOne({ _user: req.user._id, _id: req.params.id })
-//   .then((compilation) => {
-//
-//   })
-// }

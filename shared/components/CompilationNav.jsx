@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 
 class CompilationNav extends Component {
   constructor(props, context) {
@@ -22,7 +23,7 @@ class CompilationNav extends Component {
   renderNavItem(page, pageName) {
     return (
       <li role="presentation" className={this.props.currentPage === page ? 'active' : ''}>
-        <a href={`/compilations/${this.props.compilationId}/${page}`}>{pageName}</a>
+        <Link to={`/compilations/${this.props.compilationId}/${page}`}>{pageName}</Link>
       </li>
     );
   }

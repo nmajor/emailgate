@@ -31,5 +31,6 @@ ss(socket).on('FILTERED_ACCOUNT_EMAILS_STREAM', (emailStream) => {
 });
 
 socket.on('COMPILATION_EMAIL', (email) => {
+  console.log('COMPILATION_EMAIL');
   console.log(email);
 });

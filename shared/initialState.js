@@ -4,6 +4,7 @@ export default {
   user: {},
   accounts: [],
   compilations: [],
+  compilationEmails: [],
   selectedAccountId: '',
   filteredAccountEmails: [],
   filteredAccountEmailsCount: 0,

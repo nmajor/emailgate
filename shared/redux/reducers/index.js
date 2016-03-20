@@ -8,6 +8,7 @@ import * as fetchings from './fetchings';
 import user from './user';
 import accounts from './accounts';
 import compilations from './compilations';
+import compilationEmails from './compilationEmails';
 import selectedAccountId from './selectedAccountId';
 import filteredAccountEmails from './filteredAccountEmails';
 import filteredAccountEmailsCount from './filteredAccountEmailsCount';
@@ -22,35 +23,13 @@ const previewEmailMid = (state = initialState.previewEmailMid, action) => {
   }
 };
 
-// const selectedEmails = (state = initialState.selectedEmails, action) => {
-//   switch (action.type) {
-//     case ActionTypes.SET_SELECTED_EMAILS :
-//       return action.emails;
-//
-//     case ActionTypes.ADD_EMAIL_TO_SELECTED_EMAILS :
-//       return [...state, action.email];
-//
-//     case ActionTypes.REMOVE_EMAIL_FROM_SELECTED_EMAILS :
-//       const accountIndex = _.findIndex(state, { mid: action.email.mid });
-//       if (accountIndex > -1) {
-//         return [
-//           ...state.slice(0, accountIndex),
-//           ...state.slice(accountIndex + 1),
-//         ];
-//       }
-//       return state;
-//
-//     default:
-//       return state;
-//   }
-// };
-
 export default combineReducers({
   fetchingFilteredAccountEmailsCount: fetchings.fetchingFilteredAccountEmailsCount,
   fetchingFilteredAccountEmails: fetchings.fetchingFilteredAccountEmails,
   user,
   accounts,
   compilations,
+  compilationEmails,
   selectedAccountId,
   filteredAccountEmails,
   filteredAccountEmailsCount,

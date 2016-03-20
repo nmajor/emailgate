@@ -88,9 +88,45 @@ export function getCompilations(cookie) {
   };
 }
 
-export function addEmailsToCompilation(compilationId, emails) {
-  console.log(emails);
-  console.log(compilationId);
+export function getCompilationEmails(compilationId, cookie) {
+  return (dispatch) => {
+    const fetchOptions = {};
+
+    if (cookie) {
+      fetchOptions.headers = { cookie };
+    } else {
+      fetchOptions.credentials = 'include';
+    }
+
+    return fetch(`${baseURL}/api/compilations/${compilationId}/emails`, fetchOptions)
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(setCompilationEmails(res));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
+export function getCompilationsAndEmails(compilationId, cookie) {
+  return (dispatch) => {
+    dispatch(getCompilations(cookie));
+    dispatch(getCompilationEmails(compilationId, cookie));
+  };
+}
+
+export function addEmailsToCompilationEmails(compilationId, emails) {
   return () => {
     // dispatch(setSavingFor(true));
     socket.emit('ADD_COMPILATION_EMAILS', { compilationId, emails });

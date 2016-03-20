@@ -43,7 +43,7 @@ class FilteredAccountEmailsContainer extends Component {
     this.props.dispatch(Actions.setPropertyForAllFilteredAccountEmails('selected', false));
   }
   addSelectedToCompilation() {
-    this.props.dispatch(Actions.addEmailsToCompilation(this.props.compilationId, _.filter(this.props.emails, { selected: true })));
+    this.props.dispatch(Actions.addEmailsToCompilationEmails(this.props.compilation._id, _.filter(this.props.emails, { selected: true })));
   }
   render() {
     return (
@@ -85,7 +85,7 @@ FilteredAccountEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   emails: PropTypes.array.isRequired,
   previewEmailMid: PropTypes.string,
-  compilationId: PropTypes.string,
+  compilation: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(FilteredAccountEmailsContainer);

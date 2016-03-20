@@ -9,6 +9,7 @@ import NewAccountContainer from './container/NewAccountContainer';
 import EditAccountContainer from './container/EditAccountContainer';
 import NewCompilationContainer from './container/NewCompilationContainer';
 import CompilationAddEmailsContainer from './container/CompilationAddEmailsContainer';
+import CompilationEditEmailsContainer from './container/CompilationEditEmailsContainer';
 import DashboardWrapper from './components/DashboardWrapper';
 // import PostContainer from './container/PostContainer';
 import PostDetailView from './container/PostDetailView';
@@ -25,6 +26,7 @@ const routes = (
     <Route path="/accounts/:id/edit" component={EditAccountContainer}/>
     <Route path="/compilations/new" component={NewCompilationContainer}/>
     <Route path="/compilations/:id/add-emails" component={CompilationAddEmailsContainer}/>
+    <Route path="/compilations/:id/edit-emails" component={CompilationEditEmailsContainer}/>
     <Route path="/post/:slug" component={PostDetailView}/>
   </Route>
 );
