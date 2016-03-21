@@ -5,8 +5,8 @@ import store from './store';
 const ss = require('socket.io-stream');
 ss.forceBase64 = true;
 
-socket.on('UPDATE_ACCOUNT', (data) => {
-  console.log('event UPDATE_ACCOUNT');
+socket.on('UPDATED_ACCOUNT', (data) => {
+  console.log('event UPDATED_ACCOUNT');
   store.dispatch(Actions.socketUpdateAccount(data));
 });
 
@@ -30,10 +30,19 @@ ss(socket).on('FILTERED_ACCOUNT_EMAILS_STREAM', (emailStream) => {
   });
 });
 
-socket.on('COMPILATION_EMAIL', (email) => {
+socket.on('ADDED_COMPILATION_EMAIL', (email) => {
+  console.log('ADDED_COMPILATION_EMAIL');
+
   store.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', false));
   store.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'saving', false));
   store.dispatch(Actions.addCompilationEmail(email));
-  console.log('COMPILATION_EMAIL');
-  console.log(email);
+});
+
+socket.on('REMOVED_COMPILATION_EMAIL', (email) => {
+  console.log('REMOVED_COMPILATION_EMAIL');
+
+  store.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', false));
+  store.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'saving', false));
+  store.dispatch(Actions.setSelectedCompilationEmailId(''));
+  store.dispatch(Actions.removeCompilationEmail(email));
 });

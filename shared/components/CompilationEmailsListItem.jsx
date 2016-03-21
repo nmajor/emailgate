@@ -9,10 +9,20 @@ class CompilationEmailsListItem extends Component {
   select() {
     this.props.selectEmail(this.props.email);
   }
+  renderSaving() {
+    if (this.props.email.saving) {
+      return (
+        <span className="selectable selected">
+          <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+        </span>
+      );
+    }
+  }
   render() {
     return (
       <div className="emails-list-item">
         <span onClick={this.select} className={`${this.props.selected ? 'text-success' : ''}`}>
+          {this.renderSaving()}
           {this.props.email.subject}
           <br />
           <span className="text-muted">{moment(this.props.email.date).format('LL')}</span>

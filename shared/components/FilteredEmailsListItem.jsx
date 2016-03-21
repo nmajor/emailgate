@@ -25,16 +25,16 @@ class FilteredEmailsListItem extends Component {
     return className;
   }
   renderSelected() {
-    if (this.props.disabled) {
-      return (
-        <span className="selectable selected">
-          <span className="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-        </span>
-      );
-    } else if (this.props.saving) {
+    if (this.props.saving) {
       return (
         <span className="selectable selected">
           <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+        </span>
+      );
+    } else if (this.props.disabled) {
+      return (
+        <span className="selectable selected">
+          <span className="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
         </span>
       );
     } else if (this.props.selected) {

@@ -6,7 +6,6 @@ import Email from '../models/email';
 import _ from 'lodash';
 
 import { imapifyFilter, processEmails } from '../util/helpers';
-// import { imapifyFilter } from '../util/helpers';
 
 export default (io) => {
   io.on('connection', (socket) => {
@@ -20,7 +19,7 @@ export default (io) => {
       .then(account => account.checkConnection())
       .then(account => account.save())
       .then((account) => {
-        socket.emit('UPDATE_ACCOUNT', account);
+        socket.emit('UPDATED_ACCOUNT', account);
       });
     });
 
@@ -33,7 +32,7 @@ export default (io) => {
       .then(account => account.getMailboxes())
       .then(account => account.save())
       .then((account) => {
-        socket.emit('UPDATE_ACCOUNT', account);
+        socket.emit('UPDATED_ACCOUNT', account);
       });
     });
 
@@ -80,9 +79,19 @@ export default (io) => {
           newEmail._compilation = compilation._id;
           newEmail.save()
           .then((email) => {
-            socket.emit('COMPILATION_EMAIL', email);
+            socket.emit('ADDED_COMPILATION_EMAIL', email);
           });
         });
+      });
+    });
+
+    socket.on('REMOVE_COMPILATION_EMAIL', (data) => {
+      console.log('REMOVE_COMPILATION_EMAIL');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then(compilation => Email.findOneAndRemove({ _compilation: compilation._id, _id: data.email._id }))
+      .then((email) => {
+        socket.emit('REMOVED_COMPILATION_EMAIL', email);
       });
     });
 

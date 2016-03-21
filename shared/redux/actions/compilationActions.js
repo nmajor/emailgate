@@ -2,7 +2,12 @@ import * as ActionTypes from '../constants';
 import fetch from 'isomorphic-fetch';
 import baseURL from '../../baseURL';
 import socket from '../../../client/socket';
-import { setPropertyForSomeFilteredAccountEmails } from './filteredAccountEmails';
+
+import {
+  setPropertyForSomeFilteredAccountEmails,
+  setPropertyForFilteredAccountEmail,
+} from './filteredAccountEmails';
+
 import _ from 'lodash';
 
 // ACTIONS
@@ -31,6 +36,22 @@ export function addCompilationEmail(email) {
   return {
     type: ActionTypes.ADD_COMPILATION_EMAIL,
     email,
+  };
+}
+
+export function removeCompilationEmail(email) {
+  return {
+    type: ActionTypes.REMOVE_COMPILATION_EMAIL,
+    email,
+  };
+}
+
+export function setPropertyForCompilationEmail(email, prop, val) {
+  return {
+    type: ActionTypes.SET_PROPERTY_FOR_COMPILATION_EMAIL,
+    email,
+    prop,
+    val,
   };
 }
 
@@ -132,5 +153,13 @@ export function addEmailsToCompilationEmails(compilationId, emails) {
   return (dispatch) => {
     dispatch(setPropertyForSomeFilteredAccountEmails(_.map(emails, (email) => { return email.mid; }), 'saving', true));
     socket.emit('ADD_COMPILATION_EMAILS', { compilationId, emails });
+  };
+}
+
+export function removeEmailFromCompilationEmails(compilationId, email) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilationEmail(email, 'saving', true));
+    dispatch(setPropertyForFilteredAccountEmail(email, 'saving', true));
+    socket.emit('REMOVE_COMPILATION_EMAIL', { compilationId, email });
   };
 }

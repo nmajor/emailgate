@@ -12,6 +12,7 @@ class CompilationAddEmailsContainer extends Component {
     super(props, context);
 
     this.setSelectedCompilationEmail = this.setSelectedCompilationEmail.bind(this);
+    this.removeEmailFromCompilation = this.removeEmailFromCompilation.bind(this);
 
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.id }) || {};
 
@@ -28,6 +29,9 @@ class CompilationAddEmailsContainer extends Component {
   }
   setSelectedCompilationEmail(email) {
     this.props.dispatch(Actions.setSelectedCompilationEmailId(email._id));
+  }
+  removeEmailFromCompilation(email) {
+    this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.compilation._id, email));
   }
 
   render() {
@@ -46,7 +50,10 @@ class CompilationAddEmailsContainer extends Component {
               />
             </div>
             <div className="col-md-9">
-              <CompilationEmailPreview email={this.selectedCompilationEmail} />
+              <CompilationEmailPreview
+                email={this.selectedCompilationEmail}
+                removeEmailFromCompilation={this.removeEmailFromCompilation}
+              />
             </div>
           </div>
         </div>

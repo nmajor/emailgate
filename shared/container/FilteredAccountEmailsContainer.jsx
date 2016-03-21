@@ -17,6 +17,7 @@ class FilteredAccountEmailsContainer extends Component {
     this.selectAll = this.selectAll.bind(this);
     this.deselectAll = this.deselectAll.bind(this);
     this.addSelectedToCompilation = this.addSelectedToCompilation.bind(this);
+    this.removeEmailFromCompilation = this.removeEmailFromCompilation.bind(this);
 
     if (this.props.previewEmailMid) {
       this.previewEmail = _.find(this.props.emails, { mid: this.props.previewEmailMid }) || {};
@@ -44,7 +45,7 @@ class FilteredAccountEmailsContainer extends Component {
   }
   selectAll() {
     const nonCompilationEmails = _.filter(this.props.emails, (email) => {
-      return this.compilationEmailMids.indexOf(email.mid) > -1;
+      return !this.compilationEmailMids.indexOf(email.mid) > -1;
     });
 
     const emailMids = _.map(nonCompilationEmails, (email) => { return email.mid; });
@@ -53,7 +54,7 @@ class FilteredAccountEmailsContainer extends Component {
   }
   deselectAll() {
     const nonCompilationEmails = _.filter(this.props.emails, (email) => {
-      return this.compilationEmailMids.indexOf(email.mid) > -1;
+      return !this.compilationEmailMids.indexOf(email.mid) > -1;
     });
 
     const emailMids = _.map(nonCompilationEmails, (email) => { return email.mid; });
@@ -62,6 +63,10 @@ class FilteredAccountEmailsContainer extends Component {
   }
   addSelectedToCompilation() {
     this.props.dispatch(Actions.addEmailsToCompilationEmails(this.props.compilation._id, _.filter(this.props.emails, { selected: true })));
+  }
+  removeEmailFromCompilation(email) {
+    const compilationEmail = _.find(this.props.compilationEmails, { mid: email.mid });
+    this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, compilationEmail));
   }
   render() {
     return (
@@ -85,7 +90,11 @@ class FilteredAccountEmailsContainer extends Component {
             />
           </div>
           <div className="col-md-9">
-            <FilteredEmailPreview email={this.previewEmail} />
+            <FilteredEmailPreview
+              email={this.previewEmail}
+              isCompilationEmail={this.compilationEmailMids.indexOf(this.previewEmail.mid) > -1}
+              removeEmailFromCompilation={this.removeEmailFromCompilation}
+            />
           </div>
         </div>
       </div>
