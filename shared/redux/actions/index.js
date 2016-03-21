@@ -22,3 +22,10 @@ export function setSelectedCompilationEmailId(id) {
     id,
   };
 }
+
+export function setEditingSelectedCompilationEmail(val) {
+  return {
+    type: ActionTypes.SET_EDITING_SELECTED_COMPILATION_EMAIL,
+    val,
+  };
+}

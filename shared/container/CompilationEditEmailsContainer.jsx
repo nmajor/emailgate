@@ -1,37 +1,19 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
 import CompilationNav from '../components/CompilationNav';
-import CompilationEmailsList from '../components/CompilationEmailsList';
-import CompilationEmailPreview from '../components/CompilationEmailPreview';
+import CompilationEmailsContainer from './CompilationEmailsContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
 
-class CompilationAddEmailsContainer extends Component {
+class CompilationEditEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.setSelectedCompilationEmail = this.setSelectedCompilationEmail.bind(this);
-    this.removeEmailFromCompilation = this.removeEmailFromCompilation.bind(this);
-
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.id }) || {};
-
-    if (this.props.selectedCompilationEmailId) {
-      this.selectedCompilationEmail = _.find(this.props.compilationEmails, { _id: this.props.selectedCompilationEmailId }) || {};
-    } else { this.selectedCompilationEmail = {}; }
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedCompilationEmailId !== this.props.selectedCompilationEmailId) {
-      this.selectedCompilationEmail = _.find(nextProps.compilationEmails, { _id: nextProps.selectedCompilationEmailId }) || {};
-    }
-
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.id }) || {};
-  }
-  setSelectedCompilationEmail(email) {
-    this.props.dispatch(Actions.setSelectedCompilationEmailId(email._id));
-  }
-  removeEmailFromCompilation(email) {
-    this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.compilation._id, email));
   }
 
   render() {
@@ -41,28 +23,14 @@ class CompilationAddEmailsContainer extends Component {
         <CompilationNav compilationId={this.props.params.id} currentPage="edit-emails" />
         <div className="container">
           <h1>Edit Compilation Emails</h1>
-          <div className="row">
-            <div className="col-md-3">
-              <CompilationEmailsList
-                emails={this.props.compilationEmails}
-                selectedEmailId={this.selectedCompilationEmail._id}
-                setSelectedCompilationEmail={this.setSelectedCompilationEmail}
-              />
-            </div>
-            <div className="col-md-9">
-              <CompilationEmailPreview
-                email={this.selectedCompilationEmail}
-                removeEmailFromCompilation={this.removeEmailFromCompilation}
-              />
-            </div>
-          </div>
+          <CompilationEmailsContainer compilation={this.compilation} />
         </div>
       </div>
     );
   }
 }
 
-CompilationAddEmailsContainer.need = [
+CompilationEditEmailsContainer.need = [
   (params, cookie) => {
     return Actions.getCompilations.bind(null, cookie)();
   },
@@ -76,19 +44,21 @@ function mapStateToProps(store) {
     compilations: store.compilations,
     compilationEmails: store.compilationEmails,
     selectedCompilationEmailId: store.selectedCompilationEmailId,
+    editingSelectedCompilationEmail: store.editingSelectedCompilationEmail,
   };
 }
 
-CompilationAddEmailsContainer.contextTypes = {
+CompilationEditEmailsContainer.contextTypes = {
   router: PropTypes.object.isRequired,
 };
 
-CompilationAddEmailsContainer.propTypes = {
+CompilationEditEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
   selectedCompilationEmailId: PropTypes.string,
+  editingSelectedCompilationEmail: PropTypes.bool.isRequired,
   params: PropTypes.object,
 };
 
-export default connect(mapStateToProps)(CompilationAddEmailsContainer);
+export default connect(mapStateToProps)(CompilationEditEmailsContainer);

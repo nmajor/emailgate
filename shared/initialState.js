@@ -10,4 +10,5 @@ export default {
   filteredAccountEmailsCount: 0,
   previewEmailMid: '',
   selectedCompilationEmailId: '',
+  editingSelectedCompilationEmail: false,
 };

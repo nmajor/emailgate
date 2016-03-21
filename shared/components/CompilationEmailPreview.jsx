@@ -5,13 +5,28 @@ class CompilationEmailPreview extends Component {
     super(props, context);
 
     this.removeEmail = this.removeEmail.bind(this);
+    this.setEditing = this.setEditing.bind(this);
+  }
+  setEditing() {
+    this.props.setEditing(true);
   }
   removeEmail() {
-    this.props.removeEmailFromCompilation(this.props.email);
+    this.props.removeEmail(this.props.email);
+  }
+  renderEditAction() {
+    if (!this.props.editing) {
+      return <div className="btn btn-warning" onClick={this.setEditing}>edit</div>;
+    }
   }
   renderActions() {
     if (this.props.email.text) {
-      return <div className="btn btn-danger" onClick={this.removeEmail}>Remove from compilation</div>;
+      return (
+        <div className="actions">
+          {this.renderEditAction()}
+          <div className="btn btn-danger left-bumper" onClick={this.removeEmail}>Remove from compilation</div>
+          {this.props.editing ? 'editing' : 'not editing'}
+        </div>
+      );
     }
   }
   render() {
@@ -27,7 +42,9 @@ class CompilationEmailPreview extends Component {
 
 CompilationEmailPreview.propTypes = {
   email: PropTypes.object.isRequired,
-  removeEmailFromCompilation: PropTypes.func.isRequired,
+  removeEmail: PropTypes.func.isRequired,
+  setEditing: PropTypes.func.isRequired,
+  editing: PropTypes.bool.isRequired,
 };
 
 export default CompilationEmailPreview;

@@ -1,22 +1,22 @@
 import React, { PropTypes, Component } from 'react';
+import CompilationEmailsListContainer from './CompilationEmailsListContainer';
+import CompilationEmailPreviewContainer from './CompilationEmailPreviewContainer';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions/index';
 
 class CompilationEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
   }
 
-  componentDidMount() {
-    if (typeof window !== 'undefined' && this.props.emails.length < 1) {
-      this.props.dispatch(Actions.getCompilationEmails());
-    }
-  }
-
   render() {
     return (
-      <div className="compilation-emails-container">
-        <h3>CompilationEmailsContainer</h3>
+      <div className="row">
+        <div className="col-md-3">
+          <CompilationEmailsListContainer compilation={this.props.compilation} />
+        </div>
+        <div className="col-md-9">
+          <CompilationEmailPreviewContainer compilation={this.props.compilation} />
+        </div>
       </div>
     );
   }
@@ -24,13 +24,18 @@ class CompilationEmailsContainer extends Component {
 
 function mapStateToProps(store) {
   return {
-    emails: store.compilationEmails,
+    compilationEmails: store.compilationEmails,
+    selectedCompilationEmailId: store.selectedCompilationEmailId,
+    editingSelectedCompilationEmail: store.editingSelectedCompilationEmail,
   };
 }
 
 CompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  emails: PropTypes.array,
+  compilation: PropTypes.object.isRequired,
+  compilationEmails: PropTypes.array,
+  selectedCompilationEmailId: PropTypes.string,
+  editingSelectedCompilationEmail: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(CompilationEmailsContainer);

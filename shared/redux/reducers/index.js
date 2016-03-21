@@ -33,6 +33,16 @@ const selectedCompilationEmailId = (state = initialState.selectedCompilationEmai
   }
 };
 
+const editingSelectedCompilationEmail = (state = initialState.editingSelectedCompilationEmail, action) => {
+  switch (action.type) {
+    case ActionTypes.SET_EDITING_SELECTED_COMPILATION_EMAIL :
+      return action.val;
+
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   fetchingFilteredAccountEmailsCount: fetchings.fetchingFilteredAccountEmailsCount,
   fetchingFilteredAccountEmails: fetchings.fetchingFilteredAccountEmails,
@@ -45,4 +55,5 @@ export default combineReducers({
   filteredAccountEmailsCount,
   previewEmailMid,
   selectedCompilationEmailId,
+  editingSelectedCompilationEmail,
 });
