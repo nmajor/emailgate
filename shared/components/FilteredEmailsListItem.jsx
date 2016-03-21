@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 
-class EmailsListItem extends Component {
+class FilteredEmailsListItem extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -27,13 +27,13 @@ class EmailsListItem extends Component {
   renderSelected() {
     if (this.props.disabled) {
       return (
-        <span className="selectable selected" onClick={this.unselect}>
+        <span className="selectable selected">
           <span className="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
         </span>
       );
     } else if (this.props.saving) {
       return (
-        <span className="selectable selected" onClick={this.unselect}>
+        <span className="selectable selected">
           <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
         </span>
       );
@@ -65,7 +65,7 @@ class EmailsListItem extends Component {
   }
 }
 
-EmailsListItem.propTypes = {
+FilteredEmailsListItem.propTypes = {
   email: PropTypes.object.isRequired,
   previewing: PropTypes.bool,
   disabled: PropTypes.bool,
@@ -76,4 +76,4 @@ EmailsListItem.propTypes = {
   setPreviewEmail: PropTypes.func.isRequired,
 };
 
-export default EmailsListItem;
+export default FilteredEmailsListItem;

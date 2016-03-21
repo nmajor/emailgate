@@ -1,13 +1,13 @@
 import React, { PropTypes, Component } from 'react';
-import EmailsListItem from './EmailsListItem';
+import FilteredEmailsListItem from './FilteredEmailsListItem';
 
-class EmailsList extends Component {
+class FilteredEmailsList extends Component {
   constructor(props, context) {
     super(props, context);
   }
   renderEmails() {
     return this.props.emails.map((email, index) => {
-      return (<EmailsListItem
+      return (<FilteredEmailsListItem
         key={`${email.mid}-${index}`}
         email={email}
         disabled={this.props.compilationEmailMids.indexOf(email.mid) > -1}
@@ -29,7 +29,7 @@ class EmailsList extends Component {
   }
 }
 
-EmailsList.propTypes = {
+FilteredEmailsList.propTypes = {
   emails: PropTypes.array.isRequired,
   compilationEmailMids: PropTypes.array.isRequired,
   previewEmailMid: PropTypes.string,
@@ -38,4 +38,4 @@ EmailsList.propTypes = {
   setPreviewEmail: PropTypes.func.isRequired,
 };
 
-export default EmailsList;
+export default FilteredEmailsList;

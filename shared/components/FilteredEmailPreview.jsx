@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-class EmailPreview extends Component {
+class FilteredEmailPreview extends Component {
   render() {
     return (
       <div className="compilations-list-item">
@@ -11,8 +11,8 @@ class EmailPreview extends Component {
   }
 }
 
-EmailPreview.propTypes = {
+FilteredEmailPreview.propTypes = {
   email: PropTypes.object.isRequired,
 };
 
-export default EmailPreview;
+export default FilteredEmailPreview;

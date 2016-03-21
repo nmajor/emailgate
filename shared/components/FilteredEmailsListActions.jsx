@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-class EmailsListActions extends Component {
+class FilteredEmailsListActions extends Component {
   render() {
     return (
       <div className="emails-list-actions">
@@ -18,11 +18,11 @@ class EmailsListActions extends Component {
   }
 }
 
-EmailsListActions.propTypes = {
+FilteredEmailsListActions.propTypes = {
   selectAll: PropTypes.func.isRequired,
   deselectAll: PropTypes.func.isRequired,
   addSelectedToCompilation: PropTypes.func.isRequired,
   canAdd: PropTypes.bool.isRequired,
 };
 
-export default EmailsListActions;
+export default FilteredEmailsListActions;

@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
-import EmailsList from '../components/EmailsList';
-import EmailPreview from '../components/EmailPreview';
-import EmailsListActions from '../components/EmailsListActions';
+import FilteredEmailsList from '../components/FilteredEmailsList';
+import FilteredEmailPreview from '../components/FilteredEmailPreview';
+import FilteredEmailsListActions from '../components/FilteredEmailsListActions';
 import _ from 'lodash';
 
 class FilteredAccountEmailsContainer extends Component {
@@ -69,13 +69,13 @@ class FilteredAccountEmailsContainer extends Component {
         <h3>Filtered Account Emails {this.props.emails.length}</h3>
         <div className="row">
           <div className="col-md-3">
-            <EmailsListActions
+            <FilteredEmailsListActions
               selectAll={this.selectAll}
               deselectAll={this.deselectAll}
               addSelectedToCompilation={this.addSelectedToCompilation}
               canAdd={_.some(this.props.emails, { selected: true })}
             />
-            <EmailsList
+            <FilteredEmailsList
               emails={this.props.emails}
               compilationEmailMids={this.compilationEmailMids}
               previewEmailMid={this.props.previewEmailMid}
@@ -85,7 +85,7 @@ class FilteredAccountEmailsContainer extends Component {
             />
           </div>
           <div className="col-md-9">
-            <EmailPreview email={this.previewEmail} />
+            <FilteredEmailPreview email={this.previewEmail} />
           </div>
         </div>
       </div>
