@@ -11,19 +11,12 @@ class CompilationAddEmailsContainer extends Component {
 
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.id }) || {};
   }
-  componentDidMount() {
-    if (typeof window !== 'undefined' && this.props.compilationEmails.length < 1) {
-      this.props.dispatch(Actions.getCompilationEmails(this.props.params.id));
-    }
-  }
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.id }) || {};
   }
 
   renderCompilationEmails() {
-    console.log('render emails');
-    console.log(this.props.compilationEmails.length);
-    this.props.compilationEmails.map((email) => {
+    return this.props.compilationEmails.map((email) => {
       return <div><div>{email.subject}</div><div>{email._id}</div></div>;
     });
   }
@@ -41,9 +34,14 @@ class CompilationAddEmailsContainer extends Component {
   }
 }
 
-CompilationAddEmailsContainer.need = [(params, cookie) => {
-  return Actions.getCompilationsAndEmails.bind(null, params.id, cookie)();
-}];
+CompilationAddEmailsContainer.need = [
+  (params, cookie) => {
+    return Actions.getCompilations.bind(null, cookie)();
+  },
+  (params, cookie) => {
+    return Actions.getCompilationEmails.bind(null, params.id, cookie)();
+  },
+];
 
 function mapStateToProps(store) {
   return {

@@ -45,3 +45,12 @@ export function setPropertyForAllFilteredAccountEmails(prop, val) {
     val,
   };
 }
+
+export function setPropertyForSomeFilteredAccountEmails(emailMids, prop, val) {
+  return {
+    type: ActionTypes.SET_PROPERTY_FOR_SOME_FILTERED_ACCOUNT_EMAILS,
+    emailMids,
+    prop,
+    val,
+  };
+}

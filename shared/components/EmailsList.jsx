@@ -10,7 +10,9 @@ class EmailsList extends Component {
       return (<EmailsListItem
         key={`${email.mid}-${index}`}
         email={email}
+        disabled={this.props.compilationEmailMids.indexOf(email.mid) > -1}
         selected={email.selected}
+        saving={email.saving}
         previewing={email.mid === this.props.previewEmailMid}
         selectEmail={this.props.selectEmail}
         deselectEmail={this.props.deselectEmail}
@@ -29,6 +31,7 @@ class EmailsList extends Component {
 
 EmailsList.propTypes = {
   emails: PropTypes.array.isRequired,
+  compilationEmailMids: PropTypes.array.isRequired,
   previewEmailMid: PropTypes.string,
   selectEmail: PropTypes.func.isRequired,
   deselectEmail: PropTypes.func.isRequired,

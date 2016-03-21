@@ -26,6 +26,15 @@ const filteredAccountEmails = (state = initialState.filteredAccountEmails, actio
       }
       return state;
 
+    case ActionTypes.SET_PROPERTY_FOR_SOME_FILTERED_ACCOUNT_EMAILS :
+      return _.map(state, (email) => {
+        const newEmail = email;
+        if (action.emailMids.indexOf(newEmail.mid) > -1) {
+          newEmail[action.prop] = action.val;
+        }
+        return newEmail;
+      });
+
     case ActionTypes.SET_PROPERTY_FOR_ALL_FILTERED_ACCOUNT_EMAILS :
       return _.map(state, (email) => {
         const newEmail = email;

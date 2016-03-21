@@ -21,10 +21,16 @@ class FilteredAccountEmailsContainer extends Component {
     if (this.props.previewEmailMid) {
       this.previewEmail = _.find(this.props.emails, { mid: this.props.previewEmailMid }) || {};
     } else { this.previewEmail = {}; }
+
+    this.compilationEmailMids = _.map(this.props.compilationEmails, (email) => { return email.mid; });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.previewEmailMid !== this.props.previewEmailMid) {
       this.previewEmail = _.find(nextProps.emails, { mid: nextProps.previewEmailMid }) || {};
+    }
+
+    if (nextProps.compilationEmails !== this.props.compilationEmails) {
+      this.compilationEmailMids = _.map(nextProps.compilationEmails, (email) => { return email.mid; });
     }
   }
   setPreviewEmail(email) {
@@ -37,10 +43,22 @@ class FilteredAccountEmailsContainer extends Component {
     this.props.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', false));
   }
   selectAll() {
-    this.props.dispatch(Actions.setPropertyForAllFilteredAccountEmails('selected', true));
+    const nonCompilationEmails = _.filter(this.props.emails, (email) => {
+      return this.compilationEmailMids.indexOf(email.mid) > -1;
+    });
+
+    const emailMids = _.map(nonCompilationEmails, (email) => { return email.mid; });
+
+    this.props.dispatch(Actions.setPropertyForSomeFilteredAccountEmails(emailMids, 'selected', true));
   }
   deselectAll() {
-    this.props.dispatch(Actions.setPropertyForAllFilteredAccountEmails('selected', false));
+    const nonCompilationEmails = _.filter(this.props.emails, (email) => {
+      return this.compilationEmailMids.indexOf(email.mid) > -1;
+    });
+
+    const emailMids = _.map(nonCompilationEmails, (email) => { return email.mid; });
+
+    this.props.dispatch(Actions.setPropertyForSomeFilteredAccountEmails(emailMids, 'selected', false));
   }
   addSelectedToCompilation() {
     this.props.dispatch(Actions.addEmailsToCompilationEmails(this.props.compilation._id, _.filter(this.props.emails, { selected: true })));
@@ -59,6 +77,7 @@ class FilteredAccountEmailsContainer extends Component {
             />
             <EmailsList
               emails={this.props.emails}
+              compilationEmailMids={this.compilationEmailMids}
               previewEmailMid={this.props.previewEmailMid}
               deselectEmail={this.deselectEmail}
               selectEmail={this.selectEmail}
@@ -77,6 +96,7 @@ class FilteredAccountEmailsContainer extends Component {
 function mapStateToProps(store) {
   return {
     emails: store.filteredAccountEmails,
+    compilationEmails: store.compilationEmails,
     previewEmailMid: store.previewEmailMid,
   };
 }
@@ -84,6 +104,7 @@ function mapStateToProps(store) {
 FilteredAccountEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   emails: PropTypes.array.isRequired,
+  compilationEmails: PropTypes.array.isRequired,
   previewEmailMid: PropTypes.string,
   compilation: PropTypes.object,
 };

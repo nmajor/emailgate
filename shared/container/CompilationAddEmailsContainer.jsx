@@ -34,9 +34,14 @@ class CompilationAddEmailsContainer extends Component {
   }
 }
 
-CompilationAddEmailsContainer.need = [(params, cookie) => {
-  return Actions.getCompilations.bind(null, cookie)();
-}];
+CompilationAddEmailsContainer.need = [
+  (params, cookie) => {
+    return Actions.getCompilations.bind(null, cookie)();
+  },
+  (params, cookie) => {
+    return Actions.getCompilationEmails.bind(null, params.id, cookie)();
+  },
+];
 
 function mapStateToProps(store) {
   return {

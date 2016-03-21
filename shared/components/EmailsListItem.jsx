@@ -25,7 +25,19 @@ class EmailsListItem extends Component {
     return className;
   }
   renderSelected() {
-    if (this.props.selected) {
+    if (this.props.disabled) {
+      return (
+        <span className="selectable selected" onClick={this.unselect}>
+          <span className="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
+        </span>
+      );
+    } else if (this.props.saving) {
+      return (
+        <span className="selectable selected" onClick={this.unselect}>
+          <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+        </span>
+      );
+    } else if (this.props.selected) {
       return (
         <span className="selectable selected" onClick={this.unselect}>
           <span className="glyphicon glyphicon-check" aria-hidden="true"></span>
@@ -56,7 +68,9 @@ class EmailsListItem extends Component {
 EmailsListItem.propTypes = {
   email: PropTypes.object.isRequired,
   previewing: PropTypes.bool,
+  disabled: PropTypes.bool,
   selected: PropTypes.bool,
+  saving: PropTypes.bool,
   selectEmail: PropTypes.func.isRequired,
   deselectEmail: PropTypes.func.isRequired,
   setPreviewEmail: PropTypes.func.isRequired,

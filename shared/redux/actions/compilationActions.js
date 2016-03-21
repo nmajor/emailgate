@@ -2,6 +2,8 @@ import * as ActionTypes from '../constants';
 import fetch from 'isomorphic-fetch';
 import baseURL from '../../baseURL';
 import socket from '../../../client/socket';
+import { setPropertyForSomeFilteredAccountEmails } from './filteredAccountEmails';
+import _ from 'lodash';
 
 // ACTIONS
 export function addCompilation(compilation) {
@@ -22,6 +24,13 @@ export function setCompilationEmails(emails) {
   return {
     type: ActionTypes.SET_COMPILATION_EMAILS,
     emails,
+  };
+}
+
+export function addCompilationEmail(email) {
+  return {
+    type: ActionTypes.ADD_COMPILATION_EMAIL,
+    email,
   };
 }
 
@@ -119,16 +128,9 @@ export function getCompilationEmails(compilationId, cookie) {
   };
 }
 
-export function getCompilationsAndEmails(compilationId, cookie) {
-  return (dispatch) => {
-    dispatch(getCompilations(cookie));
-    dispatch(getCompilationEmails(compilationId, cookie));
-  };
-}
-
 export function addEmailsToCompilationEmails(compilationId, emails) {
-  return () => {
-    // dispatch(setSavingFor(true));
+  return (dispatch) => {
+    dispatch(setPropertyForSomeFilteredAccountEmails(_.map(emails, (email) => { return email.mid; }), 'saving', true));
     socket.emit('ADD_COMPILATION_EMAILS', { compilationId, emails });
   };
 }
