@@ -9,4 +9,5 @@ export default {
   filteredAccountEmails: [],
   filteredAccountEmailsCount: 0,
   previewEmailMid: '',
+  selectedCompilationEmailId: '',
 };

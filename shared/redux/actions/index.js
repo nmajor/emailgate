@@ -11,7 +11,14 @@ export * from './filteredAccountEmailsCount';
 
 export function setPreviewEmailMid(mid) {
   return {
-    type: ActionTypes.SET_PREVIEW_EMAIL_HASH_ID,
+    type: ActionTypes.SET_PREVIEW_EMAIL_MID,
     mid,
+  };
+}
+
+export function setSelectedCompilationEmailId(id) {
+  return {
+    type: ActionTypes.SET_SELECTED_COMPILATION_EMAIL_ID,
+    id,
   };
 }
