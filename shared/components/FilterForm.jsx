@@ -127,7 +127,6 @@ class FilterForm extends Component {
     );
   }
   renderSubjectFormGroup() {
-    // https://github.com/zippyui/react-date-picker
     return (
       <div className="form-group">
         <label htmlFor="filter-subject">Subject</label>

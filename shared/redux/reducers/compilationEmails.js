@@ -36,6 +36,17 @@ const compilationEmails = (state = initialState.compilationEmails, action) => {
       }
       return state;
 
+    case ActionTypes.UPDATE_EMAIL_IN_COMPILATION_EMAILS :
+      const updatedEmailIndex = _.findIndex(state, { _id: action.email._id });
+      if (updatedEmailIndex > -1) {
+        return [
+          ...state.slice(0, updatedEmailIndex),
+          action.email,
+          ...state.slice(updatedEmailIndex + 1),
+        ];
+      }
+      return state;
+
     default:
       return state;
   }

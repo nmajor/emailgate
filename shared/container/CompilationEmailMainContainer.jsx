@@ -13,14 +13,10 @@ class CompilationEmailMainContainer extends Component {
     this.removeEmailFromCompilation = this.removeEmailFromCompilation.bind(this);
     this.setEditingSelectedEmail = this.setEditingSelectedEmail.bind(this);
 
-    if (this.props.currentCompilationEmailId) {
-      this.currentCompilationEmail = _.find(this.props.compilationEmails, { _id: this.props.currentCompilationEmailId });
-    }
+    this.currentCompilationEmail = _.find(this.props.compilationEmails, { _id: this.props.currentCompilationEmailId });
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentCompilationEmailId !== this.props.currentCompilationEmailId) {
-      this.currentCompilationEmail = _.find(nextProps.compilationEmails, { _id: nextProps.currentCompilationEmailId });
-    }
+    this.currentCompilationEmail = _.find(nextProps.compilationEmails, { _id: nextProps.currentCompilationEmailId });
   }
   setEditingSelectedEmail(val) {
     this.props.dispatch(Actions.setEditingCurrentCompilationEmail(val));
@@ -44,6 +40,7 @@ class CompilationEmailMainContainer extends Component {
 
     if (this.props.editingCurrentCompilationEmail) {
       return (<CompilationEmailFormContainer
+        compilation={this.props.compilation}
         email={this.currentCompilationEmail}
       />);
     }

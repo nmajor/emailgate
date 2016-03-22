@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import CompilationEmailForm from '../components/CompilationEmailForm';
-// import * as Actions from '../redux/actions/index';
+import { connect } from 'react-redux';
+import * as Actions from '../redux/actions/index';
 
 class CompilationEmailFormContainer extends Component {
   constructor(props, context) {
@@ -8,9 +9,8 @@ class CompilationEmailFormContainer extends Component {
     this.save = this.save.bind(this);
   }
 
-  save(props) {
-    console.log('blah save compilation email form');
-    console.log(props);
+  save(emailProps) {
+    this.props.dispatch(Actions.updateCompilationEmail(this.props.compilation._id, this.props.email, emailProps));
   }
 
   render() {
@@ -27,7 +27,9 @@ class CompilationEmailFormContainer extends Component {
 
 
 CompilationEmailFormContainer.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  compilation: PropTypes.object.isRequired,
   email: PropTypes.object.isRequired,
 };
 
-export default CompilationEmailFormContainer;
+export default connect()(CompilationEmailFormContainer);

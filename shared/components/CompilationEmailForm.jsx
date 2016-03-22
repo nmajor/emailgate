@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
-class FilterForm extends Component {
+class CompilationEmailForm extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -9,16 +10,51 @@ class FilterForm extends Component {
   submitForm(e) {
     e.preventDefault();
 
-    this.props.submitForm({});
+    const subjectRef = this.refs.subject || {};
+    const textRef = this.refs.text || {};
+
+    this.props.submitForm({
+      subject: subjectRef.value,
+      text: textRef.value,
+    });
   }
   renderForm() {
     return (
       <form onSubmit={this.handleSubmit}>
+        {this.renderSubjectFormGroup()}
+        {this.renderTextFormGroup()}
 
         {this.renderErrors('base')}
         <button className="btn btn-success" onClick={this.submitForm}>Save</button>
         <span className="left-bumper">{this.renderSaving()}</span>
       </form>
+    );
+  }
+  renderSubjectFormGroup() {
+    return (
+      <div className="form-group">
+        <label htmlFor="email-subject">Subject</label>
+        <input
+          ref="subject"
+          className="form-control"
+          type="text"
+          id="email-subject"
+          defaultValue={this.props.email.subject}
+        />
+      </div>
+    );
+  }
+  renderTextFormGroup() {
+    return (
+      <div className="form-group">
+        <label htmlFor="email-text">Subject</label>
+        <textarea
+          ref="text"
+          className="form-control"
+          id="email-text"
+          defaultValue={this.props.email.text}
+        ></textarea>
+      </div>
     );
   }
   renderErrors(type) {
@@ -37,6 +73,7 @@ class FilterForm extends Component {
     return (
       <div className="row">
         <div className="col-md-12">
+          {this.props.email.saving}
           {this.renderForm()}
         </div>
       </div>
@@ -44,9 +81,9 @@ class FilterForm extends Component {
   }
 }
 
-FilterForm.propTypes = {
-  email: PropTypes.array.isRequired,
+CompilationEmailForm.propTypes = {
+  email: PropTypes.object.isRequired,
   submitForm: PropTypes.func.isRequired,
 };
 
-export default FilterForm;
+export default CompilationEmailForm;

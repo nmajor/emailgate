@@ -55,6 +55,13 @@ export function setPropertyForCompilationEmail(email, prop, val) {
   };
 }
 
+export function updateEmailInCompilationEmails(email) {
+  return {
+    type: ActionTypes.UPDATE_EMAIL_IN_COMPILATION_EMAILS,
+    email,
+  };
+}
+
 // THUNKS
 export function createCompilation(props, cb) {
   return (dispatch) => {
@@ -161,5 +168,16 @@ export function removeEmailFromCompilationEmails(compilationId, email) {
     dispatch(setPropertyForCompilationEmail(email, 'saving', true));
     dispatch(setPropertyForFilteredAccountEmail(email, 'saving', true));
     socket.emit('REMOVE_COMPILATION_EMAIL', { compilationId, email });
+  };
+}
+
+export function updateCompilationEmail(compilationId, email, newData) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilationEmail(email, 'saving', true));
+    socket.emit('UPDATE_COMPILATION_EMAIL', {
+      compilationId,
+      emailId: email._id,
+      newData,
+    });
   };
 }

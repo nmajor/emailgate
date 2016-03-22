@@ -46,3 +46,8 @@ socket.on('REMOVED_COMPILATION_EMAIL', (email) => {
   store.dispatch(Actions.setCurrentCompilationEmailId(''));
   store.dispatch(Actions.removeCompilationEmail(email));
 });
+
+socket.on('UPDATED_COMPILATION_EMAIL', (email) => {
+  console.log('event UPDATED_COMPILATION_EMAIL');
+  store.dispatch(Actions.updateEmailInCompilationEmails(email));
+});
