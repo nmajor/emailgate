@@ -13,10 +13,10 @@ class FilteredEmailsList extends Component {
         disabled={this.props.compilationEmailMids.indexOf(email.mid) > -1}
         selected={email.selected}
         saving={email.saving}
-        previewing={email.mid === this.props.previewEmailMid}
+        previewing={email.mid === this.props.currentFilteredEmailMid}
         selectEmail={this.props.selectEmail}
         deselectEmail={this.props.deselectEmail}
-        setPreviewEmail={this.props.setPreviewEmail}
+        setCurrentFilteredEmail={this.props.setCurrentFilteredEmail}
       />);
     });
   }
@@ -32,10 +32,10 @@ class FilteredEmailsList extends Component {
 FilteredEmailsList.propTypes = {
   emails: PropTypes.array.isRequired,
   compilationEmailMids: PropTypes.array.isRequired,
-  previewEmailMid: PropTypes.string,
+  currentFilteredEmailMid: PropTypes.string,
   selectEmail: PropTypes.func.isRequired,
   deselectEmail: PropTypes.func.isRequired,
-  setPreviewEmail: PropTypes.func.isRequired,
+  setCurrentFilteredEmail: PropTypes.func.isRequired,
 };
 
 export default FilteredEmailsList;

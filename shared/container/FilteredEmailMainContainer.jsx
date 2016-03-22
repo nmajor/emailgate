@@ -17,8 +17,8 @@ class FilteredEmailMainContainer extends Component {
   render() {
     return (
       <FilteredEmailMain
-        email={this.props.previewEmail}
-        isCompilationEmail={this.props.compilationEmailMids.indexOf(this.props.previewEmail.mid) > -1}
+        email={this.props.currentFilteredEmail}
+        isCompilationEmail={this.props.compilationEmailMids.indexOf(this.props.currentFilteredEmail.mid) > -1}
         removeEmailFromCompilation={this.removeEmailFromCompilation}
       />
     );
@@ -35,7 +35,7 @@ FilteredEmailMainContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilationEmails: PropTypes.array.isRequired,
   compilationEmailMids: PropTypes.array.isRequired,
-  previewEmail: PropTypes.object,
+  currentFilteredEmail: PropTypes.object,
   compilation: PropTypes.object,
 };
 

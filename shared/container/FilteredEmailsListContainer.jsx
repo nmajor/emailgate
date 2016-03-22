@@ -12,15 +12,15 @@ class FilteredEmailsListContainer extends Component {
 
     this.selectEmail = this.selectEmail.bind(this);
     this.deselectEmail = this.deselectEmail.bind(this);
-    this.setPreviewEmail = this.setPreviewEmail.bind(this);
+    this.setCurrentFilteredEmail = this.setCurrentFilteredEmail.bind(this);
 
     this.selectAll = this.selectAll.bind(this);
     this.deselectAll = this.deselectAll.bind(this);
     this.addSelectedToCompilation = this.addSelectedToCompilation.bind(this);
   }
 
-  setPreviewEmail(email) {
-    this.props.dispatch(Actions.setPreviewEmailMid(email.mid));
+  setCurrentFilteredEmail(email) {
+    this.props.dispatch(Actions.setCurrentFilteredEmailMid(email.mid));
   }
   selectEmail(email) {
     this.props.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', true));
@@ -61,10 +61,10 @@ class FilteredEmailsListContainer extends Component {
         <FilteredEmailsList
           emails={this.props.filteredAccountEmails}
           compilationEmailMids={this.props.compilationEmailMids}
-          previewEmailMid={this.props.previewEmail.mid}
+          currentFilteredEmailMid={this.props.currentFilteredEmail.mid}
           deselectEmail={this.deselectEmail}
           selectEmail={this.selectEmail}
-          setPreviewEmail={this.setPreviewEmail}
+          setCurrentFilteredEmail={this.setCurrentFilteredEmail}
         />
       </div>
     );
@@ -81,7 +81,7 @@ FilteredEmailsListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
   compilationEmailMids: PropTypes.array.isRequired,
-  previewEmail: PropTypes.object,
+  currentFilteredEmail: PropTypes.object,
   compilation: PropTypes.object,
 };
 

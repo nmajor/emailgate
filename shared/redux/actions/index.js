@@ -9,9 +9,9 @@ export * from './compilationActions';
 export * from './filteredAccountEmails';
 export * from './filteredAccountEmailsCount';
 
-export function setPreviewEmailMid(mid) {
+export function setCurrentFilteredEmailMid(mid) {
   return {
-    type: ActionTypes.SET_PREVIEW_EMAIL_MID,
+    type: ActionTypes.SET_CURRENT_FILTERED_EMAIL_MID,
     mid,
   };
 }

@@ -13,9 +13,9 @@ import selectedAccountId from './selectedAccountId';
 import filteredAccountEmails from './filteredAccountEmails';
 import filteredAccountEmailsCount from './filteredAccountEmailsCount';
 
-const previewEmailMid = (state = initialState.previewEmailMid, action) => {
+const currentFilteredEmailMid = (state = initialState.currentFilteredEmailMid, action) => {
   switch (action.type) {
-    case ActionTypes.SET_PREVIEW_EMAIL_MID :
+    case ActionTypes.SET_CURRENT_FILTERED_EMAIL_MID :
       return action.mid;
 
     default:
@@ -53,7 +53,7 @@ export default combineReducers({
   selectedAccountId,
   filteredAccountEmails,
   filteredAccountEmailsCount,
-  previewEmailMid,
+  currentFilteredEmailMid,
   selectedCompilationEmailId,
   editingSelectedCompilationEmail,
 });

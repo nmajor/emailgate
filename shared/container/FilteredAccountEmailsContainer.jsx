@@ -8,15 +8,15 @@ class FilteredAccountEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    if (this.props.previewEmailMid) {
-      this.previewEmail = _.find(this.props.compilationEmails, { mid: this.props.previewEmailMid }) || {};
-    } else { this.previewEmail = {}; }
+    if (this.props.currentFilteredEmailMid) {
+      this.currentFilteredEmail = _.find(this.props.compilationEmails, { mid: this.props.currentFilteredEmailMid }) || {};
+    } else { this.currentFilteredEmail = {}; }
 
     this.compilationEmailMids = _.map(this.props.compilationEmails, (email) => { return email.mid; });
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.previewEmailMid !== this.props.previewEmailMid) {
-      this.previewEmail = _.find(nextProps.filteredAccountEmails, { mid: nextProps.previewEmailMid }) || {};
+    if (nextProps.currentFilteredEmailMid !== this.props.currentFilteredEmailMid) {
+      this.currentFilteredEmail = _.find(nextProps.filteredAccountEmails, { mid: nextProps.currentFilteredEmailMid }) || {};
     }
 
     if (nextProps.compilationEmails !== this.props.compilationEmails) {
@@ -32,14 +32,14 @@ class FilteredAccountEmailsContainer extends Component {
             <FilteredEmailsListContainer
               compilation={this.props.compilation}
               compilationEmailMids={this.compilationEmailMids}
-              previewEmail={this.previewEmail}
+              currentFilteredEmail={this.currentFilteredEmail}
             />
           </div>
           <div className="col-md-9">
             <FilteredEmailMainContainer
               compilation={this.props.compilation}
               compilationEmailMids={this.compilationEmailMids}
-              previewEmail={this.previewEmail}
+              currentFilteredEmail={this.currentFilteredEmail}
             />
           </div>
         </div>
@@ -52,7 +52,7 @@ function mapStateToProps(store) {
   return {
     filteredAccountEmails: store.filteredAccountEmails,
     compilationEmails: store.compilationEmails,
-    previewEmailMid: store.previewEmailMid,
+    currentFilteredEmailMid: store.currentFilteredEmailMid,
   };
 }
 
@@ -60,7 +60,7 @@ FilteredAccountEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
   compilationEmails: PropTypes.array.isRequired,
-  previewEmailMid: PropTypes.string,
+  currentFilteredEmailMid: PropTypes.string,
   compilation: PropTypes.object,
 };
 

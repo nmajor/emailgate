@@ -8,7 +8,7 @@ export default {
   selectedAccountId: '',
   filteredAccountEmails: [],
   filteredAccountEmailsCount: 0,
-  previewEmailMid: '',
+  currentFilteredEmailMid: '',
   selectedCompilationEmailId: '',
   editingSelectedCompilationEmail: false,
 };

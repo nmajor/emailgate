@@ -16,7 +16,7 @@ class FilteredEmailsListItem extends Component {
     this.props.deselectEmail(this.props.email);
   }
   preview() {
-    this.props.setPreviewEmail(this.props.email);
+    this.props.setCurrentFilteredEmail(this.props.email);
   }
   className() {
     let className = 'emails-list-item';
@@ -73,7 +73,7 @@ FilteredEmailsListItem.propTypes = {
   saving: PropTypes.bool,
   selectEmail: PropTypes.func.isRequired,
   deselectEmail: PropTypes.func.isRequired,
-  setPreviewEmail: PropTypes.func.isRequired,
+  setCurrentFilteredEmail: PropTypes.func.isRequired,
 };
 
 export default FilteredEmailsListItem;
