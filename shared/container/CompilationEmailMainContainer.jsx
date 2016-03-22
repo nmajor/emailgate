@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
-import CompilationEmailMain from '../components/CompilationEmailMain';
+import CompilationEmailPreview from '../components/CompilationEmailPreview';
 import CompilationEmailMainActions from '../components/CompilationEmailMainActions';
+import CompilationEmailFormContainer from './CompilationEmailFormContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
@@ -28,7 +29,7 @@ class CompilationEmailMainContainer extends Component {
     this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, email));
   }
 
-  renderCompilationEmailPreviewActions() {
+  renderCompilationEmailMainActions() {
     if (this.currentCompilationEmail) {
       return (<CompilationEmailMainActions
         email={this.currentCompilationEmail}
@@ -38,17 +39,23 @@ class CompilationEmailMainContainer extends Component {
       />);
     }
   }
-  renderCompilationEmailPreview() {
-    if (this.currentCompilationEmail) {
-      return (<CompilationEmailMain
+  renderCompilationEmailMain() {
+    if (!this.currentCompilationEmail) { return null; }
+
+    if (this.props.editingCurrentCompilationEmail) {
+      return (<CompilationEmailFormContainer
         email={this.currentCompilationEmail}
       />);
     }
+
+    return (<CompilationEmailPreview
+      email={this.currentCompilationEmail}
+    />);
   }
   render() {
     return (<div>
-      {this.renderCompilationEmailPreviewActions()}
-      {this.renderCompilationEmailPreview()}
+      {this.renderCompilationEmailMainActions()}
+      {this.renderCompilationEmailMain()}
     </div>);
   }
 }

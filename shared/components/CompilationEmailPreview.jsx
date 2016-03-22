@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-class CompilationEmailMain extends Component {
+class CompilationEmailPreview extends Component {
   render() {
     return (
       <div>
@@ -11,8 +11,8 @@ class CompilationEmailMain extends Component {
   }
 }
 
-CompilationEmailMain.propTypes = {
+CompilationEmailPreview.propTypes = {
   email: PropTypes.object.isRequired,
 };
 
-export default CompilationEmailMain;
+export default CompilationEmailPreview;
