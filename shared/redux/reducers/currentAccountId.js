@@ -1,9 +1,9 @@
 import * as ActionTypes from '../constants';
 import initialState from '../../initialState';
 
-const selectedAccountId = (state = initialState.selectedAccountId, action) => {
+const currentAccountId = (state = initialState.currentAccountId, action) => {
   switch (action.type) {
-    case ActionTypes.SET_SELECTED_ACCOUNT_ID :
+    case ActionTypes.SET_CURRENT_ACCOUNT_ID :
       return action.accountId;
 
     default:
@@ -11,4 +11,4 @@ const selectedAccountId = (state = initialState.selectedAccountId, action) => {
   }
 };
 
-export default selectedAccountId;
+export default currentAccountId;

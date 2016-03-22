@@ -10,9 +10,9 @@
     loggedIn: true,
     errors: {}
   }
-  selectedAccountId: 1,
+  currentAccountId: 1,
   accounts: [],
-  filterForSelectedAccount: {
+  filterForCurrentAccount: {
     mailbox: 'Gmail/[ALL]',
     to: '',
     from: '',

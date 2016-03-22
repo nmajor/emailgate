@@ -5,7 +5,7 @@ export default {
   accounts: [],
   compilations: [],
   compilationEmails: [],
-  selectedAccountId: '',
+  currentAccountId: '',
   filteredAccountEmails: [],
   filteredAccountEmailsCount: 0,
   currentFilteredEmailMid: '',

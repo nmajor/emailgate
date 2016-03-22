@@ -9,7 +9,7 @@ import user from './user';
 import accounts from './accounts';
 import compilations from './compilations';
 import compilationEmails from './compilationEmails';
-import selectedAccountId from './selectedAccountId';
+import currentAccountId from './currentAccountId';
 import filteredAccountEmails from './filteredAccountEmails';
 import filteredAccountEmailsCount from './filteredAccountEmailsCount';
 
@@ -50,7 +50,7 @@ export default combineReducers({
   accounts,
   compilations,
   compilationEmails,
-  selectedAccountId,
+  currentAccountId,
   filteredAccountEmails,
   filteredAccountEmailsCount,
   currentFilteredEmailMid,

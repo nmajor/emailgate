@@ -26,9 +26,9 @@ export function setAccounts(accounts) {
   };
 }
 
-export function setSelectedAccountId(accountId) {
+export function setCurrentAccountId(accountId) {
   return {
-    type: ActionTypes.SET_SELECTED_ACCOUNT_ID,
+    type: ActionTypes.SET_CURRENT_ACCOUNT_ID,
     accountId,
   };
 }

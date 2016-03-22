@@ -14,7 +14,7 @@ class AccountsList extends Component {
         key={account._id}
         account={account}
         selectable={this.props.selectable}
-        selected={this.props.selectable && this.props.selectedAccountId === account._id}
+        selected={this.props.selectable && this.props.currentAccountId === account._id}
         handleClick={this.props.onItemClick}
       />);
     });
@@ -38,7 +38,7 @@ class AccountsList extends Component {
 
 AccountsList.propTypes = {
   accounts: PropTypes.array.isRequired,
-  selectedAccountId: PropTypes.string,
+  currentAccountId: PropTypes.string,
   selectable: PropTypes.bool,
   onItemClick: PropTypes.func,
 };

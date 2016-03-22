@@ -9,10 +9,10 @@ class FilterContainer extends Component {
     super(props, context);
     this.submitForm = this.submitForm.bind(this);
 
-    this.selectedAccount = _.find(this.props.accounts, { _id: this.props.selectedAccountId }) || {};
+    this.currentAccount = _.find(this.props.accounts, { _id: this.props.currentAccountId }) || {};
   }
   componentWillReceiveProps(nextProps) {
-    this.selectedAccount = _.find(this.props.accounts, { _id: nextProps.selectedAccountId }) || {};
+    this.currentAccount = _.find(this.props.accounts, { _id: nextProps.currentAccountId }) || {};
   }
   submitForm(props) {
     const filter = {
@@ -24,13 +24,13 @@ class FilterContainer extends Component {
       endDate: props.endDate,
     };
 
-    this.props.dispatch(Actions.getFilteredAccountEmails(this.selectedAccount, filter));
+    this.props.dispatch(Actions.getFilteredAccountEmails(this.currentAccount, filter));
   }
 
-  selectedAccountMailboxes() {
-    if (!this.selectedAccount || !this.selectedAccount.imap) { return []; }
+  currentAccountMailboxes() {
+    if (!this.currentAccount || !this.currentAccount.imap) { return []; }
 
-    return this.selectedAccount.imap.mailboxes;
+    return this.currentAccount.imap.mailboxes;
   }
   render() {
     return (
@@ -38,7 +38,7 @@ class FilterContainer extends Component {
         <h3>Filter</h3>
         <FilterForm
           submitForm={this.submitForm}
-          mailboxes={this.selectedAccountMailboxes()}
+          mailboxes={this.currentAccountMailboxes()}
           fetching={this.props.fetchingFilteredAccountEmails}
         />
       </div>
@@ -49,7 +49,7 @@ class FilterContainer extends Component {
 function mapStateToProps(store) {
   return {
     accounts: store.accounts,
-    selectedAccountId: store.selectedAccountId,
+    currentAccountId: store.currentAccountId,
     fetchingFilteredAccountEmails: store.fetchingFilteredAccountEmails,
   };
 }
@@ -57,7 +57,7 @@ function mapStateToProps(store) {
 FilterContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array,
-  selectedAccountId: PropTypes.string,
+  currentAccountId: PropTypes.string,
   fetchingFilteredAccountEmails: PropTypes.bool,
 };
 
