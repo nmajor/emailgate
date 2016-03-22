@@ -23,9 +23,9 @@ const currentFilteredEmailMid = (state = initialState.currentFilteredEmailMid, a
   }
 };
 
-const selectedCompilationEmailId = (state = initialState.selectedCompilationEmailId, action) => {
+const currentCompilationEmailId = (state = initialState.currentCompilationEmailId, action) => {
   switch (action.type) {
-    case ActionTypes.SET_SELECTED_COMPILATION_EMAIL_ID :
+    case ActionTypes.SET_CURRENT_COMPILATION_EMAIL_ID :
       return action.id;
 
     default:
@@ -33,9 +33,9 @@ const selectedCompilationEmailId = (state = initialState.selectedCompilationEmai
   }
 };
 
-const editingSelectedCompilationEmail = (state = initialState.editingSelectedCompilationEmail, action) => {
+const editingCurrentCompilationEmail = (state = initialState.editingCurrentCompilationEmail, action) => {
   switch (action.type) {
-    case ActionTypes.SET_EDITING_SELECTED_COMPILATION_EMAIL :
+    case ActionTypes.SET_EDITING_CURRENT_COMPILATION_EMAIL :
       return action.val;
 
     default:
@@ -54,6 +54,6 @@ export default combineReducers({
   filteredAccountEmails,
   filteredAccountEmailsCount,
   currentFilteredEmailMid,
-  selectedCompilationEmailId,
-  editingSelectedCompilationEmail,
+  currentCompilationEmailId,
+  editingCurrentCompilationEmail,
 });

@@ -12,36 +12,36 @@ class CompilationEmailMainContainer extends Component {
     this.removeEmailFromCompilation = this.removeEmailFromCompilation.bind(this);
     this.setEditingSelectedEmail = this.setEditingSelectedEmail.bind(this);
 
-    if (this.props.selectedCompilationEmailId) {
-      this.selectedCompilationEmail = _.find(this.props.compilationEmails, { _id: this.props.selectedCompilationEmailId });
+    if (this.props.currentCompilationEmailId) {
+      this.currentCompilationEmail = _.find(this.props.compilationEmails, { _id: this.props.currentCompilationEmailId });
     }
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedCompilationEmailId !== this.props.selectedCompilationEmailId) {
-      this.selectedCompilationEmail = _.find(nextProps.compilationEmails, { _id: nextProps.selectedCompilationEmailId });
+    if (nextProps.currentCompilationEmailId !== this.props.currentCompilationEmailId) {
+      this.currentCompilationEmail = _.find(nextProps.compilationEmails, { _id: nextProps.currentCompilationEmailId });
     }
   }
   setEditingSelectedEmail(val) {
-    this.props.dispatch(Actions.setEditingSelectedCompilationEmail(val));
+    this.props.dispatch(Actions.setEditingCurrentCompilationEmail(val));
   }
   removeEmailFromCompilation(email) {
     this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, email));
   }
 
   renderCompilationEmailPreviewActions() {
-    if (this.selectedCompilationEmail) {
+    if (this.currentCompilationEmail) {
       return (<CompilationEmailMainActions
-        email={this.selectedCompilationEmail}
+        email={this.currentCompilationEmail}
         removeEmail={this.removeEmailFromCompilation}
         setEditing={this.setEditingSelectedEmail}
-        editing={this.props.editingSelectedCompilationEmail}
+        editing={this.props.editingCurrentCompilationEmail}
       />);
     }
   }
   renderCompilationEmailPreview() {
-    if (this.selectedCompilationEmail) {
+    if (this.currentCompilationEmail) {
       return (<CompilationEmailMain
-        email={this.selectedCompilationEmail}
+        email={this.currentCompilationEmail}
       />);
     }
   }
@@ -56,8 +56,8 @@ class CompilationEmailMainContainer extends Component {
 function mapStateToProps(store) {
   return {
     compilationEmails: store.compilationEmails,
-    selectedCompilationEmailId: store.selectedCompilationEmailId,
-    editingSelectedCompilationEmail: store.editingSelectedCompilationEmail,
+    currentCompilationEmailId: store.currentCompilationEmailId,
+    editingCurrentCompilationEmail: store.editingCurrentCompilationEmail,
   };
 }
 
@@ -65,8 +65,8 @@ CompilationEmailMainContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array,
-  selectedCompilationEmailId: PropTypes.string,
-  editingSelectedCompilationEmail: PropTypes.bool.isRequired,
+  currentCompilationEmailId: PropTypes.string,
+  editingCurrentCompilationEmail: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(CompilationEmailMainContainer);

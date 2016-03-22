@@ -43,8 +43,8 @@ function mapStateToProps(store) {
   return {
     compilations: store.compilations,
     compilationEmails: store.compilationEmails,
-    selectedCompilationEmailId: store.selectedCompilationEmailId,
-    editingSelectedCompilationEmail: store.editingSelectedCompilationEmail,
+    currentCompilationEmailId: store.currentCompilationEmailId,
+    editingCurrentCompilationEmail: store.editingCurrentCompilationEmail,
   };
 }
 
@@ -56,8 +56,8 @@ CompilationEditEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
-  selectedCompilationEmailId: PropTypes.string,
-  editingSelectedCompilationEmail: PropTypes.bool.isRequired,
+  currentCompilationEmailId: PropTypes.string,
+  editingCurrentCompilationEmail: PropTypes.bool.isRequired,
   params: PropTypes.object,
 };
 

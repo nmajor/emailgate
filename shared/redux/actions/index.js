@@ -16,16 +16,16 @@ export function setCurrentFilteredEmailMid(mid) {
   };
 }
 
-export function setSelectedCompilationEmailId(id) {
+export function setCurrentCompilationEmailId(id) {
   return {
-    type: ActionTypes.SET_SELECTED_COMPILATION_EMAIL_ID,
+    type: ActionTypes.SET_CURRENT_COMPILATION_EMAIL_ID,
     id,
   };
 }
 
-export function setEditingSelectedCompilationEmail(val) {
+export function setEditingCurrentCompilationEmail(val) {
   return {
-    type: ActionTypes.SET_EDITING_SELECTED_COMPILATION_EMAIL,
+    type: ActionTypes.SET_EDITING_CURRENT_COMPILATION_EMAIL,
     val,
   };
 }

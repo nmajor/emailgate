@@ -20,7 +20,7 @@ class CompilationEmailsListItem extends Component {
   }
   render() {
     return (
-      <div className="emails-list-item">
+      <div className="emails-list-item bottom-bumper">
         <span onClick={this.select} className={`${this.props.selected ? 'text-success' : ''}`}>
           {this.renderSaving()}
           {this.props.email.subject}

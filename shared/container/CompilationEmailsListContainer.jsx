@@ -6,20 +6,20 @@ import { connect } from 'react-redux';
 class CompilationEmailsListContainer extends Component {
   constructor(props, context) {
     super(props, context);
-    this.setSelectedCompilationEmail = this.setSelectedCompilationEmail.bind(this);
+    this.setCurrentCompilationEmail = this.setCurrentCompilationEmail.bind(this);
   }
 
-  setSelectedCompilationEmail(email) {
-    this.props.dispatch(Actions.setEditingSelectedCompilationEmail(false));
-    this.props.dispatch(Actions.setSelectedCompilationEmailId(email._id));
+  setCurrentCompilationEmail(email) {
+    this.props.dispatch(Actions.setEditingCurrentCompilationEmail(false));
+    this.props.dispatch(Actions.setCurrentCompilationEmailId(email._id));
   }
 
   render() {
     return (
       <CompilationEmailsList
         emails={this.props.compilationEmails}
-        selectedEmailId={this.props.selectedCompilationEmailId}
-        setSelectedCompilationEmail={this.setSelectedCompilationEmail}
+        selectedEmailId={this.props.currentCompilationEmailId}
+        setCurrentCompilationEmail={this.setCurrentCompilationEmail}
       />
     );
   }
@@ -28,7 +28,7 @@ class CompilationEmailsListContainer extends Component {
 function mapStateToProps(store) {
   return {
     compilationEmails: store.compilationEmails,
-    selectedCompilationEmailId: store.selectedCompilationEmailId,
+    currentCompilationEmailId: store.currentCompilationEmailId,
   };
 }
 
@@ -36,7 +36,7 @@ CompilationEmailsListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array,
-  selectedCompilationEmailId: PropTypes.string,
+  currentCompilationEmailId: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(CompilationEmailsListContainer);

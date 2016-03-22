@@ -25,8 +25,8 @@ class CompilationEmailsContainer extends Component {
 function mapStateToProps(store) {
   return {
     compilationEmails: store.compilationEmails,
-    selectedCompilationEmailId: store.selectedCompilationEmailId,
-    editingSelectedCompilationEmail: store.editingSelectedCompilationEmail,
+    currentCompilationEmailId: store.currentCompilationEmailId,
+    editingCurrentCompilationEmail: store.editingCurrentCompilationEmail,
   };
 }
 
@@ -34,8 +34,8 @@ CompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array,
-  selectedCompilationEmailId: PropTypes.string,
-  editingSelectedCompilationEmail: PropTypes.bool.isRequired,
+  currentCompilationEmailId: PropTypes.string,
+  editingCurrentCompilationEmail: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(CompilationEmailsContainer);

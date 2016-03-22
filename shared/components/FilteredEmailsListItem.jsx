@@ -53,7 +53,7 @@ class FilteredEmailsListItem extends Component {
   }
   render() {
     return (
-      <div className="emails-list-item">
+      <div className="emails-list-item bottom-bumper">
         {this.renderSelected()}
         <span className={this.props.previewing ? ' text-primary' : ''} onClick={this.preview}>
           {this.props.email.subject}

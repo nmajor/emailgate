@@ -43,6 +43,6 @@ socket.on('REMOVED_COMPILATION_EMAIL', (email) => {
 
   store.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', false));
   store.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'saving', false));
-  store.dispatch(Actions.setSelectedCompilationEmailId(''));
+  store.dispatch(Actions.setCurrentCompilationEmailId(''));
   store.dispatch(Actions.removeCompilationEmail(email));
 });

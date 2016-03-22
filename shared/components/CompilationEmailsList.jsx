@@ -10,7 +10,7 @@ class CompilationEmailsList extends Component {
       return (<CompilationEmailsListItem
         key={`${email._id}`}
         selected={email._id === this.props.selectedEmailId}
-        selectEmail={this.props.setSelectedCompilationEmail}
+        selectEmail={this.props.setCurrentCompilationEmail}
         email={email}
       />);
     });
@@ -26,7 +26,7 @@ class CompilationEmailsList extends Component {
 
 CompilationEmailsList.propTypes = {
   emails: PropTypes.array.isRequired,
-  setSelectedCompilationEmail: PropTypes.func.isRequired,
+  setCurrentCompilationEmail: PropTypes.func.isRequired,
   selectedEmailId: PropTypes.string,
 };
 
