@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import CompilationEmailsListContainer from './CompilationEmailsListContainer';
-import CompilationEmailPreviewContainer from './CompilationEmailPreviewContainer';
+import CompilationEmailMainContainer from './CompilationEmailMainContainer';
 import { connect } from 'react-redux';
 
 class CompilationEmailsContainer extends Component {
@@ -15,7 +15,7 @@ class CompilationEmailsContainer extends Component {
           <CompilationEmailsListContainer compilation={this.props.compilation} />
         </div>
         <div className="col-md-9">
-          <CompilationEmailPreviewContainer compilation={this.props.compilation} />
+          <CompilationEmailMainContainer compilation={this.props.compilation} />
         </div>
       </div>
     );

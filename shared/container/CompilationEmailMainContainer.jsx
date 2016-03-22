@@ -1,10 +1,11 @@
 import React, { PropTypes, Component } from 'react';
-import CompilationEmailPreview from '../components/CompilationEmailPreview';
+import CompilationEmailMain from '../components/CompilationEmailMain';
+import CompilationEmailMainActions from '../components/CompilationEmailMainActions';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
 
-class CompilationEmailPreviewContainer extends Component {
+class CompilationEmailMainContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -12,12 +13,12 @@ class CompilationEmailPreviewContainer extends Component {
     this.setEditingSelectedEmail = this.setEditingSelectedEmail.bind(this);
 
     if (this.props.selectedCompilationEmailId) {
-      this.selectedCompilationEmail = _.find(this.props.compilationEmails, { _id: this.props.selectedCompilationEmailId }) || {};
-    } else { this.selectedCompilationEmail = {}; }
+      this.selectedCompilationEmail = _.find(this.props.compilationEmails, { _id: this.props.selectedCompilationEmailId });
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedCompilationEmailId !== this.props.selectedCompilationEmailId) {
-      this.selectedCompilationEmail = _.find(nextProps.compilationEmails, { _id: nextProps.selectedCompilationEmailId }) || {};
+      this.selectedCompilationEmail = _.find(nextProps.compilationEmails, { _id: nextProps.selectedCompilationEmailId });
     }
   }
   setEditingSelectedEmail(val) {
@@ -27,15 +28,28 @@ class CompilationEmailPreviewContainer extends Component {
     this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, email));
   }
 
-  render() {
-    return (
-      <CompilationEmailPreview
+  renderCompilationEmailPreviewActions() {
+    if (this.selectedCompilationEmail) {
+      return (<CompilationEmailMainActions
         email={this.selectedCompilationEmail}
         removeEmail={this.removeEmailFromCompilation}
         setEditing={this.setEditingSelectedEmail}
         editing={this.props.editingSelectedCompilationEmail}
-      />
-    );
+      />);
+    }
+  }
+  renderCompilationEmailPreview() {
+    if (this.selectedCompilationEmail) {
+      return (<CompilationEmailMain
+        email={this.selectedCompilationEmail}
+      />);
+    }
+  }
+  render() {
+    return (<div>
+      {this.renderCompilationEmailPreviewActions()}
+      {this.renderCompilationEmailPreview()}
+    </div>);
   }
 }
 
@@ -47,7 +61,7 @@ function mapStateToProps(store) {
   };
 }
 
-CompilationEmailPreviewContainer.propTypes = {
+CompilationEmailMainContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array,
@@ -55,4 +69,4 @@ CompilationEmailPreviewContainer.propTypes = {
   editingSelectedCompilationEmail: PropTypes.bool.isRequired,
 };
 
-export default connect(mapStateToProps)(CompilationEmailPreviewContainer);
+export default connect(mapStateToProps)(CompilationEmailMainContainer);

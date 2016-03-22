@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import FilteredEmailsListContainer from './FilteredEmailsListContainer';
-import FilteredEmailPreviewContainer from './FilteredEmailPreviewContainer';
+import FilteredEmailMainContainer from './FilteredEmailMainContainer';
 import _ from 'lodash';
 
 class FilteredAccountEmailsContainer extends Component {
@@ -36,7 +36,7 @@ class FilteredAccountEmailsContainer extends Component {
             />
           </div>
           <div className="col-md-9">
-            <FilteredEmailPreviewContainer
+            <FilteredEmailMainContainer
               compilation={this.props.compilation}
               compilationEmailMids={this.compilationEmailMids}
               previewEmail={this.previewEmail}

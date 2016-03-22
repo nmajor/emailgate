@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
-import FilteredEmailPreview from '../components/FilteredEmailPreview';
+import FilteredEmailMain from '../components/FilteredEmailMain';
 import _ from 'lodash';
 
-class FilteredAccountEmailsContainer extends Component {
+class FilteredEmailMainContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -16,7 +16,7 @@ class FilteredAccountEmailsContainer extends Component {
   }
   render() {
     return (
-      <FilteredEmailPreview
+      <FilteredEmailMain
         email={this.props.previewEmail}
         isCompilationEmail={this.props.compilationEmailMids.indexOf(this.props.previewEmail.mid) > -1}
         removeEmailFromCompilation={this.removeEmailFromCompilation}
@@ -31,7 +31,7 @@ function mapStateToProps(store) {
   };
 }
 
-FilteredAccountEmailsContainer.propTypes = {
+FilteredEmailMainContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilationEmails: PropTypes.array.isRequired,
   compilationEmailMids: PropTypes.array.isRequired,
@@ -39,4 +39,4 @@ FilteredAccountEmailsContainer.propTypes = {
   compilation: PropTypes.object,
 };
 
-export default connect(mapStateToProps)(FilteredAccountEmailsContainer);
+export default connect(mapStateToProps)(FilteredEmailMainContainer);
