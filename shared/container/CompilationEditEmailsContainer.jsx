@@ -11,6 +11,14 @@ class CompilationEditEmailsContainer extends Component {
     super(props, context);
 
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.id }) || {};
+
+    if (this.props.compilations.length < 1) {
+      this.props.dispatch(Actions.getCompilations());
+    }
+
+    if (this.props.compilationEmails.length < 1) {
+      this.props.dispatch(Actions.getCompilationEmails(this.props.params.id));
+    }
   }
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.id }) || {};

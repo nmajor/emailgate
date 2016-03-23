@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 
 class CompilationEmailForm extends Component {
   constructor(props, context) {
@@ -10,13 +9,22 @@ class CompilationEmailForm extends Component {
   submitForm(e) {
     e.preventDefault();
 
-    const subjectRef = this.refs.subject || {};
+    // const subjectRef = this.refs.subject || {};
     const textRef = this.refs.text || {};
 
-    this.props.submitForm({
-      subject: subjectRef.value,
-      text: textRef.value,
-    });
+    console.log('hey');
+    console.log(textRef.innerHTML);
+
+    // this.props.submitForm({
+    //   subject: subjectRef.innerHTML,
+    //   text: textRef.innerHTML,
+    // });
+  }
+  handleChange() {
+    const textRef = this.refs.text || {};
+
+    console.log('hey');
+    console.log(textRef.innerHTML);
   }
   renderForm() {
     return (
@@ -31,31 +39,39 @@ class CompilationEmailForm extends Component {
     );
   }
   renderSubjectFormGroup() {
-    return (
-      <div className="form-group">
-        <label htmlFor="email-subject">Subject</label>
-        <input
-          ref="subject"
-          className="form-control"
-          type="text"
-          id="email-subject"
-          defaultValue={this.props.email.subject}
-        />
-      </div>
-    );
+    return (<h3 contentEditable="true" className="editable" ref="subject" onChange={this.handleChange}>
+      {this.props.email.subject}
+    </h3>);
+
+    // return (
+    //   <div className="form-group">
+    //     <label htmlFor="email-subject">Subject</label>
+    //     <input
+    //       ref="subject"
+    //       className="form-control"
+    //       type="text"
+    //       id="email-subject"
+    //       defaultValue={this.props.email.subject}
+    //     />
+    //   </div>
+    // );
   }
   renderTextFormGroup() {
-    return (
-      <div className="form-group">
-        <label htmlFor="email-text">Subject</label>
-        <textarea
-          ref="text"
-          className="form-control"
-          id="email-text"
-          defaultValue={this.props.email.text}
-        ></textarea>
-      </div>
-    );
+    return (<p contentEditable="true" className="editable" ref="text" onChange={this.handleChange}>
+      {this.props.email.text}
+    </p>);
+
+    // return (
+    //   <div className="form-group">
+    //     <label htmlFor="email-text">Subject</label>
+    //     <textarea
+    //       ref="text"
+    //       className="form-control"
+    //       id="email-text"
+    //       defaultValue={this.props.email.text}
+    //     ></textarea>
+    //   </div>
+    // );
   }
   renderErrors(type) {
     if (this.props.email.errors) {

@@ -15,7 +15,10 @@ npm start
 
 https://github.com/zippyui/react-date-picker
 
+https://www.npmjs.com/package/html-pdf
+https://www.npmjs.com/package/phantom-html-to-pdf
 
 ### Todo
 
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
+- The saving value of the currentCompilationEmail is not updating in the compilation email form.
