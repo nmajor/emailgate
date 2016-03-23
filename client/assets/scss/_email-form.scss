@@ -1,0 +1,8 @@
+.email-form {
+  .editable { border: 1px solid #CCC; }
+
+  .quill {
+    .ql-tooltip { display: none; }
+    .ql-paste-manager { display: none; }
+  }
+}

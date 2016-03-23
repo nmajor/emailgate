@@ -5,8 +5,7 @@ class CompilationsListItem extends Component {
   render() {
     return (
       <div className="compilations-list-item">
-        {this.props.compilation.name}
-        <Link to={`/compilations/${this.props.compilation._id}/add-emails`}>add emails</Link>
+        <Link to={`/compilations/${this.props.compilation._id}/emails`}>{this.props.compilation.name}</Link>
       </div>
     );
   }

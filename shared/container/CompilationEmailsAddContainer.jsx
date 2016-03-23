@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
-import CompilationNav from '../components/CompilationNav';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
@@ -25,14 +25,21 @@ class CompilationAddEmailsContainer extends Component {
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.id }) || {};
   }
+  renderEmailsLink() {
+    return (<Link
+      className="btn btn-primary btn-xs"
+      to={`/compilations/${this.props.params.id}/emails`}
+    >
+      Back to Compilation ({this.props.compilationEmails.length})
+    </Link>);
+  }
 
   render() {
     return (
       <div className="edit-account-container">
         <Header />
-        <CompilationNav compilationId={this.props.params.id} currentPage="add-emails" />
         <div className="container">
-          <h1>Add Emails to Compilation</h1>
+          <h1>Add Emails to Compilation {this.renderEmailsLink()}</h1>
           <SelectAccountContainer />
           <FilterContainer />
           <FilteredAccountEmailsContainer compilation={this.compilation} />

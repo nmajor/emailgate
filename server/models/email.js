@@ -7,7 +7,7 @@ const EmailSchema = new Schema({
   to: [],
   from: [],
   subject: String,
-  text: String,
+  body: String,
   attachments: [],
 });
 

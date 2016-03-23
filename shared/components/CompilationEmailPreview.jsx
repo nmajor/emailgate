@@ -5,7 +5,7 @@ class CompilationEmailPreview extends Component {
     return (
       <div>
         <h3>{this.props.email.subject}</h3>
-        <p>{this.props.email.text}</p>
+        <div dangerouslySetInnerHTML={{ __html: this.props.email.body }} />
       </div>
     );
   }

@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import FilteredEmailsList from '../components/FilteredEmailsList';
-// import FilteredEmailPreview from '../components/FilteredEmailPreview';
 import FilteredEmailsListActions from '../components/FilteredEmailsListActions';
 import _ from 'lodash';
 

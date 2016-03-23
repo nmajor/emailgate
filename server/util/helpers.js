@@ -45,8 +45,8 @@ export function processEmails() {
       from: email.from,
       subject: email.subject,
       // messageId: email.messageId,
-      text: email.text,
-      // html: email.html,
+      // text: email.text,
+      body: email.html,
       attachments: email.attachments,
     };
 

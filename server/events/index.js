@@ -102,7 +102,7 @@ export default (io) => {
       .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
       .then((email) => {
         email.subject = data.newData.subject; // eslint-disable-line no-param-reassign
-        email.text = data.newData.text; // eslint-disable-line no-param-reassign
+        email.body = data.newData.body; // eslint-disable-line no-param-reassign
         return email.save();
       })
       .then((email) => {

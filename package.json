@@ -48,6 +48,7 @@
     "passport-local-mongoose": "^4.0.0",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
+    "react-quill": "^0.4.1",
     "react-redux": "^4.1.2",
     "react-router": "^2.0.0-rc5",
     "readable-stream": "^2.0.6",

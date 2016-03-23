@@ -5,11 +5,8 @@ class CompilationNav extends Component {
   constructor(props, context) {
     super(props, context);
   }
-  renderAddEmailsNav() {
-    return this.renderNavItem('add-emails', 'Add Emails');
-  }
-  renderEditEmailsNav() {
-    return this.renderNavItem('edit-emails', 'Edit Emails');
+  renderEmailsNav() {
+    return this.renderNavItem('emails', 'Emails');
   }
   renderOptionsNav() {
     return this.renderNavItem('options', 'Options');
@@ -33,8 +30,7 @@ class CompilationNav extends Component {
       <div className="accounts-list-container">
         <div className="container">
           <ul className="nav nav-pills">
-            {this.renderAddEmailsNav()}
-            {this.renderEditEmailsNav()}
+            {this.renderEmailsNav()}
             {this.renderOptionsNav()}
             {this.renderPreviewNav()}
             {this.renderCheckoutNav()}

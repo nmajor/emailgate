@@ -1,36 +1,39 @@
 import React, { Component, PropTypes } from 'react';
+import ReactQuill from 'react-quill';
 
 class CompilationEmailForm extends Component {
   constructor(props, context) {
     super(props, context);
+
+    this.state = {
+      subject: this.props.email.subject,
+      body: this.props.email.body,
+    };
+
+    this.handleSubjectChange = this.handleSubjectChange.bind(this);
+    this.handleBodyChange = this.handleBodyChange.bind(this);
 
     this.submitForm = this.submitForm.bind(this);
   }
   submitForm(e) {
     e.preventDefault();
 
-    // const subjectRef = this.refs.subject || {};
-    const textRef = this.refs.text || {};
-
-    console.log('hey');
-    console.log(textRef.innerHTML);
-
-    // this.props.submitForm({
-    //   subject: subjectRef.innerHTML,
-    //   text: textRef.innerHTML,
-    // });
+    this.props.submitForm({
+      subject: this.state.subject,
+      body: this.state.body,
+    });
   }
-  handleChange() {
-    const textRef = this.refs.text || {};
-
-    console.log('hey');
-    console.log(textRef.innerHTML);
+  handleSubjectChange(event) {
+    this.setState({ subject: event.target.value });
+  }
+  handleBodyChange(newBody) {
+    this.setState({ body: newBody });
   }
   renderForm() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        {this.renderSubjectFormGroup()}
-        {this.renderTextFormGroup()}
+      <form className="email-form" onSubmit={this.handleSubmit}>
+        {this.renderSubjectEditor()}
+        {this.renderBodyEditor()}
 
         {this.renderErrors('base')}
         <button className="btn btn-success" onClick={this.submitForm}>Save</button>
@@ -38,40 +41,11 @@ class CompilationEmailForm extends Component {
       </form>
     );
   }
-  renderSubjectFormGroup() {
-    return (<h3 contentEditable="true" className="editable" ref="subject" onChange={this.handleChange}>
-      {this.props.email.subject}
-    </h3>);
-
-    // return (
-    //   <div className="form-group">
-    //     <label htmlFor="email-subject">Subject</label>
-    //     <input
-    //       ref="subject"
-    //       className="form-control"
-    //       type="text"
-    //       id="email-subject"
-    //       defaultValue={this.props.email.subject}
-    //     />
-    //   </div>
-    // );
+  renderSubjectEditor() {
+    return <h3 className="editable" contentEditable="true" handleChange={this.handleSubjectChange}>{this.state.subject}</h3>;
   }
-  renderTextFormGroup() {
-    return (<p contentEditable="true" className="editable" ref="text" onChange={this.handleChange}>
-      {this.props.email.text}
-    </p>);
-
-    // return (
-    //   <div className="form-group">
-    //     <label htmlFor="email-text">Subject</label>
-    //     <textarea
-    //       ref="text"
-    //       className="form-control"
-    //       id="email-text"
-    //       defaultValue={this.props.email.text}
-    //     ></textarea>
-    //   </div>
-    // );
+  renderBodyEditor() {
+    return <ReactQuill className="editable" toolbar={false} styles={false} value={this.state.body} onChange={this.handleBodyChange} />;
   }
   renderErrors(type) {
     if (this.props.email.errors) {

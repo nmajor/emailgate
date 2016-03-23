@@ -8,8 +8,8 @@ import LoginContainer from './container/LoginContainer';
 import NewAccountContainer from './container/NewAccountContainer';
 import EditAccountContainer from './container/EditAccountContainer';
 import NewCompilationContainer from './container/NewCompilationContainer';
-import CompilationAddEmailsContainer from './container/CompilationAddEmailsContainer';
-import CompilationEditEmailsContainer from './container/CompilationEditEmailsContainer';
+import CompilationEmailsAddContainer from './container/CompilationEmailsAddContainer';
+import CompilationEmailsContainer from './container/CompilationEmailsContainer';
 import DashboardWrapper from './components/DashboardWrapper';
 // import PostContainer from './container/PostContainer';
 import PostDetailView from './container/PostDetailView';
@@ -25,8 +25,8 @@ const routes = (
     <Route path="/accounts/new" component={NewAccountContainer}/>
     <Route path="/accounts/:id/edit" component={EditAccountContainer}/>
     <Route path="/compilations/new" component={NewCompilationContainer}/>
-    <Route path="/compilations/:id/add-emails" component={CompilationAddEmailsContainer}/>
-    <Route path="/compilations/:id/edit-emails" component={CompilationEditEmailsContainer}/>
+    <Route path="/compilations/:id/emails/add" component={CompilationEmailsAddContainer}/>
+    <Route path="/compilations/:id/emails" component={CompilationEmailsContainer}/>
     <Route path="/post/:slug" component={PostDetailView}/>
   </Route>
 );
