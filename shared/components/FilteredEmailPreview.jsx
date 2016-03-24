@@ -8,7 +8,9 @@ class FilteredEmailPreview extends Component {
   }
 
   removeEmail() {
-    this.props.removeEmailFromCompilation(this.props.email);
+    if (window.confirm('Are you sure you want to remove this email?')) { // eslint-disable-line no-alert
+      this.props.removeEmailFromCompilation(this.props.email);
+    }
   }
   renderActions() {
     if (this.props.isCompilationEmail) {

@@ -9,7 +9,9 @@ class CompilationEmailNav extends Component {
   removeEmail(e) {
     e.preventDefault();
 
-    this.props.removeEmail();
+    if (window.confirm('Are you sure you want to remove this email?')) { // eslint-disable-line no-alert
+      this.props.removeEmail();
+    }
   }
   renderViewNav() {
     const path = `/compilations/${this.props.email._compilation}/emails/${this.props.email._id}`;
