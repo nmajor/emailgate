@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-class FilteredEmailPreview extends Component {
+class FilteredEmailView extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -28,10 +28,10 @@ class FilteredEmailPreview extends Component {
   }
 }
 
-FilteredEmailPreview.propTypes = {
+FilteredEmailView.propTypes = {
   email: PropTypes.object.isRequired,
   isCompilationEmail: PropTypes.bool.isRequired,
   removeEmailFromCompilation: PropTypes.func,
 };
 
-export default FilteredEmailPreview;
+export default FilteredEmailView;

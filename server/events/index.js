@@ -2,6 +2,9 @@ import Account from '../models/account';
 import User from '../models/user';
 import Compilation from '../models/compilation';
 import Email from '../models/email';
+import { emailPdf } from '../util/pdf';
+import ss from 'socket.io-stream';
+ss.forceBase64 = true;
 
 import _ from 'lodash';
 
@@ -57,9 +60,6 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
       .then((account) => {
-        const ss = require('socket.io-stream');
-        ss.forceBase64 = true;
-
         const resStream = ss.createStream();
         ss(socket).emit('FILTERED_ACCOUNT_EMAILS_STREAM', resStream);
 
@@ -89,7 +89,7 @@ export default (io) => {
       console.log('REMOVE_COMPILATION_EMAIL');
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Email.findOneAndRemove({ _compilation: compilation._id, _id: data.email._id }))
+      .then(compilation => Email.findOneAndRemove({ _compilation: compilation._id, _id: data.emailId }))
       .then((email) => {
         socket.emit('REMOVED_COMPILATION_EMAIL', email);
       });
@@ -107,6 +107,19 @@ export default (io) => {
       })
       .then((email) => {
         socket.emit('UPDATED_COMPILATION_EMAIL', email);
+      });
+    });
+
+    socket.on('GET_COMPILATION_EMAIL_PDF', (data) => {
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
+      .then(email => emailPdf(email))
+      .then((pdfStream) => {
+        const resStream = ss.createStream();
+        ss(socket).emit('COMPILATION_EMAIL_PDF_STREAM', resStream);
+
+        pdfStream.pipe(resStream);
       });
     });
 

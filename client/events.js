@@ -51,3 +51,15 @@ socket.on('UPDATED_COMPILATION_EMAIL', (email) => {
   console.log('event UPDATED_COMPILATION_EMAIL');
   store.dispatch(Actions.updateEmailInCompilationEmails(email));
 });
+
+ss(socket).on('COMPILATION_EMAIL_PDF_STREAM', (pdfStream) => {
+  console.log('event COMPILATION_EMAIL_PDF_STREAM');
+
+  pdfStream.on('data', () => {
+    console.log('chunk');
+  });
+
+  // emailStream.on('end', () => {
+  //   store.dispatch(Actions.setFetchingFilteredAccountEmails(false));
+  // });
+});

@@ -167,7 +167,7 @@ export function removeEmailFromCompilationEmails(compilationId, email) {
   return (dispatch) => {
     dispatch(setPropertyForCompilationEmail(email, 'saving', true));
     dispatch(setPropertyForFilteredAccountEmail(email, 'saving', true));
-    socket.emit('REMOVE_COMPILATION_EMAIL', { compilationId, email });
+    socket.emit('REMOVE_COMPILATION_EMAIL', { compilationId, emailId: email._id });
   };
 }
 
@@ -179,5 +179,12 @@ export function updateCompilationEmail(compilationId, email, newData) {
       emailId: email._id,
       newData,
     });
+  };
+}
+
+export function getCompilationEmailPdf(compilationId, email) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilationEmail(email, 'fetchingPdf', true));
+    socket.emit('GET_COMPILATION_EMAIL_PDF', { compilationId, emailId: email._id });
   };
 }

@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
-import FilteredEmailPreview from '../components/FilteredEmailPreview';
+import FilteredEmailView from '../components/FilteredEmailView';
 import _ from 'lodash';
 
 class FilteredEmailMainContainer extends Component {
@@ -16,7 +16,7 @@ class FilteredEmailMainContainer extends Component {
   }
   render() {
     return (
-      <FilteredEmailPreview
+      <FilteredEmailView
         email={this.props.currentFilteredEmail}
         isCompilationEmail={this.props.compilationEmailMids.indexOf(this.props.currentFilteredEmail.mid) > -1}
         removeEmailFromCompilation={this.removeEmailFromCompilation}

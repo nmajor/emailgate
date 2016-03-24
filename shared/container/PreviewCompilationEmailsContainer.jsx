@@ -3,12 +3,14 @@ import CompilationEmailNav from '../components/CompilationEmailNav';
 import * as Actions from '../redux/actions/index';
 import { connect } from 'react-redux';
 
-class ViewCompilationEmailsContainer extends Component {
+class PreviewCompilationEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
   }
-  removeEmail() {
-    this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, this.props.currentEmail));
+  componentDidMount() {
+    if (!this.props.currentEmail.pdf) {
+      this.props.dispatch(Actions.getCompilationEmailPdf(this.props.compilation._id, this.props.currentEmail));
+    }
   }
   renderPreview() {
     if (this.props.currentEmail) {
@@ -26,11 +28,11 @@ class ViewCompilationEmailsContainer extends Component {
   }
 }
 
-ViewCompilationEmailsContainer.propTypes = {
+PreviewCompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   currentEmail: PropTypes.object.isRequired,
   params: PropTypes.object,
 };
 
-export default connect()(ViewCompilationEmailsContainer);
+export default connect()(PreviewCompilationEmailsContainer);
