@@ -11,6 +11,9 @@ export function getCompilations(req, res) {
   Compilation.find({ _user: req.user._id })
   .then((compilations) => {
     res.json(compilations);
+  })
+  .catch((err) => {
+    console.log(`Error happened. ${err.message}`);
   });
 }
 

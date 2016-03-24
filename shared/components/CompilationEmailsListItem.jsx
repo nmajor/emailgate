@@ -7,19 +7,31 @@ class CompilationEmailsListItem extends Component {
     super(props, context);
   }
   renderSaving() {
+    return (
+      <span className="selectable selected">
+        <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+      </span>
+    );
+  }
+  renderSelected() {
+    return (
+      <span className="selectable selected">
+        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
+      </span>
+    );
+  }
+  renderIcon() {
     if (this.props.email.saving) {
-      return (
-        <span className="selectable selected">
-          <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-        </span>
-      );
+      return this.renderSaving();
+    } else if (this.props.selected) {
+      return this.renderSelected();
     }
   }
   render() {
     return (
       <div>
-        <span onClick={this.select} className={`${this.props.selected ? 'text-success' : ''}`}>
-          {this.renderSaving()}
+        <span onClick={this.select}>
+          {this.renderIcon()}
           <Link to={`/compilations/${this.props.email._compilation}/emails/${this.props.email._id}`} className="emails-list-item bottom-bumper">
             {this.props.email.subject}
           </Link>

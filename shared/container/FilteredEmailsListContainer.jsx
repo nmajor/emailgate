@@ -56,6 +56,8 @@ class FilteredEmailsListContainer extends Component {
           deselectAll={this.deselectAll}
           addSelectedToCompilation={this.addSelectedToCompilation}
           canAdd={_.some(this.props.filteredAccountEmails, { selected: true })}
+          compilationEmailsCount={this.props.compilationEmailMids.length}
+          compilationId={this.props.compilation._id}
         />
         <FilteredEmailsList
           emails={this.props.filteredAccountEmails}

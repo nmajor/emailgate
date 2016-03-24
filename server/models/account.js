@@ -3,9 +3,11 @@ import { initImap } from '../util/imap';
 import _ from 'lodash';
 import stream from 'stream';
 import { MailParser } from 'mailparser';
+import shortid from 'shortid';
 
 const AccountSchema = new Schema({
-  _user: { type: Schema.Types.ObjectId, ref: 'User' },
+  _id: { type: String, unique: true, default: shortid.generate },
+  _user: { type: String, ref: 'User' },
   kind: { type: String, default: 'imap' },
   imap: {
     mailboxes: [],

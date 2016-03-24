@@ -30,7 +30,7 @@ class CompilationEmailsAddContainer extends Component {
       className="btn btn-primary btn-xs"
       to={`/compilations/${this.props.params.compilationId}/emails`}
     >
-      Back to Compilation ({this.props.compilationEmails.length})
+      Back to Emails ({this.props.compilationEmails.length})
     </Link>);
   }
 

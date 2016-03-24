@@ -31,7 +31,7 @@ class CompilationEmailsContainer extends Component {
   }
   renderAddLink() {
     return (<Link
-      className="btn btn-primary btn-xs"
+      className="btn btn-primary btn-block bottom-bumper"
       to={`/compilations/${this.props.params.compilationId}/emails/add`}
     >
       Add Emails
@@ -54,9 +54,10 @@ class CompilationEmailsContainer extends Component {
         <Header />
         <CompilationNav compilationId={this.props.params.compilationId} currentPage="emails" />
         <div className="container">
-          <h1>Compilation Emails ({this.props.compilationEmails.length}) {this.renderAddLink()}</h1>
+          <h1>Compilation Emails ({this.props.compilationEmails.length})</h1>
           <div className="row">
             <div className="col-md-3">
+              {this.renderAddLink()}
               <CompilationEmailsListContainer currentEmailId={this.props.params.emailId} compilation={this.compilation} />
             </div>
             <div className="col-md-9">

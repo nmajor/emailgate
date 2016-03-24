@@ -1,7 +1,9 @@
 import Mongoose, { Schema } from 'mongoose';
+import shortid from 'shortid';
 
 const EmailSchema = new Schema({
-  _compilation: { type: Schema.Types.ObjectId, ref: 'User' },
+  _id: { type: String, unique: true, default: shortid.generate },
+  _compilation: { type: String, ref: 'User' },
   date: Date,
   mid: String,
   to: [],

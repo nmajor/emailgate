@@ -24,7 +24,7 @@ class CompilationEmailForm extends Component {
     });
   }
   handleSubjectChange(event) {
-    this.setState({ subject: event.target.value });
+    this.setState({ subject: event.target.innerHTML });
   }
   handleBodyChange(newBody) {
     this.setState({ body: newBody });
@@ -36,13 +36,13 @@ class CompilationEmailForm extends Component {
         {this.renderBodyEditor()}
 
         {this.renderErrors('base')}
-        <button className="btn btn-success" onClick={this.submitForm}>Save</button>
-        <span className="left-bumper">{this.renderSaving()}</span>
+        <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
+        <span className="left-bumper top-bumper">{this.renderSaving()}</span>
       </form>
     );
   }
   renderSubjectEditor() {
-    return <h3 className="editable" contentEditable="true" handleChange={this.handleSubjectChange}>{this.state.subject}</h3>;
+    return <h3 className="editable" contentEditable onBlur={this.handleSubjectChange}>{this.state.subject}</h3>;
   }
   renderBodyEditor() {
     return <ReactQuill className="editable" toolbar={false} styles={false} value={this.state.body} onChange={this.handleBodyChange} />;
