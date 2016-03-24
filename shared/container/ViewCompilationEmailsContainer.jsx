@@ -1,37 +1,28 @@
 import React, { PropTypes, Component } from 'react';
-import CompilationEmailNav from '../components/CompilationEmailNav';
-import CompilationEmailPreview from '../components/CompilationEmailPreview';
-import * as Actions from '../redux/actions/index';
+import CompilationEmailNavContainer from './CompilationEmailNavContainer';
+import CompilationEmailView from '../components/CompilationEmailView';
 import { connect } from 'react-redux';
 
 class ViewCompilationEmailsContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
-  removeEmail() {
-    this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, this.props.currentEmail));
-  }
-  renderPreview() {
+  renderView() {
     if (this.props.currentEmail) {
       return (
         <div>
-          <CompilationEmailNav email={this.props.currentEmail} currentPage="view" removeEmail={this.removeEmail} />
-          <CompilationEmailPreview email={this.props.currentEmail} />
+          <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} currentPage="view" />
+          <CompilationEmailView email={this.props.currentEmail} />
         </div>
       );
     }
   }
 
   render() {
-    return <div>{this.renderPreview()}</div>;
+    return <div>{this.renderView()}</div>;
   }
 }
 
 ViewCompilationEmailsContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   currentEmail: PropTypes.object.isRequired,
-  params: PropTypes.object,
 };
 
 export default connect()(ViewCompilationEmailsContainer);

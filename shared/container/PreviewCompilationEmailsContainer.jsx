@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
-import CompilationEmailNav from '../components/CompilationEmailNav';
-import * as Actions from '../redux/actions/index';
+import CompilationEmailNavContainer from './CompilationEmailNavContainer';
 import { connect } from 'react-redux';
+import * as Actions from '../redux/actions/index';
 
 class PreviewCompilationEmailsContainer extends Component {
   constructor(props, context) {
@@ -16,7 +16,7 @@ class PreviewCompilationEmailsContainer extends Component {
     if (this.props.currentEmail) {
       return (
         <div>
-          <CompilationEmailNav email={this.props.currentEmail} currentPage="preview" removeEmail={this.removeEmail} />
+          <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} currentPage="preview" />
           PDF Preview here
         </div>
       );

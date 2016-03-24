@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import CompilationEmailNav from '../components/CompilationEmailNav';
+import CompilationEmailNavContainer from './CompilationEmailNavContainer';
 import CompilationEmailFormContainer from './CompilationEmailFormContainer';
 import * as Actions from '../redux/actions/index';
 import { connect } from 'react-redux';
@@ -15,7 +15,7 @@ class EditCompilationEmailsContainer extends Component {
     if (this.props.currentEmail) {
       return (
         <div>
-          <CompilationEmailNav email={this.props.currentEmail} currentPage="edit" removeEmail={this.removeEmail} />
+          <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} currentPage="edit" />
           <CompilationEmailFormContainer compilation={this.props.compilation} email={this.props.currentEmail} />
         </div>
       );

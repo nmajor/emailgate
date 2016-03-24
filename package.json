@@ -38,6 +38,7 @@
     "express-session": "^1.13.0",
     "fs": "0.0.2",
     "history": "^1.17.0",
+    "html-pdf": "^2.0.1",
     "imap": "^0.8.16",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.6.1",
