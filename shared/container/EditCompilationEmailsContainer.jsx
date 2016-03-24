@@ -13,6 +13,8 @@ class EditCompilationEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.removeEmail = this.removeEmail.bind(this);
+
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.compilationId }) || {};
 
     if (this.props.compilations.length < 1) {
@@ -24,6 +26,9 @@ class EditCompilationEmailsContainer extends Component {
     }
 
     this.currentEmail = _.find(this.props.compilationEmails, { _id: this.props.params.emailId });
+  }
+  removeEmail() {
+    this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.compilation._id, this.currentEmail));
   }
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
@@ -41,7 +46,7 @@ class EditCompilationEmailsContainer extends Component {
     if (this.currentEmail) {
       return (
         <div>
-          <CompilationEmailNav email={this.currentEmail} currentPage="edit" />
+          <CompilationEmailNav email={this.currentEmail} currentPage="edit" removeEmail={this.removeEmail} />
           <CompilationEmailFormContainer compilation={this.compilation} email={this.currentEmail} />
         </div>
       );

@@ -4,6 +4,12 @@ import { Link } from 'react-router';
 class CompilationEmailNav extends Component {
   constructor(props, context) {
     super(props, context);
+    this.removeEmail = this.removeEmail.bind(this);
+  }
+  removeEmail(e) {
+    e.preventDefault();
+
+    this.props.removeEmail();
   }
   renderViewNav() {
     const path = `/compilations/${this.props.email._compilation}/emails/${this.props.email._id}`;
@@ -24,6 +30,13 @@ class CompilationEmailNav extends Component {
       </li>
     );
   }
+  renderRemoveAction() {
+    return (
+      <li role="presentation">
+        <a className="action text-danger" onClick={this.removeEmail}>Remove</a>
+      </li>
+    );
+  }
 
   render() {
     return (
@@ -32,6 +45,7 @@ class CompilationEmailNav extends Component {
           {this.renderViewNav()}
           {this.renderEditNav()}
           {this.renderPreviewNav()}
+          {this.renderRemoveAction()}
         </ul>
       </div>
     );
@@ -41,6 +55,7 @@ class CompilationEmailNav extends Component {
 CompilationEmailNav.propTypes = {
   email: PropTypes.object.isRequired,
   currentPage: PropTypes.string.isRequired,
+  removeEmail: PropTypes.func.isRequired,
 };
 
 export default CompilationEmailNav;

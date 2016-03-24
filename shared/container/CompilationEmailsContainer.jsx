@@ -13,6 +13,8 @@ class CompilationEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.removeEmail = this.removeEmail.bind(this);
+
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.compilationId }) || {};
 
     if (this.props.compilations.length < 1) {
@@ -29,6 +31,9 @@ class CompilationEmailsContainer extends Component {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
     this.currentEmail = _.find(nextProps.compilationEmails, { _id: nextProps.params.emailId });
   }
+  removeEmail() {
+    this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.compilation._id, this.currentEmail));
+  }
   renderAddLink() {
     return (<Link
       className="btn btn-primary btn-block bottom-bumper"
@@ -41,7 +46,7 @@ class CompilationEmailsContainer extends Component {
     if (this.currentEmail) {
       return (
         <div>
-          <CompilationEmailNav email={this.currentEmail} currentPage="view" />
+          <CompilationEmailNav email={this.currentEmail} currentPage="view" removeEmail={this.removeEmail} />
           <CompilationEmailPreview email={this.currentEmail} />
         </div>
       );
