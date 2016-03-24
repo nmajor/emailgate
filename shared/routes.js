@@ -9,13 +9,15 @@ import NewAccountContainer from './container/NewAccountContainer';
 import EditAccountContainer from './container/EditAccountContainer';
 import NewCompilationContainer from './container/NewCompilationContainer';
 import AddCompilationEmailsContainer from './container/AddCompilationEmailsContainer';
+import ViewCompilationEmailsContainer from './container/ViewCompilationEmailsContainer';
 import EditCompilationEmailsContainer from './container/EditCompilationEmailsContainer';
+import PreviewCompilationEmailsContainer from './container/PreviewCompilationEmailsContainer';
 import CompilationEmailsContainer from './container/CompilationEmailsContainer';
-import DashboardWrapper from './components/DashboardWrapper';
-// import PostContainer from './container/PostContainer';
 import PostDetailView from './container/PostDetailView';
+
 // components
 import Home from './components/Home';
+import DashboardWrapper from './components/DashboardWrapper';
 
 const routes = (
   <Route path="/" component={App} >
@@ -27,9 +29,12 @@ const routes = (
     <Route path="/accounts/:id/edit" component={EditAccountContainer}/>
     <Route path="/compilations/new" component={NewCompilationContainer}/>
     <Route path="/compilations/:compilationId/emails/add" component={AddCompilationEmailsContainer}/>
-    <Route path="/compilations/:compilationId/emails" component={CompilationEmailsContainer}/>
-    <Route path="/compilations/:compilationId/emails/:emailId" component={CompilationEmailsContainer}/>
-    <Route path="/compilations/:compilationId/emails/:emailId/edit" component={EditCompilationEmailsContainer}/>
+    <Route path="/compilations/:compilationId/emails" component={CompilationEmailsContainer} />
+    <Route component={CompilationEmailsContainer}>
+      <Route path="/compilations/:compilationId/emails/:emailId" component={ViewCompilationEmailsContainer}/>
+      <Route path="/compilations/:compilationId/emails/:emailId/edit" component={EditCompilationEmailsContainer}/>
+      <Route path="/compilations/:compilationId/emails/:emailId/preview" component={PreviewCompilationEmailsContainer}/>
+    </Route>
     <Route path="/post/:slug" component={PostDetailView}/>
   </Route>
 );

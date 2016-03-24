@@ -1,9 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
 import CompilationNav from '../components/CompilationNav';
-import CompilationEmailNav from '../components/CompilationEmailNav';
 import CompilationEmailsListContainer from './CompilationEmailsListContainer';
-import CompilationEmailPreview from '../components/CompilationEmailPreview';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
@@ -42,14 +40,11 @@ class CompilationEmailsContainer extends Component {
       Add Emails
     </Link>);
   }
-  renderPreview() {
-    if (this.currentEmail) {
-      return (
-        <div>
-          <CompilationEmailNav email={this.currentEmail} currentPage="view" removeEmail={this.removeEmail} />
-          <CompilationEmailPreview email={this.currentEmail} />
-        </div>
-      );
+  renderChildren() {
+    if (this.props.children) {
+      return React.Children.map(this.props.children, (child) => {
+        return React.cloneElement(child, { compilation: this.compilation, currentEmail: this.currentEmail });
+      });
     }
   }
 
@@ -66,7 +61,7 @@ class CompilationEmailsContainer extends Component {
               <CompilationEmailsListContainer currentEmailId={this.props.params.emailId} compilation={this.compilation} />
             </div>
             <div className="col-md-9">
-              {this.renderPreview()}
+              { this.renderChildren() }
             </div>
           </div>
         </div>
@@ -98,6 +93,7 @@ CompilationEmailsContainer.contextTypes = {
 
 CompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  children: PropTypes.object.isRequired,
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
   editingCurrentCompilationEmail: PropTypes.bool.isRequired,

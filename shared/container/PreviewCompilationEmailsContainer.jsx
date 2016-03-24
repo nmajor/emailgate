@@ -1,10 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import CompilationEmailNav from '../components/CompilationEmailNav';
-import CompilationEmailFormContainer from './CompilationEmailFormContainer';
 import * as Actions from '../redux/actions/index';
 import { connect } from 'react-redux';
 
-class EditCompilationEmailsContainer extends Component {
+class ViewCompilationEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
   }
@@ -15,8 +14,8 @@ class EditCompilationEmailsContainer extends Component {
     if (this.props.currentEmail) {
       return (
         <div>
-          <CompilationEmailNav email={this.props.currentEmail} currentPage="edit" removeEmail={this.removeEmail} />
-          <CompilationEmailFormContainer compilation={this.props.compilation} email={this.props.currentEmail} />
+          <CompilationEmailNav email={this.props.currentEmail} currentPage="preview" removeEmail={this.removeEmail} />
+          PDF Preview here
         </div>
       );
     }
@@ -27,11 +26,11 @@ class EditCompilationEmailsContainer extends Component {
   }
 }
 
-EditCompilationEmailsContainer.propTypes = {
+ViewCompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   currentEmail: PropTypes.object.isRequired,
   params: PropTypes.object,
 };
 
-export default connect()(EditCompilationEmailsContainer);
+export default connect()(ViewCompilationEmailsContainer);
