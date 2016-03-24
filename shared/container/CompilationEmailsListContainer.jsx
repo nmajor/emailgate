@@ -6,20 +6,19 @@ import { connect } from 'react-redux';
 class CompilationEmailsListContainer extends Component {
   constructor(props, context) {
     super(props, context);
-    this.setCurrentCompilationEmail = this.setCurrentCompilationEmail.bind(this);
+    // this.setCurrentCompilationEmail = this.setCurrentCompilationEmail.bind(this);
   }
 
-  setCurrentCompilationEmail(email) {
-    this.props.dispatch(Actions.setEditingCurrentCompilationEmail(false));
-    this.props.dispatch(Actions.setCurrentCompilationEmailId(email._id));
-  }
+  // setCurrentCompilationEmail(email) {
+  //   this.props.dispatch(Actions.setEditingCurrentCompilationEmail(false));
+  //   this.props.dispatch(Actions.setCurrentCompilationEmailId(email._id));
+  // }
 
   render() {
     return (
       <CompilationEmailsList
         emails={this.props.compilationEmails}
-        selectedEmailId={this.props.currentCompilationEmailId}
-        setCurrentCompilationEmail={this.setCurrentCompilationEmail}
+        currentEmailId={this.props.currentEmailId}
       />
     );
   }
@@ -28,7 +27,6 @@ class CompilationEmailsListContainer extends Component {
 function mapStateToProps(store) {
   return {
     compilationEmails: store.compilationEmails,
-    currentCompilationEmailId: store.currentCompilationEmailId,
   };
 }
 
@@ -36,7 +34,7 @@ CompilationEmailsListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array,
-  currentCompilationEmailId: PropTypes.string,
+  currentEmailId: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(CompilationEmailsListContainer);

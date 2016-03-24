@@ -8,7 +8,8 @@ import LoginContainer from './container/LoginContainer';
 import NewAccountContainer from './container/NewAccountContainer';
 import EditAccountContainer from './container/EditAccountContainer';
 import NewCompilationContainer from './container/NewCompilationContainer';
-import CompilationEmailsAddContainer from './container/CompilationEmailsAddContainer';
+import AddCompilationEmailsContainer from './container/AddCompilationEmailsContainer';
+import EditCompilationEmailsContainer from './container/EditCompilationEmailsContainer';
 import CompilationEmailsContainer from './container/CompilationEmailsContainer';
 import DashboardWrapper from './components/DashboardWrapper';
 // import PostContainer from './container/PostContainer';
@@ -25,8 +26,10 @@ const routes = (
     <Route path="/accounts/new" component={NewAccountContainer}/>
     <Route path="/accounts/:id/edit" component={EditAccountContainer}/>
     <Route path="/compilations/new" component={NewCompilationContainer}/>
-    <Route path="/compilations/:id/emails/add" component={CompilationEmailsAddContainer}/>
-    <Route path="/compilations/:id/emails" component={CompilationEmailsContainer}/>
+    <Route path="/compilations/:compilationId/emails/add" component={AddCompilationEmailsContainer}/>
+    <Route path="/compilations/:compilationId/emails" component={CompilationEmailsContainer}/>
+    <Route path="/compilations/:compilationId/emails/:emailId" component={CompilationEmailsContainer}/>
+    <Route path="/compilations/:compilationId/emails/:emailId/edit" component={EditCompilationEmailsContainer}/>
     <Route path="/post/:slug" component={PostDetailView}/>
   </Route>
 );

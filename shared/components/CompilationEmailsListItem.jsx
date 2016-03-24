@@ -1,13 +1,10 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import moment from 'moment';
 
 class CompilationEmailsListItem extends Component {
   constructor(props, context) {
     super(props, context);
-    this.select = this.select.bind(this);
-  }
-  select() {
-    this.props.selectEmail(this.props.email);
   }
   renderSaving() {
     if (this.props.email.saving) {
@@ -20,10 +17,12 @@ class CompilationEmailsListItem extends Component {
   }
   render() {
     return (
-      <div className="emails-list-item bottom-bumper">
+      <div>
         <span onClick={this.select} className={`${this.props.selected ? 'text-success' : ''}`}>
           {this.renderSaving()}
-          {this.props.email.subject}
+          <Link to={`/compilations/${this.props.email._compilation}/emails/${this.props.email._id}`} className="emails-list-item bottom-bumper">
+            {this.props.email.subject}
+          </Link>
           <br />
           <span className="text-muted">{moment(this.props.email.date).format('LL')}</span>
         </span>
@@ -35,7 +34,6 @@ class CompilationEmailsListItem extends Component {
 CompilationEmailsListItem.propTypes = {
   email: PropTypes.object.isRequired,
   selected: PropTypes.bool,
-  selectEmail: PropTypes.func.isRequired,
 };
 
 export default CompilationEmailsListItem;

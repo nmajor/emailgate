@@ -3,13 +3,13 @@ import Header from '../components/Header';
 import CompilationNav from '../components/CompilationNav';
 import CompilationEmailNav from '../components/CompilationEmailNav';
 import CompilationEmailsListContainer from './CompilationEmailsListContainer';
-import CompilationEmailPreview from '../components/CompilationEmailPreview';
+import CompilationEmailFormContainer from './CompilationEmailFormContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
 import { Link } from 'react-router';
 
-class CompilationEmailsContainer extends Component {
+class EditCompilationEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -37,12 +37,12 @@ class CompilationEmailsContainer extends Component {
       Add Emails
     </Link>);
   }
-  renderPreview() {
+  renderForm() {
     if (this.currentEmail) {
       return (
         <div>
-          <CompilationEmailNav email={this.currentEmail} currentPage="view" />
-          <CompilationEmailPreview email={this.currentEmail} />
+          <CompilationEmailNav email={this.currentEmail} currentPage="edit" />
+          <CompilationEmailFormContainer compilation={this.compilation} email={this.currentEmail} />
         </div>
       );
     }
@@ -60,7 +60,7 @@ class CompilationEmailsContainer extends Component {
               <CompilationEmailsListContainer currentEmailId={this.props.params.emailId} compilation={this.compilation} />
             </div>
             <div className="col-md-9">
-              {this.renderPreview()}
+              {this.renderForm()}
             </div>
           </div>
         </div>
@@ -69,7 +69,7 @@ class CompilationEmailsContainer extends Component {
   }
 }
 
-CompilationEmailsContainer.need = [
+EditCompilationEmailsContainer.need = [
   (params, cookie) => {
     return Actions.getCompilations.bind(null, cookie)();
   },
@@ -82,20 +82,18 @@ function mapStateToProps(store) {
   return {
     compilations: store.compilations,
     compilationEmails: store.compilationEmails,
-    editingCurrentCompilationEmail: store.editingCurrentCompilationEmail,
   };
 }
 
-CompilationEmailsContainer.contextTypes = {
+EditCompilationEmailsContainer.contextTypes = {
   router: PropTypes.object.isRequired,
 };
 
-CompilationEmailsContainer.propTypes = {
+EditCompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
-  editingCurrentCompilationEmail: PropTypes.bool.isRequired,
   params: PropTypes.object,
 };
 
-export default connect(mapStateToProps)(CompilationEmailsContainer);
+export default connect(mapStateToProps)(EditCompilationEmailsContainer);
