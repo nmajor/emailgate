@@ -111,15 +111,18 @@ export default (io) => {
     });
 
     socket.on('GET_COMPILATION_EMAIL_PDF', (data) => {
+      console.log('GET_COMPILATION_EMAIL_PDF');
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
-      .then(email => emailPdf(email))
-      .then((pdfStream) => {
-        const resStream = ss.createStream();
-        ss(socket).emit('COMPILATION_EMAIL_PDF_STREAM', resStream);
+      .then((email) => {
+        emailPdf(email)
+        .then((pdfStream) => {
+          const resStream = ss.createStream();
+          ss(socket).emit('COMPILATION_EMAIL_PDF_STREAM', resStream, { email: email.toJSON() });
 
-        pdfStream.pipe(resStream);
+          pdfStream.pipe(resStream);
+        });
       });
     });
 

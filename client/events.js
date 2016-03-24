@@ -52,14 +52,15 @@ socket.on('UPDATED_COMPILATION_EMAIL', (email) => {
   store.dispatch(Actions.updateEmailInCompilationEmails(email));
 });
 
-ss(socket).on('COMPILATION_EMAIL_PDF_STREAM', (pdfStream) => {
+ss(socket).on('COMPILATION_EMAIL_PDF_STREAM', (pdfStream, data) => {
   console.log('event COMPILATION_EMAIL_PDF_STREAM');
+  const email = data.email;
 
-  pdfStream.on('data', () => {
-    console.log('chunk');
+  const blobStream = require('blob-stream');
+  const pdfBlobStream = pdfStream.pipe(blobStream());
+  pdfBlobStream.on('finish', () => {
+    const pdf = pdfBlobStream.toBlobURL('application/pdf');
+    email.pdf = pdf;
+    store.dispatch(Actions.updateEmailInCompilationEmails(email));
   });
-
-  // emailStream.on('end', () => {
-  //   store.dispatch(Actions.setFetchingFilteredAccountEmails(false));
-  // });
 });

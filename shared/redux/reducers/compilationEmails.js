@@ -26,7 +26,7 @@ const compilationEmails = (state = initialState.compilationEmails, action) => {
     case ActionTypes.SET_PROPERTY_FOR_COMPILATION_EMAIL :
       const propEmailIndex = _.findIndex(state, { _id: action.email._id });
       if (propEmailIndex > -1) {
-        const email = state[propEmailIndex];
+        const email = Object.assign({}, state[propEmailIndex]);
         email[action.prop] = action.val;
         return [
           ...state.slice(0, propEmailIndex),
