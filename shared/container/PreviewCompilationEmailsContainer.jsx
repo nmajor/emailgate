@@ -1,20 +1,13 @@
 import React, { PropTypes, Component } from 'react';
-import CompilationEmailNav from '../components/CompilationEmailNav';
-import * as Actions from '../redux/actions/index';
+import CompilationEmailNavContainer from './CompilationEmailNavContainer';
 import { connect } from 'react-redux';
 
-class ViewCompilationEmailsContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
-  removeEmail() {
-    this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, this.props.currentEmail));
-  }
-  renderPreview() {
+class PdfCompilationEmailContainer extends Component {
+  renderPdf() {
     if (this.props.currentEmail) {
       return (
         <div>
-          <CompilationEmailNav email={this.props.currentEmail} currentPage="preview" removeEmail={this.removeEmail} />
+          <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} currentPage="preview" />
           PDF Preview here
         </div>
       );
@@ -22,15 +15,15 @@ class ViewCompilationEmailsContainer extends Component {
   }
 
   render() {
-    return <div>{this.renderPreview()}</div>;
+    return <div>{this.renderPdf()}</div>;
   }
 }
 
-ViewCompilationEmailsContainer.propTypes = {
+PdfCompilationEmailContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   currentEmail: PropTypes.object.isRequired,
   params: PropTypes.object,
 };
 
-export default connect()(ViewCompilationEmailsContainer);
+export default connect()(PdfCompilationEmailContainer);
