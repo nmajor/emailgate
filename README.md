@@ -24,5 +24,5 @@ https://facebook.github.io/draft-js/
 ### Todo
 
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
-- The saving value of the currentCompilationEmail is not updating in the compilation email form.
 - Sanitize email body text before save.
+- Reconnect the socket after login, registration, and logout.

@@ -16,7 +16,7 @@ class CompilationEmailsListItem extends Component {
   renderSelected() {
     return (
       <span className="selectable selected">
-        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
+        <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
       </span>
     );
   }
