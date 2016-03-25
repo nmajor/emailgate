@@ -24,7 +24,7 @@ class CompilationNav extends Component {
 
   render() {
     return (
-      <div className="accounts-list-container">
+      <div className="compilation-nav">
         <div className="container">
           <ul className="nav nav-pills">
             {this.renderEmailsNav()}

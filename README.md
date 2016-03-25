@@ -21,7 +21,11 @@ https://www.npmjs.com/package/phantom-html-to-pdf
 https://github.com/zenoamaro/react-quill
 https://facebook.github.io/draft-js/
 
-### Todo
+### Todo Short
+
+- Handle the currentFilteredEmail through the url instead of state.
+
+### Todo Long
 
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
 - Sanitize email body text before save.

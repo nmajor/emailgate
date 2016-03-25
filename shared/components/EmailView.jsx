@@ -1,11 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import * as sharedHelpers from '../helpers';
 
-class CompilationEmailView extends Component {
+class EmailView extends Component {
   renderView() {
     const emailParts = sharedHelpers.pageEmailParts(this.props.email);
 
-    return (<div>
+    return (<div className="email-view">
       {emailParts.subject}
       {emailParts.date}
       {emailParts.from}
@@ -17,15 +17,13 @@ class CompilationEmailView extends Component {
     return (
       <div>
         {this.renderView()}
-        <h3>{this.props.email.subject}</h3>
-        <div dangerouslySetInnerHTML={{ __html: this.props.email.body }} />
       </div>
     );
   }
 }
 
-CompilationEmailView.propTypes = {
+EmailView.propTypes = {
   email: PropTypes.object.isRequired,
 };
 
-export default CompilationEmailView;
+export default EmailView;

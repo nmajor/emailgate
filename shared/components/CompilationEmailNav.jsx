@@ -42,7 +42,7 @@ class CompilationEmailNav extends Component {
 
   render() {
     return (
-      <div className="accounts-list-container">
+      <div className="compilation-email-nav bottom-bumper">
         <ul className="nav nav-pills">
           {this.renderViewNav()}
           {this.renderEditNav()}

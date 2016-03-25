@@ -9,17 +9,23 @@ class FilteredEmailMainContainer extends Component {
     super(props, context);
 
     this.removeEmailFromCompilation = this.removeEmailFromCompilation.bind(this);
+    this.addEmailToCompilation = this.addEmailToCompilation.bind(this);
   }
   removeEmailFromCompilation(email) {
     const compilationEmail = _.find(this.props.compilationEmails, { mid: email.mid });
     this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, compilationEmail));
   }
+  addEmailToCompilation(email) {
+    this.props.dispatch(Actions.addEmailsToCompilationEmails(this.props.compilation._id, [email]));
+  }
   render() {
     return (
       <FilteredEmailView
         email={this.props.currentFilteredEmail}
-        isCompilationEmail={this.props.compilationEmailMids.indexOf(this.props.currentFilteredEmail.mid) > -1}
+        compilation={this.props.compilation}
+        compilationEmail={_.find(this.props.compilationEmails, { mid: this.props.currentFilteredEmail.mid })}
         removeEmailFromCompilation={this.removeEmailFromCompilation}
+        addEmailToCompilation={this.addEmailToCompilation}
       />
     );
   }
