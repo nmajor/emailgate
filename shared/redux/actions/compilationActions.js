@@ -32,6 +32,13 @@ export function setCompilationEmails(emails) {
   };
 }
 
+export function setCompilationPages(pages) {
+  return {
+    type: ActionTypes.SET_COMPILATION_PAGES,
+    pages,
+  };
+}
+
 export function addCompilationEmail(email) {
   return {
     type: ActionTypes.ADD_COMPILATION_EMAIL,
@@ -149,6 +156,37 @@ export function getCompilationEmails(compilationId, cookie) {
       }
 
       dispatch(setCompilationEmails(res));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
+export function getCompilationPages(compilationId, cookie) {
+  return (dispatch) => {
+    const fetchOptions = {};
+
+    if (cookie) {
+      fetchOptions.headers = { cookie };
+    } else {
+      fetchOptions.credentials = 'include';
+    }
+
+    return fetch(`${baseURL}/api/compilations/${compilationId}/pages`, fetchOptions)
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(setCompilationPages(res));
     })
     .catch((err) => {
       console.log(err);

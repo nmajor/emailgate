@@ -3,12 +3,12 @@ import CompilationEmailNavContainer from './CompilationEmailNavContainer';
 import EmailView from '../components/EmailView';
 import { connect } from 'react-redux';
 
-class ViewCompilationEmailsContainer extends Component {
+class ViewCompilationEmailContainer extends Component {
   renderView() {
     if (this.props.currentEmail) {
       return (
         <div>
-          <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} currentPage="view" />
+          <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} active="view" />
           <EmailView email={this.props.currentEmail} />
         </div>
       );
@@ -20,9 +20,9 @@ class ViewCompilationEmailsContainer extends Component {
   }
 }
 
-ViewCompilationEmailsContainer.propTypes = {
+ViewCompilationEmailContainer.propTypes = {
   compilation: PropTypes.object.isRequired,
   currentEmail: PropTypes.object.isRequired,
 };
 
-export default connect()(ViewCompilationEmailsContainer);
+export default connect()(ViewCompilationEmailContainer);

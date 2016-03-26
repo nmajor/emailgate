@@ -9,6 +9,7 @@ import user from './user';
 import accounts from './accounts';
 import compilations from './compilations';
 import compilationEmails from './compilationEmails';
+import compilationPages from './compilationPages';
 import currentAccountId from './currentAccountId';
 import filteredAccountEmails from './filteredAccountEmails';
 import filteredAccountEmailsCount from './filteredAccountEmailsCount';
@@ -33,16 +34,6 @@ const currentCompilationEmailId = (state = initialState.currentCompilationEmailI
   }
 };
 
-const editingCurrentCompilationEmail = (state = initialState.editingCurrentCompilationEmail, action) => {
-  switch (action.type) {
-    case ActionTypes.SET_EDITING_CURRENT_COMPILATION_EMAIL :
-      return action.val;
-
-    default:
-      return state;
-  }
-};
-
 export default combineReducers({
   fetchingFilteredAccountEmailsCount: fetchings.fetchingFilteredAccountEmailsCount,
   fetchingFilteredAccountEmails: fetchings.fetchingFilteredAccountEmails,
@@ -50,10 +41,10 @@ export default combineReducers({
   accounts,
   compilations,
   compilationEmails,
+  compilationPages,
   currentAccountId,
   filteredAccountEmails,
   filteredAccountEmailsCount,
   currentFilteredEmailMid,
   currentCompilationEmailId,
-  editingCurrentCompilationEmail,
 });

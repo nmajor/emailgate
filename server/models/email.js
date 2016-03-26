@@ -3,7 +3,7 @@ import shortid from 'shortid';
 
 const EmailSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
-  _compilation: { type: String, ref: 'User' },
+  _compilation: { type: String, ref: 'Compilation' },
   date: Date,
   mid: String,
   to: [],

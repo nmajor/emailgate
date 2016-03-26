@@ -22,10 +22,3 @@ export function setCurrentCompilationEmailId(id) {
     id,
   };
 }
-
-export function setEditingCurrentCompilationEmail(val) {
-  return {
-    type: ActionTypes.SET_EDITING_CURRENT_COMPILATION_EMAIL,
-    val,
-  };
-}

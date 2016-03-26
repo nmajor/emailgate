@@ -11,7 +11,7 @@ class CompilationEmailNavContainer extends Component {
     this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, this.props.currentEmail));
   }
   render() {
-    return <CompilationEmailNav email={this.props.currentEmail} currentPage={this.props.currentPage} removeEmail={this.removeEmail} />;
+    return <CompilationEmailNav email={this.props.currentEmail} active={this.props.active} removeEmail={this.removeEmail} />;
   }
 }
 
@@ -19,7 +19,7 @@ CompilationEmailNavContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   currentEmail: PropTypes.object.isRequired,
-  currentPage: PropTypes.string.isRequired,
+  active: PropTypes.string.isRequired,
 };
 
 export default connect()(CompilationEmailNavContainer);

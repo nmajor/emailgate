@@ -4,6 +4,7 @@ const router = express.Router(); // eslint-disable-line new-cap
 import * as AccountController from '../controllers/account.controller';
 import * as CompilationController from '../controllers/compilation.controller';
 import * as EmailController from '../controllers/email.controller';
+import * as PageController from '../controllers/page.controller';
 
 import User from '../models/user';
 
@@ -65,8 +66,8 @@ router.get('/compilations/:id', ensureAuthenticated, CompilationController.findO
 router.post('/compilations', ensureAuthenticated, CompilationController.createCompilation);
 router.put('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
 router.patch('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
-// router.patch('/compilations/:id/add-emails', ensureAuthenticated, CompilationController.addEmailsToCompilation);
 
 router.get('/compilations/:id/emails', ensureAuthenticated, EmailController.getCompilationEmails);
+router.get('/compilations/:id/pages', ensureAuthenticated, PageController.getCompilationPages);
 
 module.exports = router;

@@ -8,8 +8,8 @@ class CompilationNav extends Component {
   renderEmailsNav() {
     return this.renderNavItem('emails', 'Emails');
   }
-  renderPublishNav() {
-    return this.renderNavItem('publish', 'Publish');
+  renderPagesNav() {
+    return this.renderNavItem('pages', 'Pages');
   }
   renderCheckoutNav() {
     return this.renderNavItem('checkout', 'Checkout');
@@ -28,7 +28,7 @@ class CompilationNav extends Component {
         <div className="container">
           <ul className="nav nav-pills">
             {this.renderEmailsNav()}
-            {this.renderPublishNav()}
+            {this.renderPagesNav()}
             {this.renderCheckoutNav()}
           </ul>
         </div>

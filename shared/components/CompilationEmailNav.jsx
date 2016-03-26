@@ -25,9 +25,9 @@ class CompilationEmailNav extends Component {
     const path = `/compilations/${this.props.email._compilation}/emails/${this.props.email._id}/preview`;
     return this.renderNavItem(path, 'preview', 'Preview');
   }
-  renderNavItem(path, page, pageName) {
+  renderNavItem(path, active, pageName) {
     return (
-      <li role="presentation" className={this.props.currentPage === page ? 'active' : ''}>
+      <li role="presentation" className={this.props.active === active ? 'active' : ''}>
         <Link to={path}>{pageName}</Link>
       </li>
     );
@@ -56,47 +56,8 @@ class CompilationEmailNav extends Component {
 
 CompilationEmailNav.propTypes = {
   email: PropTypes.object.isRequired,
-  currentPage: PropTypes.string.isRequired,
+  active: PropTypes.string.isRequired,
   removeEmail: PropTypes.func.isRequired,
 };
 
 export default CompilationEmailNav;
-//
-//
-// import React, { PropTypes, Component } from 'react';
-//
-// class CompilationEmailNav extends Component {
-//   constructor(props, context) {
-//     super(props, context);
-//   }
-//   renderEditAction() {
-//     return <div className="btn btn-warning" onClick={this.setEditing}>edit</div>;
-//   }
-//   renderCancelAction() {
-//     return <div className="btn btn-warning" onClick={this.unsetEditing}>cancel</div>;
-//   }
-//   renderRemoveAction() {
-//     return <div className="btn btn-danger left-bumper" onClick={this.removeEmail}>Remove from compilation</div>;
-//   }
-//   renderActions() {
-//     if (this.props.editing) {
-//       return (<div>
-//         {this.renderCancelAction()}
-//         {this.renderRemoveAction()}
-//       </div>);
-//     }
-//
-//     return this.renderEditAction();
-//   }
-//   render() {
-//     return (<div className="compilation-email-preview-actions">
-//       {this.renderActions()}
-//     </div>);
-//   }
-// }
-//
-// CompilationEmailNav.propTypes = {
-//   email: PropTypes.object.isRequired,
-// };
-//
-// export default CompilationEmailNav;

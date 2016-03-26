@@ -4,7 +4,7 @@ import CompilationEmailPdf from '../components/CompilationEmailPdf';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 
-class PreviewCompilationEmailsContainer extends Component {
+class PreviewCompilationEmailContainer extends Component {
   constructor(props, context) {
     super(props, context);
   }
@@ -18,7 +18,7 @@ class PreviewCompilationEmailsContainer extends Component {
     if (this.props.currentEmail) {
       return (
         <div className="compilation-email-preview">
-          <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} currentPage="preview" />
+          <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} active="preview" />
           <CompilationEmailPdf email={this.props.currentEmail} />
         </div>
       );
@@ -30,11 +30,11 @@ class PreviewCompilationEmailsContainer extends Component {
   }
 }
 
-PreviewCompilationEmailsContainer.propTypes = {
+PreviewCompilationEmailContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   currentEmail: PropTypes.object.isRequired,
   params: PropTypes.object,
 };
 
-export default connect()(PreviewCompilationEmailsContainer);
+export default connect()(PreviewCompilationEmailContainer);

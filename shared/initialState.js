@@ -5,10 +5,10 @@ export default {
   accounts: [],
   compilations: [],
   compilationEmails: [],
+  compilationPages: [],
   currentAccountId: '',
   filteredAccountEmails: [],
   filteredAccountEmailsCount: 0,
   currentFilteredEmailMid: '',
   currentCompilationEmailId: '',
-  editingCurrentCompilationEmail: false,
 };

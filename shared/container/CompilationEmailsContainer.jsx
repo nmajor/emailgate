@@ -26,17 +26,8 @@ class CompilationEmailsContainer extends Component {
     this.currentEmail = _.find(this.props.compilationEmails, { _id: this.props.params.emailId });
   }
   componentWillReceiveProps(nextProps) {
-    // console.log('CompilationEmailsContainer componentWillReceiveProps');
-    // this._compilation = this.compilation;
-    // this._currentEmail = this.currentEmail;
-
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
     this.currentEmail = _.find(nextProps.compilationEmails, { _id: nextProps.params.emailId });
-
-    // if (this._compilation !== this.compilation || this._currentEmail !== this.currentEmail) {
-    //   console.log('force updating');
-    //   this.forceUpdate();
-    // }
   }
   removeEmail() {
     this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.compilation._id, this.currentEmail));
@@ -92,7 +83,6 @@ function mapStateToProps(store) {
   return {
     compilations: store.compilations,
     compilationEmails: store.compilationEmails,
-    editingCurrentCompilationEmail: store.editingCurrentCompilationEmail,
   };
 }
 
@@ -102,10 +92,9 @@ CompilationEmailsContainer.contextTypes = {
 
 CompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.object,
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
-  editingCurrentCompilationEmail: PropTypes.bool.isRequired,
   params: PropTypes.object,
 };
 

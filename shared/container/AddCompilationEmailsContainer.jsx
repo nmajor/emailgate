@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
 
-class CompilationEmailsAddContainer extends Component {
+class AddCompilationEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -49,7 +49,7 @@ class CompilationEmailsAddContainer extends Component {
   }
 }
 
-CompilationEmailsAddContainer.need = [
+AddCompilationEmailsContainer.need = [
   (params, cookie) => {
     return Actions.getCompilations.bind(null, cookie)();
   },
@@ -66,15 +66,15 @@ function mapStateToProps(store) {
   };
 }
 
-CompilationEmailsAddContainer.contextTypes = {
+AddCompilationEmailsContainer.contextTypes = {
   router: PropTypes.object.isRequired,
 };
 
-CompilationEmailsAddContainer.propTypes = {
+AddCompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
   params: PropTypes.object,
 };
 
-export default connect(mapStateToProps)(CompilationEmailsAddContainer);
+export default connect(mapStateToProps)(AddCompilationEmailsContainer);
