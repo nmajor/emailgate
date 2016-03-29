@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactQuill from 'react-quill';
-import * as sharedHelpers from '../helpers';
+import * as emailTemplate from '../templates/email';
 
 class CompilationEmailForm extends Component {
   constructor(props, context) {
@@ -31,15 +31,13 @@ class CompilationEmailForm extends Component {
     this.setState({ body: newBody });
   }
   renderForm() {
-    const emailParts = sharedHelpers.pageEmailParts(this.props.email);
-
     return (
       <form className="email-form" onSubmit={this.handleSubmit}>
         <div className="email-view">
           {this.renderSubjectEditor()}
-          {emailParts.date}
-          {emailParts.from}
-          {emailParts.to}
+          {emailTemplate.renderDate(this.props.email.date)}
+          {emailTemplate.renderFrom(this.props.email.from)}
+          {emailTemplate.renderTo(this.props.email.to)}
           {this.renderBodyEditor()}
         </div>
 
@@ -52,12 +50,12 @@ class CompilationEmailForm extends Component {
   renderSubjectEditor() {
     const subjectInput = <div className="editable" contentEditable onBlur={this.handleSubjectChange}>{this.state.subject}</div>;
 
-    return sharedHelpers.renderSubject(subjectInput);
+    return emailTemplate.renderSubject(subjectInput);
   }
   renderBodyEditor() {
     const bodyInput = <ReactQuill className="editable" toolbar={false} styles={false} value={this.state.body} onChange={this.handleBodyChange} />;
 
-    return sharedHelpers.renderBody(bodyInput);
+    return emailTemplate.renderBody(bodyInput);
   }
   renderErrors(type) {
     if (this.props.email.errors) {

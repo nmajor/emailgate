@@ -62,6 +62,9 @@ CompilationPagesContainer.need = [
   (params, cookie) => {
     return Actions.getCompilationPages.bind(null, params.compilationId, cookie)();
   },
+  (params, cookie) => {
+    return Actions.getCompilationEmails.bind(null, params.compilationId, cookie)();
+  },
 ];
 
 function mapStateToProps(store) {

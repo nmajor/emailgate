@@ -1,16 +1,10 @@
 import React, { PropTypes, Component } from 'react';
-import * as sharedHelpers from '../helpers';
+import * as emailTemplate from '../templates/email';
 
 class EmailView extends Component {
   renderView() {
-    const emailParts = sharedHelpers.pageEmailParts(this.props.email);
-
     return (<div className="email-view">
-      {emailParts.subject}
-      {emailParts.date}
-      {emailParts.from}
-      {emailParts.to}
-      {emailParts.body}
+      {emailTemplate.render(this.props.email)}
     </div>);
   }
   render() {

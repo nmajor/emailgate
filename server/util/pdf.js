@@ -1,9 +1,9 @@
 import pdf from 'html-pdf';
-import * as sharedHelpers from '../../shared/helpers';
+import * as emailTemplate from '../../shared/templates/email';
 
 export function emailPdf(email) {
   return new Promise((resolve) => {
-    const html = sharedHelpers.pageEmailHtml(email);
+    const html = emailTemplate.toString(email);
 
     const options = {
       height: '10.5in',

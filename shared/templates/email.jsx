@@ -87,34 +87,38 @@ export function renderBody(body) {
   return <div style={divStyle}>{body}</div>;
 }
 
-export function pageEmailParts(email) {
+export function render(email) {
   const subject = renderSubject(email.subject);
   const date = renderDate(email.date);
   const from = renderFrom(email.from);
   const to = renderTo(email.to);
   const body = renderBodyDangerously(email.body);
 
-  return {
-    subject,
-    date,
-    from,
-    to,
-    body,
-  };
+  return (<div>
+    {subject}
+    {date}
+    {from}
+    {to}
+    {body}
+  </div>);
 }
 
-export function pageEmailHtml(email) {
-  const emailParts = pageEmailParts(email);
+export function toString(email) {
+  const subject = renderSubject(email.subject);
+  const date = renderDate(email.date);
+  const from = renderFrom(email.from);
+  const to = renderTo(email.to);
+  const body = renderBodyDangerously(email.body);
 
   return `
     <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 
-    ${renderToString(emailParts.subject)}
-    ${renderToString(emailParts.date)}
-    ${renderToString(emailParts.from)}
-    ${renderToString(emailParts.to)}
-    ${renderToString(emailParts.body)}
+    ${renderToString(subject)}
+    ${renderToString(date)}
+    ${renderToString(from)}
+    ${renderToString(to)}
+    ${renderToString(body)}
   `;
 }
 
