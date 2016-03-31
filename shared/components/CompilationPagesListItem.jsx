@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
+import { pageMeta } from '../helpers';
 
 class CompilationPagesListItem extends Component {
   constructor(props, context) {
@@ -32,7 +33,7 @@ class CompilationPagesListItem extends Component {
         <span onClick={this.select}>
           {this.renderIcon()}
           <Link to={`/compilations/${this.props.page._compilation}/pages/${this.props.page._id}`} className=" bottom-bumper">
-            {this.props.page.desc}
+            {pageMeta(this.props.page).desc}
           </Link>
         </span>
       </div>

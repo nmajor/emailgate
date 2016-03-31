@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
+import CompilationHeader from '../components/CompilationHeader';
 import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
@@ -38,6 +39,7 @@ class AddCompilationEmailsContainer extends Component {
     return (
       <div className="edit-account-container">
         <Header />
+        <CompilationHeader compilation={this.compilation} />
         <div className="container">
           <h1>Add Emails to Compilation {this.renderEmailsLink()}</h1>
           <SelectAccountContainer />

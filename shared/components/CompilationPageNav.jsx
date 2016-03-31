@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
+import { pageMeta } from '../helpers';
 
 class CompilationPageNav extends Component {
   constructor(props, context) {
@@ -10,8 +11,10 @@ class CompilationPageNav extends Component {
     return this.renderNavItem(path, 'view', 'View');
   }
   renderEditNav() {
-    const path = `/compilations/${this.props.page._compilation}/pages/${this.props.page._id}/edit`;
-    return this.renderNavItem(path, 'edit', 'Edit');
+    if (pageMeta(this.props.page).editable) {
+      const path = `/compilations/${this.props.page._compilation}/pages/${this.props.page._id}/edit`;
+      return this.renderNavItem(path, 'edit', 'Edit');
+    }
   }
   renderPreviewNav() {
     const path = `/compilations/${this.props.page._compilation}/pages/${this.props.page._id}/preview`;

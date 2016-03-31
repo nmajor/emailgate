@@ -9,14 +9,11 @@ import TableOfContentsTemplate from '../../shared/templates/tableOfContents';
 import _ from 'lodash';
 
 function pageTemplateFactory(page) {
-  console.log('pageTemplateFactory');
-  console.log(page);
   return new Promise((resolve) => {
     switch (page.type) {
       case 'title-page' :
         return Email.find({ _compilation: page._compilation })
         .then((emails) => {
-          console.log('got emails');
           const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
           const firstEmail = sortedEmails[0] || {};
           const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
@@ -60,10 +57,8 @@ export function emailPdf(email) {
 }
 
 export function pagePdf(page) {
-  console.log('page pdf');
   return pageTemplateFactory(page)
   .then((template) => {
-    console.log('hey with template');
     return new Promise((resolve) => {
       const html = template.toString();
 

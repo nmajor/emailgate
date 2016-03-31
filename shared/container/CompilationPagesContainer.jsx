@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
 import CompilationNav from '../components/CompilationNav';
+import CompilationHeader from '../components/CompilationHeader';
 import CompilationPagesListContainer from './CompilationPagesListContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
@@ -38,6 +39,7 @@ class CompilationPagesContainer extends Component {
     return (
       <div className="edit-account-container">
         <Header />
+        <CompilationHeader compilation={this.compilation} />
         <CompilationNav compilationId={this.props.params.compilationId} currentPage="pages" />
         <div className="container">
           <h1>Custom Pages</h1>
