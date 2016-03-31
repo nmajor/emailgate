@@ -149,7 +149,6 @@ export default (io) => {
       .then((page) => {
         pagePdf(page)
         .then((pdfStream) => {
-          console.log('hey pdf stream');
           const resStream = ss.createStream();
           ss(socket).emit('COMPILATION_PAGE_PDF_STREAM', resStream, { page: page.toJSON() });
 

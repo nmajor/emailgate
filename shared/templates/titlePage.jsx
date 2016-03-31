@@ -77,9 +77,7 @@ class TitlePageTemplate {
       <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
       <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 
-      ${renderToString(this.renderTitle(this.content.title))}
-      ${renderToString(this.renderSubtitle(this.content.subtitle))}
-      ${renderToString(this.renderDates())}
+      ${renderToString(this.render())}
     `;
   }
 }

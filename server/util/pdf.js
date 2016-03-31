@@ -24,7 +24,11 @@ function pageTemplateFactory(page) {
       case 'message-page' :
         return resolve(new MessagePageTemplate(page));
       case 'table-of-contents' :
-        return resolve(new TableOfContentsTemplate(page));
+        return Email.find({ _compilation: page._compilation })
+        .then((emails) => {
+          const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+          return resolve(new TableOfContentsTemplate(page, { emails: sortedEmails }));
+        });
       default :
         return resolve(null);
     }

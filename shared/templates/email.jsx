@@ -2,7 +2,7 @@ import moment from 'moment';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
-function mapEmailUser(user, index, array) {
+export function mapEmailUser(user, index, array) {
   let text = `${user.name} - ${user.address}`;
 
   if (!user.name && user.address) {

@@ -1,24 +1,94 @@
 import React from 'react';
-// import { renderToString } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
+import moment from 'moment';
+import _ from 'lodash';
 
-class TitlePageTemplate {
-  constructor(page) {
+class TableOfContentsTemplate {
+  constructor(page, props) {
+    if (this.emails.length > 0) {
+      this.emails = props.emails;
+    } else {
+      this.emails = _.map(_.range(10), (index) => {
+        const date = new Date();
+        date.setDate(date.getDate() + index);
+
+        return {
+          subject: `Example Email Subject ${index + 1}`,
+          date,
+        };
+      });
+    }
+
     this.page = page;
+  }
+  renderEntry(email, index) {
+    const prettyDate = moment(email.date).format('LL');
 
-    this.defaultContent = {
-      title: 'Demo Title',
-      subtitle: 'Demo Subtitle',
+    // Temporary
+    const page = index + 1;
+
+    const entryStyle = {
+      padding: '1px 0',
+      marginBottom: '10px',
+      borderBottom: '1px dotted #000',
     };
+
+    const subjectStyle = {
+      fontFamily: '\'Montserrat\', sans-serif',
+      fontSize: '1em',
+      textAlign: 'left',
+      fontWeight: 'bold',
+    };
+
+    const dateStyle = {
+      fontSize: '0.6em',
+      padding: '0 0 0 10px',
+      fontFamily: '\'Libre Baskerville\', serif',
+    };
+
+    const pageStyle = {
+      textAlign: 'right',
+      fontFamily: '\'Montserrat\', sans-serif',
+      float: 'right',
+    };
+
+    return (
+      <div key={index} style={entryStyle}>
+        <span style={subjectStyle}>{email.subject}</span>
+        <span style={dateStyle}>{prettyDate}</span>
+        <span style={pageStyle}>{page}</span>
+      </div>
+    );
+  }
+  renderEntries() {
+    return this.emails.map(this.renderEntry);
+  }
+  renderPageHeader() {
+    const divStyle = {
+      fontFamily: '\'Montserrat\', sans-serif',
+      textAlign: 'center',
+      marginBottom: '30px',
+      fontSize: '2em',
+    };
+
+    return <div style={divStyle}>Table of Contents</div>;
   }
 
   render() {
-    const content = this.page.content || this.defaultContent;
-
-    return (<div style={{ textAlign: 'center', padding: '100px 0 100px 0' }}>
-      <h1>{content.title}</h1>
-      <h1>{content.subtitle}</h1>
+    return (<div>
+      {this.renderPageHeader()}
+      {this.renderEntries()}
     </div>);
+  }
+
+  toString() {
+    return `
+      <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+      <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+
+      ${renderToString(this.render())}
+    `;
   }
 }
 
-export default TitlePageTemplate;
+export default TableOfContentsTemplate;
