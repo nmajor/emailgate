@@ -67,3 +67,10 @@ export function updateCompilationPage(compilationId, page, newData) {
     });
   };
 }
+
+export function getCompilationPagePdf(compilationId, page) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilationPage(page, 'fetchingPdf', true));
+    socket.emit('GET_COMPILATION_PAGE_PDF', { compilationId, pageId: page._id });
+  };
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-// import { renderToString } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import moment from 'moment';
 
 class TitlePageTemplate {
@@ -70,6 +70,17 @@ class TitlePageTemplate {
       {this.renderSubtitle(subtitleInput)}
       {this.renderDates()}
     </div>);
+  }
+
+  toString() {
+    return `
+      <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+      <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+
+      ${renderToString(this.renderTitle(this.content.title))}
+      ${renderToString(this.renderSubtitle(this.content.subtitle))}
+      ${renderToString(this.renderDates())}
+    `;
   }
 }
 

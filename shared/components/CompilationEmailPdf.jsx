@@ -10,7 +10,7 @@ class CompilationEmailPdf extends Component {
   }
   render() {
     return (
-      <div className="compilations-list-item">
+      <div>
         {this.renderPdf()}
       </div>
     );

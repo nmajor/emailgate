@@ -3,7 +3,7 @@ import User from '../models/user';
 import Compilation from '../models/compilation';
 import Email from '../models/email';
 import Page from '../models/page';
-import { emailPdf } from '../util/pdf';
+import { emailPdf, pagePdf } from '../util/pdf';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
@@ -138,6 +138,23 @@ export default (io) => {
       })
       .then((page) => {
         socket.emit('UPDATED_COMPILATION_PAGE', page);
+      });
+    });
+
+    socket.on('GET_COMPILATION_PAGE_PDF', (data) => {
+      console.log('GET_COMPILATION_PAGE_PDF');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then(compilation => Page.findOne({ _compilation: compilation._id, _id: data.pageId }))
+      .then((page) => {
+        pagePdf(page)
+        .then((pdfStream) => {
+          console.log('hey pdf stream');
+          const resStream = ss.createStream();
+          ss(socket).emit('COMPILATION_PAGE_PDF_STREAM', resStream, { page: page.toJSON() });
+
+          pdfStream.pipe(resStream);
+        });
       });
     });
 
