@@ -26,6 +26,10 @@ https://github.com/mozilla/pdf.js/blob/master/examples/learning/prevnext.html
 ### Todo Short
 
 - Handle the currentFilteredEmail through the url instead of state.
+- Load images in email previews
+- Save the compilation title and subtitle separately to populate the cover and title page with the same data
+- Generate the finalized pdf
+- Fix the pdfs for the title page and message page. There is an extra blank page at the bottom.
 
 ### Todo Long
 

@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 class TableOfContentsTemplate {
   constructor(page, props) {
-    if (this.emails.length > 0) {
+    if (props.emails.length > 0) {
       this.emails = props.emails;
     } else {
       this.emails = _.map(_.range(10), (index) => {
