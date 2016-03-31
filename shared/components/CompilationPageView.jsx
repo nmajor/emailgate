@@ -3,7 +3,7 @@ import React, { PropTypes, Component } from 'react';
 class CompilationPageView extends Component {
   renderTemplate() {
     if (this.props.template) {
-      return this.props.template.render(this.props.page.content);
+      return this.props.template.render();
     }
   }
   render() {

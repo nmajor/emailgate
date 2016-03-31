@@ -24,16 +24,6 @@ const currentFilteredEmailMid = (state = initialState.currentFilteredEmailMid, a
   }
 };
 
-const currentCompilationEmailId = (state = initialState.currentCompilationEmailId, action) => {
-  switch (action.type) {
-    case ActionTypes.SET_CURRENT_COMPILATION_EMAIL_ID :
-      return action.id;
-
-    default:
-      return state;
-  }
-};
-
 export default combineReducers({
   fetchingFilteredAccountEmailsCount: fetchings.fetchingFilteredAccountEmailsCount,
   fetchingFilteredAccountEmails: fetchings.fetchingFilteredAccountEmails,
@@ -46,5 +36,4 @@ export default combineReducers({
   filteredAccountEmails,
   filteredAccountEmailsCount,
   currentFilteredEmailMid,
-  currentCompilationEmailId,
 });

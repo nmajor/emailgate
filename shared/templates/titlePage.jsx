@@ -12,17 +12,66 @@ class TitlePageTemplate {
       title: 'Demo Title',
       subtitle: 'Demo Subtitle',
     };
-  }
 
-  render() {
-    const content = this.page.content || this.defaultContent;
+    this.content = this.page.content || this.defaultContent;
+  }
+  initialFormState() {
+    return {
+      title: null,
+      subtitle: null,
+    };
+  }
+  renderTitle(title) {
+    const divStyle = {
+      fontFamily: '\'Montserrat\', sans-serif',
+      fontSize: '3em',
+      textAlign: 'center',
+      padding: '150px 0 0 0',
+      fontWeight: 'bold',
+    };
+
+    return <div style={divStyle}>{title}</div>;
+  }
+  renderSubtitle(subtitle) {
+    const divStyle = {
+      fontFamily: '\'Libre Baskerville\', serif',
+      fontSize: '1.5em',
+      textAlign: 'center',
+      padding: '15px 0 250px 0',
+    };
+
+    return <div style={divStyle}>{subtitle}</div>;
+  }
+  renderDates() {
     const prettyStartDate = moment(this.startDate).format('LL');
     const prettyEndDate = moment(this.endDate).format('LL');
 
-    return (<div style={{ textAlign: 'center', padding: '100px 0 100px 0' }}>
-      <h1>{content.title}</h1>
-      <h3>{content.subtitle}</h3>
-      <h5>{prettyStartDate} - {prettyEndDate}</h5>
+    const divStyle = {
+      fontFamily: '\'Montserrat\', sans-serif',
+      fontSize: '0.8em',
+      textAlign: 'center',
+      padding: '100px 0 50px 0',
+    };
+
+    return <div style={divStyle}>{prettyStartDate} - {prettyEndDate}</div>;
+  }
+
+  render() {
+    return (<div>
+      {this.renderTitle(this.content.title)}
+      {this.renderSubtitle(this.content.subtitle)}
+      {this.renderDates()}
+    </div>);
+  }
+
+  renderForm(setFormState) {
+    const titleInput = <div className="editable" name="title" contentEditable onBlur={setFormState}>{this.content.title}</div>;
+    const subtitleInput = <div className="editable" name="subtitle" contentEditable onBlur={setFormState}>{this.content.subtitle}</div>;
+
+    return (<div>
+      {this.renderTitle(titleInput)}
+      {this.renderSubtitle(subtitleInput)}
+      {this.renderDates()}
     </div>);
   }
 }

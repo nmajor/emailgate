@@ -126,6 +126,22 @@ export default (io) => {
       });
     });
 
+    socket.on('UPDATE_COMPILATION_PAGE', (data) => {
+      console.log('UPDATE_COMPILATION_PAGE');
+      console.log(data);
+      // User.findOne({ email: socket.request.session.passport.user })
+      // .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      // .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
+      // .then((email) => {
+      //   email.subject = data.newData.subject; // eslint-disable-line no-param-reassign
+      //   email.body = data.newData.body; // eslint-disable-line no-param-reassign
+      //   return email.save();
+      // })
+      // .then((email) => {
+      //   socket.emit('UPDATED_COMPILATION_EMAIL', email);
+      // });
+    });
+
     socket.on('disconnect', () => {
       console.log('a user disconnected');
     });

@@ -16,54 +16,46 @@ function mapEmailUser(user, index, array) {
     return <span key={index}><span style={{ whiteSpace: 'nowrap' }}>{text}</span> </span>;
   }
 
-  return <span style={{ whiteSpace: 'nowrap' }}>{text}</span>;
+  return <span key={index} style={{ whiteSpace: 'nowrap' }}>{text}</span>;
 }
 
-export function subjectStyles() {
-  return {
+export function renderSubject(subject) {
+  const divStyle = {
     fontFamily: '\'Montserrat\', sans-serif',
     fontWeight: 'bold',
     fontSize: '1.4em',
     marginBottom: '.3em',
   };
-}
-export function renderSubject(subject) {
-  const divStyle = subjectStyles();
 
   return <div style={divStyle}>{subject}</div>;
 }
 
-export function dateStyles() {
-  return {
+export function renderDate(date) {
+  const divStyle = {
     fontFamily: '\'Montserrat\', sans-serif',
     fontSize: '0.9em',
     margin: '.3em 0',
   };
-}
-export function renderDate(date) {
-  const divStyle = dateStyles();
 
   return <div style={divStyle}>{moment(date).format('LL')}</div>;
 }
 
-export function fromStyles() {
-  return {
+export function renderFrom(from) {
+  const divStyle = {
     fontFamily: '\'Montserrat\', sans-serif',
     fontSize: '0.8em',
     margin: '.3em 0',
   };
-}
-export function renderFrom(from) {
-  const divStyle = fromStyles();
 
   return <div style={divStyle}>From: {from.map(mapEmailUser)}</div>;
 }
 
-export function toStyles() {
-  return fromStyles();
-}
 export function renderTo(to) {
-  const divStyle = toStyles();
+  const divStyle = {
+    fontFamily: '\'Montserrat\', sans-serif',
+    fontSize: '0.8em',
+    margin: '.3em 0',
+  };
 
   return <div style={divStyle}>To: {to.map(mapEmailUser)}</div>;
 }

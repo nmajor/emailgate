@@ -10,5 +10,4 @@ export default {
   filteredAccountEmails: [],
   filteredAccountEmailsCount: 0,
   currentFilteredEmailMid: '',
-  currentCompilationEmailId: '',
 };
