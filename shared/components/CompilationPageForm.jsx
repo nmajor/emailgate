@@ -23,6 +23,11 @@ class CompilationPageForm extends Component {
       return this.props.template.renderForm(this.setFormState);
     }
   }
+  renderSaving() {
+    if (this.props.page.saving) {
+      return 'saving ...';
+    }
+  }
   render() {
     return (
       <div>
@@ -31,6 +36,7 @@ class CompilationPageForm extends Component {
           {this.renderForm()}
         </div>
         <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
+        <span className="left-bumper top-bumper">{this.renderSaving()}</span>
       </div>
     );
   }

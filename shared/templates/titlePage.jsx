@@ -16,10 +16,7 @@ class TitlePageTemplate {
     this.content = this.page.content || this.defaultContent;
   }
   initialFormState() {
-    return {
-      title: null,
-      subtitle: null,
-    };
+    return this.content;
   }
   renderTitle(title) {
     const divStyle = {

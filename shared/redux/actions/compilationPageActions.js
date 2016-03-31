@@ -10,6 +10,13 @@ export function setCompilationPages(pages) {
   };
 }
 
+export function updatePageInCompilationPages(page) {
+  return {
+    type: ActionTypes.UPDATE_PAGE_IN_COMPILATION_PAGES,
+    page,
+  };
+}
+
 export function getCompilationPages(compilationId, cookie) {
   return (dispatch) => {
     const fetchOptions = {};
@@ -41,10 +48,10 @@ export function getCompilationPages(compilationId, cookie) {
   };
 }
 
-export function setPropertyForCompilationPage(email, prop, val) {
+export function setPropertyForCompilationPage(page, prop, val) {
   return {
     type: ActionTypes.SET_PROPERTY_FOR_COMPILATION_PAGE,
-    email,
+    page,
     prop,
     val,
   };

@@ -2,6 +2,7 @@ import Account from '../models/account';
 import User from '../models/user';
 import Compilation from '../models/compilation';
 import Email from '../models/email';
+import Page from '../models/page';
 import { emailPdf } from '../util/pdf';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
@@ -128,18 +129,16 @@ export default (io) => {
 
     socket.on('UPDATE_COMPILATION_PAGE', (data) => {
       console.log('UPDATE_COMPILATION_PAGE');
-      console.log(data);
-      // User.findOne({ email: socket.request.session.passport.user })
-      // .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      // .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
-      // .then((email) => {
-      //   email.subject = data.newData.subject; // eslint-disable-line no-param-reassign
-      //   email.body = data.newData.body; // eslint-disable-line no-param-reassign
-      //   return email.save();
-      // })
-      // .then((email) => {
-      //   socket.emit('UPDATED_COMPILATION_EMAIL', email);
-      // });
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then(compilation => Page.findOne({ _compilation: compilation._id, _id: data.pageId }))
+      .then((page) => {
+        page.content = data.newData; // eslint-disable-line no-param-reassign
+        return page.save();
+      })
+      .then((page) => {
+        socket.emit('UPDATED_COMPILATION_PAGE', page);
+      });
     });
 
     socket.on('disconnect', () => {
