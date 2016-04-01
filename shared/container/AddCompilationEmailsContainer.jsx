@@ -34,7 +34,6 @@ class AddCompilationEmailsContainer extends Component {
       Back to Emails ({this.props.compilationEmails.length})
     </Link>);
   }
-
   render() {
     return (
       <div className="edit-account-container">

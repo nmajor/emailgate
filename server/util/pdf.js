@@ -1,12 +1,13 @@
 import pdf from 'html-pdf';
 import Email from '../models/email';
+import Page from '../models/page';
+import fs from 'fs';
+import _ from 'lodash';
 
 import * as emailTemplate from '../../shared/templates/email';
 import TitlePageTemplate from '../../shared/templates/titlePage';
 import MessagePageTemplate from '../../shared/templates/messagePage';
 import TableOfContentsTemplate from '../../shared/templates/tableOfContents';
-
-import _ from 'lodash';
 
 function pageTemplateFactory(page) {
   return new Promise((resolve) => {
@@ -81,5 +82,53 @@ export function pagePdf(page) {
         return resolve(stream);
       });
     });
+  });
+}
+
+function writeEmailPdfToFs(email) {
+  return new Promise((resolve) => {
+    const emailPath = `tmp/compilation_${email._compilation}/email_${email._id}.pdf`;
+
+    emailPdf(email)
+    .then((emailStream) => {
+      console.log(`blah START email ${email._id}`);
+      const wstream = fs.createWriteStream(emailPath, { flags: 'w' });
+      emailStream.pipe(wstream);
+      wstream.on('finish', () => { console.log(`blah END email ${email._id}`); return resolve(); });
+    });
+  });
+}
+
+function writePagePdfToFs(page) {
+  return new Promise((resolve) => {
+    const pagePath = `tmp/compilation_${page._compilation}/page_${page._id}.pdf`;
+
+    pagePdf(page)
+    .then((pageStream) => {
+      console.log(`blah START page ${page._id}`);
+      const wstream = fs.createWriteStream(pagePath, { flags: 'w' });
+      pageStream.pipe(wstream);
+      wstream.on('finish', () => { console.log(`blah END page ${page._id}`); return resolve(); });
+    });
+  });
+}
+
+export function compilationPdf(compilation) {
+  console.log('blah compilationPdf');
+
+  const path = `tmp/compilation_${compilation._id}`;
+
+  if (!fs.existsSync('tmp')) { fs.mkdirSync('tmp'); }
+  if (!fs.existsSync(path)) { fs.mkdirSync(path); }
+
+  const emailFsPromises = Email.find({ _compilation: compilation._id })
+  .then(emails => Promise.all(emails.map(writeEmailPdfToFs)));
+
+  const pageFsPromises = Page.find({ _compilation: compilation._id })
+  .then(pages => Promise.all(pages.map(writePagePdfToFs)));
+
+  Promise.all([emailFsPromises, pageFsPromises])
+  .then(() => {
+    console.log('email and page files should be done');
   });
 }

@@ -23,6 +23,19 @@ https://facebook.github.io/draft-js/
 
 https://github.com/mozilla/pdf.js/blob/master/examples/learning/prevnext.html
 
+// This might be a better html to pdf lib (PROBABLY NOT)
+https://github.com/MrRio/jsPDF
+
+// Possible option
+https://www.npmjs.com/package/pdf-merge
+
+// This one looks good but not used often and github link is dead
+https://www.npmjs.com/package/spindrift
+
+// Looks like most of these libraries are just wrappers around this pdftk utility
+https://www.pdflabs.com/tools/pdftk-server/
+https://www.pdflabs.com/docs/pdftk-man-page/
+
 ### Todo Short
 
 - Handle the currentFilteredEmail through the url instead of state.
@@ -36,3 +49,8 @@ https://github.com/mozilla/pdf.js/blob/master/examples/learning/prevnext.html
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
 - Sanitize email body text before save.
 - Reconnect the socket after login, registration, and logout.
+
+
+### Container Notes
+
+- The container will need to install pdftk: apt-get install pdftk

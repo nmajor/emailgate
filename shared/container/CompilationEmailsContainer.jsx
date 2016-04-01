@@ -25,11 +25,21 @@ class CompilationEmailsContainer extends Component {
     }
 
     this.currentEmail = _.find(this.props.compilationEmails, { _id: this.props.params.emailId });
+
+    // TEMP
+    this.getCompilationPdf = this.getCompilationPdf.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
     this.currentEmail = _.find(nextProps.compilationEmails, { _id: nextProps.params.emailId });
   }
+
+  // TEMP
+  getCompilationPdf() {
+    this.props.dispatch(Actions.getCompilationPdf(this.props.params.compilationId));
+  }
+
+
   removeEmail() {
     this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.compilation._id, this.currentEmail));
   }
@@ -53,6 +63,10 @@ class CompilationEmailsContainer extends Component {
     return (
       <div className="edit-account-container">
         <Header />
+
+        // TEMP
+        <div className="btn btn-success" onClick={this.getCompilationPdf}>NMAKE</div>
+
         <CompilationHeader compilation={this.compilation} />
         <CompilationNav compilationId={this.props.params.compilationId} currentPage="emails" />
         <div className="container">

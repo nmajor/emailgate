@@ -3,8 +3,9 @@ import User from '../models/user';
 import Compilation from '../models/compilation';
 import Email from '../models/email';
 import Page from '../models/page';
-import { emailPdf, pagePdf } from '../util/pdf';
+import { emailPdf, pagePdf, compilationPdf } from '../util/pdf';
 import ss from 'socket.io-stream';
+import fs from 'fs';
 ss.forceBase64 = true;
 
 import _ from 'lodash';
@@ -154,6 +155,17 @@ export default (io) => {
 
           pdfStream.pipe(resStream);
         });
+      });
+    });
+
+    socket.on('GET_COMPILATION_PDF', (data) => {
+      console.log('GET_COMPILATION_PDF');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then(compilationPdf)
+      .then((pdfStream) => {
+        const wstream = fs.createWriteStream('compilation.pdf');
+        pdfStream.pipe(wstream);
       });
     });
 
