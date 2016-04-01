@@ -36,13 +36,19 @@ https://www.npmjs.com/package/spindrift
 https://www.pdflabs.com/tools/pdftk-server/
 https://www.pdflabs.com/docs/pdftk-man-page/
 
+
+// Example pdftk merge command
+pdftk A=even.pdf B=odd.pdf cat A B output -
+
 ### Todo Short
 
+- To solve the page number and table of contents issue. Create a page offset map for emails for each compilation. Then, anytime an email is saved, have a post save hook to recalculate the page map. You will have to do the thing where you save the number of pdf pages in the email object.
 - Handle the currentFilteredEmail through the url instead of state.
 - Load images in email previews
 - Save the compilation title and subtitle separately to populate the cover and title page with the same data
 - Generate the finalized pdf
 - Fix the pdfs for the title page and message page. There is an extra blank page at the bottom.
+
 
 ### Todo Long
 
