@@ -36,9 +36,11 @@ https://www.npmjs.com/package/spindrift
 https://www.pdflabs.com/tools/pdftk-server/
 https://www.pdflabs.com/docs/pdftk-man-page/
 
-
 // Example pdftk merge command
 pdftk A=even.pdf B=odd.pdf cat A B output -
+
+// Looks like there is a problem with pdftk on macos.
+http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 
 ### Todo Short
 
