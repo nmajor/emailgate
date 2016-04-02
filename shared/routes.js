@@ -21,6 +21,8 @@ import ViewCompilationPageContainer from './container/ViewCompilationPageContain
 import EditCompilationPageContainer from './container/EditCompilationPageContainer';
 import PreviewCompilationPageContainer from './container/PreviewCompilationPageContainer';
 
+import CompilationPreviewContainer from './container/CompilationPreviewContainer';
+
 // components
 import Home from './components/Home';
 import DashboardWrapper from './components/DashboardWrapper';
@@ -47,6 +49,7 @@ const routes = (
       <Route path="/compilations/:compilationId/pages/:pageId/edit" component={EditCompilationPageContainer}/>
       <Route path="/compilations/:compilationId/pages/:pageId/preview" component={PreviewCompilationPageContainer}/>
     </Route>
+    <Route path="/compilations/:compilationId/preview" component={CompilationPreviewContainer} />
     <Route path="/post/:slug" component={PostDetailView}/>
   </Route>
 );

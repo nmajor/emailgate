@@ -11,6 +11,9 @@ class CompilationNav extends Component {
   renderPagesNav() {
     return this.renderNavItem('pages', 'Pages');
   }
+  renderPreviewNav() {
+    return this.renderNavItem('preview', 'Preview');
+  }
   renderCheckoutNav() {
     return this.renderNavItem('checkout', 'Checkout');
   }
@@ -29,6 +32,7 @@ class CompilationNav extends Component {
           <ul className="nav nav-pills">
             {this.renderEmailsNav()}
             {this.renderPagesNav()}
+            {this.renderPreviewNav()}
             {this.renderCheckoutNav()}
           </ul>
         </div>

@@ -5,7 +5,6 @@ import Email from '../models/email';
 import Page from '../models/page';
 import { emailPdf, pagePdf, compilationPdf } from '../util/pdf';
 import ss from 'socket.io-stream';
-// import fs from 'fs';
 ss.forceBase64 = true;
 
 import _ from 'lodash';
@@ -118,13 +117,9 @@ export default (io) => {
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
       .then((email) => {
-        emailPdf(email)
-        .then((pdfStream) => {
-          const resStream = ss.createStream();
-          ss(socket).emit('COMPILATION_EMAIL_PDF_STREAM', resStream, { email: email.toJSON() });
-
-          pdfStream.pipe(resStream);
-        });
+        const resStream = ss.createStream();
+        ss(socket).emit('COMPILATION_EMAIL_PDF_STREAM', resStream, { email: email.toJSON() });
+        emailPdf(email).pipe(resStream);
       });
     });
 
@@ -148,13 +143,9 @@ export default (io) => {
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then(compilation => Page.findOne({ _compilation: compilation._id, _id: data.pageId }))
       .then((page) => {
-        pagePdf(page)
-        .then((pdfStream) => {
-          const resStream = ss.createStream();
-          ss(socket).emit('COMPILATION_PAGE_PDF_STREAM', resStream, { page: page.toJSON() });
-
-          pdfStream.pipe(resStream);
-        });
+        const resStream = ss.createStream();
+        ss(socket).emit('COMPILATION_PAGE_PDF_STREAM', resStream, { page: page.toJSON() });
+        pagePdf(page).pipe(resStream);
       });
     });
 
@@ -162,11 +153,11 @@ export default (io) => {
       console.log('GET_COMPILATION_PDF');
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilationPdf);
-      // .then((pdfStream) => {
-      //   const wstream = fs.createWriteStream('compilation.pdf');
-      //   pdfStream.pipe(wstream);
-      // });
+      .then((compilation) => {
+        const resStream = ss.createStream();
+        ss(socket).emit('COMPILATION_PDF_STREAM', resStream, { compilation: compilation.toJSON() });
+        compilationPdf(compilation).pipe(resStream);
+      });
     });
 
     socket.on('disconnect', () => {

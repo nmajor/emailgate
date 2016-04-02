@@ -81,3 +81,16 @@ ss(socket).on('COMPILATION_PAGE_PDF_STREAM', (pdfStream, data) => {
     store.dispatch(Actions.updatePageInCompilationPages(page));
   });
 });
+
+ss(socket).on('COMPILATION_PDF_STREAM', (pdfStream, data) => {
+  console.log('event COMPILATION_PDF_STREAM');
+  const compilation = data.compilation;
+
+  const blobStream = require('blob-stream');
+  const pdfBlobStream = pdfStream.pipe(blobStream());
+  pdfBlobStream.on('finish', () => {
+    const pdf = pdfBlobStream.toBlobURL('application/pdf');
+    compilation.pdf = pdf;
+    store.dispatch(Actions.updateCompilationInCompilations(compilation));
+  });
+});

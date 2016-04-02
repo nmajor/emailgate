@@ -18,6 +18,22 @@ export function setCompilations(compilations) {
   };
 }
 
+export function setPropertyForCompilation(compilationId, prop, val) {
+  return {
+    type: ActionTypes.SET_PROPERTY_FOR_COMPILATION,
+    compilationId,
+    prop,
+    val,
+  };
+}
+
+export function updateCompilationInCompilations(compilation) {
+  return {
+    type: ActionTypes.UPDATE_COMPILATION_IN_COMPILATIONS,
+    compilation,
+  };
+}
+
 // THUNKS
 export function createCompilation(props, cb) {
   return (dispatch) => {
@@ -82,7 +98,8 @@ export function getCompilations(cookie) {
 }
 
 export function getCompilationPdf(compilationId) {
-  return () => {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilation(compilationId, 'fetchingPdf', true));
     socket.emit('GET_COMPILATION_PDF', { compilationId });
   };
 }
