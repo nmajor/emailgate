@@ -4,10 +4,10 @@ import Compilation from '../models/compilation';
 import Email from '../models/email';
 import Page from '../models/page';
 import { emailPdf, pagePdf, compilationPdf } from '../util/pdf';
+import { uploadStream } from '../util/uploader';
+import _ from 'lodash';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
-
-import _ from 'lodash';
 
 import { imapifyFilter, processEmails } from '../util/helpers';
 
@@ -154,9 +154,15 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
-        const resStream = ss.createStream();
-        ss(socket).emit('COMPILATION_PDF_STREAM', resStream, { compilation: compilation.toJSON() });
-        compilationPdf(compilation).pipe(resStream);
+        const uploaderStream = uploadStream(`compilations/${compilation.name}-${compilation._id}/compilation.pdf`, (results) => {
+          compilation.pdf = results; // eslint-disable-line no-param-reassign
+          compilation.save()
+          .then((savedCompilation) => {
+            socket.emit('UPDATED_COMPILATION', savedCompilation);
+          });
+        });
+
+        compilationPdf(compilation).pipe(uploaderStream);
       });
     });
 

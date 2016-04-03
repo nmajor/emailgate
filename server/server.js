@@ -1,3 +1,4 @@
+require('dotenv').config();
 import Express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
@@ -39,10 +40,9 @@ import { match, RouterContext } from 'react-router';
 import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
 import api from './routes/api.routes';
-import serverConfig from './config';
 
 // MongoDB Connection
-mongoose.connect(serverConfig.mongoURL);
+mongoose.connect(process.env.MONGO_URL);
 mongoose.Promise = Promise;
 
 import User from './models/user';
@@ -56,7 +56,7 @@ const sessionMiddleware = session({
   resave: true,
   saveUninitialized: false,
   store: new ConnectMongo({
-    url: serverConfig.mongoURL,
+    url: process.env.MONGO_URL,
     mongoose_connection: mongoose.connections[0],
   }),
 });
@@ -145,9 +145,9 @@ const server = http.createServer(app);
 io.attach(server);
 
 // start app
-server.listen(serverConfig.port, (error) => {
+server.listen(process.env.PORT, (error) => {
   if (!error) {
-    console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
+    console.log(`MERN is running on port: ${process.env.PORT}! Build something amazing!`); // eslint-disable-line
   }
 });
 

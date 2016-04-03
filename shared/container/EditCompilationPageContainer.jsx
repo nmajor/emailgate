@@ -5,6 +5,7 @@ import CompilationPageNavContainer from './CompilationPageNavContainer';
 import CompilationPageForm from '../components/CompilationPageForm';
 import * as Actions from '../redux/actions/index';
 
+import CoverTemplate from '../templates/cover';
 import TitlePageTemplate from '../templates/titlePage';
 import MessagePageTemplate from '../templates/messagePage';
 import TableOfContentsTemplate from '../templates/tableOfContents';
@@ -21,6 +22,8 @@ class EditCompilationPageContainer extends Component {
   templateFactory() {
     if (this.props.currentPage) {
       switch (this.props.currentPage.type) {
+        case 'cover' :
+          return new CoverTemplate(this.props.currentPage);
         case 'title-page' :
           const sortedEmails = _.sortBy(this.props.compilationEmails, (email) => { return email.date; });
           const firstEmail = sortedEmails[0] || {};

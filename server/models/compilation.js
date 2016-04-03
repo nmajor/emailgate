@@ -9,6 +9,7 @@ const CompilationSchema = new Schema({
   name: String,
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
+  pdf: {},
 });
 
 CompilationSchema.post('save', (doc) => {
@@ -16,10 +17,15 @@ CompilationSchema.post('save', (doc) => {
 });
 
 CompilationSchema.methods.seedPages = function seedPages() {
-  _.forEach(Page.defaultPages(), (pageData) => {
-    const newPage = new Page(pageData);
-    newPage._compilation = this._id;
-    newPage.save();
+  Page.count({ _compilation: this._id })
+  .then((count) => {
+    if (count === 0) {
+      _.forEach(Page.defaultPages(), (pageData) => {
+        const newPage = new Page(pageData);
+        newPage._compilation = this._id;
+        newPage.save();
+      });
+    }
   });
 };
 

@@ -69,6 +69,11 @@ socket.on('UPDATED_COMPILATION_PAGE', (page) => {
   store.dispatch(Actions.updatePageInCompilationPages(page));
 });
 
+socket.on('UPDATED_COMPILATION', (compilation) => {
+  console.log('event UPDATED_COMPILATION');
+  store.dispatch(Actions.updateCompilationInCompilations(compilation));
+});
+
 ss(socket).on('COMPILATION_PAGE_PDF_STREAM', (pdfStream, data) => {
   console.log('event COMPILATION_PAGE_PDF_STREAM');
   const page = data.page;

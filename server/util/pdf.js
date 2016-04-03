@@ -8,6 +8,7 @@ import stream from 'stream';
 import * as sharedHelpers from '../../shared/helpers';
 
 import * as emailTemplate from '../../shared/templates/email';
+import CoverTemplate from '../../shared/templates/cover';
 import TitlePageTemplate from '../../shared/templates/titlePage';
 import MessagePageTemplate from '../../shared/templates/messagePage';
 import TableOfContentsTemplate from '../../shared/templates/tableOfContents';
@@ -15,6 +16,8 @@ import TableOfContentsTemplate from '../../shared/templates/tableOfContents';
 function pageTemplateFactory(page) {
   return new Promise((resolve) => {
     switch (page.type) {
+      case 'cover' :
+        return resolve(new CoverTemplate(page));
       case 'title-page' :
         return Email.find({ _compilation: page._compilation })
         .then((emails) => {
@@ -76,13 +79,16 @@ export function pagePdf(page) {
     const options = {
       height: '10.5in',
       width: '8in',
-      border: {
+    };
+
+    if (page.type !== 'cover') {
+      options.border = {
         top: '0.6in',
         right: '0.6in',
         bottom: '0.6in',
         left: '0.6in',
-      },
-    };
+      };
+    }
 
     pdf.create(html, options).toStream((err, pdfStream) => {
       pdfStream.pipe(pagePdfStream);
@@ -150,6 +156,14 @@ export function compilationPdf(compilation) {
 
       const pageFileArguments = _.map(sortedPages, (page) => { return pagePath(page); });
       const emailFileArguments = _.map(sortedEmails, (email) => { return emailPath(email); });
+
+      console.log([
+        ...pageFileArguments,
+        ...emailFileArguments,
+        'cat',
+        'output',
+        '-',
+      ]);
 
       const spawn = require('child_process').spawn;
       const pdftk = spawn('pdftk', [
