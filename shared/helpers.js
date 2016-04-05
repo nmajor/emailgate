@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export function pageMeta(page) {
   const metaMap = {
     cover: {
@@ -23,4 +25,11 @@ export function pageMeta(page) {
   };
 
   return metaMap[page.type];
+}
+export function sortedEmails(emails) {
+  return _.sortBy(emails, 'date');
+}
+
+export function sortedPages(pages) {
+  _.sortBy(pages, (page) => { return pageMeta(page).position; });
 }

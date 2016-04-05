@@ -1,9 +1,17 @@
 import React, { PropTypes, Component } from 'react';
 import CompilationPagesListItem from './CompilationPagesListItem';
+import * as sharedHelpers from '../helpers';
 
 class CompilationPagesList extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.sortedPages = this.sortedPages.bind(this);
+  }
+  sortedPages() {
+    sharedHelpers.sortedPages(this.props.pages);
+  }
   renderPages() {
-    return this.props.pages.map((page) => {
+    return this.sortedPages().map((page) => {
       return (<CompilationPagesListItem
         key={`${page._id}`}
         selected={page._id === this.props.currentPageId}

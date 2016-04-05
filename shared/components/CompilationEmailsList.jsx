@@ -1,12 +1,17 @@
 import React, { PropTypes, Component } from 'react';
 import CompilationEmailsListItem from './CompilationEmailsListItem';
+import * as sharedHelpers from '../helpers';
 
 class CompilationEmailsList extends Component {
   constructor(props, context) {
     super(props, context);
+    this.sortedEmails = this.sortedEmails.bind(this);
+  }
+  sortedEmails() {
+    return sharedHelpers.sortedEmails(this.props.emails);
   }
   renderEmails() {
-    return this.props.emails.map((email) => {
+    return this.sortedEmails().map((email) => {
       return (<CompilationEmailsListItem
         key={`${email._id}`}
         selected={email._id === this.props.currentEmailId}

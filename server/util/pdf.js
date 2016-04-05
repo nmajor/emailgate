@@ -151,8 +151,8 @@ export function compilationPdf(compilation) {
 
     return Promise.all([...emails.map(writeEmailPdfToFs), ...pages.map(writePagePdfToFs)])
     .then(() => {
-      const sortedPages = _.sortBy(pages, (page) => { return sharedHelpers.pageMeta(page).position; });
-      const sortedEmails = _.sortBy(emails, 'date');
+      const sortedPages = sharedHelpers.sortedPages(pages);
+      const sortedEmails = sharedHelpers.sortedEmails(emails);
 
       const pageFileArguments = _.map(sortedPages, (page) => { return pagePath(page); });
       const emailFileArguments = _.map(sortedEmails, (email) => { return emailPath(email); });
