@@ -5,11 +5,11 @@ import Email from '../models/email';
 import Page from '../models/page';
 import { emailPdf, pagePdf, compilationPdf } from '../util/pdf';
 import { uploadStream } from '../util/uploader';
-import _ from 'lodash';
+// import _ from 'lodash';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
-import { imapifyFilter, processEmails } from '../util/helpers';
+import { imapifyFilter, processEmails, emailPageMap } from '../util/helpers';
 
 export default (io) => {
   io.on('connection', (socket) => {
@@ -75,13 +75,20 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
-        _.forEach(data.emails, (emailData) => {
+        Promise.all(data.emails.map((emailData) => {
           const newEmail = new Email(emailData);
           newEmail._compilation = compilation._id;
-          newEmail.save()
+          return newEmail.save()
           .then((email) => {
             socket.emit('ADDED_COMPILATION_EMAIL', email);
+            return Promise.resolve(email);
           });
+        }))
+        .then(() => {
+          return emailPageMap(compilation._id);
+        })
+        .then((pageMap) => {
+          socket.emit('UPDATED_COMPILATION_EMAIL_PAGE_MAP', pageMap);
         });
       });
     });

@@ -8,7 +8,6 @@ import * as Actions from '../redux/actions/index';
 import CoverTemplate from '../templates/cover';
 import TitlePageTemplate from '../templates/titlePage';
 import MessagePageTemplate from '../templates/messagePage';
-import TableOfContentsTemplate from '../templates/tableOfContents';
 
 class EditCompilationPageContainer extends Component {
   constructor(props, context) {
@@ -34,7 +33,8 @@ class EditCompilationPageContainer extends Component {
         case 'message-page' :
           return new MessagePageTemplate(this.props.currentPage);
         case 'table-of-contents' :
-          return new TableOfContentsTemplate(this.props.currentPage);
+          // Cant edit table of contents page
+          return null
         default :
           return null;
       }

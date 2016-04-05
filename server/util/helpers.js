@@ -1,5 +1,8 @@
 import stream from 'stream';
 import moment from 'moment';
+import Email from '../models/email';
+import * as sharedHelpers from '../../shared/helpers';
+import _ from 'lodash';
 // import crypto from 'crypto';
 
 export function imapifyFilter(filter) {
@@ -55,4 +58,22 @@ export function processEmails() {
   };
 
   return transformStream;
+}
+
+export function emailPageMap(compilationId) {
+  return new Promise((resolve) => {
+    Email.find({ _compilation: compilationId })
+    .then((emails) => {
+      const sortedEmails = sharedHelpers.sortedEmails(emails);
+      const pageMap = {};
+
+      let page = 1;
+      _.forEach(sortedEmails, (email) => {
+        pageMap[email._id] = page;
+        page += email.pdfPageCount;
+      });
+
+      resolve(pageMap);
+    });
+  });
 }

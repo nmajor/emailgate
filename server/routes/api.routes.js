@@ -8,6 +8,19 @@ import * as PageController from '../controllers/page.controller';
 
 import User from '../models/user';
 
+
+import { emailPageMap } from '../util/helpers';
+import Compilation from '../models/compilation';
+export function getCompilationEmailPageMap(req, res) {
+  Compilation.findOne({ _user: req.user._id, _id: req.params.id })
+  .then((compilation) => {
+    return emailPageMap(compilation._id);
+  })
+  .then((pageMap) => {
+    res.json(pageMap);
+  });
+}
+
 router.get('/user', (req, res) => {
   if (req.user) {
     res.json(req.user);
@@ -68,6 +81,7 @@ router.put('/compilations/:id', ensureAuthenticated, CompilationController.patch
 router.patch('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
 
 router.get('/compilations/:id/emails', ensureAuthenticated, EmailController.getCompilationEmails);
+router.get('/compilations/:id/email-page-map', ensureAuthenticated, getCompilationEmailPageMap);
 router.get('/compilations/:id/pages', ensureAuthenticated, PageController.getCompilationPages);
 
 module.exports = router;

@@ -31,5 +31,5 @@ export function sortedEmails(emails) {
 }
 
 export function sortedPages(pages) {
-  _.sortBy(pages, (page) => { return pageMeta(page).position; });
+  return _.sortBy(pages, (page) => { return pageMeta(page).position; });
 }

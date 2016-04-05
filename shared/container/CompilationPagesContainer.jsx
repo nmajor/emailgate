@@ -21,6 +21,10 @@ class CompilationPagesContainer extends Component {
       this.props.dispatch(Actions.getCompilationPages(this.props.params.compilationId));
     }
 
+    if (this.props.compilationEmailPageMap === {}) {
+      this.props.dispatch(Actions.getCompilationEmailPageMap(this.props.params.compilationId));
+    }
+
     this.currentPage = _.find(this.props.compilationPages, { _id: this.props.params.pageId });
   }
   componentWillReceiveProps(nextProps) {
@@ -67,12 +71,16 @@ CompilationPagesContainer.need = [
   (params, cookie) => {
     return Actions.getCompilationEmails.bind(null, params.compilationId, cookie)();
   },
+  (params, cookie) => {
+    return Actions.getCompilationEmailPageMap.bind(null, params.compilationId, cookie)();
+  },
 ];
 
 function mapStateToProps(store) {
   return {
     compilations: store.compilations,
     compilationPages: store.compilationPages,
+    compilationEmailPageMap: store.compilationEmailPageMap,
   };
 }
 
@@ -85,6 +93,7 @@ CompilationPagesContainer.propTypes = {
   children: PropTypes.object,
   compilations: PropTypes.array,
   compilationPages: PropTypes.array,
+  compilationEmailPageMap: PropTypes.object,
   params: PropTypes.object,
 };
 

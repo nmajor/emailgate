@@ -35,11 +35,12 @@ https://www.npmjs.com/package/spindrift
 // Looks like most of these libraries are just wrappers around this pdftk utility
 https://www.pdflabs.com/tools/pdftk-server/
 https://www.pdflabs.com/docs/pdftk-man-page/
+https://www.npmjs.com/package/scissors
 
 // Example pdftk merge command
 pdftk A=even.pdf B=odd.pdf cat A B output -
 
-// Looks like there is a problem with pdftk on macos.
+// Looks like there is a problem with pdftk on MacOS.
 http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 
 ### Todo Short

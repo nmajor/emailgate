@@ -29,7 +29,10 @@ class ViewCompilationPageContainer extends Component {
         case 'message-page' :
           return new MessagePageTemplate(this.props.currentPage);
         case 'table-of-contents' :
-          return new TableOfContentsTemplate(this.props.currentPage, { emails: _.sortBy(this.props.compilationEmails, (email) => { return email.date; }) });
+          return new TableOfContentsTemplate(this.props.currentPage, {
+            emails: _.sortBy(this.props.compilationEmails, (email) => { return email.date; }),
+            pageMap: this.props.compilationEmailPageMap,
+          });
         default :
           return null;
       }
@@ -49,6 +52,7 @@ class ViewCompilationPageContainer extends Component {
 function mapStateToProps(store) {
   return {
     compilationEmails: store.compilationEmails,
+    compilationEmailPageMap: store.compilationEmailPageMap,
   };
 }
 
@@ -57,6 +61,7 @@ ViewCompilationPageContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array.isRequired,
+  compilationEmailPageMap: PropTypes.object.isRequired,
   currentPage: PropTypes.object.isRequired,
 };
 

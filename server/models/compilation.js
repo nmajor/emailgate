@@ -23,7 +23,7 @@ CompilationSchema.methods.seedPages = function seedPages() {
       _.forEach(Page.defaultPages(), (pageData) => {
         const newPage = new Page(pageData);
         newPage._compilation = this._id;
-        newPage.save();
+        return newPage.save();
       });
     }
   });

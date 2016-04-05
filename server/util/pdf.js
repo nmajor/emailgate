@@ -6,6 +6,7 @@ import path from 'path';
 import _ from 'lodash';
 import stream from 'stream';
 import * as sharedHelpers from '../../shared/helpers';
+import { emailPageMap } from '../util/helpers';
 
 import * as emailTemplate from '../../shared/templates/email';
 import CoverTemplate from '../../shared/templates/cover';
@@ -34,7 +35,10 @@ function pageTemplateFactory(page) {
         return Email.find({ _compilation: page._compilation })
         .then((emails) => {
           const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
-          return resolve(new TableOfContentsTemplate(page, { emails: sortedEmails }));
+          emailPageMap(page._compilation)
+          .then((pageMap) => {
+            return resolve(new TableOfContentsTemplate(page, { emails: sortedEmails, pageMap }));
+          });
         });
       default :
         return resolve(null);
@@ -42,12 +46,8 @@ function pageTemplateFactory(page) {
   });
 }
 
-export function emailPdf(email) {
-  const emailPdfStream = stream.PassThrough(); // eslint-disable-line new-cap
-
-  const html = emailTemplate.toString(email);
-
-  const options = {
+function emailOptions() {
+  return {
     height: '10.5in',
     width: '8in',
     border: {
@@ -61,6 +61,24 @@ export function emailPdf(email) {
       contents: '<div style="font-size: 0.8em; font-family: \'Montserrat\', sans-serif; text-align: center;">{{page}}</div>',
     },
   };
+}
+
+export function emailPdfToBuffer(email) {
+  return new Promise((resolve) => {
+    const html = emailTemplate.toString(email);
+    const options = emailOptions();
+
+    return pdf.create(html, options).toBuffer((err, buffer) => {
+      resolve(buffer);
+    });
+  });
+}
+
+export function emailPdf(email) {
+  const html = emailTemplate.toString(email);
+  const options = emailOptions();
+
+  const emailPdfStream = stream.PassThrough(); // eslint-disable-line new-cap
 
   pdf.create(html, options).toStream((err, pdfStream) => {
     pdfStream.pipe(emailPdfStream);

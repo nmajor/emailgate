@@ -99,3 +99,8 @@ ss(socket).on('COMPILATION_PDF_STREAM', (pdfStream, data) => {
     store.dispatch(Actions.updateCompilationInCompilations(compilation));
   });
 });
+
+socket.on('UPDATED_COMPILATION_EMAIL_PAGE_MAP', (pageMap) => {
+  console.log('event UPDATED_COMPILATION_EMAIL_PAGE_MAP');
+  store.dispatch(Actions.setCompilationEmailPageMap(pageMap));
+});

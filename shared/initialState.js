@@ -6,6 +6,7 @@ export default {
   compilations: [],
   compilationEmails: [],
   compilationPages: [],
+  compilationEmailPageMap: {},
   currentAccountId: '',
   filteredAccountEmails: [],
   filteredAccountEmailsCount: 0,

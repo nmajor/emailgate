@@ -24,6 +24,16 @@ const currentFilteredEmailMid = (state = initialState.currentFilteredEmailMid, a
   }
 };
 
+const compilationEmailPageMap = (state = initialState.compilationEmailPageMap, action) => {
+  switch (action.type) {
+    case ActionTypes.SET_COMPILATION_EMAIL_PAGE_MAP :
+      return action.pageMap;
+
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   fetchingFilteredAccountEmailsCount: fetchings.fetchingFilteredAccountEmailsCount,
   fetchingFilteredAccountEmails: fetchings.fetchingFilteredAccountEmails,
@@ -31,6 +41,7 @@ export default combineReducers({
   accounts,
   compilations,
   compilationEmails,
+  compilationEmailPageMap,
   compilationPages,
   currentAccountId,
   filteredAccountEmails,

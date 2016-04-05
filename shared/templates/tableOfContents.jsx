@@ -19,13 +19,12 @@ class TableOfContentsTemplate {
       });
     }
 
+    this.renderEntry = this.renderEntry.bind(this);
+    this.pageMap = props.pageMap;
     this.page = page;
   }
   renderEntry(email, index) {
     const prettyDate = moment(email.date).format('LL');
-
-    // Temporary
-    const page = index + 1;
 
     const entryStyle = {
       padding: '1px 0',
@@ -56,7 +55,7 @@ class TableOfContentsTemplate {
       <div key={index} style={entryStyle}>
         <span style={subjectStyle}>{email.subject}</span>
         <span style={dateStyle}>{prettyDate}</span>
-        <span style={pageStyle}>{page}</span>
+        <span style={pageStyle}>{this.pageMap[email._id]}</span>
       </div>
     );
   }

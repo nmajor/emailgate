@@ -8,7 +8,7 @@ class CompilationPagesList extends Component {
     this.sortedPages = this.sortedPages.bind(this);
   }
   sortedPages() {
-    sharedHelpers.sortedPages(this.props.pages);
+    return sharedHelpers.sortedPages(this.props.pages);
   }
   renderPages() {
     return this.sortedPages().map((page) => {
