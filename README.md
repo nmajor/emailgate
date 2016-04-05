@@ -45,7 +45,8 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 
 ### Todo Short
 
-- To solve the page number and table of contents issue. Create a page offset map for emails for each compilation. Then, anytime an email is saved, have a post save hook to recalculate the page map. You will have to do the thing where you save the number of pdf pages in the email object.
+- Make a compilation wrapper component to load the compilation emails, pages, page map, everything the compilation needs on fresh page and in component did mount. Maybe show loading gif until all things are loaded. Also make sure to set all compilation state related stuff to be blank while loading the new data. (This should automatically fix the issue with blank page numbers in the table of contents.)
+- Need to add the correct page numbers to the bottom of the email pages.
 - Handle the currentFilteredEmail through the url instead of state.
 - Load images in email previews
 - Save the compilation title and subtitle separately to populate the cover and title page with the same data
@@ -58,6 +59,9 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
 - Sanitize email body text before save.
 - Reconnect the socket after login, registration, and logout.
+- Auto redirect to dashboard after login and registration.
+- Make sure registration logs you in.
+- Add email confirmation to users.
 
 
 ### Container Notes
