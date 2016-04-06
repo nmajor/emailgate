@@ -124,9 +124,12 @@ export default (io) => {
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
       .then((email) => {
-        const resStream = ss.createStream();
-        ss(socket).emit('COMPILATION_EMAIL_PDF_STREAM', resStream, { email: email.toJSON() });
-        emailPdf(email).pipe(resStream);
+        emailPageMap(email._compilation)
+        .then((pageMap) => {
+          const resStream = ss.createStream();
+          ss(socket).emit('COMPILATION_EMAIL_PDF_STREAM', resStream, { email: email.toJSON() });
+          emailPdf(email, pageMap[email._id]).pipe(resStream);
+        });
       });
     });
 

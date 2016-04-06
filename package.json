@@ -39,7 +39,6 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "history": "^1.17.0",
-    "html-pdf": "^2.0.1",
     "imap": "^0.8.16",
     "install": "^0.6.1",
     "isomorphic-fetch": "^2.2.1",
@@ -68,7 +67,8 @@
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",
     "socket.io-stream": "^0.9.0",
-    "util": "^0.10.3"
+    "util": "^0.10.3",
+    "html-pdf": "nmajor/node-html-pdf"
   },
   "devDependencies": {
     "babel-eslint": "^5.0.0-beta6",

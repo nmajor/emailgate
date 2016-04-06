@@ -1,10 +1,17 @@
 import React, { PropTypes, Component } from 'react';
-import * as emailTemplate from '../templates/email';
+import EmailTemplate from '../templates/email';
 
 class EmailView extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.template = new EmailTemplate(this.props.email);
+  }
+  componentWillReceiveProps(nextProps) {
+    this.template = new EmailTemplate(nextProps.email);
+  }
   renderView() {
     return (<div className="email-view">
-      {emailTemplate.render(this.props.email)}
+      {this.template.render()}
     </div>);
   }
   render() {

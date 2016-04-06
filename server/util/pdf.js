@@ -8,7 +8,7 @@ import stream from 'stream';
 import * as sharedHelpers from '../../shared/helpers';
 import { emailPageMap } from '../util/helpers';
 
-import * as emailTemplate from '../../shared/templates/email';
+import EmailTemplate from '../../shared/templates/email';
 import CoverTemplate from '../../shared/templates/cover';
 import TitlePageTemplate from '../../shared/templates/titlePage';
 import MessagePageTemplate from '../../shared/templates/messagePage';
@@ -46,7 +46,7 @@ function pageTemplateFactory(page) {
   });
 }
 
-function emailOptions() {
+function emailOptions(pageNumber) {
   return {
     height: '10.5in',
     width: '8in',
@@ -57,16 +57,18 @@ function emailOptions() {
       left: '0.6in',
     },
     footer: {
+      pageOffset: (pageNumber - 1),
       height: '0.2in',
-      contents: '<div style="font-size: 0.8em; font-family: \'Montserrat\', sans-serif; text-align: center;">{{page}}</div>',
+      contents: '<div style="font-size: 0.8em; font-family: \'Montserrat\', sans-serif; text-align: center;">{{offsetPage}}</div>',
     },
   };
 }
 
-export function emailPdfToBuffer(email) {
+export function emailPdfToBuffer(email, pageNumber) {
   return new Promise((resolve) => {
-    const html = emailTemplate.toString(email);
-    const options = emailOptions();
+    const template = new EmailTemplate(email, pageNumber);
+    const html = template.toString();
+    const options = emailOptions(pageNumber);
 
     return pdf.create(html, options).toBuffer((err, buffer) => {
       resolve(buffer);
@@ -74,9 +76,10 @@ export function emailPdfToBuffer(email) {
   });
 }
 
-export function emailPdf(email) {
-  const html = emailTemplate.toString(email);
-  const options = emailOptions();
+export function emailPdf(email, pageNumber) {
+  const template = new EmailTemplate(email, pageNumber);
+  const html = template.toString();
+  const options = emailOptions(pageNumber);
 
   const emailPdfStream = stream.PassThrough(); // eslint-disable-line new-cap
 
@@ -133,12 +136,12 @@ function pagePath(page) {
   return `${basePath}/${pageFid(page)}.pdf`;
 }
 
-function writeEmailPdfToFs(email) {
+function writeEmailPdfToFs(email, pageMap) {
   return new Promise((resolve) => {
     const fsPath = emailPath(email);
 
     const wstream = fs.createWriteStream(fsPath, { flags: 'w' });
-    emailPdf(email).pipe(wstream);
+    emailPdf(email, pageMap[email._id]).pipe(wstream);
     wstream.on('finish', () => { return resolve(); });
   });
 }
@@ -164,24 +167,20 @@ export function compilationPdf(compilation) {
   Promise.all([
     Email.find({ _compilation: compilation._id }),
     Page.find({ _compilation: compilation._id }),
+    emailPageMap(compilation._id),
   ]).then((values) => {
-    const [emails, pages] = values;
+    const [emails, pages, pageMap] = values;
 
-    return Promise.all([...emails.map(writeEmailPdfToFs), ...pages.map(writePagePdfToFs)])
+    return Promise.all([
+      ...emails.map((email) => { return writeEmailPdfToFs(email, pageMap); }),
+      ...pages.map(writePagePdfToFs),
+    ])
     .then(() => {
       const sortedPages = sharedHelpers.sortedPages(pages);
       const sortedEmails = sharedHelpers.sortedEmails(emails);
 
       const pageFileArguments = _.map(sortedPages, (page) => { return pagePath(page); });
       const emailFileArguments = _.map(sortedEmails, (email) => { return emailPath(email); });
-
-      console.log([
-        ...pageFileArguments,
-        ...emailFileArguments,
-        'cat',
-        'output',
-        '-',
-      ]);
 
       const spawn = require('child_process').spawn;
       const pdftk = spawn('pdftk', [
@@ -192,19 +191,11 @@ export function compilationPdf(compilation) {
         '-',
       ]);
 
-      // pdftk.stdout.on('data', (data) => {
-      //   console.log(`stdout ${data.length}`);
-      // });
-
       pdftk.stdout.pipe(compilationPdfStream);
 
       pdftk.stderr.on('data', (data) => {
         console.log(`error happened ${data.toString('utf8')}`);
       });
-
-      // pdftk.on('close', (code) => {
-      //   console.log(`pdftk process exited with code ${code}`);
-      // });
     });
   });
 

@@ -1,61 +1,37 @@
 import React, { Component, PropTypes } from 'react';
-import ReactQuill from 'react-quill';
-import * as emailTemplate from '../templates/email';
+import EmailTemplate from '../templates/email';
 
 class CompilationEmailForm extends Component {
   constructor(props, context) {
     super(props, context);
-
-    this.state = {
-      subject: this.props.email.subject,
-      body: this.props.email.body,
-    };
-
-    this.handleSubjectChange = this.handleSubjectChange.bind(this);
-    this.handleBodyChange = this.handleBodyChange.bind(this);
-
+    this.template = new EmailTemplate(this.props.email);
+    this.state = this.template.initialFormState();
+    this.setBodyState = this.setBodyState.bind(this);
+    this.setFormState = this.setFormState.bind(this);
     this.submitForm = this.submitForm.bind(this);
+  }
+  componentWillReceiveProps(nextProps) {
+    this.template = new EmailTemplate(nextProps.email);
+    this.state = this.template.initialFormState();
+  }
+  setBodyState(newVal) {
+    const newState = { body: newVal };
+    this.setState(newState);
+  }
+  setFormState(event) {
+    const newState = {};
+    newState[event.target.getAttribute('name')] = event.target.innerHTML;
+    this.setState(newState);
   }
   submitForm(e) {
     e.preventDefault();
 
-    this.props.submitForm({
-      subject: this.state.subject,
-      body: this.state.body,
-    });
-  }
-  handleSubjectChange(event) {
-    this.setState({ subject: event.target.innerHTML });
-  }
-  handleBodyChange(newBody) {
-    this.setState({ body: newBody });
+    this.props.submitForm(this.state);
   }
   renderForm() {
-    return (
-      <form className="email-form" onSubmit={this.handleSubmit}>
-        <div className="email-view">
-          {this.renderSubjectEditor()}
-          {emailTemplate.renderDate(this.props.email.date)}
-          {emailTemplate.renderFrom(this.props.email.from)}
-          {emailTemplate.renderTo(this.props.email.to)}
-          {this.renderBodyEditor()}
-        </div>
-
-        {this.renderErrors('base')}
-        <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
-        <span className="left-bumper top-bumper">{this.renderSaving()}</span>
-      </form>
-    );
-  }
-  renderSubjectEditor() {
-    const subjectInput = <div className="editable" contentEditable onBlur={this.handleSubjectChange}>{this.state.subject}</div>;
-
-    return emailTemplate.renderSubject(subjectInput);
-  }
-  renderBodyEditor() {
-    const bodyInput = <ReactQuill className="editable" toolbar={false} styles={false} value={this.state.body} onChange={this.handleBodyChange} />;
-
-    return emailTemplate.renderBody(bodyInput);
+    if (this.template) {
+      return this.template.renderForm(this.setFormState, this.setBodyState);
+    }
   }
   renderErrors(type) {
     if (this.props.email.errors) {
@@ -71,12 +47,15 @@ class CompilationEmailForm extends Component {
   }
   render() {
     return (
-      <div className="row">
-        <div className="col-md-12">
-          {this.props.email.saving}
+      <form className="email-form" onSubmit={this.handleSubmit}>
+        <div className="email-view">
           {this.renderForm()}
         </div>
-      </div>
+
+        {this.renderErrors('base')}
+        <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
+        <span className="left-bumper top-bumper">{this.renderSaving()}</span>
+      </form>
     );
   }
 }

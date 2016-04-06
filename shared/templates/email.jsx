@@ -1,118 +1,149 @@
-import moment from 'moment';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import moment from 'moment';
+import ReactQuill from 'react-quill';
 
-export function mapEmailUser(user, index, array) {
-  let text = `${user.name} - ${user.address}`;
+class EmailTemplate {
+  constructor(email) {
+    this.email = email;
 
-  if (!user.name && user.address) {
-    text = user.address;
-  } else if (user.name && !user.address) {
-    text = user.name;
+    this.render = this.render.bind(this);
+    this.renderForm = this.renderForm.bind(this);
+    this.toString = this.toString.bind(this);
+  }
+  initialFormState() {
+    return this.email;
   }
 
-  if (index !== (array.length - 1)) {
-    text += ',';
-    return <span key={index}><span style={{ whiteSpace: 'nowrap' }}>{text}</span> </span>;
+  mapEmailUser(user, index, array) {
+    let text = `${user.name} - ${user.address}`;
+
+    if (!user.name && user.address) {
+      text = user.address;
+    } else if (user.name && !user.address) {
+      text = user.name;
+    }
+
+    if (index !== (array.length - 1)) {
+      text += ',';
+      return <span key={index}><span style={{ whiteSpace: 'nowrap' }}>{text}</span> </span>;
+    }
+
+    return <span key={index} style={{ whiteSpace: 'nowrap' }}>{text}</span>;
   }
 
-  return <span key={index} style={{ whiteSpace: 'nowrap' }}>{text}</span>;
+  renderSubject(subject) {
+    const divStyle = {
+      fontFamily: '\'Montserrat\', sans-serif',
+      fontWeight: 'bold',
+      fontSize: '1.4em',
+      marginBottom: '.3em',
+    };
+
+    return <div style={divStyle}>{subject}</div>;
+  }
+
+  renderDate(date) {
+    const divStyle = {
+      fontFamily: '\'Montserrat\', sans-serif',
+      fontSize: '0.9em',
+      margin: '.3em 0',
+    };
+
+    return <div style={divStyle}>{moment(date).format('LL')}</div>;
+  }
+
+  renderFrom(from) {
+    const divStyle = {
+      fontFamily: '\'Montserrat\', sans-serif',
+      fontSize: '0.8em',
+      margin: '.3em 0',
+    };
+
+    return <div style={divStyle}>From: {from.map(this.mapEmailUser)}</div>;
+  }
+
+  renderTo(to) {
+    const divStyle = {
+      fontFamily: '\'Montserrat\', sans-serif',
+      fontSize: '0.8em',
+      margin: '.3em 0',
+    };
+
+    return <div style={divStyle}>To: {to.map(this.mapEmailUser)}</div>;
+  }
+
+  bodyStyles() {
+    return {
+      fontFamily: '\'Libre Baskerville\', serif',
+      lineHeight: '1.2em',
+      fontSize: '0.95em',
+      marginTop: '1.5em',
+    };
+  }
+  renderBodyDangerously(body) {
+    const divStyle = this.bodyStyles();
+
+    return <div style={divStyle} dangerouslySetInnerHTML={{ __html: body }} />;
+  }
+  renderBody(body) {
+    const divStyle = this.bodyStyles();
+
+    return <div style={divStyle}>{body}</div>;
+  }
+
+  render() {
+    const email = this.email;
+    const subject = this.renderSubject(email.subject);
+    const date = this.renderDate(email.date);
+    const from = this.renderFrom(email.from);
+    const to = this.renderTo(email.to);
+    const body = this.renderBodyDangerously(email.body);
+
+    return (<div>
+      {subject}
+      {date}
+      {from}
+      {to}
+      {body}
+    </div>);
+  }
+
+  renderForm(setFormState, setBodyState) {
+    const bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
+    const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;
+
+    return (<div>
+      {this.renderSubject(subjectInput)}
+      {this.renderDate(this.email.date)}
+      {this.renderFrom(this.email.from)}
+      {this.renderTo(this.email.to)}
+      {this.renderBody(bodyInput)}
+    </div>);
+  }
+
+  toString() {
+    const email = this.email;
+    const subject = this.renderSubject(email.subject);
+    const date = this.renderDate(email.date);
+    const from = this.renderFrom(email.from);
+    const to = this.renderTo(email.to);
+    const body = this.renderBodyDangerously(email.body);
+
+    return `
+      <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+      <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+
+      ${renderToString(subject)}
+      ${renderToString(date)}
+      ${renderToString(from)}
+      ${renderToString(to)}
+      ${renderToString(body)}
+    `;
+  }
 }
 
-export function renderSubject(subject) {
-  const divStyle = {
-    fontFamily: '\'Montserrat\', sans-serif',
-    fontWeight: 'bold',
-    fontSize: '1.4em',
-    marginBottom: '.3em',
-  };
-
-  return <div style={divStyle}>{subject}</div>;
-}
-
-export function renderDate(date) {
-  const divStyle = {
-    fontFamily: '\'Montserrat\', sans-serif',
-    fontSize: '0.9em',
-    margin: '.3em 0',
-  };
-
-  return <div style={divStyle}>{moment(date).format('LL')}</div>;
-}
-
-export function renderFrom(from) {
-  const divStyle = {
-    fontFamily: '\'Montserrat\', sans-serif',
-    fontSize: '0.8em',
-    margin: '.3em 0',
-  };
-
-  return <div style={divStyle}>From: {from.map(mapEmailUser)}</div>;
-}
-
-export function renderTo(to) {
-  const divStyle = {
-    fontFamily: '\'Montserrat\', sans-serif',
-    fontSize: '0.8em',
-    margin: '.3em 0',
-  };
-
-  return <div style={divStyle}>To: {to.map(mapEmailUser)}</div>;
-}
-
-export function bodyStyles() {
-  return {
-    fontFamily: '\'Libre Baskerville\', serif',
-    lineHeight: '1.2em',
-    fontSize: '0.95em',
-    marginTop: '1.5em',
-  };
-}
-export function renderBodyDangerously(body) {
-  const divStyle = bodyStyles();
-
-  return <div style={divStyle} dangerouslySetInnerHTML={{ __html: body }} />;
-}
-export function renderBody(body) {
-  const divStyle = bodyStyles();
-
-  return <div style={divStyle}>{body}</div>;
-}
-
-export function render(email) {
-  const subject = renderSubject(email.subject);
-  const date = renderDate(email.date);
-  const from = renderFrom(email.from);
-  const to = renderTo(email.to);
-  const body = renderBodyDangerously(email.body);
-
-  return (<div>
-    {subject}
-    {date}
-    {from}
-    {to}
-    {body}
-  </div>);
-}
-
-export function toString(email) {
-  const subject = renderSubject(email.subject);
-  const date = renderDate(email.date);
-  const from = renderFrom(email.from);
-  const to = renderTo(email.to);
-  const body = renderBodyDangerously(email.body);
-
-  return `
-    <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-
-    ${renderToString(subject)}
-    ${renderToString(date)}
-    ${renderToString(from)}
-    ${renderToString(to)}
-    ${renderToString(body)}
-  `;
-}
+export default EmailTemplate;
 
 // Font Sizes
 // Points	 Pixels	 Ems

@@ -11,7 +11,7 @@ class CompilationEmailsContainer extends Component {
     super(props, context);
 
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.compilationId }) || {};
-    this.currentCompilationPath = _.last(this.props.routes[this.props.routes.length - 1].path.split('/'));
+    this.currentCompilationPath = this.props.routes[this.props.routes.length - 1].path.split('/')[3];
 
     if (this.props.compilations.length < 1) {
       this.props.dispatch(Actions.getCompilations());
@@ -31,7 +31,7 @@ class CompilationEmailsContainer extends Component {
   }
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
-    this.currentCompilationPath = _.last(nextProps.routes[nextProps.routes.length - 1].path.split('/'));
+    this.currentCompilationPath = nextProps.routes[nextProps.routes.length - 1].path.split('/')[3];
   }
 
   renderChildren() {
