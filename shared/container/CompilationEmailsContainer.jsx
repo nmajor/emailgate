@@ -8,11 +8,8 @@ import { Link } from 'react-router';
 class CompilationEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
-
     this.removeEmail = this.removeEmail.bind(this);
-
     this.compilation = this.props.compilation;
-
     this.currentEmail = _.find(this.props.compilationEmails, { _id: this.props.params.emailId });
   }
   componentWillReceiveProps(nextProps) {
@@ -25,7 +22,7 @@ class CompilationEmailsContainer extends Component {
   renderAddLink() {
     return (<Link
       className="btn btn-primary btn-block bottom-bumper"
-      to={`/compilations/${this.compilation._id}/emails/add`}
+      to={`/compilations/${this.compilation._id}/add-emails`}
     >
       Add Emails
     </Link>);

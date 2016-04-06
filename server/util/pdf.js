@@ -77,9 +77,13 @@ export function emailPdfToBuffer(email, pageNumber) {
 }
 
 export function emailPdf(email, pageNumber) {
+  console.log('blah blah 1');
   const template = new EmailTemplate(email, pageNumber);
   const html = template.toString();
   const options = emailOptions(pageNumber);
+
+  console.log('blah blah');
+  console.log(html);
 
   const emailPdfStream = stream.PassThrough(); // eslint-disable-line new-cap
 

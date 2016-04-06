@@ -31,6 +31,22 @@ class EmailTemplate {
 
     return <span key={index} style={{ whiteSpace: 'nowrap' }}>{text}</span>;
   }
+  renderAttachments(attachments) {
+    const divStyle = {
+      width: '100%',
+    };
+
+    const imageComponents = attachments.map((attachment, index) => {
+      if (['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
+        const dataUriPrefix = `data:${attachment.contentType};base64,`;
+        const imageString = new Buffer(attachment.content).toString('base64');
+        return <img style={divStyle} key={index} src={dataUriPrefix + imageString} />;
+      }
+      return null;
+    });
+
+    return <div>{imageComponents}</div>;
+  }
 
   renderSubject(subject) {
     const divStyle = {
@@ -94,18 +110,14 @@ class EmailTemplate {
 
   render() {
     const email = this.email;
-    const subject = this.renderSubject(email.subject);
-    const date = this.renderDate(email.date);
-    const from = this.renderFrom(email.from);
-    const to = this.renderTo(email.to);
-    const body = this.renderBodyDangerously(email.body);
 
     return (<div>
-      {subject}
-      {date}
-      {from}
-      {to}
-      {body}
+      {this.renderSubject(email.subject)}
+      {this.renderDate(email.date)}
+      {this.renderFrom(email.from)}
+      {this.renderTo(email.to)}
+      {this.renderBodyDangerously(email.body)}
+      {this.renderAttachments(email.attachments)}
     </div>);
   }
 
@@ -124,21 +136,18 @@ class EmailTemplate {
 
   toString() {
     const email = this.email;
-    const subject = this.renderSubject(email.subject);
-    const date = this.renderDate(email.date);
-    const from = this.renderFrom(email.from);
-    const to = this.renderTo(email.to);
-    const body = this.renderBodyDangerously(email.body);
+    console.log('hey toString');
 
     return `
       <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
       <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 
-      ${renderToString(subject)}
-      ${renderToString(date)}
-      ${renderToString(from)}
-      ${renderToString(to)}
-      ${renderToString(body)}
+      ${renderToString(this.renderSubject(email.subject))}
+      ${renderToString(this.renderDate(email.date))}
+      ${renderToString(this.renderFrom(email.from))}
+      ${renderToString(this.renderTo(email.to))}
+      ${renderToString(this.renderBodyDangerously(email.body))}
+      ${renderToString(this.renderAttachments(email.attachments))}
     `;
   }
 }

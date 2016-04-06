@@ -37,7 +37,7 @@ const routes = (
     <Route path="/accounts/:id/edit" component={EditAccountContainer}/>
     <Route path="/compilations/new" component={NewCompilationContainer}/>
     <Route component={CompilationContainer}>
-      <Route path="/compilations/:compilationId/emails/add" component={AddCompilationEmailsContainer}/>
+      <Route path="/compilations/:compilationId/add-emails" component={AddCompilationEmailsContainer}/>
       <Route path="/compilations/:compilationId/emails" component={CompilationEmailsContainer} />
       <Route component={CompilationEmailsContainer}>
         <Route path="/compilations/:compilationId/emails/:emailId" component={ViewCompilationEmailContainer}/>
