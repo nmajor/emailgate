@@ -6,7 +6,7 @@ class CompilationNav extends Component {
     super(props, context);
   }
   renderEmailsNav() {
-    return this.renderNavItem('emails', 'Emails');
+    return this.renderNavItem('emails', `Emails (${this.props.emailCount})`);
   }
   renderPagesNav() {
     return this.renderNavItem('pages', 'Pages');
@@ -17,10 +17,10 @@ class CompilationNav extends Component {
   renderCheckoutNav() {
     return this.renderNavItem('checkout', 'Checkout');
   }
-  renderNavItem(page, pageName) {
+  renderNavItem(path, pathName) {
     return (
-      <li role="presentation" className={this.props.currentPage === page ? 'active' : ''}>
-        <Link to={`/compilations/${this.props.compilationId}/${page}`}>{pageName}</Link>
+      <li role="presentation" className={this.props.currentPath === path ? 'active' : ''}>
+        <Link to={`/compilations/${this.props.compilationId}/${path}`}>{pathName}</Link>
       </li>
     );
   }
@@ -43,7 +43,8 @@ class CompilationNav extends Component {
 
 CompilationNav.propTypes = {
   compilationId: PropTypes.string.isRequired,
-  currentPage: PropTypes.string.isRequired,
+  currentPath: PropTypes.string.isRequired,
+  emailCount: PropTypes.number.isRequired,
 };
 
 export default CompilationNav;
