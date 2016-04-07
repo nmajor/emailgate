@@ -10,8 +10,8 @@ class DashboardWrapper extends Component {
         <Header />
         <div className="container">
           <h1>Dashboard</h1>
-          <AccountsListContainer />
           <CompilationsListContainer />
+          <AccountsListContainer />
         </div>
       </div>
     );

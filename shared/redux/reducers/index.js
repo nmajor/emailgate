@@ -6,8 +6,10 @@ import initialState from '../../initialState';
 import * as fetchings from './fetchings';
 
 import user from './user';
+import allUsers from './allUsers';
 import accounts from './accounts';
 import compilations from './compilations';
+import allCompilations from './allCompilations';
 import compilationEmails from './compilationEmails';
 import compilationPages from './compilationPages';
 import currentAccountId from './currentAccountId';
@@ -34,12 +36,14 @@ const compilationEmailPageMap = (state = initialState.compilationEmailPageMap, a
   }
 };
 
-export default combineReducers({
+const appReducer = combineReducers({
   fetchingFilteredAccountEmailsCount: fetchings.fetchingFilteredAccountEmailsCount,
   fetchingFilteredAccountEmails: fetchings.fetchingFilteredAccountEmails,
   user,
+  allUsers,
   accounts,
   compilations,
+  allCompilations,
   compilationEmails,
   compilationEmailPageMap,
   compilationPages,
@@ -48,3 +52,12 @@ export default combineReducers({
   filteredAccountEmailsCount,
   currentFilteredEmailMid,
 });
+
+const rootReducer = (state = initialState, action) => {
+  if (action.type === ActionTypes.RESET_STATE) {
+    state = initialState; // eslint-disable-line no-param-reassign
+  }
+  return appReducer(state, action);
+};
+
+export default rootReducer;

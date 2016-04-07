@@ -51,3 +51,8 @@ export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POSTS = 'ADD_POSTS';
 export const ADD_SELECTED_POST = 'ADD_SELECTED_POST';
 export const DELETE_POST = 'DELETE_POST';
+
+export const SET_ALL_USERS = 'SET_ALL_USERS';
+export const SET_ALL_COMPILATIONS = 'SET_ALL_COMPILATIONS';
+
+export const RESET_STATE = 'RESET_STATE';

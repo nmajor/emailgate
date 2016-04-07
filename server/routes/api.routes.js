@@ -5,6 +5,7 @@ import * as AccountController from '../controllers/account.controller';
 import * as CompilationController from '../controllers/compilation.controller';
 import * as EmailController from '../controllers/email.controller';
 import * as PageController from '../controllers/page.controller';
+import * as AdminController from '../controllers/admin.controller';
 
 import User from '../models/user';
 
@@ -31,7 +32,7 @@ router.get('/user', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  User.register(new User({ email: req.body.email }), req.body.password, (err, user) => {
+  User.register(new User({ email: req.body.email, name: req.body.name }), req.body.password, (err, user) => {
     if (err) {
       return res.json({ error: {
         message: err.message,
@@ -68,6 +69,16 @@ function ensureAuthenticated(req, res, next) {
   }
 }
 
+function ensureAdmin(req, res, next) {
+  if (req.user.email === 'nick@nmajor.com') {
+    console.log('User is an admin.');
+    next();
+  } else {
+    res.status(401);
+    res.json({ error: { message: 'Unauthorized. You are not an admin bro.' } });
+  }
+}
+
 router.get('/accounts', ensureAuthenticated, AccountController.getAccounts);
 router.get('/accounts/:id', ensureAuthenticated, AccountController.findOneAccount);
 router.post('/accounts', ensureAuthenticated, AccountController.createAccount);
@@ -83,5 +94,9 @@ router.patch('/compilations/:id', ensureAuthenticated, CompilationController.pat
 router.get('/compilations/:id/emails', ensureAuthenticated, EmailController.getCompilationEmails);
 router.get('/compilations/:id/email-page-map', ensureAuthenticated, getCompilationEmailPageMap);
 router.get('/compilations/:id/pages', ensureAuthenticated, PageController.getCompilationPages);
+
+router.get('/admin/users', ensureAuthenticated, ensureAdmin, AdminController.getUsers);
+router.get('/admin/compilations', ensureAuthenticated, ensureAdmin, AdminController.getCompilations);
+
 
 module.exports = router;

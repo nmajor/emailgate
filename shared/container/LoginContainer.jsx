@@ -8,10 +8,15 @@ class LoginContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.login = this.login.bind(this);
+    this.redirectToDashboard = this.redirectToDashboard.bind(this);
   }
 
   login(email, password) {
-    this.props.dispatch(Actions.loginUser({ email, password }));
+    this.props.dispatch(Actions.loginUser({ email, password }, this.redirectToDashboard));
+  }
+
+  redirectToDashboard() {
+    this.context.router.push(`/dashboard`);
   }
 
   render() {
@@ -29,6 +34,10 @@ function mapStateToProps(store) {
     user: store.user,
   };
 }
+
+LoginContainer.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 LoginContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,

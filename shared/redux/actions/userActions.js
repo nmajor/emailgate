@@ -1,5 +1,6 @@
 import * as ActionTypes from '../constants';
 import fetch from 'isomorphic-fetch';
+import socket from '../../../client/socket';
 
 import baseURL from '../../baseURL';
 
@@ -24,7 +25,7 @@ export function setUserErrors(errors, reset = false) {
 
 export function clearUser() {
   return {
-    type: ActionTypes.CLEAR_USER,
+    type: ActionTypes.RESET_STATE,
   };
 }
 
@@ -56,7 +57,7 @@ export function getUser() {
   };
 }
 
-export function logoutUser() {
+export function logoutUser(cb) {
   console.log('logout user');
   return (dispatch) => {
     return fetch(`${baseURL}/api/logout`, {
@@ -74,6 +75,7 @@ export function logoutUser() {
         throw new Error(res.error.message);
       }
       dispatch(clearUser());
+      cb();
     })
     .catch((err) => {
       console.log(err.message);
@@ -81,7 +83,7 @@ export function logoutUser() {
   };
 }
 
-export function registerUser(userData) {
+export function registerUser(userData, cb) {
   return (dispatch) => {
     return fetch(`${baseURL}/api/register`, {
       credentials: 'include',
@@ -107,14 +109,17 @@ export function registerUser(userData) {
         throw new Error(res.error.message);
       }
       dispatch(setUser(res));
+      socket.connect(baseURL, { forceNew: true });
+      cb(res);
     })
     .catch((err) => {
+      console.log(err);
       dispatch(setUserErrors({ base: [err.message] }));
     });
   };
 }
 
-export function loginUser(userData) {
+export function loginUser(userData, cb) {
   return (dispatch) => {
     return fetch(`${baseURL}/api/login`, {
       credentials: 'include',
@@ -141,6 +146,8 @@ export function loginUser(userData) {
         throw new Error(res.error.message);
       }
       dispatch(setUser(res));
+      socket.connect(baseURL, { forceNew: true });
+      cb(res);
     })
     .catch((err) => {
       dispatch(setUserErrors({ base: [err.message] }));

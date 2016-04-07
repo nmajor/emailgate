@@ -8,10 +8,15 @@ class RegisterContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.register = this.register.bind(this);
+    this.redirectToDashboard = this.redirectToDashboard.bind(this);
   }
 
   register(name, email, password) {
-    this.props.dispatch(Actions.registerUser({ name, email, password }));
+    this.props.dispatch(Actions.registerUser({ name, email, password }, this.redirectToDashboard));
+  }
+
+  redirectToDashboard() {
+    this.context.router.push(`/dashboard`);
   }
 
   render() {
@@ -29,6 +34,10 @@ function mapStateToProps(store) {
     user: store.user,
   };
 }
+
+RegisterContainer.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 RegisterContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,

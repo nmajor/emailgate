@@ -10,7 +10,9 @@ class Header extends Component {
   }
 
   logout() {
-    this.props.dispatch(Actions.logoutUser());
+    this.props.dispatch(Actions.logoutUser(() => {
+      this.context.router.push('/');
+    }));
   }
   renderNavbarHeader() {
     return (<div className="navbar-header">
@@ -51,6 +53,10 @@ function mapStateToProps(store) {
     user: store.user,
   };
 }
+
+Header.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,

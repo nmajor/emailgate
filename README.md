@@ -45,11 +45,8 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 
 ### Todo Short
 
-- Need to add the correct page numbers to the bottom of the email pages.
 - Strange bug when previewing email. The selected eye icon disappears when the pdf loads.
-- Load images in email previews
 - Save the compilation title and subtitle separately to populate the cover and title page with the same data
-- Generate the finalized pdf
 - Fix the pdfs for the title page and message page. There is an extra blank page at the bottom.
 
 
@@ -73,3 +70,6 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 ### Finished Todos
 
 - Make a compilation wrapper component to load the compilation emails, pages, page map, everything the compilation needs on fresh page and in component did mount. Maybe show loading gif until all things are loaded. Also make sure to set all compilation state related stuff to be blank while loading the new data. (This should automatically fix the issue with blank page numbers in the table of contents.)
+- Need to add the correct page numbers to the bottom of the email pages.
+- Load images in email previews
+- Generate the finalized pdf

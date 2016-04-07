@@ -136,7 +136,6 @@ class EmailTemplate {
 
   toString() {
     const email = this.email;
-    console.log('hey toString');
 
     return `
       <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
