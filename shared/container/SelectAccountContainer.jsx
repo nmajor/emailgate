@@ -9,15 +9,11 @@ class SelectAccountContainer extends Component {
     this.handleItemClick = this.handleItemClick.bind(this);
   }
 
-  componentDidMount() {
-    if (typeof window !== 'undefined' && this.props.accounts.length < 1) {
-      this.props.dispatch(Actions.getAccounts());
-    }
-  }
-
   handleItemClick(account) {
-    this.props.dispatch(Actions.setCurrentAccountId(account._id));
-    this.props.dispatch(Actions.getAccountMailboxes(account));
+    if (account._id !== this.props.currentAccountId) {
+      this.props.dispatch(Actions.getAccountMailboxes(account));
+      this.props.dispatch(Actions.setCurrentAccountId(account._id));
+    }
   }
 
   render() {

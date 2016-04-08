@@ -159,8 +159,8 @@ export function updateAccount(id, accountProps, cb) {
 
 export function checkAccountConnection(account) {
   return (dispatch) => {
-    socket.emit('CHECK_ACCOUNT_CONNECTION', account);
     dispatch(updateAccountInAccounts(Object.assign({}, account, { checkingConnection: true })));
+    socket.emit('CHECK_ACCOUNT_CONNECTION', account);
   };
 }
 
@@ -172,7 +172,7 @@ export function socketUpdateAccount(account) {
 
 export function getAccountMailboxes(account) {
   return (dispatch) => {
-    socket.emit('GET_ACCOUNT_MAILBOXES', account);
     dispatch(updateAccountInAccounts(Object.assign({}, account, { gettingMailboxes: true })));
+    socket.emit('GET_ACCOUNT_MAILBOXES', account);
   };
 }

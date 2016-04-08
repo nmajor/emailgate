@@ -2,17 +2,13 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import FilterForm from '../components/FilterForm';
-import _ from 'lodash';
 
 class FilterContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.submitForm = this.submitForm.bind(this);
 
-    this.currentAccount = _.find(this.props.accounts, { _id: this.props.currentAccountId }) || {};
-  }
-  componentWillReceiveProps(nextProps) {
-    this.currentAccount = _.find(this.props.accounts, { _id: nextProps.currentAccountId }) || {};
+    this.currentAccount = this.props.currentAccount;
   }
   submitForm(props) {
     const filter = {
@@ -57,6 +53,7 @@ function mapStateToProps(store) {
 FilterContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array,
+  currentAccount: PropTypes.object,
   currentAccountId: PropTypes.string,
   fetchingFilteredAccountEmails: PropTypes.bool,
 };

@@ -54,9 +54,6 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
 - Sanitize email body text before save.
-- Reconnect the socket after login, registration, and logout.
-- Auto redirect to dashboard after login and registration.
-- Make sure registration logs you in.
 - Add email confirmation to users.
 
 
@@ -73,3 +70,6 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 - Need to add the correct page numbers to the bottom of the email pages.
 - Load images in email previews
 - Generate the finalized pdf
+- Make sure registration logs you in.
+- Reconnect the socket after login, registration, and logout.
+- Auto redirect to dashboard after login and registration.

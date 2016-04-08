@@ -3,7 +3,7 @@ import React, { PropTypes, Component } from 'react';
 class AdminDashboard extends Component {
   renderCompilationPdfLink(compilation) {
     if (compilation.pdf && compilation.pdf.url) {
-      return (<a href={compilation.pdf.url} className="btn btn-primary btn-xs">
+      return (<a href={compilation.pdf.url} target="_blank" className="btn btn-primary btn-xs">
         <span className="glyphicon glyphicon-open-file" aria-hidden="true"></span>
       </a>);
     }

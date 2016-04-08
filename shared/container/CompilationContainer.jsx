@@ -13,6 +13,10 @@ class CompilationEmailsContainer extends Component {
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.compilationId }) || {};
     this.currentCompilationPath = this.props.routes[this.props.routes.length - 1].path.split('/')[3];
 
+    if (this.props.accounts.length < 1) {
+      this.props.dispatch(Actions.getAccounts());
+    }
+
     if (this.props.compilations.length < 1) {
       this.props.dispatch(Actions.getCompilations());
     }
@@ -71,6 +75,9 @@ class CompilationEmailsContainer extends Component {
 
 CompilationEmailsContainer.need = [
   (params, cookie) => {
+    return Actions.getAccounts.bind(null, cookie)();
+  },
+  (params, cookie) => {
     return Actions.getCompilations.bind(null, cookie)();
   },
   (params, cookie) => {
@@ -86,6 +93,7 @@ CompilationEmailsContainer.need = [
 
 function mapStateToProps(store) {
   return {
+    accounts: store.accounts,
     compilations: store.compilations,
     compilationEmails: store.compilationEmails,
     compilationEmailPageMap: store.compilationEmailPageMap,
@@ -100,6 +108,7 @@ CompilationEmailsContainer.contextTypes = {
 CompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   children: PropTypes.object,
+  accounts: PropTypes.array,
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
   compilationEmailPageMap: PropTypes.object,
