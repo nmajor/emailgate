@@ -4,7 +4,6 @@
 http://stackoverflow.com/a/260829/1556952
 
 
-
 ### Notes
 
 https://github.com/zippyui/react-date-picker
