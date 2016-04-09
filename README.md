@@ -2,7 +2,8 @@ Started with a pull from [mern-starter](https://github.com/Hashnode/mern-starter
 
 ### To run
 
-npm start
+npm run start:dev
+npm run start:prod
 
 ### Changes from mern Starter
 
