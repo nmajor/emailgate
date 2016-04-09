@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV !== 'production') { require('dotenv').config(); }
+require('dotenv').config();
 import Express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';

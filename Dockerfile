@@ -13,5 +13,7 @@ WORKDIR $APP_HOME
 
 RUN touch ./.env
 RUN npm install
+RUN npm -g install webpack
+RUN webpack -p --config webpack.config.prod.js
 
 CMD ["./bin/www"]
