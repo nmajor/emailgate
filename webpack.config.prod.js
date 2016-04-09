@@ -9,17 +9,18 @@ module.exports = {
   output: {
     path: __dirname + '/static/dist/',
     filename: 'bundle.js',
+    publicPath: '/dist/',
   },
-  
+
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
-  
+
   module: {
     loaders: [
       {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style','css?modules'),
+          test: /\.scss$/,
+          loaders: ["style", "css?sourceMap", "sass?sourceMap"]
       },
       {
         test: /\.jsx*$/,
@@ -27,6 +28,10 @@ module.exports = {
         loader: 'babel',
       }
     ],
+
+    // Shut off warnings about using pre-built javascript files
+    // as Quill.js unfortunately ships one as its `main`.
+    noParse: /node_modules\/quill\/dist/
   },
 
   plugins: [
