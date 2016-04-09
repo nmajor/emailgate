@@ -11,6 +11,7 @@ RUN mkdir -p $APP_HOME
 ADD . $APP_HOME
 WORKDIR $APP_HOME
 
+RUN touch ./.env
 RUN npm install
 
 CMD ["./bin/www"]

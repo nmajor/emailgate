@@ -1,7 +1,7 @@
 // import fs from 'fs';
 import manta from 'manta';
 import stream from 'stream';
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') { require('dotenv').config(); }
 
 const client = manta.createClient({
   sign: manta.privateKeySigner({
