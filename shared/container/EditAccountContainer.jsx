@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
-import AccountForm from '../components/AccountForm';
+import AccountFormContainer from './AccountFormContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
@@ -25,10 +25,12 @@ class EditAccountContainer extends Component {
 
   update(props) {
     this.props.dispatch(Actions.updateAccount(this.props.params.id, {
-      email: props.email,
-      password: props.password,
-      host: props.host,
-      port: props.port,
+      imap: {
+        email: props.email,
+        password: props.password,
+        host: props.host,
+        port: props.port,
+      },
     }, () => {
       this.checkConnectionIfNeeded();
     }));
@@ -56,7 +58,7 @@ class EditAccountContainer extends Component {
         <Header />
         <div className="container">
           <h1>Edit Account</h1>
-          <AccountForm checkConnection={this.checkConnection} account={this.account} submitForm={this.update} back={this.back} />
+          <AccountFormContainer checkConnection={this.checkConnection} account={this.account} submitForm={this.update} back={this.back} />
         </div>
       </div>
     );

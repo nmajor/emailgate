@@ -4,11 +4,15 @@ import AccountConnectionCheckedAt from './AccountConnectionCheckedAt';
 class AccountForm extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { savable: false };
+    this.state = {
+      savable: false,
+      kind: null,
+    };
 
     this.submitForm = this.submitForm.bind(this);
     this.back = this.back.bind(this);
     this.setSaveAbility = this.setSaveAbility.bind(this);
+    this.setKindToImap = this.setKindToImap.bind(this);
   }
   componentDidMount() {
     this.setSaveAbility();
@@ -19,6 +23,9 @@ class AccountForm extends Component {
     } else {
       this.setState({ savable: false });
     }
+  }
+  setKindToImap() {
+    this.setState({ kind: 'imap' });
   }
   formChanged() {
     const emailRef = this.refs.email || {};
@@ -46,6 +53,7 @@ class AccountForm extends Component {
     const portRef = this.refs.port || {};
 
     this.props.submitForm({
+      kind: this.state.kind,
       email: emailRef.value,
       password: passwordRef.value,
       host: hostRef.value,
@@ -56,21 +64,35 @@ class AccountForm extends Component {
     e.preventDefault();
     this.props.back();
   }
+  renderImapKind() {
+    return <div onClick={this.setKindToImap}>Imap</div>;
+  }
+  renderGoogleKind() {
+    return <a href={this.props.authUrls.googleAuthUrl}>Google</a>;
+  }
+  renderKindOptions() {
+    return (<div>
+      {this.renderGoogleKind()}
+      {this.renderImapKind()}
+    </div>);
+  }
   renderForm() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        {this.renderEmailFormGroup()}
-        {this.renderPasswordFormGroup()}
-        {this.renderHostFormGroup()}
-        {this.renderPortFormGroup()}
+    if (this.state.kind === 'imap') {
+      return (
+        <form onSubmit={this.handleSubmit}>
+          {this.renderEmailFormGroup()}
+          {this.renderPasswordFormGroup()}
+          {this.renderHostFormGroup()}
+          {this.renderPortFormGroup()}
 
-        {this.renderConnectionStatus()}
+          {this.renderConnectionStatus()}
 
-        {this.renderErrors('base')}
-        <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
-        <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
-      </form>
-    );
+          {this.renderErrors('base')}
+          <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
+          <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
+        </form>
+      );
+    }
   }
   renderConnectionStatus() {
     if (this.props.checkConnection) {
@@ -182,6 +204,7 @@ class AccountForm extends Component {
     return (
       <div className="row">
         <div className="col-md-6 col-sm-8">
+          {this.renderKindOptions()}
           {this.renderForm()}
         </div>
       </div>
@@ -195,6 +218,7 @@ AccountForm.propTypes = {
   back: PropTypes.func.isRequired,
   errors: PropTypes.object,
   checkConnection: PropTypes.func,
+  authUrls: PropTypes.object.isRequired,
 };
 
 export default AccountForm;

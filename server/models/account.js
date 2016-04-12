@@ -11,11 +11,11 @@ const AccountSchema = new Schema({
   kind: { type: String, default: 'imap' },
   imap: {
     mailboxes: [],
+    email: String,
+    password: String,
+    host: String,
+    port: String,
   },
-  email: String,
-  password: String,
-  host: String,
-  port: String,
   connectionValid: Boolean,
   connectionCheckedAt: Date,
 }, {
@@ -23,37 +23,49 @@ const AccountSchema = new Schema({
 });
 
 AccountSchema.methods.checkConnection = function checkConnection() {
-  return new Promise((resolve) => {
-    if (this.kind === 'imap') {
-      const imap = initImap({
-        email: this.email,
-        password: this.password,
-        host: this.host,
-        port: this.port,
-      });
+  if (this.kind === 'imap') {
+    return this.checkImapConnection();
+  } else if (this.kind === 'google') {
+    return this.checkGoogleConnection();
+  }
+};
 
-      imap.connect();
-      imap.on('ready', () => {
+AccountSchema.methods.checkGoogleConnection = function checkGoogleConnection() {
+  return new Promise((resolve) => {
+    resolve(this);
+  });
+};
+
+AccountSchema.methods.checkImapConnection = function checkImapConnection() {
+  return new Promise((resolve) => {
+    const imap = initImap({
+      email: this.imap.email,
+      password: this.imap.password,
+      host: this.imap.host,
+      port: this.imap.port,
+    });
+
+    imap.connect();
+    imap.on('ready', () => {
+      this.connectionValid = true;
+      this.connectionCheckedAt = Date.now();
+      imap.end();
+      resolve(this);
+    });
+    imap.on('error', (err) => {
+      if (err.toString() === 'Error: read ECONNRESET') {
         this.connectionValid = true;
         this.connectionCheckedAt = Date.now();
         imap.end();
         resolve(this);
-      });
-      imap.on('error', (err) => {
-        if (err.toString() === 'Error: read ECONNRESET') {
-          this.connectionValid = true;
-          this.connectionCheckedAt = Date.now();
-          imap.end();
-          resolve(this);
-          return;
-        }
+        return;
+      }
 
-        this.connectionValid = false;
-        this.connectionCheckedAt = Date.now();
-        imap.end();
-        resolve(this);
-      });
-    }
+      this.connectionValid = false;
+      this.connectionCheckedAt = Date.now();
+      imap.end();
+      resolve(this);
+    });
   });
 };
 
@@ -61,10 +73,10 @@ AccountSchema.methods.getMailboxes = function getMailboxes() {
   return new Promise((resolve) => {
     if (this.kind === 'imap') {
       const imap = initImap({
-        email: this.email,
-        password: this.password,
-        host: this.host,
-        port: this.port,
+        email: this.imap.email,
+        password: this.imap.password,
+        host: this.imap.host,
+        port: this.imap.port,
       });
 
       imap.connect();
@@ -101,10 +113,10 @@ AccountSchema.methods.getMailboxes = function getMailboxes() {
 AccountSchema.methods.filteredEmailsCount = function filteredEmailsCount(mailbox, imapFilter) {
   return new Promise((resolve) => {
     const imap = initImap({
-      email: this.email,
-      password: this.password,
-      host: this.host,
-      port: this.port,
+      email: this.imap.email,
+      password: this.imap.password,
+      host: this.imap.host,
+      port: this.imap.port,
     });
 
     imap.connect();
@@ -139,10 +151,10 @@ AccountSchema.methods.filteredEmailsCount = function filteredEmailsCount(mailbox
 AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(mailbox, imapFilter) {
   const emailStream = stream.PassThrough(); // eslint-disable-line new-cap
   const imap = initImap({
-    email: this.email,
-    password: this.password,
-    host: this.host,
-    port: this.port,
+    email: this.imap.email,
+    password: this.imap.password,
+    host: this.imap.host,
+    port: this.imap.port,
   });
 
   imap.connect();

@@ -3,7 +3,6 @@
 // Good overview of the basic principles of storing hashed passwords
 http://stackoverflow.com/a/260829/1556952
 
-
 ### Notes
 
 https://github.com/zippyui/react-date-picker
@@ -42,20 +41,15 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 - Save the compilation title and subtitle separately to populate the cover and title page with the same data
 - Fix the pdfs for the title page and message page. There is an extra blank page at the bottom.
 
-
 ### Todo Long
 
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
 - Sanitize email body text before save.
 - Add email confirmation to users.
 
-
-
-
 ### Container Notes
 
 - The container will need to install pdftk: apt-get install pdftk
-
 
 ### Finished Todos
 
@@ -66,3 +60,25 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 - Make sure registration logs you in.
 - Reconnect the socket after login, registration, and logout.
 - Auto redirect to dashboard after login and registration.
+
+
+### Oath2 Notes
+
+http://localhost:8000/oath2/google?code=4/BVtDf-G2MQpgapPv8yc9cw9w74SvOUsO7Be0HbwTnPA#
+
+// Gmail API Docs
+https://developers.google.com/gmail/api/
+
+// Google API Client Library
+https://github.com/google/google-api-nodejs-client/
+
+// Google API Auth Library
+https://github.com/google/google-auth-library-nodejs
+
+// -- Google API Manager info
+
+// Authorized origin:
+http://eb.nmajor.com
+
+// Authorized redirect URI:
+http://eb.nmajor.com/oath2/google

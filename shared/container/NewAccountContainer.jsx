@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
-import AccountForm from '../components/AccountForm';
+import AccountFormContainer from './AccountFormContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 
@@ -14,10 +14,12 @@ class NewAccountContainer extends Component {
 
   create(props) {
     this.props.dispatch(Actions.createAccount({
-      email: props.email,
-      password: props.password,
-      host: props.host,
-      port: props.port,
+      imap: {
+        email: props.email,
+        password: props.password,
+        host: props.host,
+        port: props.port,
+      },
     }, this.redirectToEdit));
   }
 
@@ -35,7 +37,7 @@ class NewAccountContainer extends Component {
         <Header />
         <div className="container">
           <h1>Connect New Account</h1>
-          <AccountForm account={{}} submitForm={this.create} back={this.back} />
+          <AccountFormContainer account={{}} submitForm={this.create} back={this.back} />
         </div>
       </div>
     );

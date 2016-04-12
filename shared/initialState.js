@@ -1,4 +1,5 @@
 export default {
+  config: {},
   fetchingFilteredAccountEmailsCount: false,
   fetchingFilteredAccountEmails: false,
   user: {},

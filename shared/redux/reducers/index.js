@@ -36,7 +36,18 @@ const compilationEmailPageMap = (state = initialState.compilationEmailPageMap, a
   }
 };
 
+const config = (state = initialState.config, action) => {
+  switch (action.type) {
+    case ActionTypes.SET_CONFIG :
+      return action.config;
+
+    default:
+      return state;
+  }
+};
+
 const appReducer = combineReducers({
+  config,
   fetchingFilteredAccountEmailsCount: fetchings.fetchingFilteredAccountEmailsCount,
   fetchingFilteredAccountEmails: fetchings.fetchingFilteredAccountEmails,
   user,

@@ -1,5 +1,5 @@
 var webpack = require('webpack');
-console.log('hey');
+
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
 

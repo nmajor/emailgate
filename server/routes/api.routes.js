@@ -6,9 +6,9 @@ import * as CompilationController from '../controllers/compilation.controller';
 import * as EmailController from '../controllers/email.controller';
 import * as PageController from '../controllers/page.controller';
 import * as AdminController from '../controllers/admin.controller';
+import * as AppController from '../controllers/app.controller';
 
 import User from '../models/user';
-
 
 import { emailPageMap } from '../util/helpers';
 import Compilation from '../models/compilation';
@@ -78,6 +78,8 @@ function ensureAdmin(req, res, next) {
     res.json({ error: { message: 'Unauthorized. You are not an admin bro.' } });
   }
 }
+
+router.get('/config', AppController.getAppConfig);
 
 router.get('/accounts', ensureAuthenticated, AccountController.getAccounts);
 router.get('/accounts/:id', ensureAuthenticated, AccountController.findOneAccount);

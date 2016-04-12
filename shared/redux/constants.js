@@ -56,3 +56,4 @@ export const SET_ALL_USERS = 'SET_ALL_USERS';
 export const SET_ALL_COMPILATIONS = 'SET_ALL_COMPILATIONS';
 
 export const RESET_STATE = 'RESET_STATE';
+export const SET_CONFIG = 'SET_CONFIG';
