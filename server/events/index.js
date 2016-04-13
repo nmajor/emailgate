@@ -55,8 +55,6 @@ export default (io) => {
 
     socket.on('GET_FILTERED_ACCOUNT_EMAILS', (data) => {
       console.log('GET_FILTERED_ACCOUNT_EMAILS');
-      const mailbox = data.filter.mailbox;
-      const filter = imapifyFilter(data.filter);
 
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
@@ -64,7 +62,7 @@ export default (io) => {
         const resStream = ss.createStream();
         ss(socket).emit('FILTERED_ACCOUNT_EMAILS_STREAM', resStream);
 
-        account.filteredEmailsStream(mailbox, filter)
+        account.filteredEmailsStream(data.filter)
         .pipe(processEmails())
         .pipe(resStream);
       });

@@ -37,12 +37,14 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 
 ### Todo Short
 
+- Make it so that the imap password is never saved. Add a password field to the selectAccountItem thingy. In the state, update the account in accounts when the password field changes. Then be sure to submit the password when needed to get emails.
 - Strange bug when previewing email. The selected eye icon disappears when the pdf loads.
 - Save the compilation title and subtitle separately to populate the cover and title page with the same data
 - Fix the pdfs for the title page and message page. There is an extra blank page at the bottom.
 
 ### Todo Long
 
+- Make sure that attachments are included when getting the raw emails from gmail.
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
 - Sanitize email body text before save.
 - Add email confirmation to users.

@@ -31,6 +31,32 @@ export function imapifyFilter(filter) {
   return imapFilter;
 }
 
+export function googlifyFilter(filter) {
+  const googleFilter = [];
+
+  if (filter.subject) {
+    googleFilter.push(`subject:${filter.subject}`);
+  }
+
+  if (filter.to) {
+    googleFilter.push(`to:${filter.to}`);
+  }
+
+  if (filter.from) {
+    googleFilter.push(`from:${filter.from}`);
+  }
+
+  if (filter.startDate) {
+    googleFilter.push(`after:${moment(filter.startDate).format('YYYY/MM/DD')}`);
+  }
+
+  if (filter.endDate) {
+    googleFilter.push(`before:${moment(filter.endDate).format('YYYY/MM/DD')}`);
+  }
+
+  return googleFilter.join(' ');
+}
+
 export function processEmails() {
   const transformStream = stream.Transform();  // eslint-disable-line new-cap
 
@@ -50,7 +76,7 @@ export function processEmails() {
       // messageId: email.messageId,
       // text: email.text,
       body: email.html,
-      attachments: email.attachments,
+      attachments: email.attachments || [],
     };
 
     transformStream.push(new Buffer(JSON.stringify(processedEmail)));

@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import AccountForm from '../components/AccountForm';
-import base64 from 'base-64';
+import base64 from 'base64url';
 
 class AccountFormContainer extends Component {
   constructor(props, context) {

@@ -16,12 +16,12 @@ class AddCompilationEmailsContainer extends Component {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.currentAccountId });
   }
   renderFilterContainer() {
-    if (this.currentAccount && !this.currentAccount.gettingMailboxes && this.currentAccount.connectionValid) {
+    if (this.currentAccount) {
       return <FilterContainer currentAccount={this.currentAccount} />;
     }
   }
   renderFilteredAccountEmailsContainer() {
-    if (this.currentAccount && !this.currentAccount.gettingMailboxes && this.currentAccount.connectionValid) {
+    if (this.currentAccount) {
       return <FilteredAccountEmailsContainer compilation={this.compilation} />;
     }
   }
