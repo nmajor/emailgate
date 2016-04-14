@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 class AccountsList extends Component {
   renderAccountsList() {
     if (!this.props.accounts.length || this.props.accounts.length < 1) {
-      return 'No connected accounts';
+      return <div>No connected accounts</div>;
     }
 
     return this.props.accounts.map((account) => {
@@ -16,6 +16,7 @@ class AccountsList extends Component {
         selectable={this.props.selectable}
         selected={this.props.selectable && this.props.currentAccountId === account._id}
         handleClick={this.props.onItemClick}
+        handleDeleteClick={this.props.onDeleteClick}
       />);
     });
   }
@@ -41,6 +42,7 @@ AccountsList.propTypes = {
   currentAccountId: PropTypes.string,
   selectable: PropTypes.bool,
   onItemClick: PropTypes.func,
+  onDeleteClick: PropTypes.func,
 };
 
 export default AccountsList;

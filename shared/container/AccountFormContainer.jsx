@@ -1,12 +1,22 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import AccountForm from '../components/AccountForm';
+import AccountImapForm from '../components/AccountImapForm';
+import AccountKindOptions from '../components/AccountKindOptions';
+
 import base64 from 'base64url';
 
 class AccountFormContainer extends Component {
   constructor(props, context) {
     super(props, context);
+    this.state = { account: this.props.account };
+
     this.authUrls = this.authUrls.bind(this);
+    this.setAccountKind = this.setAccountKind.bind(this);
+  }
+  setAccountKind(kind) {
+    const account = this.state.account;
+    account.kind = kind;
+    this.setState({ account });
   }
 
   authUrls() {
@@ -19,15 +29,32 @@ class AccountFormContainer extends Component {
       googleAuthUrl: `${this.props.config.googleAuthUrl}&state=${stateString}`,
     };
   }
+  renderImapForm() {
+    if (this.state.account.kind === 'imap') {
+      return (<AccountImapForm
+        account={this.state.account}
+        accountPassword={this.props.accountPasswordMap[this.state.account._id] || ''}
+        submitForm={this.props.submitForm}
+        back={this.props.back}
+        checkConnection={this.props.checkConnection}
+      />);
+    }
+  }
+  renderAccountKindOptions() {
+    if (this.props.new) {
+      return (<AccountKindOptions
+        account={this.state.account}
+        authUrls={this.authUrls()}
+        setKind={this.setAccountKind}
+      />);
+    }
+  }
 
   render() {
-    return (<AccountForm
-      account={this.props.account}
-      submitForm={this.props.submitForm}
-      back={this.props.back}
-      checkConnection={this.props.checkConnection}
-      authUrls={this.authUrls()}
-    />);
+    return (<div>
+      {this.renderAccountKindOptions()}
+      {this.renderImapForm()}
+    </div>);
   }
 }
 
@@ -38,15 +65,18 @@ AccountFormContainer.contextTypes = {
 function mapStateToProps(store) {
   return {
     config: store.config,
+    accountPasswordMap: store.accountPasswordMap,
   };
 }
 
 AccountFormContainer.propTypes = {
   config: PropTypes.object.isRequired,
   account: PropTypes.object.isRequired,
+  accountPasswordMap: PropTypes.object.isRequired,
   submitForm: PropTypes.func.isRequired,
   back: PropTypes.func.isRequired,
   checkConnection: PropTypes.func,
+  new: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(AccountFormContainer);

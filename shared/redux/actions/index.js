@@ -7,6 +7,7 @@ import baseURL from '../../baseURL';
 export * from './userActions';
 export * from './allUsersActions';
 export * from './accountActions';
+export * from './accountPasswordMapActions';
 export * from './compilationActions';
 export * from './allCompilationsActions';
 export * from './compilationEmailsActions';

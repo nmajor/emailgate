@@ -6,10 +6,26 @@ class AccountListItem extends Component {
     super(props, context);
 
     this.handleClick = this.handleClick.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
   }
   handleClick() {
     if (this.props.handleClick) {
       this.props.handleClick(this.props.account);
+    }
+  }
+  handleDeleteClick() {
+    if (this.props.handleDeleteClick) {
+      this.props.handleDeleteClick(this.props.account);
+    }
+  }
+  renderRemoveLink() {
+    if (this.props.handleDeleteClick) {
+      return <span onClick={this.handleDeleteClick}>remove</span>;
+    }
+  }
+  renderEditLink() {
+    if (this.props.account.kind === 'imap') {
+      return <Link to={`/accounts/${this.props.account._id}/edit`}>edit</Link>;
     }
   }
   renderEmail() {
@@ -31,11 +47,15 @@ class AccountListItem extends Component {
   }
   render() {
     return (
-      <div className={this.renderClassName()} onClick={this.handleClick} >
-        {this.renderEmail()}
-        {this.renderConnectionStatus()}
-        {this.renderSelected()}
-        <Link to={`/accounts/${this.props.account._id}/edit`}>edit</Link>
+      <div className={this.renderClassName()}>
+        <span onClick={this.handleClick}>
+          {this.props.account.kind}
+          {this.renderEmail()}
+          {this.renderConnectionStatus()}
+          {this.renderSelected()}
+        </span>
+        {this.renderEditLink()}
+        {this.renderRemoveLink()}
       </div>
     );
   }
@@ -46,6 +66,7 @@ AccountListItem.propTypes = {
   selectable: PropTypes.bool,
   selected: PropTypes.bool,
   handleClick: PropTypes.func,
+  handleDeleteClick: PropTypes.func,
 };
 
 export default AccountListItem;

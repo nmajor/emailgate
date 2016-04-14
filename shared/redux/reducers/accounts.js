@@ -24,6 +24,16 @@ const accounts = (state = initialState.accounts, action) => {
       }
       return state;
 
+    case ActionTypes.REMOVE_ACCOUNT_FROM_ACCOUNTS :
+      const removeAccountIndex = _.findIndex(state, { _id: action.account._id });
+      if (removeAccountIndex > -1) {
+        return [
+          ...state.slice(0, removeAccountIndex),
+          ...state.slice(removeAccountIndex + 1),
+        ];
+      }
+      return state;
+
     default:
       return state;
   }

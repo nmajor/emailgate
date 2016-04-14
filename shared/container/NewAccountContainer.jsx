@@ -14,13 +14,16 @@ class NewAccountContainer extends Component {
 
   create(props) {
     this.props.dispatch(Actions.createAccount({
-      imap: {
-        email: props.email,
-        password: props.password,
+      email: props.email,
+      kind: props.kind,
+      authProps: {
         host: props.host,
         port: props.port,
       },
-    }, this.redirectToEdit));
+    }, (account) => {
+      this.redirectToEdit(account);
+      this.props.dispatch(Actions.setPasswordInAccountPasswordMap(account, props.password));
+    }));
   }
 
   redirectToEdit(account) {
@@ -37,7 +40,7 @@ class NewAccountContainer extends Component {
         <Header />
         <div className="container">
           <h1>Connect New Account</h1>
-          <AccountFormContainer account={{}} submitForm={this.create} back={this.back} />
+          <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} />
         </div>
       </div>
     );

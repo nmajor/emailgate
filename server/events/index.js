@@ -174,6 +174,18 @@ export default (io) => {
       });
     });
 
+    socket.on('REMOVE_ACCOUNT', (data) => {
+      console.log('REMOVE_ACCOUNT');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Account.findOne({ _user: user._id, _id: data._id }))
+      .then((account) => {
+        return account.remove();
+      }).
+      then((account) => {
+        socket.emit('REMOVED_ACCOUNT', account);
+      });
+    });
+
     socket.on('disconnect', () => {
       console.log('a user disconnected');
     });

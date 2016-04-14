@@ -13,6 +13,7 @@ class EditAccountContainer extends Component {
     this.checkConnection = this.checkConnection.bind(this);
 
     this.account = _.find(this.props.accounts, { _id: this.props.params.id }) || {};
+    console.log(this.account);
   }
 
   componentDidMount() {
@@ -25,13 +26,17 @@ class EditAccountContainer extends Component {
 
   update(props) {
     this.props.dispatch(Actions.updateAccount(this.props.params.id, {
-      imap: {
-        email: props.email,
-        password: props.password,
+      email: props.email,
+      kind: props.kind,
+      authProps: {
         host: props.host,
         port: props.port,
       },
-    }, () => {
+    }, (account) => {
+      this.props.dispatch(Actions.setPasswordInAccountPasswordMap({
+        account,
+        password: props.password,
+      }));
       this.checkConnectionIfNeeded();
     }));
   }
@@ -49,7 +54,11 @@ class EditAccountContainer extends Component {
   }
 
   back() {
-    this.context.router.goBack();
+    if (window.previousLocation && window.previousLocation.pathname === '/accounts/new') {
+      this.context.router.go(-2);
+    } else {
+      this.context.router.go(-1);
+    }
   }
 
   render() {

@@ -12,6 +12,13 @@ export function addAccount(account) {
   };
 }
 
+export function removeAccountFromAccounts(account) {
+  return {
+    type: ActionTypes.REMOVE_ACCOUNT_FROM_ACCOUNTS,
+    account,
+  };
+}
+
 export function updateAccountInAccounts(account) {
   return {
     type: ActionTypes.UPDATE_ACCOUNT_IN_ACCOUNTS,
@@ -174,5 +181,12 @@ export function getAccountMailboxes(account) {
   return (dispatch) => {
     dispatch(updateAccountInAccounts(Object.assign({}, account, { gettingMailboxes: true })));
     socket.emit('GET_ACCOUNT_MAILBOXES', account);
+  };
+}
+
+export function removeAccount(account) {
+  return (dispatch) => {
+    dispatch(updateAccountInAccounts(Object.assign({}, account, { saving: true })));
+    socket.emit('REMOVE_ACCOUNT', account);
   };
 }

@@ -104,3 +104,8 @@ socket.on('UPDATED_COMPILATION_EMAIL_PAGE_MAP', (pageMap) => {
   console.log('event UPDATED_COMPILATION_EMAIL_PAGE_MAP');
   store.dispatch(Actions.setCompilationEmailPageMap(pageMap));
 });
+
+socket.on('REMOVED_ACCOUNT', (account) => {
+  console.log('event REMOVED_ACCOUNT');
+  store.dispatch(Actions.removeAccountFromAccounts(account));
+});

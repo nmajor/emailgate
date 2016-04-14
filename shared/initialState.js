@@ -5,6 +5,7 @@ export default {
   user: {},
   allUsers: [],
   accounts: [],
+  accountPasswordMap: {},
   compilations: [],
   allCompilations: [],
   compilationEmails: [],

@@ -4,95 +4,58 @@ import AccountConnectionCheckedAt from './AccountConnectionCheckedAt';
 class AccountForm extends Component {
   constructor(props, context) {
     super(props, context);
+
+    const authProps = this.props.account.authProps || {};
     this.state = {
-      savable: false,
-      kind: null,
+      email: this.props.account.email,
+      password: this.props.accountPassword,
+      host: authProps.host,
+      port: authProps.port,
+      kind: 'imap',
     };
 
     this.submitForm = this.submitForm.bind(this);
     this.back = this.back.bind(this);
-    this.setSaveAbility = this.setSaveAbility.bind(this);
-    this.setKindToImap = this.setKindToImap.bind(this);
+    this.setFormState = this.setFormState.bind(this);
   }
-  componentDidMount() {
-    this.setSaveAbility();
-  }
-  setSaveAbility() {
-    if (this.formChanged()) {
-      this.setState({ savable: true });
-    } else {
-      this.setState({ savable: false });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.accountPassword) {
+      this.setState({ password: nextProps.accountPassword });
+      this.forceUpdate();
     }
   }
-  setKindToImap() {
-    this.setState({ kind: 'imap' });
+  setFormState(event) {
+    const newState = {};
+    newState[event.target.getAttribute('name')] = event.target.value;
+    this.setState(newState);
   }
   formChanged() {
-    const emailRef = this.refs.email || {};
-    const passwordRef = this.refs.password || {};
-    const hostRef = this.refs.host || {};
-    const portRef = this.refs.port || {};
-
-    if (
-      emailRef.value !== this.props.account.email ||
-      passwordRef.value !== this.props.account.password ||
-      hostRef.value !== this.props.account.host ||
-      portRef.value !== this.props.account.port
-    ) {
-      return true;
-    }
-    return false;
+    return true;
   }
   submitForm(e) {
     e.preventDefault();
-    if (!this.state.savable) { return; }
 
-    const emailRef = this.refs.email || {};
-    const passwordRef = this.refs.password || {};
-    const hostRef = this.refs.host || {};
-    const portRef = this.refs.port || {};
-
-    this.props.submitForm({
-      kind: this.state.kind,
-      email: emailRef.value,
-      password: passwordRef.value,
-      host: hostRef.value,
-      port: portRef.value,
-    });
+    this.props.submitForm(this.state);
   }
   back(e) {
     e.preventDefault();
     this.props.back();
   }
-  renderImapKind() {
-    return <div onClick={this.setKindToImap}>Imap</div>;
-  }
-  renderGoogleKind() {
-    return <a href={this.props.authUrls.googleAuthUrl}>Google</a>;
-  }
-  renderKindOptions() {
-    return (<div>
-      {this.renderGoogleKind()}
-      {this.renderImapKind()}
-    </div>);
-  }
   renderForm() {
-    if (this.state.kind === 'imap') {
-      return (
-        <form onSubmit={this.handleSubmit}>
-          {this.renderEmailFormGroup()}
-          {this.renderPasswordFormGroup()}
-          {this.renderHostFormGroup()}
-          {this.renderPortFormGroup()}
+    return (
+      <form onSubmit={this.handleSubmit}>
+        {this.renderEmailFormGroup()}
+        {this.renderHostFormGroup()}
+        {this.renderPortFormGroup()}
+        {this.renderPasswordFormGroup()}
 
-          {this.renderConnectionStatus()}
+        {this.renderConnectionStatus()}
 
-          {this.renderErrors('base')}
-          <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
-          <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
-        </form>
-      );
-    }
+        {this.renderErrors('base')}
+        <button className={`btn btn-success ${this.formChanged() ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
+        <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
+      </form>
+    );
   }
   renderConnectionStatus() {
     if (this.props.checkConnection) {
@@ -134,13 +97,13 @@ class AccountForm extends Component {
           <div className="input-group">
             <span className="input-group-addon">@</span>
             <input
-              ref="email"
+              name="email"
               id="account-email"
               className="form-control"
               type="text"
               placeholder="john@example.com"
-              defaultValue={this.props.account.email}
-              onChange={this.setSaveAbility}
+              value={this.state.email}
+              onChange={this.setFormState}
             />
           </div>
       </div>
@@ -151,12 +114,12 @@ class AccountForm extends Component {
       <div className="form-group">
         <label htmlFor="account-password">Password</label>
         <input
-          ref="password"
+          name="password"
           className="form-control"
           type="password"
           id="account-password"
-          defaultValue={this.props.account.password}
-          onChange={this.setSaveAbility}
+          value={this.state.password}
+          onChange={this.setFormState}
         />
       </div>
     );
@@ -166,13 +129,13 @@ class AccountForm extends Component {
       <div className="form-group">
         <label htmlFor="account-host">Host</label>
         <input
-          ref="host"
+          name="host"
           className="form-control"
           type="text"
           id="account-host"
-          defaultValue={this.props.account.host}
+          value={this.state.host}
           placeholder="imap.example.com"
-          onChange={this.setSaveAbility}
+          onChange={this.setFormState}
         />
       </div>
     );
@@ -182,13 +145,13 @@ class AccountForm extends Component {
       <div className="form-group">
         <label htmlFor="account-port">Port</label>
         <input
-          ref="port"
+          name="port"
           className="form-control"
           type="text"
           id="account-port"
-          defaultValue={this.props.account.port}
+          value={this.state.port}
           placeholder="993"
-          onChange={this.setSaveAbility}
+          onChange={this.setFormState}
         />
       </div>
     );
@@ -204,7 +167,6 @@ class AccountForm extends Component {
     return (
       <div className="row">
         <div className="col-md-6 col-sm-8">
-          {this.renderKindOptions()}
           {this.renderForm()}
         </div>
       </div>
@@ -214,11 +176,11 @@ class AccountForm extends Component {
 
 AccountForm.propTypes = {
   account: PropTypes.object,
+  accountPassword: PropTypes.string,
   submitForm: PropTypes.func.isRequired,
   back: PropTypes.func.isRequired,
   errors: PropTypes.object,
   checkConnection: PropTypes.func,
-  authUrls: PropTypes.object.isRequired,
 };
 
 export default AccountForm;

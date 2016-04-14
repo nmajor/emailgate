@@ -8,6 +8,7 @@ import * as fetchings from './fetchings';
 import user from './user';
 import allUsers from './allUsers';
 import accounts from './accounts';
+import accountPasswordMap from './accountPasswordMap';
 import compilations from './compilations';
 import allCompilations from './allCompilations';
 import compilationEmails from './compilationEmails';
@@ -53,6 +54,7 @@ const appReducer = combineReducers({
   user,
   allUsers,
   accounts,
+  accountPasswordMap,
   compilations,
   allCompilations,
   compilationEmails,

@@ -7,6 +7,7 @@ class SelectAccountContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.handleItemClick = this.handleItemClick.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
   }
 
   handleItemClick(account) {
@@ -14,6 +15,9 @@ class SelectAccountContainer extends Component {
       this.props.dispatch(Actions.getAccountMailboxes(account));
       this.props.dispatch(Actions.setCurrentAccountId(account._id));
     }
+  }
+  handleDeleteClick(account) {
+    this.props.dispatch(Actions.removeAccount(account));
   }
 
   render() {
@@ -25,6 +29,7 @@ class SelectAccountContainer extends Component {
           selectable
           currentAccountId={this.props.currentAccountId}
           onItemClick={this.handleItemClick}
+          onDeleteClick={this.handleDeleteClick}
         />
       </div>
     );

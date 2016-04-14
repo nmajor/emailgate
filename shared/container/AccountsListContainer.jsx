@@ -6,6 +6,8 @@ import AccountsList from '../components/AccountsList';
 class AccountsListContainer extends Component {
   constructor(props, context) {
     super(props, context);
+
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
   }
 
   componentDidMount() {
@@ -14,11 +16,15 @@ class AccountsListContainer extends Component {
     }
   }
 
+  handleDeleteClick(account) {
+    this.props.dispatch(Actions.removeAccount(account));
+  }
+
   render() {
     return (
       <div className="accounts-list-container">
         <h3>Connected Email Accounts</h3>
-        <AccountsList accounts={this.props.accounts} />
+        <AccountsList onDeleteClick={this.handleDeleteClick} accounts={this.props.accounts} />
       </div>
     );
   }
