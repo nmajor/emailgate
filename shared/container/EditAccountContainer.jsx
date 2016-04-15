@@ -13,7 +13,6 @@ class EditAccountContainer extends Component {
     this.checkConnection = this.checkConnection.bind(this);
 
     this.account = _.find(this.props.accounts, { _id: this.props.params.id }) || {};
-    console.log(this.account);
   }
 
   componentDidMount() {
@@ -33,20 +32,17 @@ class EditAccountContainer extends Component {
         port: props.port,
       },
     }, (account) => {
-      this.props.dispatch(Actions.setPasswordInAccountPasswordMap({
-        account,
-        password: props.password,
-      }));
+      this.props.dispatch(Actions.setPasswordInAccountPasswordMap(account, props.password));
       this.checkConnectionIfNeeded();
     }));
   }
 
   checkConnection() {
-    this.props.dispatch(Actions.checkAccountConnection(this.account));
+    this.props.dispatch(Actions.checkAccountConnection(this.account, this.props.accountPasswordMap[this.account._id]));
   }
 
   checkConnectionIfNeeded() {
-    if (this.account.checkingConnection) { return; }
+    if (this.account.checkingConnection || !this.props.accountPasswordMap[this.account._id]) { return; }
 
     if (!this.account.connectionCheckedAt || this.account.connectionCheckedAt < this.account.updatedAt) {
       this.checkConnection();
@@ -81,6 +77,7 @@ EditAccountContainer.need = [(params, cookie) => {
 function mapStateToProps(store) {
   return {
     accounts: store.accounts,
+    accountPasswordMap: store.accountPasswordMap,
   };
 }
 
@@ -91,6 +88,7 @@ EditAccountContainer.contextTypes = {
 EditAccountContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array,
+  accountPasswordMap: PropTypes.object.isRequired,
   params: PropTypes.object,
 };
 

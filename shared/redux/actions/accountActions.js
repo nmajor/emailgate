@@ -164,10 +164,10 @@ export function updateAccount(id, accountProps, cb) {
   };
 }
 
-export function checkAccountConnection(account) {
+export function checkAccountConnection(account, password) {
   return (dispatch) => {
     dispatch(updateAccountInAccounts(Object.assign({}, account, { checkingConnection: true })));
-    socket.emit('CHECK_ACCOUNT_CONNECTION', account);
+    socket.emit('CHECK_IMAP_ACCOUNT_CONNECTION', { account, password });
   };
 }
 

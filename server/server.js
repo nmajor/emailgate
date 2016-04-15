@@ -51,9 +51,11 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+
+const sessionSecret = process.env.SESSION_SECRET || 'supercat';
 // Define session middleware
 const sessionMiddleware = session({
-  secret: 'supercat',
+  secret: sessionSecret,
   resave: true,
   saveUninitialized: false,
   store: new ConnectMongo({

@@ -13,65 +13,33 @@ const AccountSchema = new Schema({
   email: String,
   kind: { type: String, default: 'imap' },
   authProps: {},
-  connectionValid: Boolean,
-  connectionCheckedAt: Date,
 }, {
   timestamps: true,
 });
 
-AccountSchema.methods.checkConnection = function checkConnection() {
-  if (this.kind === 'imap') {
-    return this.checkImapConnection();
-  } else if (this.kind === 'google') {
-    return this.checkGoogleConnection();
-  }
-};
+AccountSchema.virtual('connectionValid').get(function getConnectionValid() {
+  return this._connectionValid;
+});
 
-AccountSchema.methods.checkGoogleConnection = function checkGoogleConnection() {
-  return new Promise((resolve) => {
-    resolve(this);
-  });
-};
+AccountSchema.virtual('connectionValid').set(function setConnectionValid(val) {
+  this._connectionValid = val;
+  return;
+});
 
-AccountSchema.methods.checkImapConnection = function checkImapConnection() {
-  return new Promise((resolve) => {
-    const imap = initImap({
-      email: this.authProps.email,
-      password: this.authProps.password,
-      host: this.authProps.host,
-      port: this.authProps.port,
-    });
+AccountSchema.set('toObject', {
+  getters: true,
+});
 
-    imap.connect();
-    imap.on('ready', () => {
-      this.connectionValid = true;
-      this.connectionCheckedAt = Date.now();
-      imap.end();
-      resolve(this);
-    });
-    imap.on('error', (err) => {
-      if (err.toString() === 'Error: read ECONNRESET') {
-        this.connectionValid = true;
-        this.connectionCheckedAt = Date.now();
-        imap.end();
-        resolve(this);
-        return;
-      }
+AccountSchema.set('toJSON', {
+  getters: true,
+});
 
-      this.connectionValid = false;
-      this.connectionCheckedAt = Date.now();
-      imap.end();
-      resolve(this);
-    });
-  });
-};
-
-AccountSchema.methods.getMailboxes = function getMailboxes() {
+AccountSchema.methods.checkImapConnection = function checkImapConnection(password) {
   return new Promise((resolve) => {
     if (this.kind === 'imap') {
       const imap = initImap({
-        email: this.authProps.email,
-        password: this.authProps.password,
+        email: this.email,
+        password,
         host: this.authProps.host,
         port: this.authProps.port,
       });
@@ -80,28 +48,41 @@ AccountSchema.methods.getMailboxes = function getMailboxes() {
       imap.on('ready', () => {
         imap.getBoxes('', (err, boxes) => {
           if (err) {
-            resolve(this);
             imap.end();
+            this.set('connectionValid', true);
+            return resolve(this);
           }
+          const mailboxes = [];
 
-          this.imap.mailboxes = [];
           _.forEach(boxes, (boxObject, boxName) => {
             if (boxObject.children && boxObject.attribs.indexOf('\\HasChildren') > -1) {
               _.forEach(boxObject.children, (childObject, childName) => {
-                this.imap.mailboxes.push(boxName + boxObject.delimiter + childName);
+                mailboxes.push(boxName + boxObject.delimiter + childName);
               });
             } else {
-              this.imap.mailboxes.push(boxName);
+              mailboxes.push(boxName);
             }
           });
 
+          this.authProps.mailboxes = mailboxes;
+          this.update();
           imap.end();
-          resolve(this);
+          this.set('connectionValid', true);
+          return resolve(this);
         });
       });
-      imap.on('error', () => {
-        imap.end();
-        resolve(this);
+      imap.on('error', (err) => {
+        console.log('blah checkImapConnection 4');
+        console.log(err);
+        // if (err.toString() === 'Error: read ECONNRESET') {
+        //   imap.end();
+        //   this.set('connectionValid', true);
+        //   return resolve(this);
+        // }
+        //
+        // imap.end();
+        // this.set('connectionValid', false);
+        // return resolve(this);
       });
     }
   });
@@ -118,7 +99,6 @@ AccountSchema.methods.filteredEmailsCount = function filteredEmailsCount(mailbox
 
     imap.connect();
     imap.on('ready', () => {
-      // imap.openBox(mailbox, true, (err, box) => {
       imap.openBox(mailbox, true, (boxErr) => {
         if (boxErr) { console.log(`Could not open mailbox ${mailbox} ${boxErr.message}`); return; }
 

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import AccountConnectionCheckedAt from './AccountConnectionCheckedAt';
 
-class AccountForm extends Component {
+class AccountImapForm extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -73,16 +72,10 @@ class AccountForm extends Component {
         <div className="connection-status">
           <div className="form-group">
             {status}
-            {this.renderConnectionCheckedAt()}
             {this.renderRefreshButton()}
           </div>
         </div>
       );
-    }
-  }
-  renderConnectionCheckedAt() {
-    if (!this.props.account.checkingConnection && this.props.account.connectionCheckedAt) {
-      return <AccountConnectionCheckedAt connectionCheckedAt={this.props.account.connectionCheckedAt} />;
     }
   }
   renderRefreshButton() {
@@ -121,6 +114,7 @@ class AccountForm extends Component {
           value={this.state.password}
           onChange={this.setFormState}
         />
+      <p className="help-block">For security reasons, we never store your email password on our servers, so you may need to re-enter this later if you refresh the page.</p>
       </div>
     );
   }
@@ -174,7 +168,7 @@ class AccountForm extends Component {
   }
 }
 
-AccountForm.propTypes = {
+AccountImapForm.propTypes = {
   account: PropTypes.object,
   accountPassword: PropTypes.string,
   submitForm: PropTypes.func.isRequired,
@@ -183,4 +177,4 @@ AccountForm.propTypes = {
   checkConnection: PropTypes.func,
 };
 
-export default AccountForm;
+export default AccountImapForm;

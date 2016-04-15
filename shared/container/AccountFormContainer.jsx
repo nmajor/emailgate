@@ -13,6 +13,9 @@ class AccountFormContainer extends Component {
     this.authUrls = this.authUrls.bind(this);
     this.setAccountKind = this.setAccountKind.bind(this);
   }
+  componentWillReceiveProps(nextProps) {
+    this.setState({ account: nextProps.account });
+  }
   setAccountKind(kind) {
     const account = this.state.account;
     account.kind = kind;
