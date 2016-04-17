@@ -61,7 +61,7 @@ export default (io) => {
         const resStream = ss.createStream();
         ss(socket).emit('FILTERED_ACCOUNT_EMAILS_STREAM', resStream);
 
-        account.filteredEmailsStream(data.filter)
+        account.filteredEmailsStream(data.filter, data.password)
         .pipe(processEmails())
         .pipe(resStream);
       });

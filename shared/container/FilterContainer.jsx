@@ -25,7 +25,7 @@ class FilterContainer extends Component {
 }
 
 FilterContainer.propTypes = {
-  currentAccount: PropTypes.object,
+  currentAccount: PropTypes.object.isRequired,
 };
 
 export default connect()(FilterContainer);

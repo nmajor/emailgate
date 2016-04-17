@@ -22,10 +22,11 @@ export function addFilteredAccountEmail(email) {
   };
 }
 
-export function getFilteredAccountEmails(account, filter) {
+export function getFilteredAccountEmails(account, password, filter) {
+  console.log('blah getFilteredAccountEmails');
   return (dispatch) => {
     dispatch(setFetchingFilteredAccountEmails(true));
-    socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, filter });
+    socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, password, filter });
   };
 }
 

@@ -18,6 +18,10 @@ const AccountSchema = new Schema({
 });
 
 AccountSchema.virtual('connectionValid').get(function getConnectionValid() {
+  if (this.kind === 'google') {
+    return true;
+  }
+
   return this._connectionValid;
 });
 
@@ -28,10 +32,12 @@ AccountSchema.virtual('connectionValid').set(function setConnectionValid(val) {
 
 AccountSchema.set('toObject', {
   getters: true,
+  virtuals: true,
 });
 
 AccountSchema.set('toJSON', {
   getters: true,
+  virtuals: true,
 });
 
 AccountSchema.methods.checkImapConnection = function checkImapConnection(password) {
@@ -72,79 +78,47 @@ AccountSchema.methods.checkImapConnection = function checkImapConnection(passwor
         });
       });
       imap.on('error', (err) => {
-        console.log('blah checkImapConnection 4');
-        console.log(err);
-        // if (err.toString() === 'Error: read ECONNRESET') {
-        //   imap.end();
-        //   this.set('connectionValid', true);
-        //   return resolve(this);
-        // }
-        //
-        // imap.end();
-        // this.set('connectionValid', false);
-        // return resolve(this);
+        if (err.toString() === 'Error: read ECONNRESET') {
+          imap.end();
+          this.set('connectionValid', true);
+          return resolve(this);
+        }
+
+        imap.end();
+        this.set('connectionValid', false);
+        return resolve(this);
       });
     }
   });
 };
 
-AccountSchema.methods.filteredEmailsCount = function filteredEmailsCount(mailbox, imapFilter) {
-  return new Promise((resolve) => {
-    const imap = initImap({
-      email: this.authProps.email,
-      password: this.authProps.password,
-      host: this.authProps.host,
-      port: this.authProps.port,
-    });
-
-    imap.connect();
-    imap.on('ready', () => {
-      imap.openBox(mailbox, true, (boxErr) => {
-        if (boxErr) { console.log(`Could not open mailbox ${mailbox} ${boxErr.message}`); return; }
-
-        imap.seq.search(imapFilter, (searchErr, results) => {
-          if (searchErr) { console.log(`problem searching ${searchErr.message}`); return; }
-
-          if (results.length < 1) {
-            imap.end();
-            return;
-          }
-
-          resolve(results.length);
-          imap.end();
-        });
-      });
-    });
-    imap.on('error', (err) => {
-      if (err.toString() !== 'Error: read ECONNRESET') {
-        console.log('imap error happened.');
-      }
-      imap.end();
-      resolve();
-    });
-  });
-};
-
-AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(options) {
+AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(options, password) {
   if (this.kind === 'google') {
     return this.googlefilteredEmailsStream(options);
   }
 
-  return this.imapfilteredEmailsStream(options);
+  return this.imapfilteredEmailsStream(options, password);
 };
 
 AccountSchema.methods.googlefilteredEmailsStream = function googlefilteredEmailsStream(options) {
   return searchMessages(this, options);
 };
 
-AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStream(options) {
+AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStream(options, password) {
   const mailbox = options.mailbox;
   const imapFilter = imapifyFilter(options);
+  console.log('blah imapfilteredEmailsStream');
+  console.log({
+    email: this.email,
+    password,
+    host: this.authProps.host,
+    port: this.authProps.port,
+  });
 
   const emailStream = stream.PassThrough(); // eslint-disable-line new-cap
   const imap = initImap({
-    email: this.authProps.email,
-    password: this.authProps.password,
+    email: this.email,
+    password,
     host: this.authProps.host,
     port: this.authProps.port,
   });
@@ -189,7 +163,7 @@ AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStre
   });
   imap.on('error', (err) => {
     if (err.toString() !== 'Error: read ECONNRESET') {
-      console.log('imap error happened.');
+      console.log(`imap error happened. ${err}`);
     }
     emailStream.end();
     imap.end();

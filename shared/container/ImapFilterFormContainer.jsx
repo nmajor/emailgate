@@ -20,18 +20,12 @@ class ImapFilterContainer extends Component {
       endDate: props.endDate,
     };
 
-    this.props.dispatch(Actions.getFilteredAccountEmails(this.currentAccount, filter));
-  }
-
-  currentAccountMailboxes() {
-    if (!this.currentAccount || !this.currentAccount.imap) { return []; }
-
-    return this.currentAccount.imap.mailboxes;
+    this.props.dispatch(Actions.getFilteredAccountEmails(this.currentAccount, this.props.accountPasswordMap[this.currentAccount._id], filter));
   }
   render() {
     return (<FilterForm
       submitForm={this.submitForm}
-      mailboxes={this.currentAccountMailboxes()}
+      currentAccount={this.currentAccount}
       fetching={this.props.fetchingFilteredAccountEmails}
     />);
   }
@@ -40,12 +34,14 @@ class ImapFilterContainer extends Component {
 function mapStateToProps(store) {
   return {
     fetchingFilteredAccountEmails: store.fetchingFilteredAccountEmails,
+    accountPasswordMap: store.accountPasswordMap,
   };
 }
 
 ImapFilterContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   currentAccount: PropTypes.object,
+  accountPasswordMap: PropTypes.object.isRequired,
   fetchingFilteredAccountEmails: PropTypes.bool,
 };
 

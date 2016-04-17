@@ -42,11 +42,9 @@ class EditAccountContainer extends Component {
   }
 
   checkConnectionIfNeeded() {
-    if (this.account.checkingConnection || !this.props.accountPasswordMap[this.account._id]) { return; }
+    if (this.account.checkingConnection || !this.props.accountPasswordMap[this.account._id] || this.account.connectionValid) { return; }
 
-    if (!this.account.connectionCheckedAt || this.account.connectionCheckedAt < this.account.updatedAt) {
-      this.checkConnection();
-    }
+    this.checkConnection();
   }
 
   back() {

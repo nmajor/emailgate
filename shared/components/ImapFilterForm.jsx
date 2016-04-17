@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import * as DateData from '../dateData';
 import _ from 'lodash';
 
-class FilterForm extends Component {
+class ImapFilterForm extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -180,7 +180,8 @@ class FilterForm extends Component {
     </div>);
   }
   renderMailboxOptions() {
-    return this.props.mailboxes.map((mailbox, index) => {
+    const mailboxes = this.props.currentAccount.authProps.mailboxes || [];
+    return mailboxes.map((mailbox, index) => {
       return <option value={mailbox} key={index}>{mailbox}</option>;
     });
   }
@@ -202,11 +203,11 @@ class FilterForm extends Component {
   }
 }
 
-FilterForm.propTypes = {
-  mailboxes: PropTypes.array.isRequired,
+ImapFilterForm.propTypes = {
+  currentAccount: PropTypes.object.isRequired,
   submitForm: PropTypes.func.isRequired,
   errors: PropTypes.object,
   fetching: PropTypes.bool.isRequired,
 };
 
-export default FilterForm;
+export default ImapFilterForm;

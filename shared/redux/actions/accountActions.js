@@ -177,13 +177,6 @@ export function socketUpdateAccount(account) {
   };
 }
 
-export function getAccountMailboxes(account) {
-  return (dispatch) => {
-    dispatch(updateAccountInAccounts(Object.assign({}, account, { gettingMailboxes: true })));
-    socket.emit('GET_ACCOUNT_MAILBOXES', account);
-  };
-}
-
 export function removeAccount(account) {
   return (dispatch) => {
     dispatch(updateAccountInAccounts(Object.assign({}, account, { saving: true })));

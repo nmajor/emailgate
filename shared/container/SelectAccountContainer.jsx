@@ -12,7 +12,6 @@ class SelectAccountContainer extends Component {
 
   handleItemClick(account) {
     if (account._id !== this.props.currentAccountId) {
-      this.props.dispatch(Actions.getAccountMailboxes(account));
       this.props.dispatch(Actions.setCurrentAccountId(account._id));
     }
   }
