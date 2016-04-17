@@ -9,7 +9,7 @@ import { uploadStream } from '../util/uploader';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
-import { imapifyFilter, processEmails, emailPageMap } from '../util/helpers';
+import { processEmails, emailPageMap } from '../util/helpers';
 
 export default (io) => {
   io.on('connection', (socket) => {
@@ -39,18 +39,18 @@ export default (io) => {
     //   });
     // });
 
-    socket.on('GET_FILTERED_ACCOUNT_EMAILS_COUNT', (data) => {
-      console.log('GET_FILTERED_ACCOUNT_EMAILS_COUNT');
-      const mailbox = data.filter.mailbox;
-      const filter = imapifyFilter(data.filter);
-
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
-      .then(account => account.filteredEmailsCount(mailbox, filter))
-      .then((count) => {
-        socket.emit('FILTERED_ACCOUNT_EMAILS_COUNT', count);
-      });
-    });
+    // socket.on('GET_FILTERED_ACCOUNT_EMAILS_COUNT', (data) => {
+    //   console.log('GET_FILTERED_ACCOUNT_EMAILS_COUNT');
+    //   const mailbox = data.filter.mailbox;
+    //   const filter = imapifyFilter(data.filter);
+    //
+    //   User.findOne({ email: socket.request.session.passport.user })
+    //   .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
+    //   .then(account => account.filteredEmailsCount(mailbox, filter))
+    //   .then((count) => {
+    //     socket.emit('FILTERED_ACCOUNT_EMAILS_COUNT', count);
+    //   });
+    // });
 
     socket.on('GET_FILTERED_ACCOUNT_EMAILS', (data) => {
       console.log('GET_FILTERED_ACCOUNT_EMAILS');

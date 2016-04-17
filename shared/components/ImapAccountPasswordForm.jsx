@@ -34,9 +34,11 @@ class ImapAccountPasswordForm extends Component {
       </div>
     );
   }
-  renderCheckingConnection() {
+  renderConnectionStatus() {
     if (this.props.currentAccount.checkingConnection) {
       return <span className="left-bumper">Checking Connection ...</span>;
+    } else if (this.props.currentAccount.connectionValid === false) {
+      return <span className="left-bumper">Could Not Connect.</span>;
     }
   }
   render() {
@@ -45,7 +47,7 @@ class ImapAccountPasswordForm extends Component {
       <form className="form-inline" onSubmit={this.handleSubmit}>
       {this.renderPasswordFormGroup()}
       <button className="btn btn-success left-bumper" onClick={this.submitForm}>Submit</button>
-      {this.renderCheckingConnection()}
+      {this.renderConnectionStatus()}
       </form>
     </div>);
   }

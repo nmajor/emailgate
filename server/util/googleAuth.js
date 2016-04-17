@@ -107,7 +107,6 @@ export function searchMessages(account, searchOptions) {
 
           const mailparser = new MailParser();
           mailparser.on('end', (msgObj) => {
-            console.log(msgObj);
             messageStream.write(new Buffer(JSON.stringify(msgObj)));
             resolve();
           });

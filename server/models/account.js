@@ -107,13 +107,6 @@ AccountSchema.methods.googlefilteredEmailsStream = function googlefilteredEmails
 AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStream(options, password) {
   const mailbox = options.mailbox;
   const imapFilter = imapifyFilter(options);
-  console.log('blah imapfilteredEmailsStream');
-  console.log({
-    email: this.email,
-    password,
-    host: this.authProps.host,
-    port: this.authProps.port,
-  });
 
   const emailStream = stream.PassThrough(); // eslint-disable-line new-cap
   const imap = initImap({
