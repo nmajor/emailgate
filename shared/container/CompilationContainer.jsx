@@ -36,6 +36,10 @@ class CompilationEmailsContainer extends Component {
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
     this.currentCompilationPath = nextProps.routes[nextProps.routes.length - 1].path.split('/')[3];
+
+    if (Object.keys(nextProps.compilationEmailPageMap).length < nextProps.compilationEmails.length) {
+      this.props.dispatch(Actions.getCompilationEmailPageMap(this.compilation._id));
+    }
   }
 
   renderChildren() {

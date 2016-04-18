@@ -13,7 +13,7 @@ export function pageMeta(page) {
       position: -3,
     },
     'message-page': {
-      desc: 'Custom Message Page',
+      desc: 'Custom Message',
       editable: true,
       position: -2,
     },

@@ -135,6 +135,17 @@ export default (io) => {
       })
       .then((email) => {
         socket.emit('UPDATED_COMPILATION_EMAIL', email);
+        return Promise.resolve(email);
+      })
+      .then((email) => {
+        return email.countPdfPages()
+        .then((emailWithPages) => {
+          return emailWithPages.save();
+        });
+      })
+      .then((email) => {
+        socket.emit('UPDATED_COMPILATION_EMAIL', email);
+        return Promise.resolve(email);
       });
     });
 

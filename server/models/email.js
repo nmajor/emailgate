@@ -13,7 +13,7 @@ const EmailSchema = new Schema({
   subject: String,
   body: String,
   attachments: [],
-  pdfPageCount: { type: Number, default: 1 },
+  pdfPageCount: Number,
   pdf: {},
 });
 
@@ -21,8 +21,6 @@ EmailSchema.methods.countPdfPages = function () { // eslint-disable-line func-na
   return new Promise((resolve) => {
     emailPdfToBuffer(this)
     .then((pdfBuffer) => {
-      console.log('blah pdfBuffer');
-      console.log(typeof(pdfBuffer));
       pdfjs.getDocument(pdfBuffer).then((doc) => {
         this.pdfPageCount = doc.numPages;
         resolve(this);
