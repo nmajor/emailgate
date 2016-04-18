@@ -13,23 +13,19 @@ const EmailSchema = new Schema({
   subject: String,
   body: String,
   attachments: [],
-  pdfPageCount: Number,
+  pdfPageCount: { type: Number, default: 1 },
   pdf: {},
 });
 
-EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
-  this.countPdfPages()
-  .then(() => { next(); });
-});
-
 EmailSchema.methods.countPdfPages = function () { // eslint-disable-line func-names
-  const thisEmail = this;
   return new Promise((resolve) => {
     emailPdfToBuffer(this)
     .then((pdfBuffer) => {
+      console.log('blah pdfBuffer');
+      console.log(typeof(pdfBuffer));
       pdfjs.getDocument(pdfBuffer).then((doc) => {
-        thisEmail.pdfPageCount = doc.numPages;
-        resolve(thisEmail);
+        this.pdfPageCount = doc.numPages;
+        resolve(this);
       });
     });
   });

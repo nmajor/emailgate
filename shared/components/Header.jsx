@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import * as Actions from '../redux/actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import _ from 'lodash';
 
 class Header extends Component {
   constructor(props, context) {
@@ -20,9 +21,11 @@ class Header extends Component {
     </div>);
   }
   renderNav() {
-    return (<ul className="nav navbar-nav">
-      <li><Link to="/dashboard">Dashboard</Link></li>
-    </ul>);
+    if (!_.isEmpty(this.props.user)) {
+      return (<ul className="nav navbar-nav">
+        <li><Link to="/dashboard">Dashboard</Link></li>
+      </ul>);
+    }
   }
   renderUserActions() {
     if (this.props.user.email) {

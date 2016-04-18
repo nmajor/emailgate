@@ -14,11 +14,11 @@ class CompilationsList extends Component {
     });
   }
   renderNewCompilation() {
-    return (
+    return (<div>
       <Link to="/compilations/new" className="btn btn-default new-compilation" >
         New Compilation
       </Link>
-    );
+    </div>);
   }
   renderAccountForm() {
 

@@ -7,13 +7,14 @@ class Home extends Component {
     return (
       <div>
         <Header />
-        <div className="home">
-          <div className="home-content">
-            <h1 className="home-title">
-              Home Page 2
-            </h1>
+          <div className="home container">
+            <div className="row">
+              <div classNam="col-md-12">
+                <h1>Home Page</h1>
+                <div>Login or Register to begin ...</div>
+              </div>
+            </div>
           </div>
-        </div>
       </div>
     );
   }

@@ -37,10 +37,12 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 
 ### Todo Short
 
-- Make it so that the imap password is never saved. Add a password field to the selectAccountItem thingy. In the state, update the account in accounts when the password field changes. Then be sure to submit the password when needed to get emails.
+- Account kind selector links need to be restyled.
+- I think some duplicates can slip into the compilation emails. Check the select all buttons and take some other precautions to make sure that emails that are saving cant be selected and sent again.
+- Something jankey when creating an imap account. Like maybe the password isnt saved or somehthing. Then there is some strange behaviour when checking the connection on the edit page.
+- Things blew up when I tried to add 100 emails at once I think it has to do with the pdf creation to get the page count.
 - Strange bug when previewing email. The selected eye icon disappears when the pdf loads.
 - Save the compilation title and subtitle separately to populate the cover and title page with the same data
-- Fix the pdfs for the title page and message page. There is an extra blank page at the bottom.
 
 ### Todo Long
 
@@ -55,6 +57,7 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 
 ### Finished Todos
 
+- Make it so that the imap password is never saved. Add a password field to the selectAccountItem thingy. In the state, update the account in accounts when the password field changes. Then be sure to submit the password when needed to get emails.
 - Make a compilation wrapper component to load the compilation emails, pages, page map, everything the compilation needs on fresh page and in component did mount. Maybe show loading gif until all things are loaded. Also make sure to set all compilation state related stuff to be blank while loading the new data. (This should automatically fix the issue with blank page numbers in the table of contents.)
 - Need to add the correct page numbers to the bottom of the email pages.
 - Load images in email previews
@@ -84,3 +87,10 @@ http://eb.nmajor.com
 
 // Authorized redirect URI:
 http://eb.nmajor.com/oath2/google
+
+
+### Marketing Notes
+
+- Military people may also be interested in it to compile their emails whilst away from home or their families emails while whey were away
+- Personal email newsletters
+- Messages over time with family or loved ones

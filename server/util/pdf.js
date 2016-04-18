@@ -70,7 +70,14 @@ export function emailPdfToBuffer(email, pageNumber) {
     const html = template.toString();
     const options = emailOptions(pageNumber);
 
+    console.log('blah yoda');
     return pdf.create(html, options).toBuffer((err, buffer) => {
+      if (err) {
+        console.log('blah pdfError');
+        console.log(err);
+      }
+
+      console.log('blah emailPdfToBuffer 2');
       resolve(buffer);
     });
   });

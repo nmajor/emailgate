@@ -18,22 +18,23 @@ class SelectAccountContainer extends Component {
   handleDeleteClick(account) {
     this.props.dispatch(Actions.removeAccount(account));
   }
-  renderSelectAccount() {
+  renderHeaderText() {
     if (this.props.accounts.length > 0) {
-      return (<div>
-        <h3>Select an account</h3>
-        <AccountsList
-          accounts={this.props.accounts}
-          selectable
-          currentAccountId={this.props.currentAccountId}
-          onItemClick={this.handleItemClick}
-          onDeleteClick={this.handleDeleteClick}
-        />
-      </div>);
+      return 'Select an account';
     }
 
+    return 'Add an account to begin';
+  }
+  renderSelectAccount() {
     return (<div>
-      <h3>Add an account to begin</h3>
+      <h3>{this.renderHeaderText()}</h3>
+      <AccountsList
+        accounts={this.props.accounts}
+        selectable
+        currentAccountId={this.props.currentAccountId}
+        onItemClick={this.handleItemClick}
+        onDeleteClick={this.handleDeleteClick}
+      />
     </div>);
   }
 
