@@ -20,19 +20,35 @@ class AccountListItem extends Component {
   }
   renderRemoveLink() {
     if (this.props.handleDeleteClick) {
-      return <span onClick={this.handleDeleteClick}>remove</span>;
+      return (<span className="btn btn-default btn-xs left-bumper" onClick={this.handleDeleteClick}>
+        <span className="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
+      </span>);
     }
   }
   renderEditLink() {
     if (this.props.account.kind === 'imap') {
-      return <Link to={`/accounts/${this.props.account._id}/edit`}>edit</Link>;
+      return (<Link className="btn btn-default btn-xs left-bumper" to={`/accounts/${this.props.account._id}/edit`}>
+        <span className="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+      </Link>);
     }
   }
   renderEmail() {
-    return this.props.account.email;
+    return <span className="left-bumper">{this.props.account.email}</span>;
   }
   renderConnectionStatus() {
-    return this.props.account.connectionValid ? 'good' : 'bad';
+    if (this.props.account.connectionValid === false) {
+      return (<span className="label label-danger">
+        <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      </span>);
+    } else if (this.props.account.connectionValid === true) {
+      return (<span className="label label-success">
+        <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      </span>);
+    }
+
+    return (<span className="label label-default">
+      <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
+    </span>);
   }
   renderSelected() {
     if (this.props.selected) {
@@ -45,17 +61,21 @@ class AccountListItem extends Component {
     className += this.props.selected ? 'selected ' : '';
     return className;
   }
+  renderKind() {
+    return <span className="label label-default">{this.props.account.kind}</span>;
+  }
   render() {
     return (
-      <div className={this.renderClassName()}>
-        <span onClick={this.handleClick}>
-          {this.props.account.kind}
-          {this.renderEmail()}
+      <div className={this.renderClassName()} onClick={this.handleClick}>
+        <h4>
           {this.renderConnectionStatus()}
-          {this.renderSelected()}
-        </span>
-        {this.renderEditLink()}
-        {this.renderRemoveLink()}
+          {this.renderEmail()}
+        </h4>
+        <div>
+          {this.renderKind()}
+          {this.renderEditLink()}
+          {this.renderRemoveLink()}
+        </div>
       </div>
     );
   }

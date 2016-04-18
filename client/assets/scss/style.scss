@@ -1,5 +1,9 @@
 @import 'header';
 @import 'email-form';
+@import 'accounts-list';
+@import 'compilations-list';
+@import 'emails-list';
+@import 'pages-list';
 
 .right-bumper { margin-right: 10px; }
 .left-bumper { margin-left: 10px; }
@@ -33,4 +37,16 @@
 .compilation-page {
   padding: 50px;
   border: 1px solid #ccc;
+}
+
+.btn.half-left {
+  width: 48%;
+  margin-right: 2%;
+  display: inline-block;
+}
+
+.btn.half-right {
+  width: 48%;
+  margin-left: 2%;
+  display: inline-block;
 }

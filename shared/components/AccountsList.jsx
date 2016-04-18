@@ -29,9 +29,11 @@ class AccountsList extends Component {
   }
   render() {
     return (
-      <div className="accounts-list">
-        {this.renderAccountsList()}
-        {this.renderNewAccount()}
+      <div className="accounts-list row">
+        <div className="col-md-6">
+          {this.renderAccountsList()}
+          {this.renderNewAccount()}
+        </div>
       </div>
     );
   }

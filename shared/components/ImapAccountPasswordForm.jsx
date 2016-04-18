@@ -42,7 +42,8 @@ class ImapAccountPasswordForm extends Component {
     }
   }
   render() {
-    return (<div>
+    return (<div className="top-bumper">
+      <h3>Account Password</h3>
       <label htmlFor="login-password">Please re-enter your password for {this.props.currentAccount.email} so we can connect.</label>
       <form className="form-inline" onSubmit={this.handleSubmit}>
       {this.renderPasswordFormGroup()}

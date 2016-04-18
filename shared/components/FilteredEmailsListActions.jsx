@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
 class FilteredEmailsListActions extends Component {
   // renderCompilationEmailsAction() {
@@ -13,12 +13,12 @@ class FilteredEmailsListActions extends Component {
     </div>);
   }
   renderCheckAll() {
-    return (<div className="btn btn-default select-all btn-block" onClick={this.props.selectAll}>
+    return (<div className="btn btn-default select-all btn-block half-left" onClick={this.props.selectAll}>
       <span className="glyphicon glyphicon-check" aria-hidden="true"></span> All
     </div>);
   }
   renderUncheckAll() {
-    return (<div className="btn btn-default deselect-all btn-block" onClick={this.props.deselectAll}>
+    return (<div className="btn btn-default deselect-all btn-block half-right" onClick={this.props.deselectAll}>
       <span className="glyphicon glyphicon-unchecked" aria-hidden="true"></span> All
     </div>);
   }

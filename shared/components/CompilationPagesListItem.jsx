@@ -6,6 +6,12 @@ class CompilationPagesListItem extends Component {
   constructor(props, context) {
     super(props, context);
   }
+  className() {
+    let className = 'compilation-pages-list-item';
+    className += this.props.current ? ' current' : '';
+
+    return className;
+  }
   renderSaving() {
     return (
       <span className="selectable selected">
@@ -13,37 +19,24 @@ class CompilationPagesListItem extends Component {
       </span>
     );
   }
-  renderSelected() {
-    return (
-      <span className="selectable selected">
-        <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-      </span>
-    );
-  }
   renderIcon() {
     if (this.props.page.saving) {
       return this.renderSaving();
-    } else if (this.props.selected) {
-      return this.renderSelected();
     }
   }
   render() {
     return (
-      <div>
-        <span onClick={this.select}>
-          {this.renderIcon()}
-          <Link to={`/compilations/${this.props.page._compilation}/pages/${this.props.page._id}`} className=" bottom-bumper">
-            {pageMeta(this.props.page).desc}
-          </Link>
-        </span>
-      </div>
+      <Link className={this.className()} to={`/compilations/${this.props.page._compilation}/pages/${this.props.page._id}`}>
+        {this.renderIcon()}
+        {pageMeta(this.props.page).desc}
+      </Link>
     );
   }
 }
 
 CompilationPagesListItem.propTypes = {
   page: PropTypes.object.isRequired,
-  selected: PropTypes.bool,
+  current: PropTypes.bool,
 };
 
 export default CompilationPagesListItem;

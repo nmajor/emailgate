@@ -1,0 +1,35 @@
+.emails-list {
+  .list-item {
+    border: 1px solid #ccc;
+    padding: 3px 5px;
+    margin-bottom: 10px;
+    text-decoration: inherit;
+    color: inherit;
+    display: block;
+
+    &:hover {
+      cursor: pointer;
+      border-color: #909090;
+    }
+
+    .date {
+      color: #929292;
+      margin-top: 2px;
+    }
+
+    &.filtered-emails-list-item {
+      &.previewing {
+        border: 2px solid #777;
+      }
+
+      .selected-icon {
+        margin-right: 3px;
+      }
+    }
+    &.compilation-emails-list-item {
+      &.current {
+        border: 2px solid #777;
+      }
+    }
+  }
+}

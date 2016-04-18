@@ -17,7 +17,7 @@ class FilterContainer extends Component {
   render() {
     return (
       <div className="filter-container">
-        <h3>Filter</h3>
+        <h3>Email Filter</h3>
         {this.renderFilterForm()}
       </div>
     );

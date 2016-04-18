@@ -21,7 +21,7 @@ class CompilationEmailsContainer extends Component {
   }
   renderAddLink() {
     return (<Link
-      className="btn btn-primary btn-block bottom-bumper"
+      className="btn btn-success btn-block bottom-bumper"
       to={`/compilations/${this.compilation._id}/add-emails`}
     >
       Add Emails

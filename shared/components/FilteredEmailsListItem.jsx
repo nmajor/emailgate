@@ -19,8 +19,9 @@ class FilteredEmailsListItem extends Component {
     this.props.setCurrentFilteredEmail(this.props.email);
   }
   className() {
-    let className = 'emails-list-item';
+    let className = 'filtered-emails-list-item list-item';
     className += this.props.previewing ? ' previewing' : '';
+    className += this.props.disabled ? ' disabled' : '';
 
     return className;
   }
@@ -53,13 +54,14 @@ class FilteredEmailsListItem extends Component {
   }
   render() {
     return (
-      <div className="emails-list-item bottom-bumper">
-        {this.renderSelected()}
-        <span className={this.props.previewing ? ' text-primary' : ''} onClick={this.preview}>
+      <div className={this.className()} onClick={this.preview}>
+        <div>
+          <span className="selected-icon">{this.renderSelected()}</span>
           {this.props.email.subject}
-          <br />
-          <span className="text-muted">{moment(this.props.email.date).format('LL')}</span>
-        </span>
+        </div>
+        <div className="date">
+          {moment(this.props.email.date).format('LL')}
+        </div>
       </div>
     );
   }

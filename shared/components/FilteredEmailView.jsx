@@ -28,7 +28,7 @@ class FilteredEmailView extends Component {
         >View in compilation</Link>
         <div className="btn btn-danger bottom-bumper" onClick={this.removeEmail}>Remove from compilation</div>
       </div>);
-    } else if (this.props.email) {
+    } else if (!_.isEmpty(this.props.email)) {
       if (this.props.email.saving) {
         return 'Saving ...';
       }

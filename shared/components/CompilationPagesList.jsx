@@ -14,14 +14,14 @@ class CompilationPagesList extends Component {
     return this.sortedPages().map((page) => {
       return (<CompilationPagesListItem
         key={`${page._id}`}
-        selected={page._id === this.props.currentPageId}
+        current={page._id === this.props.currentPageId}
         page={page}
       />);
     });
   }
   render() {
     return (
-      <div className="emails-list">
+      <div className="pages-list">
         {this.renderPages()}
       </div>
     );

@@ -26,7 +26,7 @@ class FilteredAccountEmailsContainer extends Component {
   render() {
     return (
       <div className="filtered-account-emails-container">
-        <h3>Filtered Account Emails {this.props.filteredAccountEmails.length}</h3>
+        <h3>Emails {this.props.filteredAccountEmails.length}</h3>
         <div className="row">
           <div className="col-md-3">
             <FilteredEmailsListContainer

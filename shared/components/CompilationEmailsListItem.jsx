@@ -6,6 +6,12 @@ class CompilationEmailsListItem extends Component {
   constructor(props, context) {
     super(props, context);
   }
+  className() {
+    let className = 'compilation-emails-list-item list-item';
+    className += this.props.current ? ' current' : '';
+
+    return className;
+  }
   renderSaving() {
     return (
       <span className="selectable selected">
@@ -13,39 +19,23 @@ class CompilationEmailsListItem extends Component {
       </span>
     );
   }
-  renderSelected() {
-    return (
-      <span className="selectable selected">
-        <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-      </span>
-    );
-  }
   renderIcon() {
     if (this.props.email.saving) {
       return this.renderSaving();
-    } else if (this.props.selected) {
-      return this.renderSelected();
     }
   }
   render() {
-    return (
-      <div>
-        <span onClick={this.select}>
-          {this.renderIcon()}
-          <Link to={`/compilations/${this.props.email._compilation}/emails/${this.props.email._id}`} className="emails-list-item bottom-bumper">
-            {this.props.email.subject}
-          </Link>
-          <br />
-          <span className="text-muted">{moment(this.props.email.date).format('LL')}</span>
-        </span>
-      </div>
-    );
+    return (<Link className={this.className()} to={`/compilations/${this.props.email._compilation}/emails/${this.props.email._id}`}>
+      {this.renderIcon()}
+      {this.props.email.subject}
+      <div className="date">{moment(this.props.email.date).format('LL')}</div>
+    </Link>);
   }
 }
 
 CompilationEmailsListItem.propTypes = {
   email: PropTypes.object.isRequired,
-  selected: PropTypes.bool,
+  current: PropTypes.bool,
 };
 
 export default CompilationEmailsListItem;

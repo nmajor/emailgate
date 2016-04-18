@@ -50,7 +50,7 @@ class EmailTemplate {
 
   renderSubject(subject) {
     const divStyle = {
-      fontFamily: '\'Montserrat\', sans-serif',
+      fontFamily: '\'Montserrat\', sans-serif !important',
       fontWeight: 'bold',
       fontSize: '1.4em',
       marginBottom: '.3em',
@@ -61,7 +61,7 @@ class EmailTemplate {
 
   renderDate(date) {
     const divStyle = {
-      fontFamily: '\'Montserrat\', sans-serif',
+      fontFamily: '\'Montserrat\', sans-serif !important',
       fontSize: '0.9em',
       margin: '.3em 0',
     };
@@ -71,7 +71,7 @@ class EmailTemplate {
 
   renderFrom(from) {
     const divStyle = {
-      fontFamily: '\'Montserrat\', sans-serif',
+      fontFamily: '\'Montserrat\', sans-serif !important',
       fontSize: '0.8em',
       margin: '.3em 0',
     };
@@ -81,7 +81,7 @@ class EmailTemplate {
 
   renderTo(to) {
     const divStyle = {
-      fontFamily: '\'Montserrat\', sans-serif',
+      fontFamily: '\'Montserrat\', sans-serif !important',
       fontSize: '0.8em',
       margin: '.3em 0',
     };
@@ -91,7 +91,7 @@ class EmailTemplate {
 
   bodyStyles() {
     return {
-      fontFamily: '\'Libre Baskerville\', serif',
+      fontFamily: '\'Libre Baskerville\', serif !important',
       lineHeight: '1.2em',
       fontSize: '0.95em',
       marginTop: '1.5em',

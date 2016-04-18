@@ -14,7 +14,7 @@ class CompilationEmailsList extends Component {
     return this.sortedEmails().map((email) => {
       return (<CompilationEmailsListItem
         key={`${email._id}`}
-        selected={email._id === this.props.currentEmailId}
+        current={email._id === this.props.currentEmailId}
         email={email}
       />);
     });

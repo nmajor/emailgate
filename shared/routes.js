@@ -23,6 +23,8 @@ import PreviewCompilationPageContainer from './container/PreviewCompilationPageC
 
 import CompilationPreviewContainer from './container/CompilationPreviewContainer';
 
+import CompilationCheckoutContainer from './container/CompilationCheckoutContainer';
+
 import AdminContainer from './container/AdminContainer';
 import AdminDashboardContainer from './container/AdminDashboardContainer';
 
@@ -54,6 +56,7 @@ const routes = (
         <Route path="/compilations/:compilationId/pages/:pageId/preview" component={PreviewCompilationPageContainer}/>
       </Route>
       <Route path="/compilations/:compilationId/preview" component={CompilationPreviewContainer} />
+      <Route path="/compilations/:compilationId/checkout" component={CompilationCheckoutContainer} />
     </Route>
     <Route component={AdminContainer}>
       <Route path="/admin/dashboard" component={AdminDashboardContainer}/>
