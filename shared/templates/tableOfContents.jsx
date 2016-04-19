@@ -51,8 +51,6 @@ class TableOfContentsTemplate {
       float: 'right',
     };
 
-    const page = this.pageMap[email._id] === null ? (index + 1) : this.pageMap[email._id];
-
     return (
       <div key={index} style={entryStyle}>
         <span style={subjectStyle}>{email.subject}</span>

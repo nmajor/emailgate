@@ -95,8 +95,9 @@ export function emailPageMap(compilationId) {
 
       let page = 1;
       _.forEach(sortedEmails, (email) => {
+        const pdfPageCount = email.pdfPageCount || 1;
         pageMap[email._id] = page;
-        page += email.pdfPageCount;
+        page += pdfPageCount;
       });
 
       resolve(pageMap);

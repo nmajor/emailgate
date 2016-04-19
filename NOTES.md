@@ -39,9 +39,11 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 
 - Make the page map only have keys for emails with actual page counts. Then update the logic in the table of contents template.
 - Account kind selector links need to be restyled.
+- Need to remove the isaac part as the default value for the email filter subject.
 - I think some duplicates can slip into the compilation emails. Check the select all buttons and take some other precautions to make sure that emails that are saving cant be selected and sent again.
 - Something jankey when creating an imap account. Like maybe the password isnt saved or somehthing. Then there is some strange behaviour when checking the connection on the edit page.
-- Adde loading notifications when submitting all forms. Like login, register, new compilation, etc...
+- Add loading notifications when submitting all forms. Like login, register, new compilation, when loading the compilations and accounts on the dashboard (Like when going from the home page to the dashboard without a page refresh), when loading the compilation emails (Like when going from the dashboard to the compilation emails page)
+- if you switch compilations or create a new one then the compilation emails dont reset. Like you see the emails from the other compilation. The same probably happens with the pages.
 - Strange bug when previewing email. The selected eye icon disappears when the pdf loads.
 - Save the compilation title and subtitle separately to populate the cover and title page with the same data
 
