@@ -37,6 +37,7 @@ http://stackoverflow.com/questions/32505951/pdftk-server-on-os-x-10-11
 
 ### Todo Short
 
+- Make the page map only have keys for emails with actual page counts. Then update the logic in the table of contents template.
 - Account kind selector links need to be restyled.
 - I think some duplicates can slip into the compilation emails. Check the select all buttons and take some other precautions to make sure that emails that are saving cant be selected and sent again.
 - Something jankey when creating an imap account. Like maybe the password isnt saved or somehthing. Then there is some strange behaviour when checking the connection on the edit page.

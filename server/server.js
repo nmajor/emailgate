@@ -39,6 +39,7 @@ import { match, RouterContext } from 'react-router';
 // Import required modules
 import routes from '../shared/routes';
 import { fetchComponentData } from './util/fetchData';
+import index from './routes/index.routes';
 import api from './routes/api.routes';
 import oath2 from './routes/oath2.routes';
 
@@ -79,6 +80,7 @@ app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(cookieParser());
 app.use(Express.static(path.resolve(__dirname, '../static')));
+app.use('/', index);
 app.use('/api', api);
 app.use('/oath2', oath2);
 
