@@ -55,10 +55,6 @@ router.get('/logout', (req, res) => {
   res.json({});
 });
 
-router.get('/health', (req, res) => {
-  res.send('OK');
-});
-
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     console.log('User is authenticated.');

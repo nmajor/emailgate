@@ -88,6 +88,12 @@ export function emailPdf(email, pageNumber) {
   const emailPdfStream = stream.PassThrough(); // eslint-disable-line new-cap
 
   pdf.create(html, options).toStream((err, pdfStream) => {
+    if (err) {
+      console.log(`An error happened when generating the email pdf ${err}`);
+      emailPdfStream.end();
+      return;
+    }
+
     pdfStream.pipe(emailPdfStream);
   });
 
@@ -116,6 +122,12 @@ export function pagePdf(page) {
     }
 
     pdf.create(html, options).toStream((err, pdfStream) => {
+      if (err) {
+        console.log(`An error happened when generating the page pdf ${err}`);
+        pagePdfStream.end();
+        return;
+      }
+
       pdfStream.pipe(pagePdfStream);
     });
   });
