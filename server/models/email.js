@@ -1,7 +1,8 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
-import { emailPdfToBuffer } from '../util/pdf';
-import pdfjs from 'pdfjs-dist';
+// import { emailPdfToBuffer } from '../util/pdf';
+// import pdfjs from 'pdfjs-dist';
+import EmailTemplate from '../../shared/templates/email';
 
 const EmailSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -12,20 +13,26 @@ const EmailSchema = new Schema({
   from: [],
   subject: String,
   body: String,
+  template: String,
   attachments: [],
   pdfPageCount: Number,
   pdf: {},
 });
 
-EmailSchema.methods.countPdfPages = function () { // eslint-disable-line func-names
+EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
+  this.getTemplateHtml()
+  .then(() => {
+    next();
+  });
+});
+
+EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {
   return new Promise((resolve) => {
-    emailPdfToBuffer(this)
-    .then((pdfBuffer) => {
-      pdfjs.getDocument(pdfBuffer).then((doc) => {
-        this.pdfPageCount = doc.numPages;
-        resolve(this);
-      });
-    });
+    const email = Object.assign({}, this.toObject(), { body: '[[BODY]]' });
+    const template = new EmailTemplate(email);
+    const html = template.toString();
+    this.template = html;
+    resolve(this);
   });
 };
 

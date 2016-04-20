@@ -13,7 +13,7 @@ import { processEmails, emailPageMap } from '../util/helpers';
 
 
 // import Bluebird from 'bluebird';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 
 export default (io) => {
@@ -88,28 +88,28 @@ export default (io) => {
           .catch((err) => {
             console.log(`Error happened when adding compilation email ${err}`);
           });
-        }))
-        .then((emails) => {
-          let p = Promise.resolve();
-
-          _.forEach(emails, (email) => {
-            p = p.then(() => {
-              return email.countPdfPages()
-              .then((emailWithPages) => {
-                return emailWithPages.save();
-              })
-              .then((savedEmail) => {
-                socket.emit('UPDATED_COMPILATION_EMAIL', savedEmail);
-              });
-            });
-          });
-        })
-        .then(() => {
-          return emailPageMap(compilation._id);
-        })
-        .then((pageMap) => {
-          socket.emit('UPDATED_COMPILATION_EMAIL_PAGE_MAP', pageMap);
-        });
+        }));
+        // .then((emails) => {
+        //   let p = Promise.resolve();
+        //
+        //   _.forEach(emails, (email) => {
+        //     p = p.then(() => {
+        //       return email.countPdfPages()
+        //       .then((emailWithPages) => {
+        //         return emailWithPages.save();
+        //       })
+        //       .then((savedEmail) => {
+        //         socket.emit('UPDATED_COMPILATION_EMAIL', savedEmail);
+        //       });
+        //     });
+        //   });
+        // })
+        // .then(() => {
+        //   return emailPageMap(compilation._id);
+        // })
+        // .then((pageMap) => {
+        //   socket.emit('UPDATED_COMPILATION_EMAIL_PAGE_MAP', pageMap);
+        // });
       });
     });
 
@@ -132,16 +132,6 @@ export default (io) => {
         email.subject = data.newData.subject; // eslint-disable-line no-param-reassign
         email.body = data.newData.body; // eslint-disable-line no-param-reassign
         return email.save();
-      })
-      .then((email) => {
-        socket.emit('UPDATED_COMPILATION_EMAIL', email);
-        return Promise.resolve(email);
-      })
-      .then((email) => {
-        return email.countPdfPages()
-        .then((emailWithPages) => {
-          return emailWithPages.save();
-        });
       })
       .then((email) => {
         socket.emit('UPDATED_COMPILATION_EMAIL', email);

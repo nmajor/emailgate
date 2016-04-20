@@ -3,7 +3,6 @@ import moment from 'moment';
 import Email from '../models/email';
 import * as sharedHelpers from '../../shared/helpers';
 import _ from 'lodash';
-// import crypto from 'crypto';
 
 export function imapifyFilter(filter) {
   const imapFilter = ['ALL'];
