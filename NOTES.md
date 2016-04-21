@@ -70,7 +70,11 @@ http://stackoverflow.com/a/260829/1556952
 - Reconnect the socket after login, registration, and logout.
 - Auto redirect to dashboard after login and registration.
 
-### Library Searching Notes
+### Library Notes
+
+******** CHECK THIS OUT **********
+Redux form helper:
+https://github.com/erikras/redux-form
 
 https://github.com/zippyui/react-date-picker
 

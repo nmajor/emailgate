@@ -51,11 +51,13 @@ class TableOfContentsTemplate {
       float: 'right',
     };
 
+    const pageNum = this.pageMap[email._id] || (index + 1);
+
     return (
       <div key={index} style={entryStyle}>
         <span style={subjectStyle}>{email.subject}</span>
         <span style={dateStyle}>{prettyDate}</span>
-        <span style={pageStyle}>{page}</span>
+        <span style={pageStyle}>{pageNum}</span>
       </div>
     );
   }
