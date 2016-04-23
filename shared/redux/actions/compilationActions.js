@@ -97,9 +97,9 @@ export function getCompilations(cookie) {
   };
 }
 
-export function getCompilationPdf(compilationId) {
+export function buildCompilationPdf(compilationId) {
   return (dispatch) => {
-    dispatch(setPropertyForCompilation(compilationId, 'fetchingPdf', true));
-    socket.emit('GET_COMPILATION_PDF', { compilationId });
+    dispatch(setPropertyForCompilation(compilationId, 'buildingPdf', true));
+    socket.emit('BUILD_COMPILATION_PDF', { compilationId });
   };
 }

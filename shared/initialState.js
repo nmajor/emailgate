@@ -11,6 +11,7 @@ export default {
   compilationEmails: [],
   compilationPages: [],
   compilationEmailPageMap: {},
+  compilationPdfLog: [],
   currentAccountId: '',
   filteredAccountEmails: [],
   filteredAccountEmailsCount: 0,

@@ -30,6 +30,13 @@ export function setConfig(config) {
   };
 }
 
+export function addEntryToCompilationPdfLog(entry) {
+  return {
+    type: ActionTypes.ADD_ENTRY_TO_COMPILATION_PDF_LOG,
+    entry,
+  };
+}
+
 export function getConfig(cookie) {
   return (dispatch) => {
     const fetchOptions = {};

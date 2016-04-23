@@ -12,10 +12,10 @@ const docker = new Docker();
 //   key: '/Users/nmajor/.docker/machine/machines/default/key.pem',
 // });
 
-function getEnv() {
+function getEnv(props) {
   return new Promise((resolve) => {
     const Env = [
-      `COMPILATION_ID=${process.env.COMPILATION_ID}`,
+      `COMPILATION_ID=${props.compilation._id}`,
       `MANTA_APP_KEY=${process.env.MANTA_APP_KEY}`,
       `MANTA_APP_KEY_ID=${process.env.MANTA_APP_KEY_ID}`,
       `MANTA_APP_USER=${process.env.MANTA_APP_USER}`,
@@ -50,8 +50,8 @@ function getEnv() {
 //
 // }
 
-export function generateEmailPdfs() {
-  return getEnv()
+export function buildEmailPdfs(compilation, cb) {
+  return getEnv({ compilation })
   .then((env) => {
     return new Promise((resolve, reject) => {
       docker.createContainer({
@@ -64,25 +64,33 @@ export function generateEmailPdfs() {
         container.start((err) => { // eslint-disable-line no-shadow
           assert.equal(err, null);
 
-          container.attach({ stream: true, stdout: true, stderr: true }, (err, stream) => { // eslint-disable-line no-shadow
+          container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
             assert.equal(err, null);
 
-            stream.on('data', (chunk) => {
-              const log = chunk.toString('utf8');
-              console.log(log);
-              // matchCbToLog(log, cbs);
+            const streamCleanser = require('docker-stream-cleanser')();
+
+            const cleanStream = stream.pipe(streamCleanser);
+            cleanStream.on('data', (chunk) => {
+              const logEntryString = chunk.toString();
+              const entry = JSON.parse(logEntryString);
+              cb(entry);
             });
 
-            stream.on('end', () => {
+            cleanStream.on('error', () => {
+              console.log('An error happened in the stream');
+              reject(compilation);
+            });
+
+            cleanStream.on('end', () => {
               container.stop(() => {
                 container.remove(() => {
-                  resolve();
+                  cb({
+                    type: 'status',
+                    message: 'Container stopped and removed.',
+                  });
+                  resolve(compilation);
                 });
               });
-            });
-
-            stream.on('error', (err) => { // eslint-disable-line no-shadow
-              reject(err);
             });
           });
         });

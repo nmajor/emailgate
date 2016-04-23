@@ -1,15 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions/index';
+// import * as Actions from '../redux/actions/index';
 
 class CompilationCheckoutContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.compilation = this.props.compilation;
-  }
-  componentDidMount() {
-    this.props.dispatch(Actions.getCompilationPdf(this.props.params.compilationId));
   }
 
   render() {

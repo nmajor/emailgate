@@ -109,3 +109,13 @@ socket.on('REMOVED_ACCOUNT', (account) => {
   console.log('event REMOVED_ACCOUNT');
   store.dispatch(Actions.removeAccountFromAccounts(account));
 });
+
+socket.on('COMPILATION_PDF_LOG_ENTRY', (data) => {
+  console.log('event COMPILATION_PDF_LOG_ENTRY');
+  store.dispatch(Actions.addEntryToCompilationPdfLog(data.entry));
+});
+
+socket.on('BUILD_COMPILATION_PDF_FINISHED', (compilation) => {
+  console.log('event BUILD_COMPILATION_PDF_FINISHED');
+  store.dispatch(Actions.setPropertyForCompilation(compilation._id, 'buildingPdf', false));
+});

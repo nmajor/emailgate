@@ -3,8 +3,9 @@ import User from '../models/user';
 import Compilation from '../models/compilation';
 import Email from '../models/email';
 import Page from '../models/page';
-import { emailPdf, pagePdf, compilationPdf } from '../util/pdf';
-import { uploadStream } from '../util/uploader';
+import { emailPdf, pagePdf } from '../util/pdf';
+// import { uploadStream } from '../util/uploader';
+import * as Docker from '../util/docker';
 // import _ from 'lodash';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
@@ -180,20 +181,17 @@ export default (io) => {
       });
     });
 
-    socket.on('GET_COMPILATION_PDF', (data) => {
-      console.log('GET_COMPILATION_PDF');
+    socket.on('BUILD_COMPILATION_PDF', (data) => {
+      console.log('BUILD_COMPILATION_PDF');
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
-        const uploaderStream = uploadStream(`compilations/${compilation.name}-${compilation._id}/compilation.pdf`, (results) => {
-          compilation.pdf = results; // eslint-disable-line no-param-reassign
-          compilation.save()
-          .then((savedCompilation) => {
-            socket.emit('UPDATED_COMPILATION', savedCompilation);
-          });
+        return Docker.buildEmailPdfs(compilation, (entry) => {
+          socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry });
         });
-
-        compilationPdf(compilation).pipe(uploaderStream);
+      })
+      .then((compilation) => {
+        socket.emit('BUILD_COMPILATION_PDF_FINISHED', compilation);
       });
     });
 

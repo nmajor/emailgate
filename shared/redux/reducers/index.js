@@ -47,6 +47,16 @@ const config = (state = initialState.config, action) => {
   }
 };
 
+const compilationPdfLog = (state = initialState.compilationPdfLog, action) => {
+  switch (action.type) {
+    case ActionTypes.ADD_ENTRY_TO_COMPILATION_PDF_LOG :
+      return [action.entry, ...state];
+
+    default:
+      return state;
+  }
+};
+
 const appReducer = combineReducers({
   config,
   fetchingFilteredAccountEmailsCount: fetchings.fetchingFilteredAccountEmailsCount,
@@ -60,6 +70,7 @@ const appReducer = combineReducers({
   compilationEmails,
   compilationEmailPageMap,
   compilationPages,
+  compilationPdfLog,
   currentAccountId,
   filteredAccountEmails,
   filteredAccountEmailsCount,
