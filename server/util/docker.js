@@ -1,5 +1,6 @@
 require('dotenv').config({ silent: true });
 import assert from 'assert';
+import Email from '../models/email';
 
 import Docker from 'dockerode';
 const docker = new Docker();
@@ -11,6 +12,21 @@ const docker = new Docker();
 //   cert: '/Users/nmajor/.docker/machine/machines/default/cert.pem',
 //   key: '/Users/nmajor/.docker/machine/machines/default/key.pem',
 // });
+
+// function generateTask(type, props) {
+//   return {
+//     type,
+//     props,
+//   };
+// }
+
+function getEmailIdsNeedingPdf(compilation) {
+  return Email.find({ _compilation: compilation._id })
+  .then((emails) => {
+    const emailIds = emails.map((email) => { return email._id; });
+    return Promise.resolve(emailIds.slice(0, 20));
+  });
+}
 
 function getEnv(props) {
   return new Promise((resolve) => {
@@ -42,54 +58,49 @@ function getEnv(props) {
   });
 }
 
-// function handleStreamLog(log, cb) {
-//   console.log(log);
-// }
-//
-// function matchCbToLog(log) {
-//
-// }
+function encodeTask(task) {
+  return new Buffer(JSON.stringify(task)).toString('base64');
+}
 
-export function buildEmailPdfs(compilation, cb) {
-  return getEnv({ compilation })
-  .then((env) => {
-    return new Promise((resolve, reject) => {
-      docker.createContainer({
-        Image: 'emailgate-pdf',
-        name: `emailgate-pdf-${Date.now()}`,
-        env,
-      }, (err, container) => {
+function startWorker(env, task, compilation, updateCb) {
+  return new Promise((resolve, reject) => {
+    env.push(`TASK=${encodeTask(task)}`);
+
+    docker.createContainer({
+      Image: 'emailgate-pdf',
+      name: `emailgate-pdf-${Date.now()}`,
+      env,
+    }, (err, container) => {
+      assert.equal(err, null);
+
+      container.start((err) => { // eslint-disable-line no-shadow
         assert.equal(err, null);
 
-        container.start((err) => { // eslint-disable-line no-shadow
+        container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
           assert.equal(err, null);
 
-          container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
-            assert.equal(err, null);
+          const streamCleanser = require('docker-stream-cleanser')();
 
-            const streamCleanser = require('docker-stream-cleanser')();
+          const cleanStream = stream.pipe(streamCleanser);
+          cleanStream.on('data', (chunk) => {
+            const logEntryString = chunk.toString();
+            const entry = JSON.parse(logEntryString);
+            updateCb(entry);
+          });
 
-            const cleanStream = stream.pipe(streamCleanser);
-            cleanStream.on('data', (chunk) => {
-              const logEntryString = chunk.toString();
-              const entry = JSON.parse(logEntryString);
-              cb(entry);
-            });
+          cleanStream.on('error', () => {
+            console.log('An error happened in the stream');
+            reject(compilation);
+          });
 
-            cleanStream.on('error', () => {
-              console.log('An error happened in the stream');
-              reject(compilation);
-            });
-
-            cleanStream.on('end', () => {
-              container.stop(() => {
-                container.remove(() => {
-                  cb({
-                    type: 'status',
-                    message: 'Container stopped and removed.',
-                  });
-                  resolve(compilation);
+          cleanStream.on('end', () => {
+            container.stop(() => {
+              container.remove(() => {
+                updateCb({
+                  type: 'status',
+                  message: 'Container stopped and removed.',
                 });
+                resolve(compilation);
               });
             });
           });
@@ -98,3 +109,26 @@ export function buildEmailPdfs(compilation, cb) {
     });
   });
 }
+
+export function buildEmailPdfs(compilation, cb) {
+  return Promise.all([
+    getEmailIdsNeedingPdf(compilation),
+    getEnv({ compilation }),
+  ])
+  .then((results) => {
+    const [emailIds, env] = results;
+    const task = {
+      name: 'build-email-pdfs',
+      props: {
+        emailIds,
+        compilationId: compilation._id,
+      },
+    };
+
+    return startWorker(env, task, compilation, cb);
+  });
+}
+
+// export function buildEmailPdfs(compilation, cb) {
+//
+// }

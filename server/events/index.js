@@ -192,6 +192,9 @@ export default (io) => {
       })
       .then((compilation) => {
         socket.emit('BUILD_COMPILATION_PDF_FINISHED', compilation);
+      })
+      .catch((err) => {
+        console.log(err);
       });
     });
 
