@@ -15,7 +15,6 @@ const EmailSchema = new Schema({
   body: String,
   template: String,
   attachments: [],
-  pdfPageCount: Number,
   pdf: {},
 });
 

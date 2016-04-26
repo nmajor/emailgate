@@ -27,14 +27,16 @@ class CompilationNav extends Component {
 
   render() {
     return (
-      <div className="compilation-nav">
-        <div className="container">
-          <ul className="nav nav-pills">
-            {this.renderEmailsNav()}
-            {this.renderPagesNav()}
-            {this.renderPreviewNav()}
-            {this.renderCheckoutNav()}
-          </ul>
+      <div className="compilation-nav container">
+        <div className="row">
+          <div className="col-md-12">
+            <ul className="nav nav-pills">
+              {this.renderEmailsNav()}
+              {this.renderPagesNav()}
+              {this.renderPreviewNav()}
+              {this.renderCheckoutNav()}
+            </ul>
+          </div>
         </div>
       </div>
     );

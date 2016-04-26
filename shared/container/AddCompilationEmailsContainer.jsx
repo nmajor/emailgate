@@ -31,7 +31,7 @@ class AddCompilationEmailsContainer extends Component {
   }
   render() {
     return (
-      <div className="edit-account-container container">
+      <div>
         <h1>Add Emails to Compilation</h1>
         <SelectAccountContainer />
         {this.renderFilterContainer()}

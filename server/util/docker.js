@@ -1,6 +1,8 @@
 require('dotenv').config({ silent: true });
+import _ from 'lodash';
 import assert from 'assert';
 import Email from '../models/email';
+import Page from '../models/page';
 
 import Docker from 'dockerode';
 const docker = new Docker();
@@ -20,11 +22,56 @@ const docker = new Docker();
 //   };
 // }
 
+function emailPdfNeedsToBeUpdated(email) {
+  if (email) {
+    return true;
+  }
+
+  return true;
+}
+
 function getEmailIdsNeedingPdf(compilation) {
   return Email.find({ _compilation: compilation._id })
   .then((emails) => {
-    const emailIds = emails.map((email) => { return email._id; });
+    const filteredEmails = _.filter(emails, emailPdfNeedsToBeUpdated);
+    const emailIds = filteredEmails.map((email) => { return email._id; });
     return Promise.resolve(emailIds.slice(0, 20));
+  });
+}
+
+function pageHtmlNeedsToBeUpdated(page) {
+  if (page.type === 'table-of-contents') {
+    return true;
+  } else if (!page.html) {
+    return true;
+  }
+
+  return false;
+}
+
+function pagePdfNeedsToBeUpdated(page) {
+  if (page) {
+    return true;
+  }
+
+  return true;
+}
+
+function getPageIdsNeedingPdf(compilation) {
+  return Page.find({ _compilation: compilation._id })
+  .then((pages) => {
+    return Promise.all(pages.map((page) => {
+      if (pageHtmlNeedsToBeUpdated(page)) {
+        return page.save();
+      }
+
+      return Promise.resolve(page);
+    }));
+  })
+  .then((pages) => {
+    const filteredPages = _.filter(pages, pagePdfNeedsToBeUpdated);
+    const pageIds = filteredPages.map((page) => { return page._id; });
+    return Promise.resolve(pageIds);
   });
 }
 
@@ -62,13 +109,13 @@ function encodeTask(task) {
   return new Buffer(JSON.stringify(task)).toString('base64');
 }
 
-function startWorker(env, task, compilation, updateCb) {
+function startWorker(env, task, updateCb) {
   return new Promise((resolve, reject) => {
     env.push(`TASK=${encodeTask(task)}`);
 
     docker.createContainer({
-      Image: 'emailgate-pdf',
-      name: `emailgate-pdf-${Date.now()}`,
+      Image: 'emailgate-worker',
+      name: `emailgate-worker-${Date.now()}`,
       env,
     }, (err, container) => {
       assert.equal(err, null);
@@ -90,7 +137,7 @@ function startWorker(env, task, compilation, updateCb) {
 
           cleanStream.on('error', () => {
             console.log('An error happened in the stream');
-            reject(compilation);
+            reject();
           });
 
           cleanStream.on('end', () => {
@@ -100,7 +147,7 @@ function startWorker(env, task, compilation, updateCb) {
                   type: 'status',
                   message: 'Container stopped and removed.',
                 });
-                resolve(compilation);
+                resolve();
               });
             });
           });
@@ -125,10 +172,35 @@ export function buildEmailPdfs(compilation, cb) {
       },
     };
 
-    return startWorker(env, task, compilation, cb);
+    return startWorker(env, task, cb);
   });
 }
 
-// export function buildEmailPdfs(compilation, cb) {
-//
-// }
+export function buildPagePdfs(compilation, cb) {
+  return Promise.all([
+    getPageIdsNeedingPdf(compilation),
+    getEnv({ compilation }),
+  ])
+  .then((results) => {
+    const [pageIds, env] = results;
+    const task = {
+      name: 'build-page-pdfs',
+      props: {
+        pageIds,
+        compilationId: compilation._id,
+      },
+    };
+
+    return startWorker(env, task, cb);
+  });
+}
+
+export function buildCompilationPdf(compilation, cb) {
+  return buildEmailPdfs(compilation, cb)
+  .then(() => {
+    return buildPagePdfs(compilation, cb);
+  })
+  .then(() => {
+    return Promise.resolve(compilation);
+  });
+}

@@ -37,7 +37,7 @@ class CompilationEmailsContainer extends Component {
 
   render() {
     return (
-      <div className="edit-account-container container">
+      <div>
         <h1>Compilation Emails ({this.props.compilationEmails.length})</h1>
         <div className="row">
           <div className="col-md-3">

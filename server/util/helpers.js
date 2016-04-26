@@ -94,12 +94,29 @@ export function emailPageMap(compilationId) {
 
       let page = 1;
       _.forEach(sortedEmails, (email) => {
-        const pdfPageCount = email.pdfPageCount || 1;
+        email.pdf = email.pdf || {}; // eslint-disable-line no-param-reassign
+        const pageCount = email.pdf.pageCount || 1;
         pageMap[email._id] = page;
-        page += pdfPageCount;
+        page += pageCount;
       });
 
       resolve(pageMap);
     });
   });
+}
+
+export function processPdf(pdfObj) {
+  const processedPdf = {
+    pageCount: pdfObj.pageCount,
+    url: pdfObj.url,
+    updatedAt: pdfObj.updatedAt,
+    path: pdfObj.path,
+    extension: pdfObj.extension,
+    type: pdfObj.type,
+    etag: pdfObj.etag,
+    md5: pdfObj.md5,
+    size: pdfObj.size,
+  };
+
+  return processedPdf;
 }

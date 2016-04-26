@@ -15,6 +15,9 @@ class CompilationPreviewContainer extends Component {
 
   renderCompilationPdfLog() {
     const entries = this.props.compilationPdfLog.map((entry, index) => {
+      if (index === 0) {
+        return <div key={index}><strong>{entry.message}</strong></div>;
+      }
       return <div key={index}>{entry.message}</div>;
     });
 
@@ -25,7 +28,7 @@ class CompilationPreviewContainer extends Component {
   }
   renderCompilationPdfStatus() {
     if (this.props.compilation.buildingPdf) {
-      return <div>Building compilation pdf ...</div>;
+      return <span className="left-bumper">Building compilation pdf ...</span>;
     }
   }
   renderBuildCompilationButton() {
@@ -33,7 +36,7 @@ class CompilationPreviewContainer extends Component {
   }
   render() {
     return (
-      <div className="edit-account-container container">
+      <div>
         <h1>Compilation Preview</h1>
         <div className="row">
           <div className="col-md-4">

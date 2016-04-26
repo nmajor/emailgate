@@ -29,9 +29,9 @@ class CompilationEmailsContainer extends Component {
       this.props.dispatch(Actions.getCompilationPages(this.props.params.compilationId));
     }
 
-    if (this.props.compilationEmailPageMap === {}) {
-      this.props.dispatch(Actions.getCompilationEmailPageMap(this.props.params.compilationId));
-    }
+    // if (this.props.compilationEmailPageMap === {}) {
+    //   this.props.dispatch(Actions.getCompilationEmailPageMap(this.props.params.compilationId));
+    // }
   }
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
@@ -66,7 +66,7 @@ class CompilationEmailsContainer extends Component {
 
   render() {
     return (
-      <div className="edit-account-container">
+      <div>
         {this.renderCompilation()}
       </div>
     );
@@ -86,9 +86,9 @@ CompilationEmailsContainer.need = [
   (params, cookie) => {
     return Actions.getCompilationEmails.bind(null, params.compilationId, cookie)();
   },
-  (params, cookie) => {
-    return Actions.getCompilationEmailPageMap.bind(null, params.compilationId, cookie)();
-  },
+  // (params, cookie) => {
+  //   return Actions.getCompilationEmailPageMap.bind(null, params.compilationId, cookie)();
+  // },
 ];
 
 function mapStateToProps(store) {
@@ -96,7 +96,6 @@ function mapStateToProps(store) {
     accounts: store.accounts,
     compilations: store.compilations,
     compilationEmails: store.compilationEmails,
-    compilationEmailPageMap: store.compilationEmailPageMap,
     compilationPages: store.compilationPages,
   };
 }
@@ -111,7 +110,6 @@ CompilationEmailsContainer.propTypes = {
   accounts: PropTypes.array,
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
-  compilationEmailPageMap: PropTypes.object,
   compilationPages: PropTypes.array,
   params: PropTypes.object,
   routes: PropTypes.array,

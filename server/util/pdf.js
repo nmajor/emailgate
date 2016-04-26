@@ -100,6 +100,13 @@ export function emailPdf(email, pageNumber) {
   return emailPdfStream;
 }
 
+export function pageHtml(page) {
+  return pageTemplateFactory(page)
+  .then((template) => {
+    return Promise.resolve(template.toString());
+  });
+}
+
 export function pagePdf(page) {
   const pagePdfStream = stream.PassThrough(); // eslint-disable-line new-cap
 

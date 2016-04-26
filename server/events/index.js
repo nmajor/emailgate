@@ -10,7 +10,7 @@ import * as Docker from '../util/docker';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
-import { processEmails, emailPageMap } from '../util/helpers';
+import { processEmails, emailPageMap, processPdf } from '../util/helpers';
 
 
 // import Bluebird from 'bluebird';
@@ -186,8 +186,20 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
-        return Docker.buildEmailPdfs(compilation, (entry) => {
+        return Docker.buildCompilationPdf(compilation, (entry) => {
           socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry });
+
+          if (entry.type === 'email-pdf') {
+            Email.findOneAndUpdate({ _id: entry.payload._id }, { $set: { pdf: processPdf(entry.payload) } }, { new: true })
+            .then((email) => {
+              socket.emit('UPDATED_COMPILATION_EMAIL', email);
+            });
+          } else if (entry.type === 'page-pdf') {
+            Page.findOneAndUpdate({ _id: entry.payload._id }, { $set: { pdf: processPdf(entry.payload) } }, { new: true })
+            .then((page) => {
+              socket.emit('UPDATED_COMPILATION_PAGE', page);
+            });
+          }
         });
       })
       .then((compilation) => {

@@ -24,7 +24,7 @@ class CompilationPagesContainer extends Component {
 
   render() {
     return (
-      <div className="edit-account-container container">
+      <div>
         <h1>Custom Pages</h1>
         <div className="row">
           <div className="col-md-3">
