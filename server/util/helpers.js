@@ -109,6 +109,7 @@ export function processPdf(pdfObj) {
   const processedPdf = {
     pageCount: pdfObj.pageCount,
     url: pdfObj.url,
+    filename: pdfObj.filename,
     updatedAt: pdfObj.updatedAt,
     path: pdfObj.path,
     extension: pdfObj.extension,

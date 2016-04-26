@@ -4,6 +4,7 @@ import assert from 'assert';
 import Email from '../models/email';
 import Page from '../models/page';
 
+import * as sharedHelpers from '../../shared/helpers';
 import Docker from 'dockerode';
 const docker = new Docker();
 // const docker = new Docker({
@@ -35,7 +36,19 @@ function getEmailIdsNeedingPdf(compilation) {
   .then((emails) => {
     const filteredEmails = _.filter(emails, emailPdfNeedsToBeUpdated);
     const emailIds = filteredEmails.map((email) => { return email._id; });
-    return Promise.resolve(emailIds.slice(0, 20));
+    return Promise.resolve(emailIds);
+  });
+}
+
+function getEmailPositionMap(compilation) {
+  return Email.find({ _compilation: compilation._id })
+  .then((emails) => {
+    const sortedEmails = sharedHelpers.sortedEmails(emails);
+    const positionMap = {};
+    _.forEach(sortedEmails, (email, index) => {
+      positionMap[email._id] = index;
+    });
+    return Promise.resolve(positionMap);
   });
 }
 
@@ -55,6 +68,18 @@ function pagePdfNeedsToBeUpdated(page) {
   }
 
   return true;
+}
+
+function getPagePositionMap(compilation) {
+  return Page.find({ _compilation: compilation._id })
+  .then((pages) => {
+    const sortedPages = sharedHelpers.sortedPages(pages);
+    const positionMap = {};
+    _.forEach(sortedPages, (page, index) => {
+      positionMap[page._id] = index;
+    });
+    return Promise.resolve(positionMap);
+  });
 }
 
 function getPageIdsNeedingPdf(compilation) {
@@ -195,11 +220,35 @@ export function buildPagePdfs(compilation, cb) {
   });
 }
 
+export function compileCompilationPdfs(compilation, cb) {
+  return Promise.all([
+    getEmailPositionMap(compilation),
+    getPagePositionMap(compilation),
+    getEnv({ compilation }),
+  ])
+  .then((results) => {
+    const [emailPositionMap, pagePositionMap, env] = results;
+    const task = {
+      name: 'build-compilation-pdf',
+      props: {
+        compilationId: compilation._id,
+        emailPositionMap,
+        pagePositionMap,
+      },
+    };
+
+    return startWorker(env, task, cb);
+  });
+}
+
 export function buildCompilationPdf(compilation, cb) {
   return buildEmailPdfs(compilation, cb)
   .then(() => {
     return buildPagePdfs(compilation, cb);
   })
+  // .then(() => {
+  //   return buildPagePdfs(compilation, cb);
+  // })
   .then(() => {
     return Promise.resolve(compilation);
   });
