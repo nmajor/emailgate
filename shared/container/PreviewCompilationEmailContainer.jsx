@@ -2,16 +2,11 @@ import React, { PropTypes, Component } from 'react';
 import CompilationEmailNavContainer from './CompilationEmailNavContainer';
 import CompilationEmailPdf from '../components/CompilationEmailPdf';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions/index';
+// import * as Actions from '../redux/actions/index';
 
 class PreviewCompilationEmailContainer extends Component {
   constructor(props, context) {
     super(props, context);
-  }
-  componentDidMount() {
-    if (!this.props.currentEmail.pdf) {
-      this.props.dispatch(Actions.getCompilationEmailPdf(this.props.compilation._id, this.props.currentEmail));
-    }
   }
 
   renderPreview() {

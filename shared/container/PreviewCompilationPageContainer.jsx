@@ -2,16 +2,11 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import CompilationPagePdf from '../components/CompilationPagePdf';
 import CompilationPageNavContainer from './CompilationPageNavContainer';
-import * as Actions from '../redux/actions/index';
+// import * as Actions from '../redux/actions/index';
 
 class PreviewCompilationPageContainer extends Component {
   constructor(props, context) {
     super(props, context);
-  }
-  componentDidMount() {
-    if (!this.props.currentPage.pdf) {
-      this.props.dispatch(Actions.getCompilationPagePdf(this.props.compilation._id, this.props.currentPage));
-    }
   }
 
   render() {

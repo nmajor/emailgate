@@ -36,7 +36,7 @@ function getEmailIdsNeedingPdf(compilation) {
   .then((emails) => {
     const filteredEmails = _.filter(emails, emailPdfNeedsToBeUpdated);
     const emailIds = filteredEmails.map((email) => { return email._id; });
-    return Promise.resolve(emailIds);
+    return Promise.resolve(emailIds.slice(0, 5));
   });
 }
 
@@ -189,6 +189,9 @@ export function buildEmailPdfs(compilation, cb) {
   ])
   .then((results) => {
     const [emailIds, env] = results;
+
+    if (emailIds.length === 0) { return Promise.resolve(); }
+
     const task = {
       name: 'build-email-pdfs',
       props: {
@@ -198,6 +201,9 @@ export function buildEmailPdfs(compilation, cb) {
     };
 
     return startWorker(env, task, cb);
+  })
+  .then(() => {
+    return Promise.resolve(compilation);
   });
 }
 
@@ -208,6 +214,9 @@ export function buildPagePdfs(compilation, cb) {
   ])
   .then((results) => {
     const [pageIds, env] = results;
+
+    if (pageIds.length === 0) { return Promise.resolve(); }
+
     const task = {
       name: 'build-page-pdfs',
       props: {
@@ -217,6 +226,9 @@ export function buildPagePdfs(compilation, cb) {
     };
 
     return startWorker(env, task, cb);
+  })
+  .then(() => {
+    return Promise.resolve(compilation);
   });
 }
 
@@ -238,6 +250,9 @@ export function compileCompilationPdfs(compilation, cb) {
     };
 
     return startWorker(env, task, cb);
+  })
+  .then(() => {
+    return Promise.resolve(compilation);
   });
 }
 
@@ -246,9 +261,9 @@ export function buildCompilationPdf(compilation, cb) {
   .then(() => {
     return buildPagePdfs(compilation, cb);
   })
-  // .then(() => {
-  //   return buildPagePdfs(compilation, cb);
-  // })
+  .then(() => {
+    return compileCompilationPdfs(compilation, cb);
+  })
   .then(() => {
     return Promise.resolve(compilation);
   });

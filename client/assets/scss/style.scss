@@ -50,3 +50,11 @@
   margin-left: 2%;
   display: inline-block;
 }
+
+.compilation-log-entry {
+  font-size: 12px;
+
+  &.latest {
+    font-weight: bold;
+  }
+}

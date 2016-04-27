@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 // import CompilationPdf from '../components/CompilationPdf';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
+import moment from 'moment';
 
 class CompilationPreviewContainer extends Component {
   constructor(props, context) {
@@ -15,16 +16,16 @@ class CompilationPreviewContainer extends Component {
 
   renderCompilationPdfLog() {
     const entries = this.props.compilationPdfLog.map((entry, index) => {
-      if (index === 0) {
-        return <div key={index}><strong>{entry.message}</strong></div>;
-      }
-      return <div key={index}>{entry.message}</div>;
+      return <div className={`compilation-log-entry ${index === 0 ? 'latest' : ''}`} key={index}>{entry.message}</div>;
     });
 
     return <div>{entries}</div>;
   }
   renderCompilationPdf() {
-    // return <CompilationPdf compilation={this.props.compilation} />
+    return (<div>
+      <div>PDF Last Updated: {moment(this.props.compilation.pdf.updatedAt).fromNow()}</div>
+      <a target="_blank" href={this.props.compilation.pdf.url}>View Pdf</a>
+    </div>);
   }
   renderCompilationPdfStatus() {
     if (this.props.compilation.buildingPdf) {

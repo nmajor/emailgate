@@ -117,5 +117,5 @@ socket.on('COMPILATION_PDF_LOG_ENTRY', (data) => {
 
 socket.on('BUILD_COMPILATION_PDF_FINISHED', (compilation) => {
   console.log('event BUILD_COMPILATION_PDF_FINISHED');
-  store.dispatch(Actions.setPropertyForCompilation(compilation._id, 'buildingPdf', false));
+  store.dispatch(Actions.updateCompilationInCompilations(compilation));
 });

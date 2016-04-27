@@ -186,8 +186,7 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
-        // return Docker.buildCompilationPdf(compilation, (entry) => {
-        return Docker.compileCompilationPdfs(compilation, (entry) => {
+        return Docker.buildCompilationPdf(compilation, (entry) => {
           socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry });
 
           if (entry.type === 'email-pdf') {
@@ -200,14 +199,22 @@ export default (io) => {
             .then((page) => {
               socket.emit('UPDATED_COMPILATION_PAGE', page);
             });
+          } else if (entry.type === 'compilation-pdf') {
+            compilation.pdf = processPdf(entry.payload); // eslint-disable-line no-param-reassign
+            compilation.save()
+            .then((savedCompilation) => {
+              socket.emit('BUILD_COMPILATION_PDF_FINISHED', savedCompilation);
+            });
           }
+        })
+        .catch((err) => {
+          socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry: {
+            type: 'error',
+            message: 'Compilation pdf build failed.',
+            payload: err.message,
+          } });
+          socket.emit('BUILD_COMPILATION_PDF_FINISHED', compilation);
         });
-      })
-      .then((compilation) => {
-        socket.emit('BUILD_COMPILATION_PDF_FINISHED', compilation);
-      })
-      .catch((err) => {
-        console.log(err);
       });
     });
 

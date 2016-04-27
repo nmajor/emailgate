@@ -38,7 +38,7 @@ class CoverTemplate {
   }
   render() {
     const mainStyles = {
-      background: '#5F2E18',
+      background: '#222',
       color: '#fff',
     };
 
