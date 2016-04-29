@@ -5,6 +5,7 @@ import Email from '../models/email';
 import Page from '../models/page';
 
 import * as sharedHelpers from '../../shared/helpers';
+import * as serverHelpers from './helpers';
 import Docker from 'dockerode';
 const docker = new Docker();
 // const docker = new Docker({
@@ -36,7 +37,7 @@ function getEmailIdsNeedingPdf(compilation) {
   .then((emails) => {
     const filteredEmails = _.filter(emails, emailPdfNeedsToBeUpdated);
     const emailIds = filteredEmails.map((email) => { return email._id; });
-    return Promise.resolve(emailIds.slice(0, 5));
+    return Promise.resolve(emailIds);
   });
 }
 
@@ -50,6 +51,10 @@ function getEmailPositionMap(compilation) {
     });
     return Promise.resolve(positionMap);
   });
+}
+
+function getEmailPageMap(compilation) {
+  return serverHelpers.emailPageMap(compilation._id);
 }
 
 function pageHtmlNeedsToBeUpdated(page) {
@@ -136,6 +141,7 @@ function encodeTask(task) {
 
 function startWorker(env, task, updateCb) {
   return new Promise((resolve, reject) => {
+    console.log(`${task.name} TASK=${encodeTask(task)}`);
     env.push(`TASK=${encodeTask(task)}`);
 
     docker.createContainer({
@@ -235,16 +241,18 @@ export function buildPagePdfs(compilation, cb) {
 export function compileCompilationPdfs(compilation, cb) {
   return Promise.all([
     getEmailPositionMap(compilation),
+    getEmailPageMap(compilation),
     getPagePositionMap(compilation),
     getEnv({ compilation }),
   ])
   .then((results) => {
-    const [emailPositionMap, pagePositionMap, env] = results;
+    const [emailPositionMap, emailPageMap, pagePositionMap, env] = results;
     const task = {
       name: 'build-compilation-pdf',
       props: {
         compilationId: compilation._id,
         emailPositionMap,
+        emailPageMap,
         pagePositionMap,
       },
     };

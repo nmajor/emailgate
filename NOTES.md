@@ -17,6 +17,7 @@ http://stackoverflow.com/a/260829/1556952
 
 - Try to leverage manta jobs to handle the pdftk stitching of the files together. Like even first try uploading all the files on the fly to manta and then using a manta job to stitch them. You would have to upload them fresh every time because of the page numbers unless you can figure out a good way to add them on the fly.
   - http://forums.debian.net/viewtopic.php?t=30598 - How to add page numbers to a pdf with pdftk
+  - http://stackoverflow.com/questions/1603301/how-to-add-page-numbers-to-postscript-pdf - Good stackoverflow thread with good options for adding pages to a pdf
 
 - PDF container scripts to offload the pdf generation
   - Save the whole rendered email in the database. Make a template property and save the wrapping html with a find and replaceable part for the {{body}}
