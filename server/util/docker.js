@@ -7,22 +7,22 @@ import Page from '../models/page';
 import * as sharedHelpers from '../../shared/helpers';
 import * as serverHelpers from './helpers';
 import Docker from 'dockerode';
-const docker = new Docker();
-// const docker = new Docker({
-//   protocol: 'https',
-//   host: '192.168.99.100',
-//   port: 2376,
-//   ca: '/Users/nmajor/.docker/machine/machines/default/ca.pem',
-//   cert: '/Users/nmajor/.docker/machine/machines/default/cert.pem',
-//   key: '/Users/nmajor/.docker/machine/machines/default/key.pem',
-// });
 
-// function generateTask(type, props) {
-//   return {
-//     type,
-//     props,
-//   };
-// }
+function getDockerObject() {
+  if (process.env.NODE_ENV === 'production') {
+    return new Docker({
+      port: process.env.DOCKER_PORT,
+      host: process.env.DOCKER_HOST,
+      ca: (new Buffer(process.env.DOCKER_CA, 'base64').toString('utf8')),
+      cert: (new Buffer(process.env.DOCKER_CERT, 'base64').toString('utf8')),
+      key: (new Buffer(process.env.DOCKER_KEY, 'base64').toString('utf8')),
+    });
+  }
+
+  return new Docker();
+}
+
+const docker = getDockerObject();
 
 function emailPdfNeedsToBeUpdated(email) {
   if (email) {
@@ -139,23 +139,41 @@ function encodeTask(task) {
   return new Buffer(JSON.stringify(task)).toString('base64');
 }
 
+function getDockerConfig(env) {
+  if (process.env.DOCKER_CONFIG) {
+    const dockerConfig = JSON.parse(process.env.DOCKER_CONFIG);
+    const config = {
+      Image: dockerConfig.Image,
+      name: `${dockerConfig.ImageNamePrefix}-${Date.now()}`,
+      HostConfig: { Memory: 4096 },
+      env,
+    };
+
+    return config;
+  }
+
+  return {
+    Image: 'emailgate-worker',
+    name: `emailgate-worker-${Date.now()}`,
+    env,
+  };
+}
+
 function startWorker(env, task, updateCb) {
-  return new Promise((resolve, reject) => {
-    console.log(`${task.name} TASK=${encodeTask(task)}`);
+  return new Promise((resolve) => {
     env.push(`TASK=${encodeTask(task)}`);
 
-    docker.createContainer({
-      Image: 'emailgate-worker',
-      name: `emailgate-worker-${Date.now()}`,
-      env,
-    }, (err, container) => {
+    docker.createContainer(getDockerConfig(env), (err, container) => {
       assert.equal(err, null);
+      console.log('blah created container');
 
       container.start((err) => { // eslint-disable-line no-shadow
         assert.equal(err, null);
+        console.log('blah started container');
 
         container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
           assert.equal(err, null);
+          console.log('blah attached to container');
 
           const streamCleanser = require('docker-stream-cleanser')();
 
@@ -166,9 +184,8 @@ function startWorker(env, task, updateCb) {
             updateCb(entry);
           });
 
-          cleanStream.on('error', () => {
-            console.log('An error happened in the stream');
-            reject();
+          cleanStream.on('error', (chunk) => {
+            console.log(`An error happened in the stream ${chunk.toString()}`);
           });
 
           cleanStream.on('end', () => {

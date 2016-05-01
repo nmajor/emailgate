@@ -13,10 +13,18 @@ class CompilationPreviewContainer extends Component {
   buildCompilationPdf() {
     this.props.dispatch(Actions.buildCompilationPdf(this.props.params.compilationId));
   }
+  renderError(entry) {
+    if (entry.type === 'error') {
+      return <span className="text-danger"> - {entry.payload}</span>;
+    }
+  }
 
   renderCompilationPdfLog() {
     const entries = this.props.compilationPdfLog.map((entry, index) => {
-      return <div className={`compilation-log-entry ${index === 0 ? 'latest' : ''}`} key={index}>{entry.message}</div>;
+      return (<div className={`compilation-log-entry ${index === 0 ? 'latest' : ''}`} key={index}>
+        {entry.message}
+        {this.renderError(entry)}
+      </div>);
     });
 
     return <div>{entries}</div>;
