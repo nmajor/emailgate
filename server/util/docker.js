@@ -146,6 +146,7 @@ function getDockerConfig(env) {
       Image: dockerConfig.Image,
       name: `${dockerConfig.ImageNamePrefix}-${Date.now()}`,
       Env: env,
+      HostConfig: dockerConfig.HostConfig,
       AttachStdout: true,
       AttachStderr: true,
     };
@@ -177,9 +178,17 @@ function startWorker(env, task, updateCb) {
 
     docker.createContainer(getDockerConfig(env), (err, container) => {
       assert.equal(err, null);
+      console.log('blah created container');
+
+      container.inspect((err, data) => {  // eslint-disable-line no-shadow
+        assert.equal(err, null);
+        console.log(data);
+      });
+
 
       container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
         assert.equal(err, null);
+        console.log('blah attached to container');
 
         const streamCleanser = require('docker-stream-cleanser')();
 
@@ -211,6 +220,7 @@ function startWorker(env, task, updateCb) {
         });
 
         container.start((err) => { // eslint-disable-line no-shadow
+          console.log('blah started container');
           assert.equal(err, null);
         });
       });
