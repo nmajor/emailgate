@@ -15,7 +15,11 @@ class CompilationPreviewContainer extends Component {
   }
   renderError(entry) {
     if (entry.type === 'error') {
-      return <span className="text-danger"> - {entry.payload}</span>;
+      try {
+        return <span className="text-danger"> - {JSON.stringify(entry.payload)}</span>;
+      } catch (e) {
+        return <span className="text-danger"> - {entry.payload}</span>;
+      }
     }
   }
 

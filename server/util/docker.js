@@ -145,8 +145,9 @@ function getDockerConfig(env) {
     const config = {
       Image: dockerConfig.Image,
       name: `${dockerConfig.ImageNamePrefix}-${Date.now()}`,
-      HostConfig: { Memory: 4096 },
-      env,
+      Env: env,
+      AttachStdout: true,
+      AttachStderr: true,
     };
 
     return config;
@@ -155,8 +156,19 @@ function getDockerConfig(env) {
   return {
     Image: 'emailgate-worker',
     name: `emailgate-worker-${Date.now()}`,
-    env,
+    Env: env,
+    AttachStdout: true,
+    AttachStderr: true,
   };
+}
+
+function isJson(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
 }
 
 function startWorker(env, task, updateCb) {
@@ -165,40 +177,41 @@ function startWorker(env, task, updateCb) {
 
     docker.createContainer(getDockerConfig(env), (err, container) => {
       assert.equal(err, null);
-      console.log('blah created container');
 
-      container.start((err) => { // eslint-disable-line no-shadow
+      container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
         assert.equal(err, null);
-        console.log('blah started container');
 
-        container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
-          assert.equal(err, null);
-          console.log('blah attached to container');
+        const streamCleanser = require('docker-stream-cleanser')();
 
-          const streamCleanser = require('docker-stream-cleanser')();
-
-          const cleanStream = stream.pipe(streamCleanser);
-          cleanStream.on('data', (chunk) => {
-            const logEntryString = chunk.toString();
+        const cleanStream = stream.pipe(streamCleanser);
+        cleanStream.on('data', (chunk) => {
+          const logEntryString = chunk.toString();
+          if (isJson(logEntryString)) {
             const entry = JSON.parse(logEntryString);
             updateCb(entry);
-          });
+          } else {
+            console.log(logEntryString);
+          }
+        });
 
-          cleanStream.on('error', (chunk) => {
-            console.log(`An error happened in the stream ${chunk.toString()}`);
-          });
+        cleanStream.on('error', (chunk) => {
+          console.log(`An error happened in the stream ${chunk.toString()}`);
+        });
 
-          cleanStream.on('end', () => {
-            container.stop(() => {
-              container.remove(() => {
-                updateCb({
-                  type: 'status',
-                  message: 'Container stopped and removed.',
-                });
-                resolve();
+        cleanStream.on('end', () => {
+          container.stop(() => {
+            container.remove(() => {
+              updateCb({
+                type: 'status',
+                message: 'Container stopped and removed.',
               });
+              resolve();
             });
           });
+        });
+
+        container.start((err) => { // eslint-disable-line no-shadow
+          assert.equal(err, null);
         });
       });
     });
