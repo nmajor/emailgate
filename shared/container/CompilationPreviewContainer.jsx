@@ -34,10 +34,12 @@ class CompilationPreviewContainer extends Component {
     return <div>{entries}</div>;
   }
   renderCompilationPdf() {
-    return (<div>
-      <div>PDF Last Updated: {moment(this.props.compilation.pdf.updatedAt).fromNow()}</div>
-      <a target="_blank" href={this.props.compilation.pdf.url}>View Pdf</a>
-    </div>);
+    if (this.props.compilation.pdf) {
+      return (<div>
+        <div>PDF Last Updated: {moment(this.props.compilation.pdf.updatedAt).fromNow()}</div>
+        <a target="_blank" href={this.props.compilation.pdf.url}>View Pdf</a>
+      </div>);
+    }
   }
   renderCompilationPdfStatus() {
     if (this.props.compilation.buildingPdf) {
