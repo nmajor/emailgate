@@ -163,13 +163,29 @@ function getDockerConfig(env) {
   };
 }
 
-function isJson(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
+function parseStreamChunk(chunk, cb) {
+  const logEntryString = chunk.toString('utf8');
+  if (logEntryString.indexOf('}{') > -1) {
+    try {
+      const logEntryArrayString = `[${logEntryString.replace('}{', '},{')}]`;
+      const entryArray = JSON.parse(logEntryArrayString);
+
+      _.forEach(entryArray, (entry) => {
+        cb(entry);
+      });
+    } catch (e) {
+      console.log(e);
+      console.log(logEntryString);
+    }
+  } else {
+    try {
+      const entry = JSON.parse(logEntryString);
+      cb(entry);
+    } catch (e) {
+      console.log(e);
+      console.log(logEntryString);
+    }
   }
-  return true;
 }
 
 function startWorker(env, task, updateCb) {
@@ -178,29 +194,20 @@ function startWorker(env, task, updateCb) {
 
     docker.createContainer(getDockerConfig(env), (err, container) => {
       assert.equal(err, null);
-      console.log('blah created container');
 
-      container.inspect((err, data) => {  // eslint-disable-line no-shadow
-        assert.equal(err, null);
-        console.log(data);
-      });
-
+      // container.inspect((err, data) => {  // eslint-disable-line no-shadow
+      //   assert.equal(err, null);
+      //   console.log(data);
+      // });
 
       container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
         assert.equal(err, null);
-        console.log('blah attached to container');
 
         const streamCleanser = require('docker-stream-cleanser')();
 
         const cleanStream = stream.pipe(streamCleanser);
         cleanStream.on('data', (chunk) => {
-          const logEntryString = chunk.toString();
-          if (isJson(logEntryString)) {
-            const entry = JSON.parse(logEntryString);
-            updateCb(entry);
-          } else {
-            console.log(logEntryString);
-          }
+          parseStreamChunk(chunk, updateCb);
         });
 
         cleanStream.on('error', (chunk) => {
@@ -220,7 +227,6 @@ function startWorker(env, task, updateCb) {
         });
 
         container.start((err) => { // eslint-disable-line no-shadow
-          console.log('blah started container');
           assert.equal(err, null);
         });
       });
