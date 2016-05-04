@@ -3,9 +3,8 @@ import { combineReducers } from 'redux';
 import initialState from '../../initialState';
 // import _ from 'lodash';
 
-import * as fetchings from './fetchings';
-
 import user from './user';
+import fetching from './fetching';
 import allUsers from './allUsers';
 import accounts from './accounts';
 import accountPasswordMap from './accountPasswordMap';
@@ -15,7 +14,6 @@ import compilationEmails from './compilationEmails';
 import compilationPages from './compilationPages';
 import currentAccountId from './currentAccountId';
 import filteredAccountEmails from './filteredAccountEmails';
-import filteredAccountEmailsCount from './filteredAccountEmailsCount';
 
 const currentFilteredEmailMid = (state = initialState.currentFilteredEmailMid, action) => {
   switch (action.type) {
@@ -59,8 +57,7 @@ const compilationPdfLog = (state = initialState.compilationPdfLog, action) => {
 
 const appReducer = combineReducers({
   config,
-  fetchingFilteredAccountEmailsCount: fetchings.fetchingFilteredAccountEmailsCount,
-  fetchingFilteredAccountEmails: fetchings.fetchingFilteredAccountEmails,
+  fetching,
   user,
   allUsers,
   accounts,
@@ -73,7 +70,6 @@ const appReducer = combineReducers({
   compilationPdfLog,
   currentAccountId,
   filteredAccountEmails,
-  filteredAccountEmailsCount,
   currentFilteredEmailMid,
 });
 

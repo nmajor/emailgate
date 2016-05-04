@@ -26,7 +26,7 @@ ss(socket).on('FILTERED_ACCOUNT_EMAILS_STREAM', (emailStream) => {
   });
 
   emailStream.on('end', () => {
-    store.dispatch(Actions.setFetchingFilteredAccountEmails(false));
+    store.dispatch(Actions.setPropertyForFetching('filteredAccountEmails', false));
   });
 });
 

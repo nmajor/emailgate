@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Loading from './Loading';
 
 class LoginForm extends Component {
   constructor(props, context) {
@@ -18,13 +19,20 @@ class LoginForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
   }
+  renderLoading() {
+    if (this.props.user.loggingIn) {
+      return <span className="button-loading"><Loading /></span>;
+    }
+  }
   renderForm() {
     return (
       <form onSubmit={this.handleSubmit}>
         {this.renderEmailFormGroup()}
         {this.renderPasswordFormGroup()}
         {this.renderErrors('base')}
-        <button className="btn btn-success btn-block" onClick={this.loginUser}>Login</button>
+        <button className="btn btn-success btn-block" onClick={this.loginUser}>
+          Login {this.renderLoading()}
+        </button>
       </form>
     );
   }
@@ -78,6 +86,7 @@ class LoginForm extends Component {
 LoginForm.propTypes = {
   loginUser: PropTypes.func.isRequired,
   errors: PropTypes.object,
+  user: PropTypes.object,
 };
 
 export default LoginForm;

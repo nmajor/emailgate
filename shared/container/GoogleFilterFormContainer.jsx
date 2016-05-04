@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import FilterForm from '../components/GoogleFilterForm';
 
-class GoogleFilterContainer extends Component {
+class GoogleFilterFormContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.submitForm = this.submitForm.bind(this);
@@ -24,21 +24,21 @@ class GoogleFilterContainer extends Component {
   render() {
     return (<FilterForm
       submitForm={this.submitForm}
-      fetching={this.props.fetchingFilteredAccountEmails}
+      fetching={this.props.fetching.filteredAccountEmails}
     />);
   }
 }
 
 function mapStateToProps(store) {
   return {
-    fetchingFilteredAccountEmails: store.fetchingFilteredAccountEmails,
+    fetching: store.fetching,
   };
 }
 
-GoogleFilterContainer.propTypes = {
+GoogleFilterFormContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   currentAccount: PropTypes.object,
-  fetchingFilteredAccountEmails: PropTypes.bool,
+  fetching: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps)(GoogleFilterContainer);
+export default connect(mapStateToProps)(GoogleFilterFormContainer);

@@ -5,6 +5,7 @@ import baseURL from '../../baseURL';
 // import socket from '../../../client/socket';
 
 export * from './userActions';
+export * from './fetchingActions';
 export * from './allUsersActions';
 export * from './accountActions';
 export * from './accountPasswordMapActions';
@@ -14,7 +15,6 @@ export * from './compilationEmailsActions';
 export * from './compilationEmailPageMapActions';
 export * from './compilationPagesActions';
 export * from './filteredAccountEmails';
-export * from './filteredAccountEmailsCount';
 
 export function setCurrentFilteredEmailMid(mid) {
   return {

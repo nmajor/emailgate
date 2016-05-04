@@ -10,6 +10,10 @@ class LoginContainer extends Component {
     this.login = this.login.bind(this);
     this.redirectToDashboard = this.redirectToDashboard.bind(this);
   }
+  componentWillUnmount() {
+    this.props.dispatch(Actions.setPropertyUser('loggingIn', undefined));
+    this.props.dispatch(Actions.setPropertyUser('errors', undefined));
+  }
 
   login(email, password) {
     this.props.dispatch(Actions.loginUser({ email, password }, this.redirectToDashboard));
@@ -23,7 +27,7 @@ class LoginContainer extends Component {
     return (
       <div className="login-container">
         <Header />
-        <LoginForm loginUser={this.login} errors={this.props.user.errors} />
+        <LoginForm loginUser={this.login} errors={this.props.user.errors} user={this.props.user} />
       </div>
     );
   }

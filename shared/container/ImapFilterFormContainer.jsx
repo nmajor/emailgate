@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import FilterForm from '../components/ImapFilterForm';
 
-class ImapFilterContainer extends Component {
+class ImapFilterFormContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.submitForm = this.submitForm.bind(this);
@@ -26,23 +26,23 @@ class ImapFilterContainer extends Component {
     return (<FilterForm
       submitForm={this.submitForm}
       currentAccount={this.currentAccount}
-      fetching={this.props.fetchingFilteredAccountEmails}
+      fetching={this.props.fetching.filteredAccountEmails}
     />);
   }
 }
 
 function mapStateToProps(store) {
   return {
-    fetchingFilteredAccountEmails: store.fetchingFilteredAccountEmails,
+    fetching: store.fetching,
     accountPasswordMap: store.accountPasswordMap,
   };
 }
 
-ImapFilterContainer.propTypes = {
+ImapFilterFormContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   currentAccount: PropTypes.object,
   accountPasswordMap: PropTypes.object.isRequired,
-  fetchingFilteredAccountEmails: PropTypes.bool,
+  fetching: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps)(ImapFilterContainer);
+export default connect(mapStateToProps)(ImapFilterFormContainer);

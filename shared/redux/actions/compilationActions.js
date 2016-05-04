@@ -3,6 +3,8 @@ import fetch from 'isomorphic-fetch';
 import baseURL from '../../baseURL';
 import socket from '../../../client/socket';
 
+import { setPropertyForFetching } from './fetchingActions';
+
 // ACTIONS
 export function addCompilation(compilation) {
   return {
@@ -68,6 +70,8 @@ export function createCompilation(props, cb) {
 
 export function getCompilations(cookie) {
   return (dispatch) => {
+    dispatch(setPropertyForFetching('compilations', true));
+
     const fetchOptions = {};
 
     if (cookie) {
@@ -89,9 +93,11 @@ export function getCompilations(cookie) {
         throw new Error(res.error.message);
       }
 
+      dispatch(setPropertyForFetching('compilations', false));
       dispatch(setCompilations(res));
     })
     .catch((err) => {
+      dispatch(setPropertyForFetching('compilations', false));
       console.log(err);
     });
   };

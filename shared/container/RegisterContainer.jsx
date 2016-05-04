@@ -10,6 +10,10 @@ class RegisterContainer extends Component {
     this.register = this.register.bind(this);
     this.redirectToDashboard = this.redirectToDashboard.bind(this);
   }
+  componentWillUnmount() {
+    this.props.dispatch(Actions.setPropertyUser('registering', undefined));
+    this.props.dispatch(Actions.setPropertyUser('errors', undefined));
+  }
 
   register(name, email, password) {
     this.props.dispatch(Actions.registerUser({ name, email, password }, this.redirectToDashboard));
@@ -23,7 +27,7 @@ class RegisterContainer extends Component {
     return (
       <div className="login-container">
         <Header />
-        <RegisterForm registerUser={this.register} errors={this.props.user.errors} />
+        <RegisterForm registerUser={this.register} errors={this.props.user.errors} user={this.props.user} />
       </div>
     );
   }

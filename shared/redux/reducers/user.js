@@ -19,6 +19,11 @@ const user = (state = initialState.user, action) => {
         errors: action.errors,
       });
 
+    case ActionTypes.SET_PROPERTY_FOR_USER :
+      const userCopy = Object.assign({}, state);
+      userCopy[action.prop] = action.val;
+      return userCopy;
+
     case ActionTypes.CLEAR_USER :
       return {};
 

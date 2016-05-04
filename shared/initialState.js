@@ -1,7 +1,6 @@
 export default {
   config: {},
-  fetchingFilteredAccountEmailsCount: false,
-  fetchingFilteredAccountEmails: false,
+  fetching: {},
   user: {},
   allUsers: [],
   accounts: [],
@@ -14,6 +13,5 @@ export default {
   compilationPdfLog: [],
   currentAccountId: '',
   filteredAccountEmails: [],
-  filteredAccountEmailsCount: 0,
   currentFilteredEmailMid: '',
 };

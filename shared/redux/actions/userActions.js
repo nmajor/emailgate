@@ -23,6 +23,14 @@ export function setUserErrors(errors, reset = false) {
   };
 }
 
+export function setPropertyUser(prop, val) {
+  return {
+    type: ActionTypes.SET_PROPERTY_FOR_USER,
+    prop,
+    val,
+  };
+}
+
 export function clearUser() {
   return {
     type: ActionTypes.RESET_STATE,
@@ -30,7 +38,6 @@ export function clearUser() {
 }
 
 export function getUser() {
-  console.log('getting user');
   return (dispatch) => {
     fetch(`${baseURL}/api/user`, {
       credentials: 'include',
@@ -58,7 +65,6 @@ export function getUser() {
 }
 
 export function logoutUser(cb) {
-  console.log('logout user');
   return (dispatch) => {
     return fetch(`${baseURL}/api/logout`, {
       credentials: 'include',
@@ -85,6 +91,8 @@ export function logoutUser(cb) {
 
 export function registerUser(userData, cb) {
   return (dispatch) => {
+    dispatch(setPropertyUser('registering', true));
+
     return fetch(`${baseURL}/api/register`, {
       credentials: 'include',
       method: 'post',
@@ -114,6 +122,7 @@ export function registerUser(userData, cb) {
     })
     .catch((err) => {
       console.log(err);
+      dispatch(setPropertyUser('registering', false));
       dispatch(setUserErrors({ base: [err.message] }));
     });
   };
@@ -121,6 +130,8 @@ export function registerUser(userData, cb) {
 
 export function loginUser(userData, cb) {
   return (dispatch) => {
+    dispatch(setPropertyUser('loggingIn', true));
+
     return fetch(`${baseURL}/api/login`, {
       credentials: 'include',
       method: 'post',
@@ -150,6 +161,7 @@ export function loginUser(userData, cb) {
       cb(res);
     })
     .catch((err) => {
+      dispatch(setPropertyUser('loggingIn', false));
       dispatch(setUserErrors({ base: [err.message] }));
     });
   };

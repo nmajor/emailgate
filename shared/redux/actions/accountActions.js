@@ -4,6 +4,8 @@ import fetch from 'isomorphic-fetch';
 import baseURL from '../../baseURL';
 import socket from '../../../client/socket';
 
+import { setPropertyForFetching } from './fetchingActions';
+
 // Account Actions
 export function addAccount(account) {
   return {
@@ -42,6 +44,8 @@ export function setCurrentAccountId(accountId) {
 
 export function getAccounts(cookie) {
   return (dispatch) => {
+    dispatch(setPropertyForFetching('accounts', true));
+
     const fetchOptions = {};
 
     if (cookie) {
@@ -63,9 +67,11 @@ export function getAccounts(cookie) {
         throw new Error(res.error.message);
       }
 
+      dispatch(setPropertyForFetching('accounts', false));
       dispatch(setAccounts(res));
     })
     .catch((err) => {
+      dispatch(setPropertyForFetching('accounts', false));
       console.log(err);
     });
   };
