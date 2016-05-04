@@ -28,14 +28,14 @@ class CompilationEmailsContainer extends Component {
     if (this.props.compilationPages.length < 1) {
       this.props.dispatch(Actions.getCompilationPages(this.props.params.compilationId));
     }
-
-    // if (this.props.compilationEmailPageMap === {}) {
-    //   this.props.dispatch(Actions.getCompilationEmailPageMap(this.props.params.compilationId));
-    // }
   }
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
     this.currentCompilationPath = nextProps.routes[nextProps.routes.length - 1].path.split('/')[3];
+  }
+  componentWillUnmount() {
+    this.props.dispatch(Actions.setCompilationEmails([]));
+    this.props.dispatch(Actions.setCompilationPages([]));
   }
 
   renderChildren() {

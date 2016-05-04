@@ -12,6 +12,32 @@
 
 .centerize { text-align: center;}
 .editable { border: 1px solid #CCC; }
+.selected-icon > .selectable { width: 16px; }
+.button-loading > .loading {
+  height: 15px;
+  margin-left: 5px;
+  position: relative;
+  top: 2px;
+}
+.outside-button-loading > .loading {
+  height: 21px;
+  margin-left: 5px;
+  position: relative;
+  top: 6px;
+}
+
+.loading {
+  width: inherit;
+  height: inherit;
+  svg {
+    width: inherit;
+    height: inherit;
+  }
+  span {
+    width: inherit;
+    height: inherit;
+  }
+}
 
 .nav {
   li {
@@ -57,4 +83,31 @@
   &.latest {
     font-weight: bold;
   }
+}
+
+.account-kind-option {
+  color: #000;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  width: 100%;
+  padding: 30px;
+
+  &.selected {
+    border: 2px solid #777;
+    font-weight: bold;
+  }
+
+  &:hover {
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-color: #909090;
+  }
+
+  &:active { color: #000; text-decoration: none; }
+  &:visited { color: #000; text-decoration: none; }
+  &:link { color: #000; text-decoration: none; }
 }

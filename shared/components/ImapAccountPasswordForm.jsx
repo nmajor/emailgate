@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Loading from './Loading';
 
 class ImapAccountPasswordForm extends Component {
   constructor(props, context) {
@@ -34,9 +35,12 @@ class ImapAccountPasswordForm extends Component {
       </div>
     );
   }
+  renderLoading() {
+    return <span className="outside-button-loading"><Loading /></span>;
+  }
   renderConnectionStatus() {
     if (this.props.currentAccount.checkingConnection) {
-      return <span className="left-bumper">Checking Connection ...</span>;
+      return this.renderLoading();
     } else if (this.props.currentAccount.connectionValid === false) {
       return <span className="left-bumper">Could Not Connect.</span>;
     }

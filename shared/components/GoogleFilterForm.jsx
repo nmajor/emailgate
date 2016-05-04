@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import * as DateData from '../dateData';
 import _ from 'lodash';
+import Loading from './Loading';
 
 class GoogleFilterForm extends Component {
   constructor(props, context) {
@@ -68,7 +69,7 @@ class GoogleFilterForm extends Component {
   }
   renderFetching() {
     if (this.props.fetching) {
-      return 'loading ...';
+      return <span className="outside-button-loading"><Loading /></span>;
     }
   }
   renderStartDateFormGroup() {

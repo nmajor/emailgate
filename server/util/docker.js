@@ -192,6 +192,11 @@ function startWorker(env, task, updateCb) {
   return new Promise((resolve) => {
     env.push(`TASK=${encodeTask(task)}`);
 
+    updateCb({
+      type: 'status',
+      message: 'Creating worker container.',
+    });
+
     docker.createContainer(getDockerConfig(env), (err, container) => {
       assert.equal(err, null);
 

@@ -10,10 +10,14 @@ class AccountKindOptions extends Component {
     this.props.setKind('imap');
   }
   renderImapKind() {
-    return <div onClick={this.setKindToImap}>Imap</div>;
+    return (<div className={`account-kind-option ${this.props.account.kind === 'imap' ? 'selected' : ''}`} onClick={this.setKindToImap}>
+      Imap
+    </div>);
   }
   renderGoogleKind() {
-    return <a href={this.props.authUrls.googleAuthUrl}>Google</a>;
+    return (<a className="account-kind-option" href={this.props.authUrls.googleAuthUrl}>
+      Gmail
+    </a>);
   }
   renderKindOptions() {
     return (<div>

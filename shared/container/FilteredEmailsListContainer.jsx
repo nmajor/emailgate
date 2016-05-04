@@ -48,6 +48,9 @@ class FilteredEmailsListContainer extends Component {
   addSelectedToCompilation() {
     this.props.dispatch(Actions.addEmailsToCompilationEmails(this.props.compilation._id, _.filter(this.props.filteredAccountEmails, { selected: true })));
   }
+  isSavingEmails() {
+    return _.some(this.props.filteredAccountEmails, (email) => { return email.saving; });
+  }
   render() {
     return (
       <div>
@@ -58,6 +61,7 @@ class FilteredEmailsListContainer extends Component {
           canAdd={_.some(this.props.filteredAccountEmails, { selected: true })}
           compilationEmailsCount={this.props.compilationEmailMids.length}
           compilationId={this.props.compilation._id}
+          saving={this.isSavingEmails()}
         />
         <FilteredEmailsList
           emails={this.props.filteredAccountEmails}

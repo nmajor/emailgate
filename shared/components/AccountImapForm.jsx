@@ -48,36 +48,34 @@ class AccountImapForm extends Component {
         {this.renderPortFormGroup()}
         {this.renderPasswordFormGroup()}
 
-        {this.renderConnectionStatus()}
-
         {this.renderErrors('base')}
         <button className={`btn btn-success ${this.formChanged() ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
         <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
       </form>
     );
   }
-  renderConnectionStatus() {
-    if (this.props.checkConnection) {
-      let status;
-
-      if (this.props.account.checkingConnection) {
-        status = <span>Checking Connection ...</span>;
-      } else if (this.props.account.connectionValid) {
-        status = 'Connection works.';
-      } else {
-        status = 'Could not connect.';
-      }
-
-      return (
-        <div className="connection-status">
-          <div className="form-group">
-            {status}
-            {this.renderRefreshButton()}
-          </div>
-        </div>
-      );
-    }
-  }
+  // renderConnectionStatus() {
+  //   if (this.props.checkConnection) {
+  //     let status;
+  //
+  //     if (this.props.account.checkingConnection) {
+  //       status = <span>Checking Connection ...</span>;
+  //     } else if (this.props.account.connectionValid) {
+  //       status = 'Connection works.';
+  //     } else {
+  //       status = 'Could not connect.';
+  //     }
+  //
+  //     return (
+  //       <div className="connection-status">
+  //         <div className="form-group">
+  //           {status}
+  //           {this.renderRefreshButton()}
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+  // }
   renderRefreshButton() {
     if (!this.props.account.checkingConnection) {
       return <span className="glyphicon glyphicon-refresh left-bumper" onClick={this.props.checkConnection} aria-hidden="true"></span>;

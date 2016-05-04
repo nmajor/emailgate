@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import * as DateData from '../dateData';
 import _ from 'lodash';
+import Loading from './Loading';
 
 class ImapFilterForm extends Component {
   constructor(props, context) {
@@ -71,7 +72,7 @@ class ImapFilterForm extends Component {
   }
   renderFetching() {
     if (this.props.fetching) {
-      return 'loading ...';
+      return <span className="outside-button-loading"><Loading /></span>;
     }
   }
   renderStartDateFormGroup() {

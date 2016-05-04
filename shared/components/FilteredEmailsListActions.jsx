@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Loading from './Loading';
 // import { Link } from 'react-router';
 
 class FilteredEmailsListActions extends Component {
@@ -7,9 +8,20 @@ class FilteredEmailsListActions extends Component {
   //     Emails ({this.props.compilationEmailsCount})
   //   </Link>);
   // }
+  addSelected() {
+    if (this.props.canAdd) {
+      this.props.addSelectedToCompilation();
+    }
+  }
+  renderLoading() {
+    if (this.props.saving) {
+      return <span className="button-loading"><Loading /></span>;
+    }
+  }
   renderAddSelectedAction() {
-    return (<div className={`btn btn-success btn-block add-selected ${this.props.canAdd ? '' : 'disabled'}`} onClick={this.props.addSelectedToCompilation}>
+    return (<div className={`btn btn-success btn-block add-selected ${this.props.canAdd ? '' : 'disabled'}`} onClick={this.addSelected}>
       Add <span className="glyphicon glyphicon-check" aria-hidden="true"></span> to Compilation
+      {this.renderLoading()}
     </div>);
   }
   renderCheckAll() {
@@ -40,6 +52,7 @@ FilteredEmailsListActions.propTypes = {
   canAdd: PropTypes.bool.isRequired,
   compilationEmailsCount: PropTypes.number.isRequired,
   compilationId: PropTypes.string.isRequired,
+  saving: PropTypes.bool,
 };
 
 export default FilteredEmailsListActions;

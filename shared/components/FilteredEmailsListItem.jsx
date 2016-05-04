@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Loading from './Loading';
 import moment from 'moment';
 
 class FilteredEmailsListItem extends Component {
@@ -29,7 +30,7 @@ class FilteredEmailsListItem extends Component {
     if (this.props.saving) {
       return (
         <span className="selectable selected">
-          <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+          <Loading />
         </span>
       );
     } else if (this.props.disabled) {
