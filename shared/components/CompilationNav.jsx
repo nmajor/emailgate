@@ -1,12 +1,20 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
+import Loading from './Loading';
 
 class CompilationNav extends Component {
   constructor(props, context) {
     super(props, context);
   }
+  renderEmailCount() {
+    if (this.props.fetching.compilationEmails) {
+      return <span className="button-loading"><Loading /></span>;
+    }
+
+    return `(${this.props.emailCount})`;
+  }
   renderEmailsNav() {
-    return this.renderNavItem('emails', `Emails (${this.props.emailCount})`);
+    return this.renderNavItem('emails', 'Emails', this.renderEmailCount());
   }
   renderPagesNav() {
     return this.renderNavItem('pages', 'Pages');
@@ -17,10 +25,10 @@ class CompilationNav extends Component {
   renderCheckoutNav() {
     return this.renderNavItem('checkout', 'Checkout');
   }
-  renderNavItem(path, pathName) {
+  renderNavItem(path, pathName, badge) {
     return (
       <li role="presentation" className={this.props.currentPath === path ? 'active' : ''}>
-        <Link to={`/compilations/${this.props.compilationId}/${path}`}>{pathName}</Link>
+        <Link to={`/compilations/${this.props.compilationId}/${path}`}>{pathName} {badge}</Link>
       </li>
     );
   }
@@ -47,6 +55,7 @@ CompilationNav.propTypes = {
   compilationId: PropTypes.string.isRequired,
   currentPath: PropTypes.string.isRequired,
   emailCount: PropTypes.number.isRequired,
+  fetching: PropTypes.object.isRequired,
 };
 
 export default CompilationNav;

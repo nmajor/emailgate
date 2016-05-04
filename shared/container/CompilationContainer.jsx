@@ -54,6 +54,7 @@ class CompilationEmailsContainer extends Component {
           compilationId={this.props.params.compilationId}
           currentPath={this.currentCompilationPath}
           emailCount={this.props.compilationEmails.length}
+          fetching={this.props.fetching}
         />
         <div className="container">
           { this.renderChildren() }
@@ -93,6 +94,7 @@ CompilationEmailsContainer.need = [
 
 function mapStateToProps(store) {
   return {
+    fetching: store.fetching,
     accounts: store.accounts,
     compilations: store.compilations,
     compilationEmails: store.compilationEmails,
@@ -111,6 +113,7 @@ CompilationEmailsContainer.propTypes = {
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
   compilationPages: PropTypes.array,
+  fetching: PropTypes.object.isRequired,
   params: PropTypes.object,
   routes: PropTypes.array,
 };

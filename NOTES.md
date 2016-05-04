@@ -37,8 +37,6 @@ http://stackoverflow.com/a/260829/1556952
 
 
 ### Todo for Thurs May 5th.
-- Add loading gif to new compilation form.
-- Add loading notifications when submitting all forms. Like new compilation, when loading the compilations and accounts on the dashboard (Like when going from the home page to the dashboard without a page refresh), when loading the compilation emails (Like when going from the dashboard to the compilation emails page)
 - Stop and remove worker containers when socket disconnects.
 
 ### Todo Short
@@ -72,6 +70,9 @@ http://stackoverflow.com/a/260829/1556952
 
 ### Finished Todos
 
+- Add loading gif to new compilation form.
+- Add loading gif when populating compilation emails and pages
+- Add loading gifs for dashboard lists.
 - Add loading gifs to login form
 - Add loading gifs to registration form
 - if you switch compilations or create a new one then the compilation emails dont reset. Like you see the emails from the other compilation. The same probably happens with the pages.

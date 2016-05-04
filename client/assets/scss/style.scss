@@ -35,6 +35,12 @@
   height: 30px;
 }
 
+h1 > .loading {
+  height: 30px;
+  position: relative;
+  top: 3px;
+}
+
 .loading {
   width: inherit;
   height: inherit;

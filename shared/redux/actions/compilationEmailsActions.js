@@ -3,6 +3,8 @@ import fetch from 'isomorphic-fetch';
 import baseURL from '../../baseURL';
 import socket from '../../../client/socket';
 
+import { setPropertyForFetching } from './fetchingActions';
+
 import {
   setPropertyForSomeFilteredAccountEmails,
   setPropertyForFilteredAccountEmail,
@@ -49,6 +51,8 @@ export function updateEmailInCompilationEmails(email) {
 
 export function getCompilationEmails(compilationId, cookie) {
   return (dispatch) => {
+    dispatch(setPropertyForFetching('compilationEmails', true));
+
     const fetchOptions = {};
 
     if (cookie) {
@@ -70,9 +74,11 @@ export function getCompilationEmails(compilationId, cookie) {
         throw new Error(res.error.message);
       }
 
+      dispatch(setPropertyForFetching('compilationEmails', false));
       dispatch(setCompilationEmails(res));
     })
     .catch((err) => {
+      dispatch(setPropertyForFetching('compilationEmails', false));
       console.log(err);
     });
   };

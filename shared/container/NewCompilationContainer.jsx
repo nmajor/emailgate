@@ -32,11 +32,17 @@ class NewCompilationContainer extends Component {
         <Header />
         <div className="container">
           <h1>New Compilation</h1>
-          <NewCompilationForm compilation={{}} submitForm={this.create} back={this.back} />
+          <NewCompilationForm compilation={{}} submitForm={this.create} back={this.back} fetching={this.props.fetching} />
         </div>
       </div>
     );
   }
+}
+
+function mapStateToProps(store) {
+  return {
+    fetching: store.fetching,
+  };
 }
 
 NewCompilationContainer.contextTypes = {
@@ -45,6 +51,7 @@ NewCompilationContainer.contextTypes = {
 
 NewCompilationContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  fetching: PropTypes.object.isRequired,
 };
 
-export default connect()(NewCompilationContainer);
+export default connect(mapStateToProps)(NewCompilationContainer);

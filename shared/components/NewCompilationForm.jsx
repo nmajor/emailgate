@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Loading from './Loading';
 
 class NewCompilationForm extends Component {
   constructor(props, context) {
@@ -38,13 +39,21 @@ class NewCompilationForm extends Component {
     e.preventDefault();
     this.props.back();
   }
+  renderLoading() {
+    if (this.props.fetching.newCompilation) {
+      return <span className="button-loading"><Loading /></span>;
+    }
+  }
   renderForm() {
     return (
       <form onSubmit={this.handleSubmit}>
         {this.renderNameFormGroup()}
 
         {this.renderErrors('base')}
-        <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
+        <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
+          Save
+          {this.renderLoading()}
+        </button>
         <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
       </form>
     );
@@ -88,6 +97,7 @@ NewCompilationForm.propTypes = {
   submitForm: PropTypes.func.isRequired,
   back: PropTypes.func.isRequired,
   errors: PropTypes.object,
+  fetching: PropTypes.object.isRequired,
 };
 
 export default NewCompilationForm;

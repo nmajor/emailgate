@@ -39,6 +39,8 @@ export function updateCompilationInCompilations(compilation) {
 // THUNKS
 export function createCompilation(props, cb) {
   return (dispatch) => {
+    dispatch(setPropertyForFetching('newCompilation', true));
+
     return fetch(`${baseURL}/api/compilations`, {
       credentials: 'include',
       method: 'post',
@@ -59,10 +61,12 @@ export function createCompilation(props, cb) {
         throw new Error(res.error.message);
       }
 
+      dispatch(setPropertyForFetching('newCompilation', false));
       dispatch(addCompilation(res));
       cb(res);
     })
     .catch((err) => {
+      dispatch(setPropertyForFetching('newCompilation', false));
       console.log(err);
     });
   };
