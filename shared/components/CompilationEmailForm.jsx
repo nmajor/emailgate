@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import EmailTemplate from '../templates/email';
+import Loading from './Loading';
 
 class CompilationEmailForm extends Component {
   constructor(props, context) {
@@ -42,7 +43,7 @@ class CompilationEmailForm extends Component {
   }
   renderSaving() {
     if (this.props.email.saving) {
-      return 'saving ...';
+      return <span className="outside-button-loading"><Loading /></span>;
     }
   }
   render() {

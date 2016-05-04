@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import moment from 'moment';
+import Loading from './Loading';
 
 class CompilationEmailsListItem extends Component {
   constructor(props, context) {
@@ -13,11 +14,7 @@ class CompilationEmailsListItem extends Component {
     return className;
   }
   renderSaving() {
-    return (
-      <span className="selectable selected">
-        <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-      </span>
-    );
+    return <span className="icon-loading"><Loading /></span>;
   }
   renderIcon() {
     if (this.props.email.saving) {

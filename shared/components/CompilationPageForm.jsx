@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Loading from './Loading';
 
 class CompilationPageForm extends Component {
   constructor(props, context) {
@@ -25,7 +26,7 @@ class CompilationPageForm extends Component {
   }
   renderSaving() {
     if (this.props.page.saving) {
-      return 'saving ...';
+      return <span className="outside-button-loading"><Loading /></span>;
     }
   }
   render() {

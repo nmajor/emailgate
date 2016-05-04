@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import { pageMeta } from '../helpers';
+import Loading from './Loading';
 
 class CompilationPagesListItem extends Component {
   constructor(props, context) {
@@ -13,11 +14,7 @@ class CompilationPagesListItem extends Component {
     return className;
   }
   renderSaving() {
-    return (
-      <span className="selectable selected">
-        <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-      </span>
-    );
+    return <span className="icon-loading"><Loading /></span>;
   }
   renderIcon() {
     if (this.props.page.saving) {

@@ -12,6 +12,12 @@
 
 .centerize { text-align: center;}
 .editable { border: 1px solid #CCC; }
+.icon-loading > .loading {
+  position: relative;
+  top: 2px;
+  margin-right: 2px;
+  width: 16px;
+}
 .selected-icon > .selectable { width: 16px; }
 .button-loading > .loading {
   height: 15px;
