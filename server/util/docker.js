@@ -139,16 +139,17 @@ function encodeTask(task) {
   return new Buffer(JSON.stringify(task)).toString('base64');
 }
 
-function getDockerConfig(env) {
+function getDockerConfig(env, task) {
   if (process.env.DOCKER_CONFIG) {
     const dockerConfig = JSON.parse(process.env.DOCKER_CONFIG);
     const config = {
       Image: dockerConfig.Image,
-      name: `${dockerConfig.ImageNamePrefix}-${Date.now()}`,
+      name: `${dockerConfig.ImageNamePrefix}-${task.id}`,
       Env: env,
       HostConfig: dockerConfig.HostConfig,
       AttachStdout: true,
       AttachStderr: true,
+      // Labels: { taskId: task.id, compilationId: task.props.compilationId },
     };
 
     return config;
@@ -156,10 +157,11 @@ function getDockerConfig(env) {
 
   return {
     Image: 'emailgate-worker',
-    name: `emailgate-worker-${Date.now()}`,
+    name: `emailgate-worker-${task.id}`,
     Env: env,
     AttachStdout: true,
     AttachStderr: true,
+    // Labels: { taskId: task.id, compilationId: task.props.compilationId },
   };
 }
 
@@ -188,8 +190,52 @@ function parseStreamChunk(chunk, cb) {
   }
 }
 
+function attachToContainer(container, updateCb, resolve) {
+  container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
+    assert.equal(err, null);
+
+    const streamCleanser = require('docker-stream-cleanser')();
+
+    const cleanStream = stream.pipe(streamCleanser);
+    cleanStream.on('data', (chunk) => {
+      parseStreamChunk(chunk, updateCb);
+    });
+
+    cleanStream.on('error', (chunk) => {
+      console.log(`An error happened in the stream ${chunk.toString()}`);
+    });
+
+    cleanStream.on('end', () => {
+      container.stop(() => {
+        container.remove(() => {
+          updateCb({
+            type: 'status',
+            message: 'Container stopped and removed.',
+          });
+          resolve();
+        });
+      });
+    });
+
+    container.start((err) => { // eslint-disable-line no-shadow
+      assert.equal(err, null);
+    });
+  });
+}
+
 function startWorker(env, task, updateCb) {
   return new Promise((resolve) => {
+    docker.listContainers((err, containers) => {
+      const filteredContainers = _.find(containers, (containerInfo) => {
+        return containerInfo.Labels['com.docker.compose.service'] === 'emailgate';
+      });
+
+      console.log(filteredContainers);
+      // containers.forEach((containerInfo) => {
+      //   docker.getContainer(containerInfo.Id).stop(cb);
+      // });
+    });
+
     env.push(`TASK=${encodeTask(task)}`);
 
     updateCb({
@@ -197,7 +243,9 @@ function startWorker(env, task, updateCb) {
       message: 'Creating worker container.',
     });
 
-    docker.createContainer(getDockerConfig(env), (err, container) => {
+    console.log(getDockerConfig(env, task));
+
+    docker.createContainer(getDockerConfig(env, task), (err, container) => {
       assert.equal(err, null);
 
       // container.inspect((err, data) => {  // eslint-disable-line no-shadow
@@ -205,36 +253,7 @@ function startWorker(env, task, updateCb) {
       //   console.log(data);
       // });
 
-      container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
-        assert.equal(err, null);
-
-        const streamCleanser = require('docker-stream-cleanser')();
-
-        const cleanStream = stream.pipe(streamCleanser);
-        cleanStream.on('data', (chunk) => {
-          parseStreamChunk(chunk, updateCb);
-        });
-
-        cleanStream.on('error', (chunk) => {
-          console.log(`An error happened in the stream ${chunk.toString()}`);
-        });
-
-        cleanStream.on('end', () => {
-          container.stop(() => {
-            container.remove(() => {
-              updateCb({
-                type: 'status',
-                message: 'Container stopped and removed.',
-              });
-              resolve();
-            });
-          });
-        });
-
-        container.start((err) => { // eslint-disable-line no-shadow
-          assert.equal(err, null);
-        });
-      });
+      attachToContainer(container, updateCb, resolve);
     });
   });
 }
@@ -251,6 +270,8 @@ export function buildEmailPdfs(compilation, cb) {
 
     const task = {
       name: 'build-email-pdfs',
+      id: `${compilation._id}-build-email-pdfs`,
+      compilationId: compilation._id,
       props: {
         emailIds,
         compilationId: compilation._id,
@@ -264,18 +285,21 @@ export function buildEmailPdfs(compilation, cb) {
   });
 }
 
-export function buildPagePdfs(compilation, cb) {
+export function buildPagePdfs(compilation, socket, cb) {
   return Promise.all([
     getPageIdsNeedingPdf(compilation),
     getEnv({ compilation }),
   ])
   .then((results) => {
+    if (!socket.connected) { return Promise.resolve(compilation); }
+
     const [pageIds, env] = results;
 
     if (pageIds.length === 0) { return Promise.resolve(); }
 
     const task = {
       name: 'build-page-pdfs',
+      id: `${compilation._id}-build-page-pdfs`,
       props: {
         pageIds,
         compilationId: compilation._id,
@@ -289,7 +313,7 @@ export function buildPagePdfs(compilation, cb) {
   });
 }
 
-export function compileCompilationPdfs(compilation, cb) {
+export function compileCompilationPdfs(compilation, socket, cb) {
   return Promise.all([
     getEmailPositionMap(compilation),
     getEmailPageMap(compilation),
@@ -297,9 +321,12 @@ export function compileCompilationPdfs(compilation, cb) {
     getEnv({ compilation }),
   ])
   .then((results) => {
+    if (!socket.connected) { return Promise.resolve(compilation); }
+
     const [emailPositionMap, emailPageMap, pagePositionMap, env] = results;
     const task = {
       name: 'build-compilation-pdf',
+      id: `${compilation._id}-build-compilation-pdf`,
       props: {
         compilationId: compilation._id,
         emailPositionMap,
@@ -315,15 +342,21 @@ export function compileCompilationPdfs(compilation, cb) {
   });
 }
 
-export function buildCompilationPdf(compilation, cb) {
+export function buildCompilationPdf(compilation, socket, cb) {
   return buildEmailPdfs(compilation, cb)
   .then(() => {
+    if (!socket.connected) { return Promise.resolve(compilation); }
+
     return buildPagePdfs(compilation, cb);
   })
   .then(() => {
+    if (!socket.connected) { return Promise.resolve(compilation); }
+
     return compileCompilationPdfs(compilation, cb);
   })
   .then(() => {
+    if (!socket.connected) { return Promise.resolve(compilation); }
+
     return Promise.resolve(compilation);
   });
 }
