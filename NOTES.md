@@ -35,10 +35,6 @@ http://stackoverflow.com/a/260829/1556952
 
 - I will probably want to add hooks in the page and email schemas to update the compilation updatedAt field after save. That way I can always know if the compilation pdf is up to date.
 
-
-### Todo for Thurs May 5th.
-- Stop and remove worker containers when socket disconnects.
-
 ### Todo Short
 - Optimize the compilation preview process (docker worker)
   - Lazy loading of the compilation email pdfs

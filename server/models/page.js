@@ -10,6 +10,8 @@ const PageSchema = new Schema({
   content: {},
   html: String,
   pdf: {},
+}, {
+  timestamps: true,
 });
 
 PageSchema.statics.defaultPages = function defaultPages() {

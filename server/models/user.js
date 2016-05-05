@@ -9,6 +9,8 @@ const UserSchema = new Schema({
   password: String,
   accounts: [{ type: String, ref: 'Account' }],
   compilations: [{ type: String, ref: 'Compilation' }],
+}, {
+  timestamps: true,
 });
 
 UserSchema.plugin(passportLocalMongoose, { usernameField: 'email' });

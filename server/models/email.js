@@ -16,6 +16,8 @@ const EmailSchema = new Schema({
   template: String,
   attachments: [],
   pdf: {},
+}, {
+  timestamps: true,
 });
 
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names

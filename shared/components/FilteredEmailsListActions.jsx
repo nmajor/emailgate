@@ -3,11 +3,11 @@ import Loading from './Loading';
 // import { Link } from 'react-router';
 
 class FilteredEmailsListActions extends Component {
-  // renderCompilationEmailsAction() {
-  //   return (<Link to={`/compilations/${this.props.compilationId}/emails`} className="btn btn-primary btn-block">
-  //     Emails ({this.props.compilationEmailsCount})
-  //   </Link>);
-  // }
+  constructor(props, context) {
+    super(props, context);
+
+    this.addSelected = this.addSelected.bind(this);
+  }
   addSelected() {
     if (this.props.canAdd) {
       this.props.addSelectedToCompilation();

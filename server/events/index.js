@@ -187,7 +187,6 @@ export default (io) => {
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
         return Docker.buildCompilationPdf(compilation, socket, (entry) => {
-          console.log(entry);
           socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry });
 
           if (entry.type === 'email-pdf') {

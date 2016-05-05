@@ -25,11 +25,13 @@ function getDockerObject() {
 const docker = getDockerObject();
 
 function emailPdfNeedsToBeUpdated(email) {
-  if (email) {
+  if (!email.pdf || !email.pdf.updatedAt) {
+    return true;
+  } else if (email.updateAt > email.pdf.updatedAt) {
     return true;
   }
 
-  return true;
+  return false;
 }
 
 function getEmailIdsNeedingPdf(compilation) {
@@ -68,11 +70,13 @@ function pageHtmlNeedsToBeUpdated(page) {
 }
 
 function pagePdfNeedsToBeUpdated(page) {
-  if (page) {
+  if (!page.pdf || !page.pdf.updatedAt) {
+    return true;
+  } else if (page.updateAt > page.pdf.updatedAt) {
     return true;
   }
 
-  return true;
+  return false;
 }
 
 function getPagePositionMap(compilation) {
@@ -107,14 +111,16 @@ function getPageIdsNeedingPdf(compilation) {
 
 function getEnv(props) {
   return new Promise((resolve) => {
+    const publicPath = process.env.NODE_ENV !== 'production' ? `${process.env.MANTA_APP_PUBLIC_PATH}/dev` : process.env.MANTA_APP_PUBLIC_PATH;
     const Env = [
+      `NODE_ENV=${process.env.NODE_ENV}`,
       `COMPILATION_ID=${props.compilation._id}`,
       `MANTA_APP_KEY=${process.env.MANTA_APP_KEY}`,
       `MANTA_APP_KEY_ID=${process.env.MANTA_APP_KEY_ID}`,
       `MANTA_APP_USER=${process.env.MANTA_APP_USER}`,
       `MANTA_APP_USER_ID=${process.env.MANTA_APP_USER_ID}`,
       `MANTA_APP_URL=${process.env.MANTA_APP_URL}`,
-      `MANTA_APP_PUBLIC_PATH=${process.env.MANTA_APP_PUBLIC_PATH}`,
+      `MANTA_APP_PUBLIC_PATH=${publicPath}`,
     ];
 
     if (process.env.MONGO_URL.indexOf('localhost') > -1) {
@@ -144,12 +150,12 @@ function getDockerConfig(env, task) {
     const dockerConfig = JSON.parse(process.env.DOCKER_CONFIG);
     const config = {
       Image: dockerConfig.Image,
-      name: `${dockerConfig.ImageNamePrefix}-${task.id}`,
+      name: `${dockerConfig.ImageNamePrefix}-${task.id}-${Date.now()}`,
       Env: env,
       HostConfig: dockerConfig.HostConfig,
       AttachStdout: true,
       AttachStderr: true,
-      // Labels: { taskId: task.id, compilationId: task.props.compilationId },
+      Labels: { taskId: task.id, compilationId: task.props.compilationId },
     };
 
     return config;
@@ -157,11 +163,11 @@ function getDockerConfig(env, task) {
 
   return {
     Image: 'emailgate-worker',
-    name: `emailgate-worker-${task.id}`,
+    name: `emailgate-worker-${task.id}-${Date.now()}`,
     Env: env,
     AttachStdout: true,
     AttachStderr: true,
-    // Labels: { taskId: task.id, compilationId: task.props.compilationId },
+    Labels: { taskId: task.id, compilationId: task.props.compilationId },
   };
 }
 
@@ -169,7 +175,7 @@ function parseStreamChunk(chunk, cb) {
   const logEntryString = chunk.toString('utf8');
   if (logEntryString.indexOf('}{') > -1) {
     try {
-      const logEntryArrayString = `[${logEntryString.replace('}{', '},{')}]`;
+      const logEntryArrayString = `[${logEntryString.replace(/\}\{/g, '},{')}]`;
       const entryArray = JSON.parse(logEntryArrayString);
 
       _.forEach(entryArray, (entry) => {
@@ -225,17 +231,6 @@ function attachToContainer(container, updateCb, resolve) {
 
 function startWorker(env, task, updateCb) {
   return new Promise((resolve) => {
-    docker.listContainers((err, containers) => {
-      const filteredContainers = _.find(containers, (containerInfo) => {
-        return containerInfo.Labels['com.docker.compose.service'] === 'emailgate';
-      });
-
-      console.log(filteredContainers);
-      // containers.forEach((containerInfo) => {
-      //   docker.getContainer(containerInfo.Id).stop(cb);
-      // });
-    });
-
     env.push(`TASK=${encodeTask(task)}`);
 
     updateCb({
@@ -243,22 +238,15 @@ function startWorker(env, task, updateCb) {
       message: 'Creating worker container.',
     });
 
-    console.log(getDockerConfig(env, task));
-
     docker.createContainer(getDockerConfig(env, task), (err, container) => {
       assert.equal(err, null);
-
-      // container.inspect((err, data) => {  // eslint-disable-line no-shadow
-      //   assert.equal(err, null);
-      //   console.log(data);
-      // });
 
       attachToContainer(container, updateCb, resolve);
     });
   });
 }
 
-export function buildEmailPdfs(compilation, cb) {
+export function buildEmailPdfs(compilation, socket, cb) {
   return Promise.all([
     getEmailIdsNeedingPdf(compilation),
     getEnv({ compilation }),
@@ -343,16 +331,16 @@ export function compileCompilationPdfs(compilation, socket, cb) {
 }
 
 export function buildCompilationPdf(compilation, socket, cb) {
-  return buildEmailPdfs(compilation, cb)
+  return buildEmailPdfs(compilation, socket, cb)
   .then(() => {
     if (!socket.connected) { return Promise.resolve(compilation); }
 
-    return buildPagePdfs(compilation, cb);
+    return buildPagePdfs(compilation, socket, cb);
   })
   .then(() => {
     if (!socket.connected) { return Promise.resolve(compilation); }
 
-    return compileCompilationPdfs(compilation, cb);
+    return compileCompilationPdfs(compilation, socket, cb);
   })
   .then(() => {
     if (!socket.connected) { return Promise.resolve(compilation); }
