@@ -198,17 +198,21 @@ function parseStreamChunk(chunk, cb) {
 
 function pullImage(image) {
   return new Promise((resolve) => {
-    docker.pull(`${image}:latest`, (err, stream) => {
-      assert.equal(err, null);
-      stream.on('error', (err) => { // eslint-disable-line no-shadow
-        console.log(`An error happened ${err.message}`);
-      });
+    if (image.indexOf('/') > -1) {
+      docker.pull(`${image}:latest`, (err, stream) => {
+        assert.equal(err, null);
+        stream.on('error', (err) => { // eslint-disable-line no-shadow
+          console.log(`An error happened ${err.message}`);
+        });
 
-      stream.on('end', () => {
-        resolve();
+        stream.on('end', () => {
+          resolve();
+        });
+        // streaming output from pull...
       });
-      // streaming output from pull...
-    });
+    } else {
+      resolve();
+    }
   });
 }
 

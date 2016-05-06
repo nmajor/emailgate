@@ -36,6 +36,7 @@ http://stackoverflow.com/a/260829/1556952
 - I will probably want to add hooks in the page and email schemas to update the compilation updatedAt field after save. That way I can always know if the compilation pdf is up to date.
 
 ### Todo Fri May 6
+- Redirect after new compilation creation.
 - On the preview page add a button that says, "Approve PDF". Only show that if the pdf is valid and up to date. Then after they Approve the pdf, Give them the option to add X number of copies to the cart.
 
 

@@ -47,6 +47,9 @@ const config = (state = initialState.config, action) => {
 
 const compilationPdfLog = (state = initialState.compilationPdfLog, action) => {
   switch (action.type) {
+    case ActionTypes.SET_COMPILATION_PDF_LOG :
+      return action.val;
+
     case ActionTypes.ADD_ENTRY_TO_COMPILATION_PDF_LOG :
       return [action.entry, ...state];
 

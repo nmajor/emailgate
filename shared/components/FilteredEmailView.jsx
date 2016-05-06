@@ -24,7 +24,7 @@ class FilteredEmailView extends Component {
       return (<div>
         <Link
           className="btn btn-primary bottom-bumper right-bumper"
-          to={`/compilations/${this.props.compilation._id}/emails/${this.props.compilationEmail._id}`}
+          to={`/compilations/${this.props.compilation._id}/build/emails/${this.props.compilationEmail._id}`}
         >View in compilation</Link>
         <div className="btn btn-danger bottom-bumper" onClick={this.removeEmail}>Remove from compilation</div>
       </div>);
