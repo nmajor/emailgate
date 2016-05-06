@@ -32,14 +32,14 @@ import AdminDashboardContainer from './container/AdminDashboardContainer';
 
 // components
 import Home from './components/Home';
-import DashboardWrapper from './components/DashboardWrapper';
+import DashboardContainer from './container/DashboardContainer';
 
 const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={Home} />
     <Route path="/register" component={RegisterContainer}/>
     <Route path="/login" component={LoginContainer}/>
-    <Route path="/dashboard" component={DashboardWrapper}/>
+    <Route path="/dashboard" component={DashboardContainer}/>
     <Route path="/accounts/new" component={NewAccountContainer}/>
     <Route path="/accounts/:id/edit" component={EditAccountContainer}/>
     <Route path="/compilations/new" component={NewCompilationContainer}/>

@@ -9,7 +9,7 @@ class CompilationsListContainer extends Component {
     super(props, context);
   }
   componentDidMount() {
-    if (this.props.compilations.length < 1) {
+    if (this.props.compilations.length < 1 && !this.props.fetching.compilations) {
       this.props.dispatch(Actions.getCompilations());
     }
   }
@@ -40,7 +40,7 @@ function mapStateToProps(store) {
 
 CompilationsListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  compilations: PropTypes.array,
+  compilations: PropTypes.array.isRequired,
   fetching: PropTypes.object.isRequired,
 };
 

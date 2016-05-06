@@ -36,8 +36,6 @@ http://stackoverflow.com/a/260829/1556952
 - I will probably want to add hooks in the page and email schemas to update the compilation updatedAt field after save. That way I can always know if the compilation pdf is up to date.
 
 ### Todo Fri May 6
-- Combine the emails page and the pages page into a compilation customization page. Call the page "Edit"
-- Make a big button to "Get started by creating an email compilation" for the dashboard if user has no compilations.
 - Delete everything in the production database.
 - Delete everything in the manta storage folders.
 - On the preview page add a button that says, "Approve PDF". Only show that if the pdf is valid and up to date. Then after they Approve the pdf, Give them the option to add X number of copies to the cart.
@@ -76,6 +74,8 @@ http://stackoverflow.com/a/260829/1556952
 
 ### Finished Todos
 
+- Make a big button to "Get started by creating an email compilation" for the dashboard if user has no compilations.
+- Combine the emails page and the pages page into a compilation customization page. Call the page "Edit"
 - Add loading gif to new compilation form.
 - Add loading gif when populating compilation emails and pages
 - Add loading gifs for dashboard lists.

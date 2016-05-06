@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 class CompilationEmailNavContainer extends Component {
   constructor(props, context) {
     super(props, context);
+    this.removeEmail = this.removeEmail.bind(this);
   }
   removeEmail() {
     this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, this.props.currentEmail));

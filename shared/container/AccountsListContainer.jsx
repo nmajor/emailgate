@@ -12,7 +12,7 @@ class AccountsListContainer extends Component {
   }
 
   componentDidMount() {
-    if (this.props.accounts.length < 1) {
+    if (this.props.accounts.length < 1 && !this.props.fetching.accounts) {
       this.props.dispatch(Actions.getAccounts());
     }
   }
