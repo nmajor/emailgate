@@ -12,7 +12,7 @@ class AccountsListContainer extends Component {
   }
 
   componentDidMount() {
-    if (typeof window !== 'undefined' && this.props.accounts.length < 1) {
+    if (this.props.accounts.length < 1) {
       this.props.dispatch(Actions.getAccounts());
     }
   }

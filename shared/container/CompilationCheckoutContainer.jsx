@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-// import * as Actions from '../redux/actions/index';
 
 class CompilationCheckoutContainer extends Component {
   constructor(props, context) {
@@ -10,16 +9,11 @@ class CompilationCheckoutContainer extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <h1>Compilation Checkout</h1>
-        <div className="row">
-          <div className="col-md-12">
-            Nothing here yet ...
-          </div>
-        </div>
+    return (<div className="row">
+      <div className="col-md-12">
+        Nothing here yet ...
       </div>
-    );
+    </div>);
   }
 }
 

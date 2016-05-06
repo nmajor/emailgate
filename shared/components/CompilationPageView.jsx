@@ -8,7 +8,6 @@ class CompilationPageView extends Component {
     }
   }
   render() {
-    console.log(this.props.page);
     return (
       <div>
         <h3>{pageMeta(this.props.page).desc}</h3>

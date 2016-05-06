@@ -23,7 +23,7 @@ class CompilationPagesListItem extends Component {
   }
   render() {
     return (
-      <Link className={this.className()} to={`/compilations/${this.props.page._compilation}/pages/${this.props.page._id}`}>
+      <Link className={this.className()} to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
         {this.renderIcon()}
         {pageMeta(this.props.page).desc}
       </Link>

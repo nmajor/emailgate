@@ -126,3 +126,8 @@ h1 > .loading {
   &:visited { color: #000; text-decoration: none; }
   &:link { color: #000; text-decoration: none; }
 }
+
+.list-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+}

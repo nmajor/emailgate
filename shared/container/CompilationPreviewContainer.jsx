@@ -52,7 +52,6 @@ class CompilationPreviewContainer extends Component {
   render() {
     return (
       <div>
-        <h1>Compilation Preview</h1>
         <div className="row">
           <div className="col-md-4">
             {this.renderBuildCompilationButton()}

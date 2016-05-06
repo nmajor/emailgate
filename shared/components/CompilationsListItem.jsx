@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 class CompilationsListItem extends Component {
   render() {
-    return (<Link className="compilations-list-item" to={`/compilations/${this.props.compilation._id}/emails`}>
+    return (<Link className="compilations-list-item" to={`/compilations/${this.props.compilation._id}/build`}>
       {this.props.compilation.name}
     </Link>);
   }

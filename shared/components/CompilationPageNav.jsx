@@ -7,17 +7,17 @@ class CompilationPageNav extends Component {
     super(props, context);
   }
   renderViewNav() {
-    const path = `/compilations/${this.props.page._compilation}/pages/${this.props.page._id}`;
+    const path = `/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`;
     return this.renderNavItem(path, 'view', 'View');
   }
   renderEditNav() {
     if (pageMeta(this.props.page).editable) {
-      const path = `/compilations/${this.props.page._compilation}/pages/${this.props.page._id}/edit`;
+      const path = `/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}/edit`;
       return this.renderNavItem(path, 'edit', 'Edit');
     }
   }
   renderPreviewNav() {
-    const path = `/compilations/${this.props.page._compilation}/pages/${this.props.page._id}/preview`;
+    const path = `/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}/preview`;
     return this.renderNavItem(path, 'preview', 'Preview');
   }
   renderNavItem(path, active, pageName) {

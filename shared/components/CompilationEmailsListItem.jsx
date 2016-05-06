@@ -22,7 +22,7 @@ class CompilationEmailsListItem extends Component {
     }
   }
   render() {
-    return (<Link className={this.className()} to={`/compilations/${this.props.email._compilation}/emails/${this.props.email._id}`}>
+    return (<Link className={this.className()} to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}>
       {this.renderIcon()}
       {this.props.email.subject}
       <div className="date">{moment(this.props.email.date).format('LL')}</div>

@@ -12,7 +12,8 @@ class CompilationEmailsContainer extends Component {
 
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.compilationId }) || {};
     this.currentCompilationPath = this.props.routes[this.props.routes.length - 1].path.split('/')[3];
-
+  }
+  componentDidMount() {
     if (this.props.accounts.length < 1) {
       this.props.dispatch(Actions.getAccounts());
     }
@@ -34,10 +35,11 @@ class CompilationEmailsContainer extends Component {
     this.currentCompilationPath = nextProps.routes[nextProps.routes.length - 1].path.split('/')[3];
   }
   componentWillUnmount() {
-    this.props.dispatch(Actions.setCompilationEmails([]));
-    this.props.dispatch(Actions.setCompilationPages([]));
+    if (window.previousLocation) {
+      this.props.dispatch(Actions.setCompilationEmails([]));
+      this.props.dispatch(Actions.setCompilationPages([]));
+    }
   }
-
   renderChildren() {
     if (this.props.children && !_.isEmpty(this.compilation)) {
       return React.Children.map(this.props.children, (child) => {
@@ -56,7 +58,7 @@ class CompilationEmailsContainer extends Component {
           emailCount={this.props.compilationEmails.length}
           fetching={this.props.fetching}
         />
-        <div className="container">
+      <div className="container top-bumper">
           { this.renderChildren() }
         </div>
       </div>);
@@ -66,11 +68,9 @@ class CompilationEmailsContainer extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.renderCompilation()}
-      </div>
-    );
+    return (<div>
+      {this.renderCompilation()}
+    </div>);
   }
 }
 
@@ -87,9 +87,6 @@ CompilationEmailsContainer.need = [
   (params, cookie) => {
     return Actions.getCompilationEmails.bind(null, params.compilationId, cookie)();
   },
-  // (params, cookie) => {
-  //   return Actions.getCompilationEmailPageMap.bind(null, params.compilationId, cookie)();
-  // },
 ];
 
 function mapStateToProps(store) {

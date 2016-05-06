@@ -26,7 +26,7 @@ http://stackoverflow.com/a/260829/1556952
   - I should be able to make a different container for each email potentially rendering them nearly all at once.
   - I will still probably want to generate a page map instead of relying on the sequential page numbers some other way. But maybe not.
   - This should make the server part really lightweight.
-  - I will probably want to figure out how to pass through some sort of progress report from the output of the container script through to the web app so I can update the user on progress.
+  - I will probably want to figure out how to pass through some sort of progress report from the output of the container script through to the web app so I cancd update the user on progress.
   - Will also need some sort of way to pass through errors to the web app.
   - Need to make sure the script containers terminate and die so that the net cost is zero when none are in use.
   - May want to email joyent to make sure it is ok to potentially generate 100s of containers all at once with their api. If it would cause lag then maybe consider having each container script generate like 5.
@@ -35,7 +35,17 @@ http://stackoverflow.com/a/260829/1556952
 
 - I will probably want to add hooks in the page and email schemas to update the compilation updatedAt field after save. That way I can always know if the compilation pdf is up to date.
 
+### Todo Fri May 6
+- Combine the emails page and the pages page into a compilation customization page. Call the page "Edit"
+- Make a big button to "Get started by creating an email compilation" for the dashboard if user has no compilations.
+- Delete everything in the production database.
+- Delete everything in the manta storage folders.
+- On the preview page add a button that says, "Approve PDF". Only show that if the pdf is valid and up to date. Then after they Approve the pdf, Give them the option to add X number of copies to the cart.
+
+
 ### Todo Short
+- Start on the checkout process. Maybe change the checkout button to say "Add to Cart" and have it greyed out or hidden until you approve the pdf. When you Add to Cart, ask them how many copies they want. Then when you add to cart, you get redirected to the user's cart page where you have the option to checkout.
+- For the google account authentication make it so the token only lasts a day and then the user has to re-authenticate. I dont want to be storing super tokens in my database.
 - Optimize the compilation preview process (docker worker)
   - Lazy loading of the compilation email pdfs
   - Lazy loading of the compilation page pdfs

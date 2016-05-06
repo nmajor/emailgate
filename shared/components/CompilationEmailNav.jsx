@@ -14,15 +14,15 @@ class CompilationEmailNav extends Component {
     }
   }
   renderViewNav() {
-    const path = `/compilations/${this.props.email._compilation}/emails/${this.props.email._id}`;
+    const path = `/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`;
     return this.renderNavItem(path, 'view', 'View');
   }
   renderEditNav() {
-    const path = `/compilations/${this.props.email._compilation}/emails/${this.props.email._id}/edit`;
+    const path = `/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}/edit`;
     return this.renderNavItem(path, 'edit', 'Edit');
   }
   renderPreviewNav() {
-    const path = `/compilations/${this.props.email._compilation}/emails/${this.props.email._id}/preview`;
+    const path = `/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}/preview`;
     return this.renderNavItem(path, 'preview', 'Preview');
   }
   renderNavItem(path, active, pageName) {
