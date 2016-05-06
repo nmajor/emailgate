@@ -196,6 +196,22 @@ function parseStreamChunk(chunk, cb) {
   }
 }
 
+function pullImage(image) {
+  return new Promise((resolve) => {
+    docker.pull(`${image}:latest`, (err, stream) => {
+      assert.equal(err, null);
+      stream.on('error', (err) => { // eslint-disable-line no-shadow
+        console.log(`An error happened ${err.message}`);
+      });
+
+      stream.on('end', () => {
+        resolve();
+      });
+      // streaming output from pull...
+    });
+  });
+}
+
 function attachToContainer(container, updateCb, resolve) {
   container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
     assert.equal(err, null);
@@ -229,7 +245,7 @@ function attachToContainer(container, updateCb, resolve) {
   });
 }
 
-function startWorker(env, task, updateCb) {
+function createContainer(env, task, updateCb) {
   return new Promise((resolve) => {
     env.push(`TASK=${encodeTask(task)}`);
 
@@ -243,6 +259,15 @@ function startWorker(env, task, updateCb) {
 
       attachToContainer(container, updateCb, resolve);
     });
+  });
+}
+
+function startWorker(env, task, updateCb) {
+  const containerConfig = getDockerConfig(env, task);
+
+  pullImage(containerConfig.Image)
+  .then(() => {
+    return createContainer(env, task, updateCb);
   });
 }
 
