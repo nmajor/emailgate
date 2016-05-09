@@ -13,12 +13,17 @@ class App extends Component {
   }
   componentWillReceiveProps() {
     window.previousLocation = this.props.location;
+
+    if (!_.isEmpty(this.props.user) && this.props.cart._user !== this.props.user._id) {
+      this.props.dispatch(Actions.getCart());
+    }
   }
 
   render() {
     return (
       <div>
-        { this.props.children }
+        {JSON.stringify(this.props.cart)}
+        {this.props.children}
       </div>
     );
   }
@@ -28,11 +33,16 @@ App.need = [
   (params, cookie) => {
     return Actions.getConfig.bind(null, cookie)();
   },
+  (params, cookie) => {
+    return Actions.getCart.bind(null, cookie)();
+  },
 ];
 
 function mapStateToProps(store) {
   return {
     config: store.config,
+    user: store.user,
+    cart: store.cart,
   };
 }
 
@@ -41,6 +51,8 @@ App.propTypes = {
   children: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   config: PropTypes.object.isRequired,
+  cart: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(App);

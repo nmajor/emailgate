@@ -17,7 +17,6 @@ class CompilationCheckoutContainer extends Component {
     const products = _.filter(this.props.config.products, (product) => {
       return product.tags.indexOf('compilation') > -1;
     });
-    console.log(products);
     return products;
   }
 

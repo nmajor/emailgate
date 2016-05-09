@@ -39,4 +39,11 @@ CartSchema.statics.findOrNew = function findOrNew(query) {
   });
 };
 
+CartSchema.statics.findOrCreate = function findOrCreate(query) {
+  return this.findOrNew(query)
+  .then((cart) => {
+    return cart.save();
+  });
+};
+
 export default Mongoose.model('Cart', CartSchema);

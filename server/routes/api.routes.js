@@ -76,6 +76,7 @@ function ensureAdmin(req, res, next) {
 }
 
 router.get('/config', AppController.getAppConfig);
+router.get('/cart', AppController.getUserCart);
 
 router.get('/accounts', ensureAuthenticated, AccountController.getAccounts);
 router.get('/accounts/:id', ensureAuthenticated, AccountController.findOneAccount);
