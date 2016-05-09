@@ -119,3 +119,8 @@ socket.on('BUILD_COMPILATION_PDF_FINISHED', (compilation) => {
   console.log('event BUILD_COMPILATION_PDF_FINISHED');
   store.dispatch(Actions.updateCompilationInCompilations(compilation));
 });
+
+socket.on('UPDATED_CART', (cart) => {
+  console.log('event UPDATED_CART');
+  store.dispatch(Actions.setCart(cart));
+});

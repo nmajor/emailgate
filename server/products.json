@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "compilation-book-publishing",
+    "desc": "Custom Email Compilation Publishing",
+    "tags": ["compilation"],
+    "price": 6999
+  },
+  {
+    "id": 2,
+    "name": "compilation-pdf-download",
+    "desc": "Compilation Pdf Download",
+    "tags": ["compilation"],
+    "price": 999
+  }
+]

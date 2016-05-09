@@ -40,7 +40,7 @@ class GoogleFilterForm extends Component {
   }
   renderForm() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form>
         {this.renderSubjectFormGroup()}
 
         <div className="row">

@@ -14,4 +14,5 @@ export default {
   currentAccountId: '',
   filteredAccountEmails: [],
   currentFilteredEmailMid: '',
+  cart: [],
 };

@@ -22,7 +22,6 @@ class CompilationEmailsContainer extends Component {
 function mapStateToProps(store) {
   return {
     compilationEmails: store.compilationEmails,
-    // fetching: store.fetching,
   };
 }
 
@@ -34,7 +33,6 @@ CompilationEmailsContainer.propTypes = {
   children: PropTypes.object,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array,
-  // fetching: PropTypes.object.isRequired,
   params: PropTypes.object,
 };
 

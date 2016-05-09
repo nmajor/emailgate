@@ -6,9 +6,11 @@ export function getAppConfig(req, res) {
   ])
   .then((values) => {
     const [googleAuthUrl] = values;
+    const products = require('../products');
 
     res.json({
       googleAuthUrl,
+      products,
     });
   })
   .catch((err) => {

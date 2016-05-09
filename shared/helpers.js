@@ -33,3 +33,10 @@ export function sortedEmails(emails) {
 export function sortedPages(pages) {
   return _.sortBy(pages, (page) => { return pageMeta(page).position; });
 }
+
+export function prettyPrice(price) {
+  price = price.toString(); // eslint-disable-line no-param-reassign
+
+  const priceString = `${price.slice(0, -2)}.${price.slice(-2)}`;
+  return priceString;
+}

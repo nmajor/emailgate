@@ -121,3 +121,9 @@ export function processPdf(pdfObj) {
 
   return processedPdf;
 }
+
+export function getProductById(id) {
+  const products = require('../products.json');
+
+  return _.find(products, (product) => { return product.id === id; });
+}

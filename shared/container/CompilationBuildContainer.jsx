@@ -7,14 +7,6 @@ class CompilationBuildContainer extends Component {
   constructor(props, context) {
     super(props, context);
   }
-  // renderAddLink() {
-  //   return (<Link
-  //     className="btn btn-success btn-block bottom-bumper"
-  //     to={`/compilations/${this.compilation._id}/add-emails`}
-  //   >
-  //     Add Emails
-  //   </Link>);
-  // }
 
   renderChildren() {
     if (this.props.children) {

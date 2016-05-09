@@ -3,6 +3,7 @@ import User from '../models/user';
 import Compilation from '../models/compilation';
 import Email from '../models/email';
 import Page from '../models/page';
+import Cart from '../models/cart';
 import { emailPdf, pagePdf } from '../util/pdf';
 // import { uploadStream } from '../util/uploader';
 import * as Docker from '../util/docker';
@@ -227,6 +228,22 @@ export default (io) => {
       }).
       then((account) => {
         socket.emit('REMOVED_ACCOUNT', account);
+      });
+    });
+
+    socket.on('ADD_ITEM_TO_CART', (data) => {
+      console.log('ADD_ITEM_TO_CART');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Cart.findOrNew({ _user: user._id }))
+      .then((cart) => {
+        cart.items.push(data);
+        return cart.save();
+      }).
+      then((cart) => {
+        socket.emit('UPDATED_CART', cart);
+      })
+      .catch((err) => {
+        console.log(`error happened yo. ${err}`);
       });
     });
 
