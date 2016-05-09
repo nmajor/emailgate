@@ -48,16 +48,12 @@ class CompilationAddToCart extends Component {
     </div>);
   }
   render() {
-    return (<div className="row">
-      <div className="col-md-6">
-        <div className="padded-box">
-          <h3>{this.props.compilation.name}</h3>
-          {this.renderEmailCount()}
-          {this.renderPdfPageCount()}
-          {this.renderProductInfo()}
-          {this.renderCartForm()}
-        </div>
-      </div>
+    return (<div>
+      <h3>{this.props.compilation.name}</h3>
+      {this.renderEmailCount()}
+      {this.renderPdfPageCount()}
+      {this.renderProductInfo()}
+      {this.renderCartForm()}
     </div>);
   }
 }

@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import CompilationAddToCart from '../components/CompilationAddToCart';
+import CartFormContainer from './CartFormContainer';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
 
@@ -21,12 +22,23 @@ class CompilationCheckoutContainer extends Component {
   }
 
   render() {
-    return (<CompilationAddToCart
-      compilation={this.props.compilation}
-      compilationEmailsCount={this.props.compilationEmails.length}
-      submitForm={this.addToCart}
-      products={this.compilationProducts()}
-    />);
+    return (<div className="row">
+      <div className="col-md-6">
+        <div className="padded-box">
+          <CompilationAddToCart
+            compilation={this.props.compilation}
+            compilationEmailsCount={this.props.compilationEmails.length}
+            submitForm={this.addToCart}
+            products={this.compilationProducts()}
+          />
+        </div>
+      </div>
+      <div className="col-md-6">
+        <div className="padded-box">
+          <CartFormContainer />
+        </div>
+      </div>
+    </div>);
   }
 }
 

@@ -14,6 +14,10 @@ class App extends Component {
   componentWillReceiveProps() {
     window.previousLocation = this.props.location;
 
+    if (_.isEmpty(this.props.config)) {
+      this.props.dispatch(Actions.getConfig());
+    }
+
     if (!_.isEmpty(this.props.user) && this.props.cart._user !== this.props.user._id) {
       this.props.dispatch(Actions.getCart());
     }
@@ -22,7 +26,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        {JSON.stringify(this.props.cart)}
         {this.props.children}
       </div>
     );

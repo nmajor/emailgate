@@ -1,15 +1,15 @@
 [
   {
-    "id": 1,
-    "name": "compilation-book-publishing",
-    "desc": "Custom Email Compilation Publishing",
+    "_id": 1,
+    "name": "Custom Email Compilation Publishing",
+    "desc": "",
     "tags": ["compilation"],
     "price": 6999
   },
   {
-    "id": 2,
-    "name": "compilation-pdf-download",
-    "desc": "Compilation Pdf Download",
+    "_id": 2,
+    "name": "Compilation Pdf Download",
+    "desc": "",
     "tags": ["compilation"],
     "price": 999
   }

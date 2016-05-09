@@ -241,9 +241,6 @@ export default (io) => {
       }).
       then((cart) => {
         socket.emit('UPDATED_CART', cart);
-      })
-      .catch((err) => {
-        console.log(`error happened yo. ${err}`);
       });
     });
 
