@@ -6,21 +6,15 @@ class CartItemForm extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = { quantity: this.props.cartItem.quantity };
-
     this.setFormState = this.setFormState.bind(this);
     this.remove = this.remove.bind(this);
   }
   setFormState(event) {
-    const newState = this.state;
+    const newState = {};
     newState[event.target.getAttribute('name')] = event.target.value;
-    this.setState(newState);
 
     this.props.update(this.props.cartItem, newState);
   }
-  // update() {
-  //   this.props.update(this.props.cartItem, this.state);
-  // }
   remove() {
     this.props.remove(this.props.cartItem);
   }
@@ -40,7 +34,7 @@ class CartItemForm extends Component {
         type="number"
         className="form-control text-center"
         onChange={this.setFormState}
-        value={this.state.quantity}
+        value={this.props.cartItem.quantity}
       />
     </td>);
   }

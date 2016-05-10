@@ -236,7 +236,7 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Cart.findOrNew({ _user: user._id }))
       .then((cart) => {
-        cart.items.push(data);
+        cart.addItem(data);
         return cart.save();
       }).
       then((cart) => {

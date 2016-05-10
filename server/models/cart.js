@@ -1,6 +1,7 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import { getProductById } from '../util/helpers';
+import _ from 'lodash';
 
 const CartItemSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -44,6 +45,18 @@ CartSchema.statics.findOrCreate = function findOrCreate(query) {
   .then((cart) => {
     return cart.save();
   });
+};
+
+CartSchema.methods.addItem = function addItem(itemData) {
+  const existingItemIndex = _.findIndex(this.items, (item) => {
+    return parseInt(item.productId, 10) === parseInt(itemData.productId, 10) && _.isEqual(item.props, itemData.props);
+  });
+
+  if (existingItemIndex > -1) {
+    this.items[existingItemIndex].quantity += itemData.quantity;
+  } else {
+    this.items.push(itemData);
+  }
 };
 
 export default Mongoose.model('Cart', CartSchema);
