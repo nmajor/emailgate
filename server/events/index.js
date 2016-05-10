@@ -7,7 +7,7 @@ import Cart from '../models/cart';
 import { emailPdf, pagePdf } from '../util/pdf';
 // import { uploadStream } from '../util/uploader';
 import * as Docker from '../util/docker';
-// import _ from 'lodash';
+import _ from 'lodash';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
@@ -231,13 +231,52 @@ export default (io) => {
       });
     });
 
-    socket.on('ADD_ITEM_TO_CART', (data) => {
+    socket.on('ADD_CART_ITEM', (data) => {
       console.log('ADD_ITEM_TO_CART');
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Cart.findOrNew({ _user: user._id }))
       .then((cart) => {
         cart.items.push(data);
         return cart.save();
+      }).
+      then((cart) => {
+        socket.emit('UPDATED_CART', cart);
+      });
+    });
+
+    socket.on('REMOVE_CART_ITEM', (data) => {
+      console.log('REMOVE_CART_ITEM');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Cart.findOne({ _user: user._id }))
+      .then((cart) => {
+        const cartItemIndex = _.findIndex(cart.items, (cartItem) => { return cartItem._id === data.cartItemId; });
+        if (cartItemIndex > -1) {
+          cart.items[cartItemIndex].remove();
+          return cart.save();
+        }
+
+        return Promise.resolve(cart);
+      }).
+      then((cart) => {
+        socket.emit('UPDATED_CART', cart);
+      })
+      .catch((err) => {
+        console.log(`An error happened yo. ${err}`);
+      });
+    });
+
+    socket.on('UPDATE_CART_ITEM', (data) => {
+      console.log('UPDATE_CART_ITEM');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Cart.findOne({ _user: user._id }))
+      .then((cart) => {
+        const cartItemIndex = _.findIndex(cart.items, (cartItem) => { return cartItem._id === data.cartItemId; });
+        if (cartItemIndex > -1) {
+          cart.items[cartItemIndex].quantity = data.newData.quantity; // eslint-disable-line no-param-reassign
+          return cart.save();
+        }
+
+        return Promise.resolve(cart);
       }).
       then((cart) => {
         socket.emit('UPDATED_CART', cart);

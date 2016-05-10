@@ -1,6 +1,18 @@
 .table>tbody>tr>td, .table>tfoot>tr>td{
     vertical-align: middle;
 }
+
+.table {
+  .actions {
+    width:auto;
+    text-align:right;
+    white-space: nowrap;
+
+    .loading {
+      width: 24px;
+    }
+  }
+}
 // @media screen and (max-width: 600px) {
 //   .cart {
 //     table#cart tbody td .form-control{

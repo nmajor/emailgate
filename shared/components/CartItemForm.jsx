@@ -1,16 +1,28 @@
 import React, { PropTypes, Component } from 'react';
 import { prettyPrice } from '../helpers';
+import Loading from './Loading';
 
 class CartItemForm extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = { quantity: this.props.cartItem.quantity };
+
+    this.setFormState = this.setFormState.bind(this);
+    this.remove = this.remove.bind(this);
   }
   setFormState(event) {
-    const newState = {};
+    const newState = this.state;
     newState[event.target.getAttribute('name')] = event.target.value;
     this.setState(newState);
+
+    this.props.update(this.props.cartItem, newState);
+  }
+  // update() {
+  //   this.props.update(this.props.cartItem, this.state);
+  // }
+  remove() {
+    this.props.remove(this.props.cartItem);
   }
   renderProductDesc() {
     return (<td>
@@ -23,7 +35,13 @@ class CartItemForm extends Component {
   }
   renderItemQuantity() {
     return (<td>
-      <input type="number" className="form-control text-center" value={this.state.quantity} />
+      <input
+        name="quantity"
+        type="number"
+        className="form-control text-center"
+        onChange={this.setFormState}
+        value={this.state.quantity}
+      />
     </td>);
   }
   renderSubtotal() {
@@ -33,19 +51,17 @@ class CartItemForm extends Component {
     </td>);
   }
   renderRemoveAction() {
-    return (<span className="btn btn-danger btn-xs" onClick={this.handleDeleteClick}>
+    return (<span className="btn btn-danger btn-xs" onClick={this.remove}>
       <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
     </span>);
   }
-  renderRefreshAction() {
-    return (<span className="btn btn-info btn-xs" onClick={this.handleDeleteClick}>
-      <span className="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-    </span>);
-  }
   renderActions() {
+    if (this.props.cartItem.fetching) {
+      return <td className="actions"><Loading /></td>;
+    }
+
     return (<td className="actions">
       {this.renderRemoveAction()}
-      {this.renderRefreshAction()}
     </td>);
   }
   renderItemForm() {
@@ -70,7 +86,7 @@ CartItemForm.propTypes = {
   cartItem: PropTypes.object.isRequired,
   product: PropTypes.object.isRequired,
   remove: PropTypes.func.isRequired,
-  updateQuantity: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
 };
 
 export default CartItemForm;

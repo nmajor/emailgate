@@ -18,22 +18,35 @@ export function setPropertyForCart(prop, val) {
   };
 }
 
-export function addItemToCart(productId, quantity, props) {
+export function setPropertyForCartItem(cartItemId, prop, val) {
+  return {
+    type: ActionTypes.SET_PROPERTY_FOR_CART_ITEM,
+    cartItemId,
+    prop,
+    val,
+  };
+}
+
+export function addCartItem(productId, quantity, props) {
   return dispatch => {
     dispatch(setPropertyForCart('fetching', true));
-    socket.emit('ADD_ITEM_TO_CART', { productId, quantity, props });
+    socket.emit('ADD_CART_ITEM', { productId, quantity, props });
   };
 }
 
-export function updateQuantityForCartItem(cartItemId, quantity) {
-  return () => {
-    socket.emit('UPDATE_QUANTITY_FOR_CART_ITEM', { cartItemId, quantity });
+export function removeCartItem(cartItemId) {
+  return dispatch => {
+    dispatch(setPropertyForCart('fetching', true));
+    dispatch(setPropertyForCartItem(cartItemId, 'fetching', true));
+    socket.emit('REMOVE_CART_ITEM', { cartItemId });
   };
 }
 
-export function removeItemFromCart(cartItemId) {
-  return (dispatch) => {
-    dispatch(updateQuantityForCartItem(cartItemId, 0));
+export function updateCartItem(cartItemId, newData) {
+  return dispatch => {
+    dispatch(setPropertyForCart('fetching', true));
+    dispatch(setPropertyForCartItem(cartItemId, 'fetching', true));
+    socket.emit('UPDATE_CART_ITEM', { cartItemId, newData });
   };
 }
 

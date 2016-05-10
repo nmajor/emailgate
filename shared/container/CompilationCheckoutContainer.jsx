@@ -12,7 +12,7 @@ class CompilationCheckoutContainer extends Component {
     this.addToCart = this.addToCart.bind(this);
   }
   addToCart(props) {
-    this.props.dispatch(Actions.addItemToCart(1, props.quantity, { compilationId: this.props.compilation._id }));
+    this.props.dispatch(Actions.addCartItem(1, props.quantity, { compilationId: this.props.compilation._id }));
   }
   compilationProducts() {
     const products = _.filter(this.props.config.products, (product) => {

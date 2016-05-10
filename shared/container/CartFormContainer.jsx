@@ -7,12 +7,15 @@ import _ from 'lodash';
 class CartFormContainer extends Component {
   constructor(props, context) {
     super(props, context);
+
+    this.removeCartItem = this.removeCartItem.bind(this);
+    this.updateCartItem = this.updateCartItem.bind(this);
   }
-  removeCartItem(props) {
-    this.props.dispatch(Actions.removeItemFromCart(props._id));
+  removeCartItem(cartItem) {
+    this.props.dispatch(Actions.removeCartItem(cartItem._id));
   }
-  updateCartItemQuantity(props) {
-    this.props.dispatch(Actions.updateQuantityForCartItem(props._id, props.quantity));
+  updateCartItem(cartItem, props) {
+    this.props.dispatch(Actions.updateCartItem(cartItem._id, props));
   }
   renderCart() {
     if (!_.isEmpty(this.props.cart) && !_.isEmpty(this.props.config)) {
@@ -20,7 +23,7 @@ class CartFormContainer extends Component {
         cart={this.props.cart}
         products={this.props.config.products}
         removeItem={this.removeCartItem}
-        updateItemQuantity={this.updateCartItemQuantity}
+        updateItem={this.updateCartItem}
       />);
     }
   }
