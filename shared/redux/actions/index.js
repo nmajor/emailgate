@@ -8,6 +8,7 @@ export * from './userActions';
 export * from './fetchingActions';
 export * from './allUsersActions';
 export * from './accountActions';
+export * from './addressActions';
 export * from './accountPasswordMapActions';
 export * from './compilationActions';
 export * from './allCompilationsActions';

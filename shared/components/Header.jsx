@@ -15,6 +15,19 @@ class Header extends Component {
       this.context.router.push('/');
     }));
   }
+  renderCartBadge() {
+    if (this.props.cart.items.length > 0) {
+      return <span className="badge">{this.props.cart.items.length}</span>;
+    }
+  }
+  renderCartAction() {
+    if (this.props.cart.items.length > 0) {
+      return (<Link to="/cart">
+        <span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+        {this.renderCartBadge()}
+      </Link>);
+    }
+  }
   renderNavbarHeader() {
     return (<div className="navbar-header">
       <Link className="navbar-brand" to="/">emailgate</Link>
@@ -30,6 +43,7 @@ class Header extends Component {
   renderUserActions() {
     if (this.props.user.email) {
       return (<ul className="nav navbar-nav navbar-right">
+        <li>{this.renderCartAction()}</li>
         <li><a className="disabled" href="#">{this.props.user.email}</a></li>
         <li><a href="#" onClick={this.logout}>Log Out</a></li>
       </ul>);
@@ -54,6 +68,7 @@ class Header extends Component {
 function mapStateToProps(store) {
   return {
     user: store.user,
+    cart: store.cart,
   };
 }
 
@@ -64,6 +79,7 @@ Header.contextTypes = {
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
+  cart: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

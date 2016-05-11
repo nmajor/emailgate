@@ -9,6 +9,9 @@ import NewAccountContainer from './container/NewAccountContainer';
 import EditAccountContainer from './container/EditAccountContainer';
 import NewCompilationContainer from './container/NewCompilationContainer';
 import CompilationContainer from './container/CompilationContainer';
+import CartContainer from './container/CartContainer';
+import CheckoutContainer from './container/CheckoutContainer';
+import NewAddressContainer from './container/NewAddressContainer';
 
 import CompilationBuildContainer from './container/CompilationBuildContainer';
 
@@ -40,6 +43,9 @@ const routes = (
     <Route path="/register" component={RegisterContainer}/>
     <Route path="/login" component={LoginContainer}/>
     <Route path="/dashboard" component={DashboardContainer}/>
+    <Route path="/cart" component={CartContainer} />
+    <Route path="/checkout" component={CheckoutContainer} />
+    <Route path="/addresses/new" component={NewAddressContainer} />
     <Route path="/accounts/new" component={NewAccountContainer}/>
     <Route path="/accounts/:id/edit" component={EditAccountContainer}/>
     <Route path="/compilations/new" component={NewCompilationContainer}/>

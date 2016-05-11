@@ -1,12 +1,14 @@
 import * as ActionTypes from '../constants';
 import { combineReducers } from 'redux';
 import initialState from '../../initialState';
+import { reducer as formReducer } from 'redux-form';
 // import _ from 'lodash';
 
 import user from './user';
 import fetching from './fetching';
 import allUsers from './allUsers';
 import accounts from './accounts';
+import addresses from './addresses';
 import accountPasswordMap from './accountPasswordMap';
 import compilations from './compilations';
 import allCompilations from './allCompilations';
@@ -60,11 +62,13 @@ const compilationPdfLog = (state = initialState.compilationPdfLog, action) => {
 };
 
 const appReducer = combineReducers({
+  form: formReducer,
   config,
   fetching,
   user,
   allUsers,
   accounts,
+  addresses,
   accountPasswordMap,
   compilations,
   allCompilations,

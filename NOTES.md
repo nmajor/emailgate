@@ -5,6 +5,9 @@ http://stackoverflow.com/a/260829/1556952
 
 ### Notes
 
+- Stripe Guide
+https://davidwalsh.name/step-step-guide-stripe-payments-react
+
 - Estimate the number of pages in an email pdf
   - Render the email with the email template inside some sort of container div element
   - Set the width of the container div element to the width of the pdf pages setting

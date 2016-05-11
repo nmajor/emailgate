@@ -3,6 +3,7 @@ import CartItemForm from './CartItemForm';
 import _ from 'lodash';
 import { cartItemsTotal, prettyPrice } from '../helpers';
 import Loading from './Loading';
+import { Link } from 'react-router';
 
 class CartForm extends Component {
   constructor(props, context) {
@@ -58,7 +59,7 @@ class CartForm extends Component {
   }
   renderCheckoutAction() {
     if (this.props.cart.items && this.props.cart.items.length > 0) {
-      return <a href="#" className="btn btn-success left-bumper">Checkout <i className="fa fa-angle-right"></i></a>;
+      return <Link to="/checkout" className="btn btn-success left-bumper">Checkout</Link>;
     }
   }
   renderLoading() {

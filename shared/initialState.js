@@ -4,6 +4,7 @@ export default {
   user: {},
   allUsers: [],
   accounts: [],
+  addresses: [],
   accountPasswordMap: {},
   compilations: [],
   allCompilations: [],
