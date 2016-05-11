@@ -12,6 +12,7 @@ import CompilationContainer from './container/CompilationContainer';
 import CartContainer from './container/CartContainer';
 import CheckoutContainer from './container/CheckoutContainer';
 import NewAddressContainer from './container/NewAddressContainer';
+import EditAddressContainer from './container/EditAddressContainer';
 
 import CompilationBuildContainer from './container/CompilationBuildContainer';
 
@@ -46,9 +47,11 @@ const routes = (
     <Route path="/cart" component={CartContainer} />
     <Route path="/checkout" component={CheckoutContainer} />
     <Route path="/addresses/new" component={NewAddressContainer} />
+    <Route path="/addresses/:id/edit" component={EditAddressContainer} />
     <Route path="/accounts/new" component={NewAccountContainer}/>
     <Route path="/accounts/:id/edit" component={EditAccountContainer}/>
     <Route path="/compilations/new" component={NewCompilationContainer}/>
+
     <Route component={CompilationContainer}>
       <Route path="/compilations/:compilationId/build" component={CompilationBuildContainer} />
       <Route path="/compilations/:compilationId/add-emails" component={AddCompilationEmailsContainer}/>
@@ -65,6 +68,7 @@ const routes = (
       <Route path="/compilations/:compilationId/preview" component={CompilationPreviewContainer} />
       <Route path="/compilations/:compilationId/checkout" component={CompilationCheckoutContainer} />
     </Route>
+
     <Route component={AdminContainer}>
       <Route path="/admin/dashboard" component={AdminDashboardContainer}/>
     </Route>

@@ -100,6 +100,36 @@ export function createAddress(addressProps, cb) {
   };
 }
 
+export function updateAddress(id, addressProps, cb) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/addresses/${id}`, {
+      credentials: 'include',
+      method: 'put',
+      body: JSON.stringify(addressProps),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(updateAddressInAddresses(res));
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
 
 // export function removeAddress(address) {
 //   return (dispatch) => {

@@ -27,7 +27,7 @@ class NewAddressContainer extends Component {
         <Header />
         <div className="container">
           <h1>New Address</h1>
-          <AddressForm onSubmit={this.create} submitting={false} />
+          <AddressForm onSubmit={this.create} back={this.back} submitting={false} />
         </div>
       </div>
     );

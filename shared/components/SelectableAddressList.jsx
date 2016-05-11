@@ -22,7 +22,7 @@ class SelectableAddressList extends Component {
   renderNewAddress() {
     return (
       <Link to="/addresses/new" className="btn btn-default" >
-        New Address
+        Add a New Address
       </Link>
     );
   }

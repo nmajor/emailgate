@@ -24,6 +24,7 @@ class AddressForm extends Component {
         phone,
       },
       handleSubmit,
+      back,
       submitting,
     } = this.props;
 
@@ -60,6 +61,7 @@ class AddressForm extends Component {
         <input type="text" className="form-control" {...phone}/>
       </div>
       <div className="form-group">
+        <div className="btn btn-danger right-bumper" onClick={back}>Back</div>
         <button className="btn btn-success" type="submit">Submit</button>
         {this.renderSubmitting(submitting)}
       </div>
@@ -70,6 +72,7 @@ class AddressForm extends Component {
 AddressForm.propTypes = {
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  back: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
 };
 
