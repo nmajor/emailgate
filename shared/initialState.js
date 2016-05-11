@@ -16,4 +16,5 @@ export default {
   filteredAccountEmails: [],
   currentFilteredEmailMid: '',
   cart: {},
+  checkout: {},
 };

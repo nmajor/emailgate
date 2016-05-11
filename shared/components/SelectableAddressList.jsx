@@ -14,7 +14,7 @@ class SelectableAddressList extends Component {
         key={address._id}
         address={address}
         selected={this.props.selectedAddressId === address._id}
-        selectItem={this.props.selectItem}
+        handleItemClick={this.props.selectItem}
         deleteItem={this.props.deleteItem}
       />);
     });
@@ -28,7 +28,7 @@ class SelectableAddressList extends Component {
   }
   render() {
     return (
-      <div className="accounts-list row">
+      <div className="address-list row">
         <div className="col-md-6">
           {this.renderAddressList()}
           {this.renderNewAddress()}

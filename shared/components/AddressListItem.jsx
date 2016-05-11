@@ -3,9 +3,19 @@ import React, { PropTypes, Component } from 'react';
 class AddressListItem extends Component {
   constructor(props, context) {
     super(props, context);
+
+    this.handleItemClick = this.handleItemClick.bind(this);
+  }
+  handleItemClick() {
+    this.props.handleItemClick(this.props.address);
+  }
+  renderSelectedClass() {
+    if (this.props.selected) {
+      return 'selected';
+    }
   }
   render() {
-    return (<div>
+    return (<div className={`address-list-item selectable ${this.renderSelectedClass()}`} onClick={this.handleItemClick}>
       {this.props.address.firstName}
       {this.props.address.lastName}
       {this.props.address.address1}
@@ -20,6 +30,7 @@ class AddressListItem extends Component {
 AddressListItem.propTypes = {
   address: PropTypes.object.isRequired,
   selected: PropTypes.bool,
+  handleItemClick: PropTypes.func.isRequired,
 };
 
 export default AddressListItem;

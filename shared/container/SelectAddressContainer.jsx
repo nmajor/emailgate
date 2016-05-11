@@ -7,11 +7,16 @@ import Loading from '../components/Loading';
 class SelectAddressContainer extends Component {
   constructor(props, context) {
     super(props, context);
+
+    this.deleteAddress = this.deleteAddress.bind(this);
   }
   componentDidMount() {
     if (this.props.addresses.length < 1 && !this.props.fetching.addresses) {
       this.props.dispatch(Actions.getAddresses());
     }
+  }
+  deleteAddress() {
+    console.log('deleteAddress');
   }
   renderAddressList() {
     if (this.props.fetching.addresses) {
@@ -20,11 +25,13 @@ class SelectAddressContainer extends Component {
 
     return (<SelectableAddressList
       addresses={this.props.addresses}
+      selectItem={this.props.selectAddress}
+      deleteItem={this.deleteAddress}
+      selectedAddressId={this.props.selectedAddressId}
     />);
   }
   render() {
     return (<div>
-      <h1>Select Address</h1>
       {this.renderAddressList()}
     </div>);
   }
@@ -41,6 +48,8 @@ SelectAddressContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   addresses: PropTypes.array.isRequired,
   fetching: PropTypes.object.isRequired,
+  selectAddress: PropTypes.func.isRequired,
+  selectedAddressId: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(SelectAddressContainer);

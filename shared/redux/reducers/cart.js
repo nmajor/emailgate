@@ -2,7 +2,7 @@ import * as ActionTypes from '../constants';
 import initialState from '../../initialState';
 import _ from 'lodash';
 
-const fetching = (state = initialState.fetching, action) => {
+const cart = (state = initialState.cart, action) => {
   switch (action.type) {
     case ActionTypes.SET_CART :
       return action.val;
@@ -32,4 +32,4 @@ const fetching = (state = initialState.fetching, action) => {
   }
 };
 
-export default fetching;
+export default cart;

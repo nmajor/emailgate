@@ -17,6 +17,7 @@ import compilationPages from './compilationPages';
 import currentAccountId from './currentAccountId';
 import filteredAccountEmails from './filteredAccountEmails';
 import cart from './cart';
+import checkout from './checkout';
 
 const currentFilteredEmailMid = (state = initialState.currentFilteredEmailMid, action) => {
   switch (action.type) {
@@ -80,6 +81,7 @@ const appReducer = combineReducers({
   filteredAccountEmails,
   currentFilteredEmailMid,
   cart,
+  checkout,
 });
 
 const rootReducer = (state = initialState, action) => {

@@ -2,11 +2,10 @@ import * as ActionTypes from '../constants';
 import fetch from 'isomorphic-fetch';
 
 import baseURL from '../../baseURL';
-import socket from '../../../client/socket';
+// import socket from '../../../client/socket';
 
 import { setPropertyForFetching } from './fetchingActions';
 
-// Account Actions
 export function addAddress(address) {
   return {
     type: ActionTypes.ADD_ADDRESS,
@@ -14,12 +13,12 @@ export function addAddress(address) {
   };
 }
 
-export function removeAddressFromAddresses(address) {
-  return {
-    type: ActionTypes.REMOVE_ADDRESS_FROM_ADDRESSES,
-    address,
-  };
-}
+// export function removeAddressFromAddresses(address) {
+//   return {
+//     type: ActionTypes.REMOVE_ADDRESS_FROM_ADDRESSES,
+//     address,
+//   };
+// }
 
 export function updateAddressInAddresses(address) {
   return {
@@ -102,9 +101,9 @@ export function createAddress(addressProps, cb) {
 }
 
 
-export function removeAddress(address) {
-  return (dispatch) => {
-    dispatch(updateAddressInAddresses(Object.assign({}, address, { saving: true })));
-    socket.emit('REMOVE_ACCOUNT', address);
-  };
-}
+// export function removeAddress(address) {
+//   return (dispatch) => {
+//     dispatch(updateAddressInAddresses(Object.assign({}, address, { saving: true })));
+//     socket.emit('REMOVE_ADDRESS', address);
+//   };
+// }
