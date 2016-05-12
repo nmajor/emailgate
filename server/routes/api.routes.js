@@ -90,6 +90,7 @@ router.get('/addresses/:id', ensureAuthenticated, AddressController.findOneAddre
 router.post('/addresses', ensureAuthenticated, AddressController.createAddress);
 router.put('/addresses/:id', ensureAuthenticated, AddressController.patchAddress);
 router.patch('/addresses/:id', ensureAuthenticated, AddressController.patchAddress);
+router.delete('/addresses/:id', ensureAuthenticated, AddressController.removeAddress);
 
 router.get('/compilations', ensureAuthenticated, CompilationController.getCompilations);
 router.get('/compilations/:id', ensureAuthenticated, CompilationController.findOneCompilation);

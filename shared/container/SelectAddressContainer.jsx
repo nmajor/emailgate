@@ -15,8 +15,8 @@ class SelectAddressContainer extends Component {
       this.props.dispatch(Actions.getAddresses());
     }
   }
-  deleteAddress() {
-    console.log('deleteAddress');
+  deleteAddress(address) {
+    this.props.dispatch(Actions.removeAddress(address._id));
   }
   renderAddressList() {
     if (this.props.fetching.addresses) {

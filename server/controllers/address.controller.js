@@ -43,7 +43,7 @@ export function patchAddress(req, res) {
 }
 
 export function removeAddress(req, res) {
-  Address.remove({ _user: req.user._id, _id: req.params.id })
+  Address.findOneAndRemove({ _user: req.user._id, _id: req.params.id })
   .then((address) => {
     res.json(address);
   });

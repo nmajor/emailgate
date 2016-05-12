@@ -6,9 +6,13 @@ class AddressListItem extends Component {
     super(props, context);
 
     this.handleItemClick = this.handleItemClick.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
   }
   handleItemClick() {
     this.props.handleItemClick(this.props.address);
+  }
+  handleDeleteClick() {
+    this.props.deleteItem(this.props.address);
   }
   renderSelectedClass() {
     if (this.props.selected) {

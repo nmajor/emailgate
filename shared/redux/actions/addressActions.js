@@ -13,12 +13,12 @@ export function addAddress(address) {
   };
 }
 
-// export function removeAddressFromAddresses(address) {
-//   return {
-//     type: ActionTypes.REMOVE_ADDRESS_FROM_ADDRESSES,
-//     address,
-//   };
-// }
+export function removeAddressFromAddresses(address) {
+  return {
+    type: ActionTypes.REMOVE_ADDRESS_FROM_ADDRESSES,
+    address,
+  };
+}
 
 export function updateAddressInAddresses(address) {
   return {
@@ -123,6 +123,35 @@ export function updateAddress(id, addressProps, cb) {
       }
 
       dispatch(updateAddressInAddresses(res));
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
+export function removeAddress(id, cb) {
+  cb = cb || function() {}; // eslint-disable-line
+
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/addresses/${id}`, {
+      credentials: 'include',
+      method: 'delete',
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(removeAddressFromAddresses(res));
       cb(res);
     })
     .catch((err) => {
