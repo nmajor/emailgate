@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Loading from './Loading';
 
 class OrderForm extends Component {
   constructor(props, context) {
@@ -22,6 +23,11 @@ class OrderForm extends Component {
 
     this.props.submit(this.state);
   }
+  renderSubmitting() {
+    if (this.props.submitting) {
+      return <span className="outside-button-loading"><Loading /></span>;
+    }
+  }
   renderTerms() {
     return (<div className="checkbox">
       <label>
@@ -36,7 +42,10 @@ class OrderForm extends Component {
     return (<div>
       <form>
         {this.renderTerms()}
-        {this.renderSubmitAction()}
+        <div>
+          {this.renderSubmitAction()}
+          {this.renderSubmitting()}
+        </div>
       </form>
     </div>);
   }
@@ -44,6 +53,7 @@ class OrderForm extends Component {
 
 OrderForm.propTypes = {
   submit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
 };
 
 export default OrderForm;

@@ -19,6 +19,9 @@ export function createOrder(req, res) {
   newOrder._user = req.user._id;
   newOrder.save()
   .then((order) => {
+    return order.submitPayment();
+  })
+  .then((order) => {
     res.json(order);
   });
 }

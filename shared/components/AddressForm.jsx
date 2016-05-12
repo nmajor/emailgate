@@ -6,8 +6,8 @@ class AddressForm extends Component {
   constructor(props, context) {
     super(props, context);
   }
-  renderSubmitting(submitting) {
-    if (submitting) {
+  renderSubmitting() {
+    if (this.props.submitting) {
       return <span className="outside-button-loading"><Loading /></span>;
     }
   }
@@ -25,7 +25,6 @@ class AddressForm extends Component {
       },
       handleSubmit,
       back,
-      submitting,
     } = this.props;
 
     return (<form onSubmit={handleSubmit}>
@@ -63,7 +62,7 @@ class AddressForm extends Component {
       <div className="form-group">
         <div className="btn btn-danger right-bumper" onClick={back}>Back</div>
         <button className="btn btn-success" type="submit">Submit</button>
-        {this.renderSubmitting(submitting)}
+        {this.renderSubmitting()}
       </div>
     </form>);
   }

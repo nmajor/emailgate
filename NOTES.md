@@ -47,12 +47,12 @@ https://stripe.com/docs/testing
 
 - I will probably want to add hooks in the page and email schemas to update the compilation updatedAt field after save. That way I can always know if the compilation pdf is up to date.
 
-### Todo Fri May 6
-- On the preview page add a button that says, "Approve PDF". Only show that if the pdf is valid and up to date. Then after they Approve the pdf, Give them the option to add X number of copies to the cart.
-
-
 ### Todo Short
-- Start on the checkout process. Maybe change the checkout button to say "Add to Cart" and have it greyed out or hidden until you approve the pdf. When you Add to Cart, ask them how many copies they want. Then when you add to cart, you get redirected to the user's cart page where you have the option to checkout.
+- Error handling for the OrderForm (/checkout/confirm)
+- Need to redirect back to the /checkout page if cart or checkout info is missing when loading the /checkout/confirm page
+- ERROR: when entering my CC info and getting the year wrong, it wouldnt let me change and resubmit. Clicking submit again did nothing. Maybe has to do with the touch attribute of the fields.
+- Need to add validation to the shipping address for the order model.
+- Need to add a redirect after the checkout confirm and payment processing thing is done.
 - For the google account authentication make it so the token only lasts a day and then the user has to re-authenticate. I dont want to be storing super tokens in my database.
 - Optimize the compilation preview process (docker worker)
   - Lazy loading of the compilation email pdfs

@@ -80,7 +80,7 @@ function ensureAdmin(req, res, next) {
 router.get('/config', AppController.getAppConfig);
 router.get('/cart', AppController.getUserCart);
 
-router.get('/orders', ensureAuthenticated, OrderController.getAccounts);
+router.get('/orders', ensureAuthenticated, OrderController.getOrders);
 router.get('/orders/:id', ensureAuthenticated, OrderController.findOneOrder);
 router.post('/orders', ensureAuthenticated, OrderController.createOrder);
 

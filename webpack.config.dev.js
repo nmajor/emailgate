@@ -34,9 +34,15 @@ module.exports = {
       },
     ],
 
-    // Shut off warnings about using pre-built javascript files
-    // as Quill.js unfortunately ships one as its `main`.
-    noParse: /node_modules\/quill\/dist/
+    noParse: [
+      // Shut off warnings about using pre-built javascript files
+      // as Quill.js unfortunately ships one as its `main`.
+      /node_modules\/quill\/dist/,
+
+      // Shut off warnings about using pre-built javascript files
+      // Have to do this for a react-credit-card module dependency too
+      /payment\/lib\/payment.js$/
+    ]
   },
 
   plugins: [

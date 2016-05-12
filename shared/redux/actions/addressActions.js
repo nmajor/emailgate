@@ -159,10 +159,3 @@ export function removeAddress(id, cb) {
     });
   };
 }
-
-// export function removeAddress(address) {
-//   return (dispatch) => {
-//     dispatch(updateAddressInAddresses(Object.assign({}, address, { saving: true })));
-//     socket.emit('REMOVE_ADDRESS', address);
-//   };
-// }

@@ -17,6 +17,7 @@ export * from './compilationPagesActions';
 export * from './filteredAccountEmails';
 export * from './cartActions';
 export * from './checkoutActions';
+export * from './orderActions';
 
 export function setCurrentFilteredEmailMid(mid) {
   return {
