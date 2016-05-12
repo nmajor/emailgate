@@ -9,10 +9,14 @@ class AddressListItem extends Component {
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
   }
   handleItemClick() {
-    this.props.handleItemClick(this.props.address);
+    if (this.props.handleItemClick) {
+      this.props.handleItemClick(this.props.address);
+    }
   }
   handleDeleteClick() {
-    this.props.deleteItem(this.props.address);
+    if (this.props.deleteItem) {
+      this.props.deleteItem(this.props.address);
+    }
   }
   renderSelectedClass() {
     if (this.props.selected) {
@@ -36,6 +40,14 @@ class AddressListItem extends Component {
       return <div>{this.props.address.phone}</div>;
     }
   }
+  renderActions() {
+    if (this.props.actions) {
+      return (<div>
+        {this.renderEditLink()}
+        {this.renderRemoveLink()}
+      </div>);
+    }
+  }
   render() {
     return (<div className={`address-list-item selectable ${this.renderSelectedClass()}`} onClick={this.handleItemClick}>
       <h4>
@@ -48,18 +60,16 @@ class AddressListItem extends Component {
         {this.props.address.city}, {this.props.address.region} {this.props.address.postalCode}
       </div>
       {this.renderPhone()}
-      <div>
-        {this.renderEditLink()}
-        {this.renderRemoveLink()}
-      </div>
+      {this.renderActions()}
     </div>);
   }
 }
 
 AddressListItem.propTypes = {
   address: PropTypes.object.isRequired,
+  actions: PropTypes.bool,
   selected: PropTypes.bool,
-  handleItemClick: PropTypes.func.isRequired,
+  handleItemClick: PropTypes.func,
   deleteItem: PropTypes.func,
 };
 

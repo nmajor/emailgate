@@ -9,28 +9,40 @@ class CheckoutContainer extends Component {
   constructor(props, context) {
     super(props, context);
   }
+  renderShippingAddress() {
+    return <ShippingAddressContainer />;
+  }
+  renderBillingAddress() {
+    if (this.props.checkout.shippingAddressId) {
+      return <BillingAddressContainer />;
+    }
+  }
+  renderBillingInfo() {
+    if (this.props.checkout.shippingAddressId && this.props.checkout.billingAddressId) {
+      return <BillingInfoContainer />;
+    }
+  }
   render() {
     return (<div>
       <Header />
       <div className="container">
         <h1>Checkout</h1>
-        <ShippingAddressContainer />
-        <BillingAddressContainer />
-        <BillingInfoContainer />
+        {this.renderShippingAddress()}
+        {this.renderBillingAddress()}
+        {this.renderBillingInfo()}
       </div>
     </div>);
   }
 }
 
-// function mapStateToProps(store) {
-//   return {
-//     config: store.config,
-//     cart: store.cart,
-//   };
-// }
+function mapStateToProps(store) {
+  return {
+    checkout: store.checkout,
+  };
+}
 
 CheckoutContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  checkout: PropTypes.object.isRequired,
 };
 
-export default connect()(CheckoutContainer);
+export default connect(mapStateToProps)(CheckoutContainer);

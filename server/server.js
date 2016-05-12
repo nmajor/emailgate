@@ -111,6 +111,11 @@ const renderFullPage = (html, renderedState) => {
           window.__INITIAL_STATE__ = ${JSON.stringify(renderedState)};
         </script>
         <script src="/dist/bundle.js"></script>
+
+        <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+        <script type="text/javascript">
+          Stripe.setPublishableKey('${process.env.STRIPE_PUBLISHABLE_KEY}');
+        </script>
       </body>
     </html>
   `;

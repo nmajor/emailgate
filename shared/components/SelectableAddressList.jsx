@@ -13,6 +13,7 @@ class SelectableAddressList extends Component {
       return (<AddressListItem
         key={address._id}
         address={address}
+        actions
         selected={this.props.selectedAddressId === address._id}
         handleItemClick={this.props.selectItem}
         deleteItem={this.props.deleteItem}

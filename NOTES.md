@@ -8,6 +8,13 @@ http://stackoverflow.com/a/260829/1556952
 - Stripe Guide
 https://davidwalsh.name/step-step-guide-stripe-payments-react
 
+SAMPLE VALID CREDIT CARD NUMBERS
+Credit Card	Sample Number
+Visa	4111 1111 1111 1111
+MasterCard	5500 0000 0000 0004
+American Express	3400 0000 0000 009
+Diner's Club	3000 0000 0000 04
+
 - Estimate the number of pages in an email pdf
   - Render the email with the email template inside some sort of container div element
   - Set the width of the container div element to the width of the pdf pages setting

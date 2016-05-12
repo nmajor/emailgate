@@ -16,3 +16,11 @@
     }
   }
 }
+
+.selected-address {
+  .address-list-item {
+    border: 2px solid #777;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+}
