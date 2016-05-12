@@ -6,6 +6,7 @@ import * as AddressController from '../controllers/address.controller';
 import * as CompilationController from '../controllers/compilation.controller';
 import * as EmailController from '../controllers/email.controller';
 import * as PageController from '../controllers/page.controller';
+import * as OrderController from '../controllers/order.controller';
 import * as AdminController from '../controllers/admin.controller';
 import * as AppController from '../controllers/app.controller';
 
@@ -78,6 +79,10 @@ function ensureAdmin(req, res, next) {
 
 router.get('/config', AppController.getAppConfig);
 router.get('/cart', AppController.getUserCart);
+
+router.get('/orders', ensureAuthenticated, OrderController.getAccounts);
+router.get('/orders/:id', ensureAuthenticated, OrderController.findOneOrder);
+router.post('/orders', ensureAuthenticated, OrderController.createOrder);
 
 router.get('/accounts', ensureAuthenticated, AccountController.getAccounts);
 router.get('/accounts/:id', ensureAuthenticated, AccountController.findOneAccount);

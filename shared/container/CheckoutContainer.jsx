@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import ShippingAddressContainer from './ShippingAddressContainer';
 import BillingAddressContainer from './BillingAddressContainer';
-import BillingInfoContainer from './BillingInfoContainer';
+import BillingInfoFormContainer from './BillingInfoFormContainer';
 
 class CheckoutContainer extends Component {
   constructor(props, context) {
@@ -19,7 +19,7 @@ class CheckoutContainer extends Component {
   }
   renderBillingInfo() {
     if (this.props.checkout.shippingAddressId && this.props.checkout.billingAddressId) {
-      return <BillingInfoContainer />;
+      return <BillingInfoFormContainer />;
     }
   }
   render() {

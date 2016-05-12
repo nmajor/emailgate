@@ -20,7 +20,7 @@ class CompilationAddToCart extends Component {
 
     this.props.submitForm(this.state);
   }
-  renderCartForm() {
+  renderAddToCartForm() {
     return (<form>
       <div className="form-group">
         <label htmlFor="quantity">Quantity</label>
@@ -53,7 +53,7 @@ class CompilationAddToCart extends Component {
       {this.renderEmailCount()}
       {this.renderPdfPageCount()}
       {this.renderProductInfo()}
-      {this.renderCartForm()}
+      {this.renderAddToCartForm()}
     </div>);
   }
 }

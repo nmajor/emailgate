@@ -3,6 +3,7 @@ import React from 'react';
 
 // containers
 import App from './container/App';
+import Terms from './components/Terms';
 import RegisterContainer from './container/RegisterContainer';
 import LoginContainer from './container/LoginContainer';
 import NewAccountContainer from './container/NewAccountContainer';
@@ -11,6 +12,7 @@ import NewCompilationContainer from './container/NewCompilationContainer';
 import CompilationContainer from './container/CompilationContainer';
 import CartContainer from './container/CartContainer';
 import CheckoutContainer from './container/CheckoutContainer';
+import CheckoutConfirmContainer from './container/CheckoutConfirmContainer';
 import NewAddressContainer from './container/NewAddressContainer';
 import EditAddressContainer from './container/EditAddressContainer';
 
@@ -41,11 +43,13 @@ import DashboardContainer from './container/DashboardContainer';
 const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={Home} />
+    <Route path="/terms" component={Terms} />
     <Route path="/register" component={RegisterContainer}/>
     <Route path="/login" component={LoginContainer}/>
     <Route path="/dashboard" component={DashboardContainer}/>
     <Route path="/cart" component={CartContainer} />
     <Route path="/checkout" component={CheckoutContainer} />
+    <Route path="/checkout/confirm" component={CheckoutConfirmContainer} />
     <Route path="/addresses/new" component={NewAddressContainer} />
     <Route path="/addresses/:id/edit" component={EditAddressContainer} />
     <Route path="/accounts/new" component={NewAccountContainer}/>

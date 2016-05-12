@@ -10,6 +10,7 @@ class CartFormContainer extends Component {
 
     this.removeCartItem = this.removeCartItem.bind(this);
     this.updateCartItem = this.updateCartItem.bind(this);
+    this.props.dispatch(Actions.getCart());
   }
   removeCartItem(cartItem) {
     this.props.dispatch(Actions.removeCartItem(cartItem._id));
@@ -24,6 +25,7 @@ class CartFormContainer extends Component {
         products={this.props.config.products}
         removeItem={this.removeCartItem}
         updateItem={this.updateCartItem}
+        editable={this.props.editable}
       />);
     }
   }
@@ -47,6 +49,7 @@ CartFormContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   config: PropTypes.object.isRequired,
   cart: PropTypes.object.isRequired,
+  editable: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(CartFormContainer);

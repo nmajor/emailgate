@@ -26,8 +26,14 @@ class CartForm extends Component {
         product={product}
         remove={this.props.removeItem}
         update={this.props.updateItem}
+        editable={this.props.editable}
       />);
     });
+  }
+  renderActionsHeader() {
+    if (this.props.editable !== false) {
+      return <th style={{ width: '5%' }}></th>;
+    }
   }
   renderTableHeader() {
     if (this.props.cart.items && this.props.cart.items.length > 0) {
@@ -35,9 +41,9 @@ class CartForm extends Component {
         <tr>
           <th style={{ width: '52%' }}>Product</th>
           <th style={{ width: '10%' }} >Price</th>
-          <th style={{ width: '10%' }}>Quantity</th>
-          <th style={{ width: '23%' }} className="text-center">Subtotal</th>
-          <th style={{ width: '5%' }}></th>
+          <th style={{ width: '10%' }} className="text-center">Quantity</th>
+          <th style={{ width: '23%' }} className={this.props.editable ? 'text-center' : 'text-right'}>Subtotal</th>
+          {this.renderActionsHeader()}
         </tr>
       </thead>);
     }
@@ -48,7 +54,7 @@ class CartForm extends Component {
         <th style={{ width: '10%' }}></th>
         <th style={{ width: '10%' }}></th>
         <th style={{ width: '23%' }}></th>
-        <th style={{ width: '5%' }}></th>
+        {this.renderActionsHeader()}
       </tr>
     </thead>);
   }
@@ -67,21 +73,31 @@ class CartForm extends Component {
       return <span className="outside-button-loading"><Loading /></span>;
     }
   }
-  renderTableFooter() {
-    return (<tfoot>
-			<tr>
-				<td></td>
-				<td colSpan="2" className="hidden-xs"></td>
-				<td className="hidden-xs text-center"><strong>Total ${prettyPrice(this.getCartTotal())}</strong></td>
-				<td></td>
-			</tr>
-      <tr>
+  renderActionFooter() {
+    if (this.props.editable !== false) {
+      return <td></td>;
+    }
+  }
+  renderActions() {
+    if (this.props.editable !== false) {
+      return (<tr>
         <td colSpan="5" className="text-right">
           {this.renderLoading()}
           {this.renderContinueShoppingAction()}
           {this.renderCheckoutAction()}
         </td>
-      </tr>
+      </tr>);
+    }
+  }
+  renderTableFooter() {
+    return (<tfoot>
+			<tr>
+				<td></td>
+				<td colSpan="2"></td>
+				<td className={this.props.editable ? 'text-center' : 'text-right'}><strong>Total ${prettyPrice(this.getCartTotal())}</strong></td>
+        {this.renderActionFooter()}
+			</tr>
+      {this.renderActions()}
 		</tfoot>);
   }
   render() {
@@ -100,6 +116,7 @@ CartForm.propTypes = {
   products: PropTypes.array.isRequired,
   removeItem: PropTypes.func.isRequired,
   updateItem: PropTypes.func.isRequired,
+  editable: PropTypes.bool,
 };
 
 export default CartForm;

@@ -28,19 +28,25 @@ class CartItemForm extends Component {
     return (<td>${prettyPrice(this.props.product.price)}</td>);
   }
   renderItemQuantity() {
-    return (<td>
-      <input
-        name="quantity"
-        type="number"
-        className="form-control text-center"
-        onChange={this.setFormState}
-        value={this.props.cartItem.quantity}
-      />
+    if (this.props.editable !== false) {
+      return (<td>
+        <input
+          name="quantity"
+          type="number"
+          className="form-control text-center"
+          onChange={this.setFormState}
+          value={this.props.cartItem.quantity}
+        />
+      </td>);
+    }
+
+    return (<td className="text-center">
+      {this.props.cartItem.quantity}
     </td>);
   }
   renderSubtotal() {
     const subtotal = prettyPrice(this.props.product.price * this.props.cartItem.quantity);
-    return (<td className="text-center">
+    return (<td className={this.props.editable ? 'text-center' : 'text-right'}>
       ${subtotal}
     </td>);
   }
@@ -50,13 +56,15 @@ class CartItemForm extends Component {
     </span>);
   }
   renderActions() {
-    if (this.props.cartItem.fetching) {
-      return <td className="actions"><Loading /></td>;
-    }
+    if (this.props.editable !== false) {
+      if (this.props.cartItem.fetching) {
+        return <td className="actions"><Loading /></td>;
+      }
 
-    return (<td className="actions">
-      {this.renderRemoveAction()}
-    </td>);
+      return (<td className="actions">
+        {this.renderRemoveAction()}
+      </td>);
+    }
   }
   renderItemForm() {
     return (<div>
@@ -81,6 +89,7 @@ CartItemForm.propTypes = {
   product: PropTypes.object.isRequired,
   remove: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,
+  editable: PropTypes.bool,
 };
 
 export default CartItemForm;
