@@ -16,12 +16,12 @@ class Header extends Component {
     }));
   }
   renderCartBadge() {
-    if (this.props.cart.items.length > 0) {
+    if (_.get(this.props.cart, 'items.length') > 0) {
       return <span className="badge">{this.props.cart.items.length}</span>;
     }
   }
   renderCartAction() {
-    if (this.props.cart.items.length > 0) {
+    if (_.get(this.props.cart, 'items.length') > 0) {
       return (<Link to="/cart">
         <span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
         {this.renderCartBadge()}

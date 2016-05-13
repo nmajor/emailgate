@@ -36,7 +36,7 @@ class OrderForm extends Component {
     </div>);
   }
   renderSubmitAction() {
-    return <div className="btn btn-success" disabled={!this.state.terms} onClick={this.handleSubmit}>Submit</div>;
+    return <div className="btn btn-success" disabled={!this.state.terms || this.props.submitting} onClick={this.handleSubmit}>Submit</div>;
   }
   render() {
     return (<div>

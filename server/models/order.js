@@ -78,7 +78,7 @@ OrderSchema.methods.submitPayment = function submitPayment() {
     stripe.charges.create({
       amount: this.amount,
       currency: 'usd',
-      source: this.data.stripeTokenId,
+      source: this.data.stripeToken.id,
       // description: '',
       metadata: { orderId: this._id },
     }, (err, charge) => {

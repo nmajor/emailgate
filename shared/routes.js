@@ -30,6 +30,7 @@ import EditCompilationPageContainer from './container/EditCompilationPageContain
 import PreviewCompilationPageContainer from './container/PreviewCompilationPageContainer';
 
 import CompilationPreviewContainer from './container/CompilationPreviewContainer';
+import ViewOrderContainer from './container/ViewOrderContainer';
 
 import CompilationCheckoutContainer from './container/CompilationCheckoutContainer';
 
@@ -50,6 +51,7 @@ const routes = (
     <Route path="/cart" component={CartContainer} />
     <Route path="/checkout" component={CheckoutContainer} />
     <Route path="/checkout/confirm" component={CheckoutConfirmContainer} />
+    <Route path="/orders/:id" component={ViewOrderContainer} />
     <Route path="/addresses/new" component={NewAddressContainer} />
     <Route path="/addresses/:id/edit" component={EditAddressContainer} />
     <Route path="/accounts/new" component={NewAccountContainer}/>

@@ -27,14 +27,18 @@ class CheckoutConfirmContainer extends Component {
       // billingAddress: this.billingAddress,
       data: {
         terms: props.terms,
-        stripeTokenId: this.props.checkout.stripeToken.id,
+        stripeToken: this.props.checkout.stripeToken,
       },
     };
 
     this.setState({ submitting: true });
-    this.props.dispatch(Actions.createOrder(orderProps, () => {
+    this.props.dispatch(Actions.createOrder(orderProps, (order) => {
       this.setState({ submitting: false });
+      this.redirectToView(order);
     }));
+  }
+  redirectToView(order) {
+    this.context.router.push(`/orders/${order._id}`);
   }
   renderCartSummary() {
     return <CartFormContainer editable={false} />;
@@ -43,12 +47,8 @@ class CheckoutConfirmContainer extends Component {
     if (this.shippingAddress) {
       return (<div>
         <h3>Ship To:</h3>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="selected-address">
-              <AddressListItem address={this.shippingAddress} />
-            </div>
-          </div>
+        <div className="selected-address">
+          <AddressListItem address={this.shippingAddress} />
         </div>
       </div>);
     }
@@ -67,8 +67,14 @@ class CheckoutConfirmContainer extends Component {
       <Header />
       <div className="container">
         <h1>Confirm Order</h1>
-        {this.renderShippingAddress()}
-        {this.renderBillingInfoSummary()}
+        <div className="row">
+          <div className="col-md-6">
+            {this.renderShippingAddress()}
+          </div>
+          <div className="col-md-6">
+            {this.renderBillingInfoSummary()}
+          </div>
+        </div>
         {this.renderCartSummary()}
         {this.renderOrderForm()}
       </div>
@@ -83,6 +89,10 @@ function mapStateToProps(store) {
     cart: store.cart,
   };
 }
+
+CheckoutConfirmContainer.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 CheckoutConfirmContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
