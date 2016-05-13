@@ -11,6 +11,8 @@ class BillingInfoForm extends Component {
     this.state = {
       focused: 'number',
     };
+
+    console.log(this.props.fields);
   }
   getFocusedFromActiveField(activeField) {
     const focusedMap = {
@@ -29,11 +31,11 @@ class BillingInfoForm extends Component {
       return <span className="outside-button-loading"><Loading /></span>;
     }
   }
-  renderErrors() {
+  renderCardErrors() {
     let errors = [];
 
-    if (!_.isEmpty(this.props.errors)) {
-      errors = _.map(this.props.errors, (val, key) => {
+    if (!_.isEmpty(this.props.cardErrors)) {
+      errors = _.map(this.props.cardErrors, (val, key) => {
         return <div key={key}>{val}</div>;
       });
     }
@@ -79,7 +81,7 @@ class BillingInfoForm extends Component {
                 <div className="form-group">
                   <label>Card Number</label>
                   <div className="input-group">
-                    <input type="text" className="form-control" data-focused="number" {...number}/>
+                    <input type="text" className="form-control" {...number}/>
                     <span className="input-group-addon"><span className="glyphicon glyphicon-credit-card" aria-hidden="true"></span></span>
                   </div>
                 </div>
@@ -105,7 +107,7 @@ class BillingInfoForm extends Component {
                 </div>
               </div>
             </div>
-            {this.renderErrors()}
+            {this.renderCardErrors()}
             <div className="form-group">
               <button className="btn btn-success" type="submit" disabled={submitting}>Submit</button>
               {this.renderSubmitting()}
@@ -120,7 +122,7 @@ class BillingInfoForm extends Component {
 
 BillingInfoForm.propTypes = {
   fields: PropTypes.object.isRequired,
-  errors: PropTypes.object,
+  cardErrors: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   billingAddress: PropTypes.object.isRequired,

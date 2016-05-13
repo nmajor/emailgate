@@ -4,6 +4,7 @@ import * as Actions from '../redux/actions/index';
 import Header from '../components/Header';
 import AccountsListContainer from '../container/AccountsListContainer';
 import CompilationsListContainer from '../container/CompilationsListContainer';
+import OrdersListContainer from '../container/OrdersListContainer';
 import { Link } from 'react-router';
 import Loading from '../components/Loading';
 
@@ -17,6 +18,9 @@ class DashboardContainer extends Component {
     }
     if (this.props.accounts.length < 1 && !this.props.fetching.accounts) {
       this.props.dispatch(Actions.getAccounts());
+    }
+    if (this.props.orders.length < 1 && !this.props.fetching.orders) {
+      this.props.dispatch(Actions.getOrders());
     }
   }
   renderDashboard() {
@@ -34,6 +38,7 @@ class DashboardContainer extends Component {
     return (<div>
       <CompilationsListContainer />
       <AccountsListContainer />
+      <OrdersListContainer />
     </div>);
   }
   render() {
@@ -56,12 +61,16 @@ DashboardContainer.need = [
   (params, cookie) => {
     return Actions.getCompilations.bind(null, cookie)();
   },
+  (params, cookie) => {
+    return Actions.getOrders.bind(null, cookie)();
+  },
 ];
 
 function mapStateToProps(store) {
   return {
     compilations: store.compilations,
     accounts: store.accounts,
+    orders: store.orders,
     fetching: store.fetching,
   };
 }
@@ -70,6 +79,7 @@ DashboardContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilations: PropTypes.array.isRequired,
   accounts: PropTypes.array.isRequired,
+  orders: PropTypes.array.isRequired,
   fetching: PropTypes.object.isRequired,
 };
 

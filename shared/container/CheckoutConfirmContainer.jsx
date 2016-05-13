@@ -34,6 +34,7 @@ class CheckoutConfirmContainer extends Component {
     this.setState({ submitting: true });
     this.props.dispatch(Actions.createOrder(orderProps, (order) => {
       this.setState({ submitting: false });
+      this.props.dispatch(Actions.getCart());
       this.redirectToView(order);
     }));
   }

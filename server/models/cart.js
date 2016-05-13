@@ -22,6 +22,7 @@ const CartItemSchema = new Schema({
 const CartSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _user: { type: String, ref: 'User' },
+  _order: { type: String, ref: 'Order' },
   items: [CartItemSchema],
 }, {
   timestamps: true,
@@ -53,7 +54,7 @@ CartSchema.methods.addItem = function addItem(itemData) {
   });
 
   if (existingItemIndex > -1) {
-    this.items[existingItemIndex].quantity += itemData.quantity;
+    this.items[existingItemIndex].quantity += parseInt(itemData.quantity, 10);
   } else {
     this.items.push(itemData);
   }

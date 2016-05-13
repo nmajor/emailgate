@@ -49,8 +49,6 @@ https://stripe.com/docs/testing
 
 ### Todo Short
 - Error handling for the OrderForm (/checkout/confirm)
-- Need to redirect back to the /checkout page if cart or checkout info is missing when loading the /checkout/confirm page
-- ERROR: when entering my CC info and getting the year wrong, it wouldnt let me change and resubmit. Clicking submit again did nothing. Maybe has to do with the touch attribute of the fields.
 - Need to add validation to the shipping address for the order model.
 - Need to add a redirect after the checkout confirm and payment processing thing is done.
 - For the google account authentication make it so the token only lasts a day and then the user has to re-authenticate. I dont want to be storing super tokens in my database.
@@ -84,6 +82,8 @@ https://stripe.com/docs/testing
 
 ### Finished Todos
 
+- ERROR: when entering my CC info and getting the year wrong, it wouldnt let me change and resubmit. Clicking submit again did nothing. Maybe has to do with the touch attribute of the fields.
+- Need to redirect back to the /checkout page if cart or checkout info is missing when loading the /checkout/confirm page
 - Make a big button to "Get started by creating an email compilation" for the dashboard if user has no compilations.
 - Combine the emails page and the pages page into a compilation customization page. Call the page "Edit"
 - Add loading gif to new compilation form.

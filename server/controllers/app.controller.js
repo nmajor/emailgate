@@ -21,7 +21,7 @@ export function getAppConfig(req, res) {
 
 export function getUserCart(req, res) {
   if (req.user) {
-    Cart.findOrCreate({ _user: req.user._id })
+    Cart.findOrCreate({ _user: req.user._id, _order: null })
     .then((cart) => {
       res.json(cart);
     });

@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import AddressListItem from './AddressListItem';
 import BillingInfoSummary from './BillingInfoSummary';
 import CartFormContainer from '../container/CartFormContainer';
@@ -29,6 +30,7 @@ class OrderView extends Component {
   render() {
     return (<div>
       <h1>Order Details</h1>
+      <Link className="btn btn-default" to="/dashboard">Back to Dashboard</Link>
       <div className="row">
         <div className="col-md-6">
           {this.renderShippingAddress()}

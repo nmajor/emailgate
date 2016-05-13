@@ -1,0 +1,15 @@
+.orders-list {
+  .orders-list-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: block;
+    text-decoration: inherit;
+    color: inherit;
+
+    &:hover {
+      border-color: #909090;
+      cursor: pointer;
+    }
+  }
+}

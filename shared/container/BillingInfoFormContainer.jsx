@@ -15,7 +15,6 @@ class BillingInfoFormContainer extends Component {
     this.billingAddress = _.find(this.props.addresses, (address) => { return address._id === this.props.checkout.billingAddressId; }) || {};
     this.submitBillingForm = this.submitBillingForm.bind(this);
     this.getStripeToken = this.getStripeToken.bind(this);
-    this.validateCardData = this.validateCardData.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     this.billingAddress = _.find(nextProps.addresses, (address) => { return address._id === nextProps.checkout.billingAddressId; }) || {};
@@ -40,9 +39,6 @@ class BillingInfoFormContainer extends Component {
   }
   redirectToNext() {
     this.context.router.push(`/checkout/confirm`);
-  }
-  validateCardData() {
-    return this.state.cardErrors;
   }
   submitBillingForm(props) {
     const billingName = `${this.billingAddress.firstName} ${this.billingAddress.lastName}`;
@@ -70,7 +66,7 @@ class BillingInfoFormContainer extends Component {
       <BillingInfoForm
         billingAddress={this.billingAddress}
         onSubmit={this.submitBillingForm}
-        validate={this.validateCardData}
+        cardErrors={this.state.cardErrors}
       />
     </div>);
   }
