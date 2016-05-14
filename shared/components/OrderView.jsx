@@ -2,7 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import AddressListItem from './AddressListItem';
 import BillingInfoSummary from './BillingInfoSummary';
-import CartFormContainer from '../container/CartFormContainer';
+import CartForm from './CartForm';
+import _ from 'lodash';
 
 class OrderView extends Component {
   constructor(props, context) {
@@ -25,7 +26,11 @@ class OrderView extends Component {
     </div>);
   }
   renderCartSummary() {
-    return <CartFormContainer editable={false} />;
+    console.log(_.map(this.props.order.items, (item) => { return item.product; }));
+    return (<CartForm
+      cart={this.props.order}
+      editable={false}
+    />);
   }
   render() {
     return (<div>

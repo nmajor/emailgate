@@ -247,7 +247,7 @@ export default (io) => {
     socket.on('REMOVE_CART_ITEM', (data) => {
       console.log('REMOVE_CART_ITEM');
       User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Cart.findOne({ _user: user._id }))
+      .then(user => Cart.findCurrent({ _user: user._id, _order: null }))
       .then((cart) => {
         const cartItemIndex = _.findIndex(cart.items, (cartItem) => { return cartItem._id === data.cartItemId; });
         if (cartItemIndex > -1) {

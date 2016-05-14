@@ -28,6 +28,16 @@ class OrderForm extends Component {
       return <span className="outside-button-loading"><Loading /></span>;
     }
   }
+  renderBackAction() {
+    if (this.props.error) {
+      return <div className="btn btn-danger left-bumper" disabled={this.props.submitting} onClick={this.props.back}>Back</div>;
+    }
+  }
+  renderError() {
+    if (this.props.error) {
+      return <div className="text-danger bottom-bumper">{this.props.error.message}</div>;
+    }
+  }
   renderTerms() {
     return (<div className="checkbox">
       <label>
@@ -43,7 +53,9 @@ class OrderForm extends Component {
       <form>
         {this.renderTerms()}
         <div>
+          {this.renderError()}
           {this.renderSubmitAction()}
+          {this.renderBackAction()}
           {this.renderSubmitting()}
         </div>
       </form>
@@ -53,7 +65,9 @@ class OrderForm extends Component {
 
 OrderForm.propTypes = {
   submit: PropTypes.func.isRequired,
+  back: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  error: PropTypes.object,
 };
 
 export default OrderForm;

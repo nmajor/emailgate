@@ -11,8 +11,6 @@ class BillingInfoForm extends Component {
     this.state = {
       focused: 'number',
     };
-
-    console.log(this.props.fields);
   }
   getFocusedFromActiveField(activeField) {
     const focusedMap = {

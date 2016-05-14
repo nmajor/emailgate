@@ -44,7 +44,7 @@ export function prettyPrice(price) {
 
 export function cartItemsTotal(items, products) {
   const itemSubtotals = _.map(items, (item) => {
-    const product = _.find(products, (prod) => {
+    const product = item.product || _.find(products, (prod) => {
       return parseInt(prod._id, 10) === parseInt(item.productId, 10);
     });
 

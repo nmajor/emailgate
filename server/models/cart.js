@@ -30,7 +30,7 @@ const CartSchema = new Schema({
 
 CartSchema.statics.findOrNew = function findOrNew(query) {
   return new Promise((resolve) => {
-    return this.findOne(query)
+    return this.findCurrent(query)
     .then((cart) => {
       if (cart) {
         resolve(cart);
@@ -46,6 +46,12 @@ CartSchema.statics.findOrCreate = function findOrCreate(query) {
   .then((cart) => {
     return cart.save();
   });
+};
+
+CartSchema.statics.findCurrent = function findOrCreate(query) {
+  const newQuery = Object.assign({}, query, { _order: null });
+
+  return this.findOne(newQuery);
 };
 
 CartSchema.methods.addItem = function addItem(itemData) {

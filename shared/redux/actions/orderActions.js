@@ -80,7 +80,7 @@ export function createOrder(orderProps, cb) {
       return res.json();
     })
     .then((res) => {
-      if (res.error) {
+      if (res.error && !res._id) {
         throw new Error(res.error.message);
       }
 

@@ -14,11 +14,16 @@ class CheckoutConfirmContainer extends Component {
 
     this.state = {
       submitting: false,
+      error: null,
     };
 
     this.shippingAddress = _.find(this.props.addresses, (address) => { return address._id === this.props.checkout.shippingAddressId; });
     // this.billingAddress = _.find(this.props.addresses, (address) => { return address._id === this.props.checkout.billingAddressId; });
     this.submitOrder = this.submitOrder.bind(this);
+    this.back = this.back.bind(this);
+  }
+  back() {
+    this.context.router.goBack();
   }
   submitOrder(props) {
     const orderProps = {
@@ -31,11 +36,16 @@ class CheckoutConfirmContainer extends Component {
       },
     };
 
-    this.setState({ submitting: true });
+    this.setState({ submitting: true, error: null });
     this.props.dispatch(Actions.createOrder(orderProps, (order) => {
       this.setState({ submitting: false });
-      this.props.dispatch(Actions.getCart());
-      this.redirectToView(order);
+
+      if (!order.error) {
+        this.props.dispatch(Actions.getCart());
+        this.redirectToView(order);
+      } else {
+        this.setState({ error: order.error });
+      }
     }));
   }
   redirectToView(order) {
@@ -61,7 +71,12 @@ class CheckoutConfirmContainer extends Component {
     </div>);
   }
   renderOrderForm() {
-    return <OrderForm submit={this.submitOrder} submitting={this.state.submitting} />;
+    return (<OrderForm
+      submit={this.submitOrder}
+      back={this.back}
+      submitting={this.state.submitting}
+      error={this.state.error}
+    />);
   }
   render() {
     return (<div>

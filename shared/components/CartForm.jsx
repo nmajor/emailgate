@@ -16,7 +16,7 @@ class CartForm extends Component {
   }
   renderItemForms() {
     return this.props.cart.items.map((cartItem) => {
-      const product = _.find(this.props.products, (prod) => {
+      const product = cartItem.product || _.find(this.props.products, (prod) => {
         return parseInt(prod._id, 10) === parseInt(cartItem.productId, 10);
       });
 
@@ -113,9 +113,9 @@ class CartForm extends Component {
 
 CartForm.propTypes = {
   cart: PropTypes.object.isRequired,
-  products: PropTypes.array.isRequired,
-  removeItem: PropTypes.func.isRequired,
-  updateItem: PropTypes.func.isRequired,
+  products: PropTypes.array,
+  removeItem: PropTypes.func,
+  updateItem: PropTypes.func,
   editable: PropTypes.bool,
 };
 

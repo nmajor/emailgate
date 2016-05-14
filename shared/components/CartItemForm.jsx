@@ -87,8 +87,8 @@ class CartItemForm extends Component {
 CartItemForm.propTypes = {
   cartItem: PropTypes.object.isRequired,
   product: PropTypes.object.isRequired,
-  remove: PropTypes.func.isRequired,
-  update: PropTypes.func.isRequired,
+  remove: PropTypes.func,
+  update: PropTypes.func,
   editable: PropTypes.bool,
 };
 

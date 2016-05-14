@@ -15,7 +15,7 @@ const OrderSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _user: { type: String, ref: 'User' },
   amount: Number,
-  status: { type: String, default: 'new' },
+  error: {},
   shippingAddress: {},
   // billingAddress: {},
   data: {},
@@ -72,7 +72,7 @@ OrderSchema.methods.getItems = function getItems() {
 };
 
 OrderSchema.methods.submitPayment = function submitPayment() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
     stripe.charges.create({
@@ -82,12 +82,12 @@ OrderSchema.methods.submitPayment = function submitPayment() {
       // description: '',
       metadata: { orderId: this._id },
     }, (err, charge) => {
-      if (err && err.type === 'StripeCardError') {
-        reject(err);
-        // The card has been declined
+      if (err) {
+        this.error = err;
+      } else {
+        this.transaction = charge;
       }
 
-      this.transaction = charge;
       resolve(this.save());
     });
   });

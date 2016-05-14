@@ -9,7 +9,7 @@ export function findOneOrder(req, res) {
 }
 
 export function getOrders(req, res) {
-  Order.find({ _user: req.user._id })
+  Order.find({ _user: req.user._id, transaction: { $ne: null } })
   .then((orders) => {
     res.json(orders);
   });
@@ -20,14 +20,18 @@ export function createOrder(req, res) {
   newOrder._user = req.user._id;
   newOrder.save()
   .then((order) => {
-    return Cart.findOne({ _user: order._user, _id: req.body.cartId })
-    .then((cart) => {
-      cart._order = order._id; // eslint-disable-line no-param-reassign
-      return cart.save();
-    })
-    .then(() => {
-      return Promise.resolve(order);
-    });
+    if (order.transaction) {
+      return Cart.findOne({ _user: order._user, _id: req.body.cartId })
+      .then((cart) => {
+        cart._order = order._id; // eslint-disable-line no-param-reassign
+        return cart.save();
+      })
+      .then(() => {
+        return Promise.resolve(order);
+      });
+    }
+
+    return Promise.resolve(order);
   })
   .then((order) => {
     return order.submitPayment();
