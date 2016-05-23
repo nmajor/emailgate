@@ -9,6 +9,8 @@ http://stackoverflow.com/a/260829/1556952
 
 ### Notes
 
+https://github.com/Automattic/kue
+
 - Stripe Guide
 https://davidwalsh.name/step-step-guide-stripe-payments-react
 
