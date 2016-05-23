@@ -40,6 +40,7 @@ class CoverTemplate {
     const mainStyles = {
       background: '#222',
       color: '#fff',
+      fontSize: '20px',
     };
 
     return (<div style={mainStyles}>
@@ -52,7 +53,7 @@ class CoverTemplate {
     const titleInput = <div className="editable" name="title" contentEditable onBlur={setFormState}>{this.content.title}</div>;
     const subtitleInput = <div className="editable" name="subtitle" contentEditable onBlur={setFormState}>{this.content.subtitle}</div>;
 
-    return (<div>
+    return (<div style={{ fontSize: '20px' }}>
       {this.renderTitle(titleInput)}
       {this.renderSubtitle(subtitleInput)}
     </div>);

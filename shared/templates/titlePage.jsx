@@ -54,7 +54,7 @@ class TitlePageTemplate {
   }
 
   render() {
-    return (<div>
+    return (<div style={{ fontSize: '20px' }}>
       {this.renderTitle(this.content.title)}
       {this.renderSubtitle(this.content.subtitle)}
       {this.renderDates()}
@@ -65,7 +65,7 @@ class TitlePageTemplate {
     const titleInput = <div className="editable" name="title" contentEditable onBlur={setFormState}>{this.content.title}</div>;
     const subtitleInput = <div className="editable" name="subtitle" contentEditable onBlur={setFormState}>{this.content.subtitle}</div>;
 
-    return (<div>
+    return (<div style={{ fontSize: '20px', padding: '50px' }}>
       {this.renderTitle(titleInput)}
       {this.renderSubtitle(subtitleInput)}
       {this.renderDates()}

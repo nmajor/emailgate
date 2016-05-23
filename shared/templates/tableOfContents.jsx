@@ -76,7 +76,7 @@ class TableOfContentsTemplate {
   }
 
   render() {
-    return (<div>
+    return (<div style={{ fontSize: '20px', padding: '50px' }}>
       {this.renderPageHeader()}
       {this.renderEntries()}
     </div>);

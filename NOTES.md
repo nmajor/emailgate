@@ -1,4 +1,8 @@
 
+**** Maybe a better lib for pdf generation
+- http://wkhtmltopdf.org/
+
+
 ### Password Storage Notes
 // Good overview of the basic principles of storing hashed passwords
 http://stackoverflow.com/a/260829/1556952
@@ -16,6 +20,12 @@ American Express	3400 0000 0000 009
 Diner's Club	3000 0000 0000 04
 
 https://stripe.com/docs/testing
+
+### PDF SIMULTAION NOTES
+
+- http://stackoverflow.com/questions/16977142/html5-js-preprocess-of-uploaded-html-page-and-simulate-pagebreaks
+
+
 
 - Estimate the number of pages in an email pdf
   - Render the email with the email template inside some sort of container div element
