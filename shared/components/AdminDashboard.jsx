@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import moment from 'moment';
 
 class AdminDashboard extends Component {
   renderCompilationPdfLink(compilation) {
@@ -10,21 +11,45 @@ class AdminDashboard extends Component {
   }
   renderCompilations() {
     return this.props.compilations.map((compilation) => {
-      return <div>{compilation.name} {this.renderCompilationPdfLink(compilation)}</div>;
+      return <div key={compilation._id}>{compilation.name} {this.renderCompilationPdfLink(compilation)}</div>;
     });
   }
   renderUsers() {
     return this.props.users.map((user) => {
-      return <div>{user.name} - {user.email}</div>;
+      return <div key={user._id}>{user.name} - {user.email}</div>;
+    });
+  }
+  renderTasks() {
+    return this.props.workerTasks.map((task) => {
+      return (<div key={task._id}>
+        {task.kind}
+        <span> - Created: {moment(task.startedAt).fromNow()}</span>
+        <span> - Started: {moment(task.startedAt).fromNow()}</span>
+      </div>);
     });
   }
   render() {
     return (<div className="container">
-      <h1>Compilations</h1>
-      {this.renderCompilations()}
+      <div className="row">
+        <div className="col-md-12">
+          <h1>Compilations</h1>
+          {this.renderCompilations()}
+        </div>
+      </div>
 
-      <h1>Users</h1>
-      {this.renderUsers()}
+      <div className="row">
+        <div className="col-md-12">
+          <h1>Users</h1>
+          {this.renderUsers()}
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-md-12">
+          <h1>Worker Tasks</h1>
+          {this.renderTasks()}
+        </div>
+      </div>
     </div>);
   }
 }
@@ -32,6 +57,7 @@ class AdminDashboard extends Component {
 AdminDashboard.propTypes = {
   compilations: PropTypes.array.isRequired,
   users: PropTypes.array.isRequired,
+  workerTasks: PropTypes.array.isRequired,
 };
 
 export default AdminDashboard;

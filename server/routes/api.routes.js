@@ -109,6 +109,7 @@ router.get('/compilations/:id/pages', ensureAuthenticated, PageController.getCom
 
 router.get('/admin/users', ensureAuthenticated, ensureAdmin, AdminController.getUsers);
 router.get('/admin/compilations', ensureAuthenticated, ensureAdmin, AdminController.getCompilations);
+router.get('/admin/tasks', ensureAuthenticated, ensureAdmin, AdminController.getWorkerTasks);
 
 
 module.exports = router;
