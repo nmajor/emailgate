@@ -3,7 +3,7 @@ import shortid from 'shortid';
 // import { emailPdfToBuffer } from '../util/pdf';
 // import pdfjs from 'pdfjs-dist';
 import EmailTemplate from '../../shared/templates/email';
-import * as Queue from '../util/queue';
+import queue from '../queue';
 import _ from 'lodash';
 
 const EmailSchema = new Schema({
@@ -39,7 +39,13 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
 
 EmailSchema.methods.schedulePdfTask = function schedulePdfTask() {
   if (this.propChanged('body') || this.propChanged('template')) {
-    return Queue.enqueue('email-pdf', { emailId: this._id });
+    queue.create('pdf', {
+      title: 'Building pdf file for email',
+      kind: 'email-pdf',
+      emailId: this._id,
+    }).save((err) => {
+      if (err) console.log('An error happened adding email-pdf job to queue');
+    });
   }
 
   return Promise.resolve(this);

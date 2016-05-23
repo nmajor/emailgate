@@ -18,5 +18,4 @@ export default {
   cart: {},
   checkout: {},
   orders: [],
-  workerTasks: [],
 };

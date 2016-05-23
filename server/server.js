@@ -1,4 +1,6 @@
 require('dotenv').config();
+require('./queue');
+
 import Express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
@@ -8,8 +10,10 @@ import http from 'http';
 import socketIo from 'socket.io';
 import session from 'express-session';
 import passport from 'passport';
+
 import connectMongo from 'connect-mongo';
 const ConnectMongo = connectMongo(session);
+
 
 import initialState from '../shared/initialState';
 import socketEvents from './events/index';

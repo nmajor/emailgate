@@ -14,7 +14,6 @@ class AdminDashboardContainer extends Component {
       <AdminDashboard
         users={this.props.allUsers}
         compilations={this.props.allCompilations}
-        workerTasks={this.props.workerTasks}
       />
     </div>);
   }
@@ -23,7 +22,6 @@ class AdminDashboardContainer extends Component {
 AdminDashboardContainer.propTypes = {
   allUsers: PropTypes.array.isRequired,
   allCompilations: PropTypes.array.isRequired,
-  workerTasks: PropTypes.array.isRequired,
 };
 
 export default connect()(AdminDashboardContainer);

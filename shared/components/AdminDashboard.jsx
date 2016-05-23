@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import moment from 'moment';
 
 class AdminDashboard extends Component {
   renderCompilationPdfLink(compilation) {
@@ -19,15 +18,6 @@ class AdminDashboard extends Component {
       return <div key={user._id}>{user.name} - {user.email}</div>;
     });
   }
-  renderTasks() {
-    return this.props.workerTasks.map((task) => {
-      return (<div key={task._id}>
-        {task.kind}
-        <span> - Created: {moment(task.startedAt).fromNow()}</span>
-        <span> - Started: {moment(task.startedAt).fromNow()}</span>
-      </div>);
-    });
-  }
   render() {
     return (<div className="container">
       <div className="row">
@@ -43,13 +33,6 @@ class AdminDashboard extends Component {
           {this.renderUsers()}
         </div>
       </div>
-
-      <div className="row">
-        <div className="col-md-12">
-          <h1>Worker Tasks</h1>
-          {this.renderTasks()}
-        </div>
-      </div>
     </div>);
   }
 }
@@ -57,7 +40,6 @@ class AdminDashboard extends Component {
 AdminDashboard.propTypes = {
   compilations: PropTypes.array.isRequired,
   users: PropTypes.array.isRequired,
-  workerTasks: PropTypes.array.isRequired,
 };
 
 export default AdminDashboard;

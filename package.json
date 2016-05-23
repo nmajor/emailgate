@@ -50,6 +50,7 @@
     "imap": "^0.8.16",
     "install": "^0.6.1",
     "isomorphic-fetch": "^2.2.1",
+    "kue": "^0.11.0",
     "lodash": "^4.6.1",
     "mailparser": "^0.5.3",
     "manta": "^2.0.5",
