@@ -6,12 +6,12 @@ import Page from '../models/page';
 import Cart from '../models/cart';
 import { emailPdf, pagePdf } from '../util/pdf';
 // import { uploadStream } from '../util/uploader';
-import * as Docker from '../util/docker';
+// import * as Docker from '../util/docker';
 import _ from 'lodash';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
-import { processEmails, emailPageMap, processPdf } from '../util/helpers';
+import { processEmails, emailPageMap } from '../util/helpers';
 
 
 // import Bluebird from 'bluebird';
@@ -187,35 +187,37 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
-        return Docker.buildCompilationPdf(compilation, socket, (entry) => {
-          socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry });
+        compilation.schedulePdfTask();
 
-          if (entry.type === 'email-pdf') {
-            Email.findOneAndUpdate({ _id: entry.payload._id }, { $set: { pdf: processPdf(entry.payload) } }, { new: true })
-            .then((email) => {
-              socket.emit('UPDATED_COMPILATION_EMAIL', email);
-            });
-          } else if (entry.type === 'page-pdf') {
-            Page.findOneAndUpdate({ _id: entry.payload._id }, { $set: { pdf: processPdf(entry.payload) } }, { new: true })
-            .then((page) => {
-              socket.emit('UPDATED_COMPILATION_PAGE', page);
-            });
-          } else if (entry.type === 'compilation-pdf') {
-            compilation.pdf = processPdf(entry.payload); // eslint-disable-line no-param-reassign
-            compilation.save()
-            .then((savedCompilation) => {
-              socket.emit('BUILD_COMPILATION_PDF_FINISHED', savedCompilation);
-            });
-          }
-        })
-        .catch((err) => {
-          socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry: {
-            type: 'error',
-            message: 'Compilation pdf build failed.',
-            payload: err.message,
-          } });
-          socket.emit('BUILD_COMPILATION_PDF_FINISHED', compilation);
-        });
+        // return Docker.buildCompilationPdf(compilation, socket, (entry) => {
+        //   socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry });
+        //
+        //   if (entry.type === 'email-pdf') {
+        //     Email.findOneAndUpdate({ _id: entry.payload._id }, { $set: { pdf: processPdf(entry.payload) } }, { new: true })
+        //     .then((email) => {
+        //       socket.emit('UPDATED_COMPILATION_EMAIL', email);
+        //     });
+        //   } else if (entry.type === 'page-pdf') {
+        //     Page.findOneAndUpdate({ _id: entry.payload._id }, { $set: { pdf: processPdf(entry.payload) } }, { new: true })
+        //     .then((page) => {
+        //       socket.emit('UPDATED_COMPILATION_PAGE', page);
+        //     });
+        //   } else if (entry.type === 'compilation-pdf') {
+        //     compilation.pdf = processPdf(entry.payload); // eslint-disable-line no-param-reassign
+        //     compilation.save()
+        //     .then((savedCompilation) => {
+        //       socket.emit('BUILD_COMPILATION_PDF_FINISHED', savedCompilation);
+        //     });
+        //   }
+        // })
+        // .catch((err) => {
+        //   socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry: {
+        //     type: 'error',
+        //     message: 'Compilation pdf build failed.',
+        //     payload: err.message,
+        //   } });
+        //   socket.emit('BUILD_COMPILATION_PDF_FINISHED', compilation);
+        // });
       });
     });
 

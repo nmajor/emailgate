@@ -29,7 +29,11 @@ EmailSchema.post('init', function () {  // eslint-disable-line func-names
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   this.getTemplateHtml()
   .then(() => {
-    return this.schedulePdfTask();
+    if (this.propChanged('body') || this.propChanged('template')) {
+      return this.schedulePdfTask();
+    }
+
+    return Promise.resolve(this);
   })
   .then(() => {
     next();
@@ -37,17 +41,13 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
 });
 
 EmailSchema.methods.schedulePdfTask = function schedulePdfTask() {
-  if (this.propChanged('body') || this.propChanged('template')) {
-    queue.create('pdf', {
-      title: 'Building pdf file for email',
-      kind: 'email-pdf',
-      emailId: this._id,
-    }).save((err) => {
-      if (err) console.log('An error happened adding email-pdf job to queue');
-    });
-  }
-
-  return Promise.resolve(this);
+  queue.create('pdf', {
+    title: 'Building pdf file for email',
+    kind: 'email-pdf',
+    emailId: this._id,
+  }).save((err) => {
+    if (err) console.log('An error happened adding email-pdf job to queue');
+  });
 };
 
 EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {

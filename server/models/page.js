@@ -31,7 +31,11 @@ PageSchema.post('init', function () {  // eslint-disable-line func-names
 PageSchema.pre('save', function (next) { // eslint-disable-line func-names
   this.getHtml()
   .then(() => {
-    return this.schedulePdfTask();
+    if (this.propChanged('html')) {
+      return this.schedulePdfTask();
+    }
+
+    return Promise.resolve(this);
   })
   .then(() => {
     next();
@@ -39,17 +43,13 @@ PageSchema.pre('save', function (next) { // eslint-disable-line func-names
 });
 
 PageSchema.methods.schedulePdfTask = function schedulePdfTask() {
-  if (this.propChanged('html')) {
-    queue.create('pdf', {
-      title: 'Building pdf file for page',
-      kind: 'page-pdf',
-      pageId: this._id,
-    }).save((err) => {
-      if (err) console.log('An error happened adding page-pdf job to queue');
-    });
-  }
-
-  return Promise.resolve(this);
+  queue.create('pdf', {
+    title: 'Building pdf file for page',
+    kind: 'page-pdf',
+    pageId: this._id,
+  }).save((err) => {
+    if (err) console.log('An error happened adding page-pdf job to queue');
+  });
 };
 
 PageSchema.methods.getHtml = function getHtml() {
