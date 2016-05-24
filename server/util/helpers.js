@@ -89,18 +89,7 @@ export function emailPageMap(compilationId) {
   return new Promise((resolve) => {
     Email.find({ _compilation: compilationId })
     .then((emails) => {
-      const sortedEmails = sharedHelpers.sortedEmails(emails);
-      const pageMap = {};
-
-      let page = 1;
-      _.forEach(sortedEmails, (email) => {
-        email.pdf = email.pdf || {}; // eslint-disable-line no-param-reassign
-        const pageCount = email.pdf.pageCount || 1;
-        pageMap[email._id] = page;
-        page += pageCount;
-      });
-
-      resolve(pageMap);
+      resolve(sharedHelpers.emailPageMap(emails));
     });
   });
 }

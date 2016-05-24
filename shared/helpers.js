@@ -53,3 +53,18 @@ export function cartItemsTotal(items, products) {
 
   return _.reduce(itemSubtotals, (sum, subtotal) => { return sum + subtotal; });
 }
+
+export function emailPageMap(emails) {
+  const mySortedEmails = sortedEmails(emails);
+  const pageMap = {};
+
+  let page = 1;
+  _.forEach(mySortedEmails, (email) => {
+    email.pdf = email.pdf || {}; // eslint-disable-line no-param-reassign
+    const pageCount = email.pdf.pageCount || 1;
+    pageMap[email._id] = page;
+    page += pageCount;
+  });
+
+  return pageMap;
+}

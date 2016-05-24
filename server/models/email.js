@@ -26,7 +26,6 @@ EmailSchema.post('init', function () {  // eslint-disable-line func-names
   this._original = this.toObject();
 });
 
-
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   this.getTemplateHtml()
   .then(() => {

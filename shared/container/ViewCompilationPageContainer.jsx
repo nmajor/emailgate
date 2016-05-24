@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import CompilationPageNavContainer from './CompilationPageNavContainer';
 import CompilationPageView from '../components/CompilationPageView';
+import { emailPageMap } from '../helpers';
 
 import CoverTemplate from '../templates/cover';
 import TitlePageTemplate from '../templates/titlePage';
@@ -31,7 +32,7 @@ class ViewCompilationPageContainer extends Component {
         case 'table-of-contents' :
           return new TableOfContentsTemplate(this.props.currentPage, {
             emails: _.sortBy(this.props.compilationEmails, (email) => { return email.date; }),
-            pageMap: this.props.compilationEmailPageMap,
+            pageMap: emailPageMap(this.props.compilationEmails),
           });
         default :
           return null;
