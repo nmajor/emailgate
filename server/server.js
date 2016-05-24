@@ -1,5 +1,7 @@
 require('dotenv').config();
-require('./queue');
+
+import kue from 'kue';
+import kueUi from 'kue-ui';
 
 import Express from 'express';
 import mongoose from 'mongoose';
@@ -87,6 +89,18 @@ app.use(Express.static(path.resolve(__dirname, '../static')));
 app.use('/', index);
 app.use('/api', api);
 app.use('/oath2', oath2);
+
+
+kueUi.setup({
+  apiURL: '/kue/api', // IMPORTANT: specify the api url
+  baseURL: '/kue', // IMPORTANT: specify the base url
+  updateInterval: 5000, // Optional: Fetches new data every 5000 ms
+});
+
+// Mount kue JSON api
+app.use('/kue/api', kue.app);
+// Mount UI
+app.use('/kue', kueUi.app);
 
 // Render Initial HTML
 const renderFullPage = (html, renderedState) => {

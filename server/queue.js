@@ -5,6 +5,6 @@ const queue = kue.createQueue({
   redis: process.env.REDIS_URL,
 });
 
-kue.app.listen(7890);
+// kue.app.listen(7890);
 
 export default queue;
