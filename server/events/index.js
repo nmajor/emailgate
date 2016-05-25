@@ -4,14 +4,15 @@ import Compilation from '../models/compilation';
 import Email from '../models/email';
 import Page from '../models/page';
 import Cart from '../models/cart';
-import { emailPdf, pagePdf } from '../util/pdf';
+// import { emailPdf, pagePdf } from '../util/pdf';
 // import { uploadStream } from '../util/uploader';
 // import * as Docker from '../util/docker';
 import _ from 'lodash';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
-import { processEmails, emailPageMap } from '../util/helpers';
+import { processEmails } from '../util/helpers';
+import { watchJob } from '../util/watcher';
 
 
 // import Bluebird from 'bluebird';
@@ -141,20 +142,20 @@ export default (io) => {
       });
     });
 
-    socket.on('GET_COMPILATION_EMAIL_PDF', (data) => {
-      console.log('GET_COMPILATION_EMAIL_PDF');
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
-      .then((email) => {
-        emailPageMap(email._compilation)
-        .then((pageMap) => {
-          const resStream = ss.createStream();
-          ss(socket).emit('COMPILATION_EMAIL_PDF_STREAM', resStream, { email: email.toJSON() });
-          emailPdf(email, pageMap[email._id]).pipe(resStream);
-        });
-      });
-    });
+    // socket.on('GET_COMPILATION_EMAIL_PDF', (data) => {
+    //   console.log('GET_COMPILATION_EMAIL_PDF');
+    //   User.findOne({ email: socket.request.session.passport.user })
+    //   .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+    //   .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
+    //   .then((email) => {
+    //     emailPageMap(email._compilation)
+    //     .then((pageMap) => {
+    //       const resStream = ss.createStream();
+    //       ss(socket).emit('COMPILATION_EMAIL_PDF_STREAM', resStream, { email: email.toJSON() });
+    //       emailPdf(email, pageMap[email._id]).pipe(resStream);
+    //     });
+    //   });
+    // });
 
     socket.on('UPDATE_COMPILATION_PAGE', (data) => {
       console.log('UPDATE_COMPILATION_PAGE');
@@ -170,24 +171,55 @@ export default (io) => {
       });
     });
 
-    socket.on('GET_COMPILATION_PAGE_PDF', (data) => {
-      console.log('GET_COMPILATION_PAGE_PDF');
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Page.findOne({ _compilation: compilation._id, _id: data.pageId }))
-      .then((page) => {
-        const resStream = ss.createStream();
-        ss(socket).emit('COMPILATION_PAGE_PDF_STREAM', resStream, { page: page.toJSON() });
-        pagePdf(page).pipe(resStream);
-      });
-    });
+    // socket.on('GET_COMPILATION_PAGE_PDF', (data) => {
+    //   console.log('GET_COMPILATION_PAGE_PDF');
+    //   User.findOne({ email: socket.request.session.passport.user })
+    //   .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+    //   .then(compilation => Page.findOne({ _compilation: compilation._id, _id: data.pageId }))
+    //   .then((page) => {
+    //     const resStream = ss.createStream();
+    //     ss(socket).emit('COMPILATION_PAGE_PDF_STREAM', resStream, { page: page.toJSON() });
+    //     pagePdf(page).pipe(resStream);
+    //   });
+    // });
 
     socket.on('BUILD_COMPILATION_PDF', (data) => {
       console.log('BUILD_COMPILATION_PDF');
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
-        compilation.schedulePdfTask();
+        return compilation.schedulePdfJob()
+        .then((job) => {
+          watchJob(job, (updatedJob) => {
+            console.log(updatedJob);
+          });
+
+          job.on('complete', () => {
+            Compilation.findOne({ _user: compilation._user, _id: compilation._id })
+            .then((compilation) => { // eslint-disable-line no-shadow
+              socket.emit('UPDATED_COMPILATION', compilation);
+            });
+          });
+          // .on('progress', (progress, data) => { // eslint-disable-line no-shadow
+          //   console.log(job.toJSON().progress);
+          //   console.log(progress);
+          //   // console.log(data);
+          // });
+
+          // .on('failed attempt', function(errorMessage, doneAttempts){
+          //   console.log('Job failed');
+          //
+          // }).on('failed', function(errorMessage){
+          //   console.log('Job failed');
+          //
+          // }).on('progress', function(progress, data){
+          //   console.log('\r  job #' + job.id + ' ' + progress + '% complete with data ', data );
+          //
+          // });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
         // return Docker.buildCompilationPdf(compilation, socket, (entry) => {
         //   socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry });

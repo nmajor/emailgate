@@ -94,7 +94,7 @@ app.use('/oath2', oath2);
 kueUi.setup({
   apiURL: '/kue/api', // IMPORTANT: specify the api url
   baseURL: '/kue', // IMPORTANT: specify the base url
-  updateInterval: 5000, // Optional: Fetches new data every 5000 ms
+  updateInterval: 1000, // Optional: Fetches new data every 5000 ms
 });
 
 // Mount kue JSON api

@@ -35,25 +35,38 @@ CompilationSchema.methods.seedPages = function seedPages() {
   });
 };
 
-CompilationSchema.methods.schedulePdfTask = function schedulePdfTask() {
-  return Promise.all([
-    this.getEmailPositionMap(),
-    this.getEmailPageMap(),
-    this.getPagePositionMap(),
-  ]).then((results) => {
-    const [emailPositionMap, emailPageMap, pagePositionMap] = results;
+CompilationSchema.methods.schedulePdfJob = function schedulePdfJob() {
+  return new Promise((resolve) => {
+    return Promise.all([
+      this.getEmailPositionMap(),
+      this.getEmailPageMap(),
+      this.getPagePositionMap(),
+    ]).then((results) => {
+      const [emailPositionMap, emailPageMap, pagePositionMap] = results;
 
-    queue.create('pdf', {
-      title: 'Building pdf file for compilation',
-      kind: 'compilation-pdf',
-      compilationId: this._id,
-      emailPositionMap,
-      emailPageMap,
-      pagePositionMap,
-    }).save((err) => {
-      if (err) console.log('An error happened adding compilation-pdf job to queue');
+      const job = queue.create('worker', {
+        title: `Building pdf file for compilation ${this._id}`,
+        kind: 'compilation-pdf',
+        referenceModel: 'compilation',
+        referenceId: this._id,
+        emailPositionMap,
+        emailPageMap,
+        pagePositionMap,
+      })
+      .searchKeys(['kind', 'compilationId'])
+      .removeOnComplete(true)
+      .attempts(3)
+      .save((err) => {
+        if (err) console.log('An error happened adding compilation-pdf job to queue');
+
+        resolve(job);
+      });
     });
   });
+};
+
+CompilationSchema.methods.findPdfJob = function findPdfJob() {
+  queue.search();
 };
 
 CompilationSchema.methods.getEmailPositionMap = function getEmailPositionMap() {

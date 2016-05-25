@@ -51,18 +51,18 @@ socket.on('UPDATED_COMPILATION_EMAIL', (email) => {
   store.dispatch(Actions.updateEmailInCompilationEmails(email));
 });
 
-ss(socket).on('COMPILATION_EMAIL_PDF_STREAM', (pdfStream, data) => {
-  console.log('event COMPILATION_EMAIL_PDF_STREAM');
-  const email = data.email;
-
-  const blobStream = require('blob-stream');
-  const pdfBlobStream = pdfStream.pipe(blobStream());
-  pdfBlobStream.on('finish', () => {
-    const pdf = pdfBlobStream.toBlobURL('application/pdf');
-    email.pdf = pdf;
-    store.dispatch(Actions.updateEmailInCompilationEmails(email));
-  });
-});
+// ss(socket).on('COMPILATION_EMAIL_PDF_STREAM', (pdfStream, data) => {
+//   console.log('event COMPILATION_EMAIL_PDF_STREAM');
+//   const email = data.email;
+//
+//   const blobStream = require('blob-stream');
+//   const pdfBlobStream = pdfStream.pipe(blobStream());
+//   pdfBlobStream.on('finish', () => {
+//     const pdf = pdfBlobStream.toBlobURL('application/pdf');
+//     email.pdf = pdf;
+//     store.dispatch(Actions.updateEmailInCompilationEmails(email));
+//   });
+// });
 
 socket.on('UPDATED_COMPILATION_PAGE', (page) => {
   console.log('event UPDATED_COMPILATION_PAGE');
@@ -74,51 +74,51 @@ socket.on('UPDATED_COMPILATION', (compilation) => {
   store.dispatch(Actions.updateCompilationInCompilations(compilation));
 });
 
-ss(socket).on('COMPILATION_PAGE_PDF_STREAM', (pdfStream, data) => {
-  console.log('event COMPILATION_PAGE_PDF_STREAM');
-  const page = data.page;
+// ss(socket).on('COMPILATION_PAGE_PDF_STREAM', (pdfStream, data) => {
+//   console.log('event COMPILATION_PAGE_PDF_STREAM');
+//   const page = data.page;
+//
+//   const blobStream = require('blob-stream');
+//   const pdfBlobStream = pdfStream.pipe(blobStream());
+//   pdfBlobStream.on('finish', () => {
+//     const pdf = pdfBlobStream.toBlobURL('application/pdf');
+//     page.pdf = pdf;
+//     store.dispatch(Actions.updatePageInCompilationPages(page));
+//   });
+// });
 
-  const blobStream = require('blob-stream');
-  const pdfBlobStream = pdfStream.pipe(blobStream());
-  pdfBlobStream.on('finish', () => {
-    const pdf = pdfBlobStream.toBlobURL('application/pdf');
-    page.pdf = pdf;
-    store.dispatch(Actions.updatePageInCompilationPages(page));
-  });
-});
+// ss(socket).on('COMPILATION_PDF_STREAM', (pdfStream, data) => {
+//   console.log('event COMPILATION_PDF_STREAM');
+//   const compilation = data.compilation;
+//
+//   const blobStream = require('blob-stream');
+//   const pdfBlobStream = pdfStream.pipe(blobStream());
+//   pdfBlobStream.on('finish', () => {
+//     const pdf = pdfBlobStream.toBlobURL('application/pdf');
+//     compilation.pdf = pdf;
+//     store.dispatch(Actions.updateCompilationInCompilations(compilation));
+//   });
+// });
 
-ss(socket).on('COMPILATION_PDF_STREAM', (pdfStream, data) => {
-  console.log('event COMPILATION_PDF_STREAM');
-  const compilation = data.compilation;
-
-  const blobStream = require('blob-stream');
-  const pdfBlobStream = pdfStream.pipe(blobStream());
-  pdfBlobStream.on('finish', () => {
-    const pdf = pdfBlobStream.toBlobURL('application/pdf');
-    compilation.pdf = pdf;
-    store.dispatch(Actions.updateCompilationInCompilations(compilation));
-  });
-});
-
-socket.on('UPDATED_COMPILATION_EMAIL_PAGE_MAP', (pageMap) => {
-  console.log('event UPDATED_COMPILATION_EMAIL_PAGE_MAP');
-  store.dispatch(Actions.setCompilationEmailPageMap(pageMap));
-});
+// socket.on('UPDATED_COMPILATION_EMAIL_PAGE_MAP', (pageMap) => {
+//   console.log('event UPDATED_COMPILATION_EMAIL_PAGE_MAP');
+//   store.dispatch(Actions.setCompilationEmailPageMap(pageMap));
+// });
 
 socket.on('REMOVED_ACCOUNT', (account) => {
   console.log('event REMOVED_ACCOUNT');
   store.dispatch(Actions.removeAccountFromAccounts(account));
 });
 
-socket.on('COMPILATION_PDF_LOG_ENTRY', (data) => {
-  console.log('event COMPILATION_PDF_LOG_ENTRY');
-  store.dispatch(Actions.addEntryToCompilationPdfLog(data.entry));
-});
+// socket.on('COMPILATION_PDF_LOG_ENTRY', (data) => {
+//   console.log('event COMPILATION_PDF_LOG_ENTRY');
+//   store.dispatch(Actions.addEntryToCompilationPdfLog(data.entry));
+// });
 
-socket.on('BUILD_COMPILATION_PDF_FINISHED', (compilation) => {
-  console.log('event BUILD_COMPILATION_PDF_FINISHED');
-  store.dispatch(Actions.updateCompilationInCompilations(compilation));
-});
+// socket.on('BUILD_COMPILATION_PDF_FINISHED', (compilation) => {
+//   console.log('event BUILD_COMPILATION_PDF_FINISHED');
+//   store.dispatch(Actions.updateCompilationInCompilations(compilation));
+// });
 
 socket.on('UPDATED_CART', (cart) => {
   console.log('event UPDATED_CART');

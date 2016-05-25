@@ -30,7 +30,7 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   this.getTemplateHtml()
   .then(() => {
     if (this.propChanged('body') || this.propChanged('template')) {
-      return this.schedulePdfTask();
+      return this.schedulePdfJob();
     }
 
     return Promise.resolve(this);
@@ -40,12 +40,17 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   });
 });
 
-EmailSchema.methods.schedulePdfTask = function schedulePdfTask() {
-  queue.create('pdf', {
-    title: 'Building pdf file for email',
+EmailSchema.methods.schedulePdfJob = function schedulePdfJob() {
+  queue.create('worker', {
+    title: `Building pdf file for email ${this._id}`,
     kind: 'email-pdf',
-    emailId: this._id,
-  }).save((err) => {
+    referenceModel: 'email',
+    referenceId: this._id,
+  })
+  .searchKeys(['kind', 'emailId'])
+  .removeOnComplete(true)
+  .attempts(3)
+  .save((err) => {
     if (err) console.log('An error happened adding email-pdf job to queue');
   });
 };
