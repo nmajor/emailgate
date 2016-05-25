@@ -12,7 +12,7 @@ import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
 import { processEmails } from '../util/helpers';
-import { watchJob } from '../util/watcher';
+import { watchJob, slimJob } from '../util/jobs';
 
 
 // import Bluebird from 'bluebird';
@@ -188,52 +188,35 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
-        return compilation.schedulePdfJob()
-        .then((job) => {
-          watchJob(job, (updatedJob) => {
-            socket.emit('QUEUE_JOB', updatedJob);
-          });
+        return compilation.needsNewPdf()
+        .then((result) => {
+          if (result) {
+            return compilation.findOrSchedulePdfJob()
+            .then((job) => {
+              socket.emit('QUEUE_JOB', slimJob(job));
 
-          job.on('complete', () => {
-            Compilation.findOne({ _user: compilation._user, _id: compilation._id })
-            .then((compilation) => { // eslint-disable-line no-shadow
-              socket.emit('UPDATED_COMPILATION', compilation);
+              watchJob(job, (updatedJob) => { // eslint-disable-line no-shadow
+                socket.emit('QUEUE_JOB', slimJob(updatedJob));
+              });
+
+              // socket.on('disconnect', () => {
+              //   console.log('a user disconnected 2');
+              //   job.removeAllListeners();
+              // });
+
+              job.on('complete', () => {
+                Compilation.findOne({ _user: compilation._user, _id: compilation._id })
+                .then((compilation) => { // eslint-disable-line no-shadow
+                  socket.emit('UPDATED_COMPILATION', compilation);
+                  socket.emit('QUEUE_JOB_COMPLETE', job);
+                });
+              });
             });
-          });
+          }
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.stack);
         });
-
-        // return Docker.buildCompilationPdf(compilation, socket, (entry) => {
-        //   socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry });
-        //
-        //   if (entry.type === 'email-pdf') {
-        //     Email.findOneAndUpdate({ _id: entry.payload._id }, { $set: { pdf: processPdf(entry.payload) } }, { new: true })
-        //     .then((email) => {
-        //       socket.emit('UPDATED_COMPILATION_EMAIL', email);
-        //     });
-        //   } else if (entry.type === 'page-pdf') {
-        //     Page.findOneAndUpdate({ _id: entry.payload._id }, { $set: { pdf: processPdf(entry.payload) } }, { new: true })
-        //     .then((page) => {
-        //       socket.emit('UPDATED_COMPILATION_PAGE', page);
-        //     });
-        //   } else if (entry.type === 'compilation-pdf') {
-        //     compilation.pdf = processPdf(entry.payload); // eslint-disable-line no-param-reassign
-        //     compilation.save()
-        //     .then((savedCompilation) => {
-        //       socket.emit('BUILD_COMPILATION_PDF_FINISHED', savedCompilation);
-        //     });
-        //   }
-        // })
-        // .catch((err) => {
-        //   socket.emit('COMPILATION_PDF_LOG_ENTRY', { compilation, entry: {
-        //     type: 'error',
-        //     message: 'Compilation pdf build failed.',
-        //     payload: err.message,
-        //   } });
-        //   socket.emit('BUILD_COMPILATION_PDF_FINISHED', compilation);
-        // });
       });
     });
 

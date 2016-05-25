@@ -6,6 +6,7 @@ import _ from 'lodash';
 import queue from '../queue';
 import * as sharedHelpers from '../../shared/helpers';
 import * as serverHelpers from '../util/helpers';
+import { findJobs, getJob } from '../util/jobs';
 
 const CompilationSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -35,6 +36,53 @@ CompilationSchema.methods.seedPages = function seedPages() {
   });
 };
 
+CompilationSchema.methods.needsNewPdf = function needsNewPdf() {
+  return this.latestUpdatedAt()
+  .then((latestUpdatedAt) => {
+    if (!latestUpdatedAt) { return Promise.resolve(false); }
+    return Promise.resolve((latestUpdatedAt > this.pdf.updatedAt));
+  });
+};
+
+CompilationSchema.methods.findOrSchedulePdfJob = function findOrSchedulePdfJob() {
+  return findJobs(`compilation ${this._id}`)
+  .then((jobs) => {
+    if (jobs.length > 0) {
+      return Promise.all([
+        this.latestUpdatedAt(),
+        getJob(jobs[0]),
+      ])
+      .then((results) => {
+        const [latestUpdatedAt, job] = results;
+
+        if (!job) {
+          return this.schedulePdfJob();
+        } else if (latestUpdatedAt > job.created_at) {
+          job.remove();
+          return this.schedulePdfJob();
+        }
+
+        return job;
+      });
+    }
+
+    return this.schedulePdfJob();
+  });
+};
+
+CompilationSchema.methods.latestUpdatedAt = function latestUpdatedAt() {
+  return Promise.all([
+    Email.find({ _compilation: this._id }).select('updatedAt').sort('-updatedAt').limit(1),
+    Page.find({ _compilation: this._id }).select('updatedAt').sort('-updatedAt').limit(1),
+  ])
+  .then((results) => {
+    results = _.flattenDeep(results); // eslint-disable-line no-param-reassign
+    const latest = _.sortBy(results, (result) => { return result.updatedAt; }).reverse()[0];
+
+    return Promise.resolve(latest.updatedAt);
+  });
+};
+
 CompilationSchema.methods.schedulePdfJob = function schedulePdfJob() {
   return new Promise((resolve) => {
     return Promise.all([
@@ -53,6 +101,7 @@ CompilationSchema.methods.schedulePdfJob = function schedulePdfJob() {
         emailPageMap,
         pagePositionMap,
       })
+      .priority('normal')
       .searchKeys(['referenceModel', 'referenceId'])
       .removeOnComplete(true)
       .attempts(3)
@@ -65,15 +114,12 @@ CompilationSchema.methods.schedulePdfJob = function schedulePdfJob() {
   });
 };
 
-CompilationSchema.methods.findPdfJob = function findPdfJob() {
-  queue.search();
-};
-
 CompilationSchema.methods.getEmailPositionMap = function getEmailPositionMap() {
   return Email.find({ _compilation: this._id })
   .then((emails) => {
     const sortedEmails = sharedHelpers.sortedEmails(emails);
     const positionMap = {};
+
     _.forEach(sortedEmails, (email, index) => {
       positionMap[email._id] = index;
     });
@@ -90,6 +136,7 @@ CompilationSchema.methods.getPagePositionMap = function getPagePositionMap() {
   .then((pages) => {
     const sortedPages = sharedHelpers.sortedPages(pages);
     const positionMap = {};
+
     _.forEach(sortedPages, (page, index) => {
       positionMap[page._id] = index;
     });

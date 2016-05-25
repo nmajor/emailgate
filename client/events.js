@@ -119,3 +119,8 @@ socket.on('QUEUE_JOB', (job) => {
   console.log('event QUEUE_JOB');
   store.dispatch(Actions.setQueueJobMapItem(job));
 });
+
+socket.on('QUEUE_JOB_COMPLETE', (job) => {
+  console.log('event QUEUE_JOB_COMPLETE');
+  store.dispatch(Actions.removeQueueJobMapItem(job));
+});

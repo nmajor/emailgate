@@ -29,6 +29,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (process.env.CLIENT) {
+  console.log('Rendered twice in when using development webpack');
   render(
     <Provider store={store} key="provider">
       <div>

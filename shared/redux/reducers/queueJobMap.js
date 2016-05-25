@@ -8,6 +8,11 @@ const queueJobMap = (state = initialState.queueJobMap, action) => {
       newQueueJobMap[action.key] = action.val;
       return newQueueJobMap;
 
+    case ActionTypes.REMOVE_QUEUE_JOB_MAP_ITEM :
+      const newRemoveQueueJobMap = Object.assign({}, state, {});
+      delete newRemoveQueueJobMap[action.key];
+      return newRemoveQueueJobMap;
+
     default:
       return state;
   }

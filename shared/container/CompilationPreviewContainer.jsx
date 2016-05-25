@@ -9,14 +9,13 @@ class CompilationPreviewContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.buildCompilationPdf = this.buildCompilationPdf.bind(this);
     this.pdfJob = this.props.queueJobMap[`compilation-${this.props.compilation._id}`];
+  }
+  componentDidMount() {
+    this.props.dispatch(Actions.buildCompilationPdf(this.props.params.compilationId));
   }
   componentWillReceiveProps(nextProps) {
     this.pdfJob = nextProps.queueJobMap[`compilation-${nextProps.compilation._id}`];
-  }
-  buildCompilationPdf() {
-    this.props.dispatch(Actions.buildCompilationPdf(this.props.params.compilationId));
   }
   renderError(entry) {
     if (entry.type === 'error') {
@@ -44,23 +43,20 @@ class CompilationPreviewContainer extends Component {
       </div>);
     }
   }
-  renderBuildCompilationButton() {
-    return <div className="btn btn-default" onClick={this.buildCompilationPdf}>Generate PDF</div>;
-  }
+  // renderBuildCompilationButton() {
+  //   return <div className="btn btn-default" onClick={() => {this.props.dispatch(Actions.buildCompilationPdf(this.props.params.compilationId));}}>Generate PDF</div>;
+  // }
   render() {
-    return (
-      <div>
-        <div className="row">
-          <div className="col-md-4">
-            {this.renderBuildCompilationButton()}
-            {this.renderCompilationPdfProgress()}
-          </div>
-          <div className="col-md-8">
-            {this.renderCompilationPdf()}
-          </div>
+    return (<div>
+      <div className="row">
+        <div className="col-md-4">
+          {this.renderCompilationPdfProgress()}
+        </div>
+        <div className="col-md-8">
+          {this.renderCompilationPdf()}
         </div>
       </div>
-    );
+    </div>);
   }
 }
 

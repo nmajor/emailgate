@@ -184,7 +184,7 @@ class GoogleFilterForm extends Component {
 GoogleFilterForm.propTypes = {
   submitForm: PropTypes.func.isRequired,
   errors: PropTypes.object,
-  fetching: PropTypes.bool.isRequired,
+  fetching: PropTypes.bool,
 };
 
 export default GoogleFilterForm;

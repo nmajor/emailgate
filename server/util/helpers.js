@@ -4,6 +4,11 @@ import Email from '../models/email';
 import * as sharedHelpers from '../../shared/helpers';
 import _ from 'lodash';
 
+import CoverTemplate from '../../shared/templates/cover';
+import TitlePageTemplate from '../../shared/templates/titlePage';
+import MessagePageTemplate from '../../shared/templates/messagePage';
+import TableOfContentsTemplate from '../../shared/templates/tableOfContents';
+
 export function imapifyFilter(filter) {
   const imapFilter = ['ALL'];
 
@@ -115,4 +120,36 @@ export function getProductById(id) {
   const products = require('../products.json');
 
   return _.find(products, (product) => { return parseInt(product._id, 10) === parseInt(id, 10); });
+}
+
+export function pageTemplateFactory(page) {
+  return new Promise((resolve) => {
+    switch (page.type) {
+      case 'cover' :
+        return resolve(new CoverTemplate(page));
+      case 'title-page' :
+        return Email.find({ _compilation: page._compilation })
+        .then((emails) => {
+          const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+          const firstEmail = sortedEmails[0] || {};
+          const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
+          const startDate = firstEmail.date;
+          const endDate = lastEmail.date;
+          return resolve(new TitlePageTemplate(page, { startDate, endDate }));
+        });
+      case 'message-page' :
+        return resolve(new MessagePageTemplate(page));
+      case 'table-of-contents' :
+        return Email.find({ _compilation: page._compilation })
+        .then((emails) => {
+          const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+          emailPageMap(page._compilation)
+          .then((pageMap) => {
+            return resolve(new TableOfContentsTemplate(page, { emails: sortedEmails, pageMap }));
+          });
+        });
+      default :
+        return resolve(null);
+    }
+  });
 }

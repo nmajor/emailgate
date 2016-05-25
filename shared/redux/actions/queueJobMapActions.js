@@ -7,3 +7,10 @@ export function setQueueJobMapItem(job) {
     val: job,
   };
 }
+
+export function removeQueueJobMapItem(job) {
+  return {
+    type: ActionTypes.REMOVE_QUEUE_JOB_MAP_ITEM,
+    key: `${job.data.referenceModel}-${job.data.referenceId}`,
+  };
+}

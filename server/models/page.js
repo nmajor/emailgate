@@ -1,7 +1,8 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import _ from 'lodash';
-import { pageHtml } from '../util/pdf';
+// import { pageHtml } from '../util/pdf';
+import { pageTemplateFactory } from '../util/helpers';
 import queue from '../queue';
 
 const PageSchema = new Schema({
@@ -49,6 +50,7 @@ PageSchema.methods.schedulePdfJob = function schedulePdfJob() {
     referenceModel: 'page',
     referenceId: this._id,
   })
+  .priority('medium')
   .searchKeys(['referenceModel', 'referenceId'])
   .removeOnComplete(true)
   .attempts(3)
@@ -58,9 +60,10 @@ PageSchema.methods.schedulePdfJob = function schedulePdfJob() {
 };
 
 PageSchema.methods.getHtml = function getHtml() {
-  return pageHtml(this)
-  .then((html) => {
-    this.html = html;
+  return pageTemplateFactory(this)
+  .then((template) => {
+    this.html = template.toString();
+
     return Promise.resolve(this);
   });
 };
