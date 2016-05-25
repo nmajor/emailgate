@@ -191,7 +191,7 @@ export default (io) => {
         return compilation.schedulePdfJob()
         .then((job) => {
           watchJob(job, (updatedJob) => {
-            console.log(updatedJob);
+            socket.emit('QUEUE_JOB', updatedJob);
           });
 
           job.on('complete', () => {
@@ -200,22 +200,6 @@ export default (io) => {
               socket.emit('UPDATED_COMPILATION', compilation);
             });
           });
-          // .on('progress', (progress, data) => { // eslint-disable-line no-shadow
-          //   console.log(job.toJSON().progress);
-          //   console.log(progress);
-          //   // console.log(data);
-          // });
-
-          // .on('failed attempt', function(errorMessage, doneAttempts){
-          //   console.log('Job failed');
-          //
-          // }).on('failed', function(errorMessage){
-          //   console.log('Job failed');
-          //
-          // }).on('progress', function(progress, data){
-          //   console.log('\r  job #' + job.id + ' ' + progress + '% complete with data ', data );
-          //
-          // });
         })
         .catch((err) => {
           console.log(err);

@@ -14,6 +14,7 @@ import User from '../models/user';
 
 import { emailPageMap } from '../util/helpers';
 import Compilation from '../models/compilation';
+
 export function getCompilationEmailPageMap(req, res) {
   Compilation.findOne({ _user: req.user._id, _id: req.params.id })
   .then((compilation) => {

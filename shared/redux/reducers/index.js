@@ -19,6 +19,7 @@ import filteredAccountEmails from './filteredAccountEmails';
 import cart from './cart';
 import checkout from './checkout';
 import orders from './orders';
+import queueJobMap from './queueJobMap';
 
 const currentFilteredEmailMid = (state = initialState.currentFilteredEmailMid, action) => {
   switch (action.type) {
@@ -30,33 +31,10 @@ const currentFilteredEmailMid = (state = initialState.currentFilteredEmailMid, a
   }
 };
 
-const compilationEmailPageMap = (state = initialState.compilationEmailPageMap, action) => {
-  switch (action.type) {
-    case ActionTypes.SET_COMPILATION_EMAIL_PAGE_MAP :
-      return action.pageMap;
-
-    default:
-      return state;
-  }
-};
-
 const config = (state = initialState.config, action) => {
   switch (action.type) {
     case ActionTypes.SET_CONFIG :
       return action.config;
-
-    default:
-      return state;
-  }
-};
-
-const compilationPdfLog = (state = initialState.compilationPdfLog, action) => {
-  switch (action.type) {
-    case ActionTypes.SET_COMPILATION_PDF_LOG :
-      return action.val;
-
-    case ActionTypes.ADD_ENTRY_TO_COMPILATION_PDF_LOG :
-      return [action.entry, ...state];
 
     default:
       return state;
@@ -75,15 +53,14 @@ const appReducer = combineReducers({
   compilations,
   allCompilations,
   compilationEmails,
-  compilationEmailPageMap,
   compilationPages,
-  compilationPdfLog,
   currentAccountId,
   filteredAccountEmails,
   currentFilteredEmailMid,
   cart,
   checkout,
   orders,
+  queueJobMap,
 });
 
 const rootReducer = (state = initialState, action) => {

@@ -38,7 +38,6 @@ class CompilationEmailsContainer extends Component {
     if (window.previousLocation) {
       this.props.dispatch(Actions.setCompilationEmails([]));
       this.props.dispatch(Actions.setCompilationPages([]));
-      this.props.dispatch(Actions.setCompilationPdfLog([]));
     }
   }
   renderChildren() {

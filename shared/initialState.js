@@ -10,12 +10,11 @@ export default {
   allCompilations: [],
   compilationEmails: [],
   compilationPages: [],
-  compilationEmailPageMap: {},
-  compilationPdfLog: [],
   currentAccountId: '',
   filteredAccountEmails: [],
   currentFilteredEmailMid: '',
   cart: {},
   checkout: {},
   orders: [],
+  queueJobMap: {},
 };

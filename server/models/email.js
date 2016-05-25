@@ -47,7 +47,7 @@ EmailSchema.methods.schedulePdfJob = function schedulePdfJob() {
     referenceModel: 'email',
     referenceId: this._id,
   })
-  .searchKeys(['kind', 'emailId'])
+  .searchKeys(['referenceModel', 'referenceId'])
   .removeOnComplete(true)
   .attempts(3)
   .save((err) => {

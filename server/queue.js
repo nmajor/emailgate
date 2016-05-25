@@ -3,6 +3,7 @@ import kue from 'kue';
 
 const queue = kue.createQueue({
   redis: process.env.REDIS_URL,
+  disableSearch: false,
 });
 
 queue.watchStuckJobs(1000000);

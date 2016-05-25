@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Line } from 'rc-progress';
 // import CompilationPdf from '../components/CompilationPdf';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
@@ -9,6 +10,10 @@ class CompilationPreviewContainer extends Component {
     super(props, context);
 
     this.buildCompilationPdf = this.buildCompilationPdf.bind(this);
+    this.pdfJob = this.props.queueJobMap[`compilation-${this.props.compilation._id}`];
+  }
+  componentWillReceiveProps(nextProps) {
+    this.pdfJob = nextProps.queueJobMap[`compilation-${nextProps.compilation._id}`];
   }
   buildCompilationPdf() {
     this.props.dispatch(Actions.buildCompilationPdf(this.props.params.compilationId));
@@ -23,16 +28,6 @@ class CompilationPreviewContainer extends Component {
     }
   }
 
-  renderCompilationPdfLog() {
-    const entries = this.props.compilationPdfLog.map((entry, index) => {
-      return (<div className={`compilation-log-entry ${index === 0 ? 'latest' : ''}`} key={index}>
-        {entry.message}
-        {this.renderError(entry)}
-      </div>);
-    });
-
-    return <div>{entries}</div>;
-  }
   renderCompilationPdf() {
     if (this.props.compilation.pdf) {
       return (<div>
@@ -41,9 +36,12 @@ class CompilationPreviewContainer extends Component {
       </div>);
     }
   }
-  renderCompilationPdfStatus() {
-    if (this.props.compilation.buildingPdf) {
-      return <span className="left-bumper">Building compilation pdf ...</span>;
+  renderCompilationPdfProgress() {
+    if (this.pdfJob) {
+      return (<div>
+        <div className="text-center">{this.pdfJob.progress}%</div>
+        <Line percent={this.pdfJob.progress} />
+      </div>);
     }
   }
   renderBuildCompilationButton() {
@@ -55,8 +53,7 @@ class CompilationPreviewContainer extends Component {
         <div className="row">
           <div className="col-md-4">
             {this.renderBuildCompilationButton()}
-            {this.renderCompilationPdfStatus()}
-            {this.renderCompilationPdfLog()}
+            {this.renderCompilationPdfProgress()}
           </div>
           <div className="col-md-8">
             {this.renderCompilationPdf()}
@@ -69,7 +66,7 @@ class CompilationPreviewContainer extends Component {
 
 function mapStateToProps(store) {
   return {
-    compilationPdfLog: store.compilationPdfLog,
+    queueJobMap: store.queueJobMap,
   };
 }
 
@@ -81,7 +78,7 @@ CompilationPreviewContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   children: PropTypes.object,
   compilation: PropTypes.object.isRequired,
-  compilationPdfLog: PropTypes.array.isRequired,
+  queueJobMap: PropTypes.object.isRequired,
   params: PropTypes.object,
 };
 

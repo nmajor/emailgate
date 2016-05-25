@@ -18,6 +18,7 @@ export * from './filteredAccountEmails';
 export * from './cartActions';
 export * from './checkoutActions';
 export * from './orderActions';
+export * from './queueJobMapActions';
 
 export function setCurrentFilteredEmailMid(mid) {
   return {
@@ -30,20 +31,6 @@ export function setConfig(config) {
   return {
     type: ActionTypes.SET_CONFIG,
     config,
-  };
-}
-
-export function addEntryToCompilationPdfLog(entry) {
-  return {
-    type: ActionTypes.ADD_ENTRY_TO_COMPILATION_PDF_LOG,
-    entry,
-  };
-}
-
-export function setCompilationPdfLog(val) {
-  return {
-    type: ActionTypes.SET_COMPILATION_PDF_LOG,
-    val,
   };
 }
 

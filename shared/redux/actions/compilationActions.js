@@ -108,8 +108,7 @@ export function getCompilations(cookie) {
 }
 
 export function buildCompilationPdf(compilationId) {
-  return (dispatch) => {
-    dispatch(setPropertyForCompilation(compilationId, 'buildingPdf', true));
+  return () => {
     socket.emit('BUILD_COMPILATION_PDF', { compilationId });
   };
 }

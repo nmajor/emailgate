@@ -100,20 +100,10 @@ socket.on('UPDATED_COMPILATION', (compilation) => {
 //   });
 // });
 
-// socket.on('UPDATED_COMPILATION_EMAIL_PAGE_MAP', (pageMap) => {
-//   console.log('event UPDATED_COMPILATION_EMAIL_PAGE_MAP');
-//   store.dispatch(Actions.setCompilationEmailPageMap(pageMap));
-// });
-
 socket.on('REMOVED_ACCOUNT', (account) => {
   console.log('event REMOVED_ACCOUNT');
   store.dispatch(Actions.removeAccountFromAccounts(account));
 });
-
-// socket.on('COMPILATION_PDF_LOG_ENTRY', (data) => {
-//   console.log('event COMPILATION_PDF_LOG_ENTRY');
-//   store.dispatch(Actions.addEntryToCompilationPdfLog(data.entry));
-// });
 
 // socket.on('BUILD_COMPILATION_PDF_FINISHED', (compilation) => {
 //   console.log('event BUILD_COMPILATION_PDF_FINISHED');
@@ -123,4 +113,9 @@ socket.on('REMOVED_ACCOUNT', (account) => {
 socket.on('UPDATED_CART', (cart) => {
   console.log('event UPDATED_CART');
   store.dispatch(Actions.setCart(cart));
+});
+
+socket.on('QUEUE_JOB', (job) => {
+  console.log('event QUEUE_JOB');
+  store.dispatch(Actions.setQueueJobMapItem(job));
 });

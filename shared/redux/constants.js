@@ -1,3 +1,4 @@
+export const SET_QUEUE_JOB_MAP_ITEM = 'SET_QUEUE_JOB_MAP_ITEM';
 export const SET_ORDERS = 'SET_ORDERS';
 export const ADD_ORDER = 'ADD_ORDER';
 export const UPDATE_ORDER_IN_ORDERS = 'UPDATE_ORDER_IN_ORDERS';

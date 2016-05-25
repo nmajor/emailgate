@@ -49,7 +49,7 @@ PageSchema.methods.schedulePdfJob = function schedulePdfJob() {
     referenceModel: 'page',
     referenceId: this._id,
   })
-  .searchKeys(['kind', 'pageId'])
+  .searchKeys(['referenceModel', 'referenceId'])
   .removeOnComplete(true)
   .attempts(3)
   .save((err) => {

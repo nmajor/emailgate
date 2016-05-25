@@ -53,7 +53,7 @@ CompilationSchema.methods.schedulePdfJob = function schedulePdfJob() {
         emailPageMap,
         pagePositionMap,
       })
-      .searchKeys(['kind', 'compilationId'])
+      .searchKeys(['referenceModel', 'referenceId'])
       .removeOnComplete(true)
       .attempts(3)
       .save((err) => {

@@ -53,7 +53,6 @@ class ViewCompilationPageContainer extends Component {
 function mapStateToProps(store) {
   return {
     compilationEmails: store.compilationEmails,
-    compilationEmailPageMap: store.compilationEmailPageMap,
   };
 }
 
@@ -62,7 +61,6 @@ ViewCompilationPageContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array.isRequired,
-  compilationEmailPageMap: PropTypes.object.isRequired,
   currentPage: PropTypes.object.isRequired,
 };
 
