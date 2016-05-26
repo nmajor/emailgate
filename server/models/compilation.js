@@ -62,7 +62,8 @@ CompilationSchema.methods.findOrSchedulePdfJob = function findOrSchedulePdfJob()
           return this.schedulePdfJob();
         }
 
-        return job;
+        job.subscribe(() => {});
+        return Promise.resolve(job);
       });
     }
 

@@ -14,10 +14,7 @@ ss.forceBase64 = true;
 import { processEmails } from '../util/helpers';
 import { watchJob, slimJob } from '../util/jobs';
 
-
-// import Bluebird from 'bluebird';
 // import _ from 'lodash';
-
 
 export default (io) => {
   io.on('connection', (socket) => {
@@ -195,14 +192,13 @@ export default (io) => {
             .then((job) => {
               socket.emit('QUEUE_JOB', slimJob(job));
 
-              watchJob(job, (updatedJob) => { // eslint-disable-line no-shadow
+              watchJob(job, function (updatedJob) { // eslint-disable-line
                 socket.emit('QUEUE_JOB', slimJob(updatedJob));
               });
 
-              // socket.on('disconnect', () => {
-              //   console.log('a user disconnected 2');
-              //   job.removeAllListeners();
-              // });
+              socket.on('disconnect', () => {
+                job.removeAllListeners('progress');
+              });
 
               job.on('complete', () => {
                 Compilation.findOne({ _user: compilation._user, _id: compilation._id })

@@ -44,13 +44,19 @@ class CompilationPreviewContainer extends Component {
     }
   }
   // renderBuildCompilationButton() {
-  //   return <div className="btn btn-default" onClick={() => {this.props.dispatch(Actions.buildCompilationPdf(this.props.params.compilationId));}}>Generate PDF</div>;
+  //   return (<div
+  //     className="btn btn-default btn-block"
+  //     onClick={() => {this.props.dispatch(Actions.buildCompilationPdf(this.props.params.compilationId));}} // eslint-disable-line
+  //   >
+  //     Generate PDF
+  //   </div>);
   // }
   render() {
     return (<div>
       <div className="row">
         <div className="col-md-4">
-          {this.renderCompilationPdfProgress()}
+          {this.renderBuildCompilationButton()}
+          // {this.renderCompilationPdfProgress()}
         </div>
         <div className="col-md-8">
           {this.renderCompilationPdf()}

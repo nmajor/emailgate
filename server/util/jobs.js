@@ -29,26 +29,26 @@ export function getJob(jobId) {
 export function watchJob(job, cb) {
   job.on('progress', () => {
     getJob(job.id)
-    .then((fullJob) => {
-      cb(fullJob);
+    .then((updatedJob) => {
+      cb(updatedJob);
     });
   })
   .on('failed attempt', () => {
     getJob(job.id)
-    .then((fullJob) => {
-      cb(fullJob);
+    .then((updatedJob) => {
+      cb(updatedJob);
     });
   })
   .on('failed', () => {
     getJob(job.id)
-    .then((fullJob) => {
-      cb(fullJob);
+    .then((updatedJob) => {
+      cb(updatedJob);
     });
   })
   .on('complete', () => {
     getJob(job.id)
-    .then((fullJob) => {
-      cb(fullJob);
+    .then((updatedJob) => {
+      cb(updatedJob);
     });
   });
 }
