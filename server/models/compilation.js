@@ -37,9 +37,12 @@ CompilationSchema.methods.seedPages = function seedPages() {
 };
 
 CompilationSchema.methods.needsNewPdf = function needsNewPdf() {
+  if (!this.pdf || !this.pdf.updatedAt) { return Promise.resolve(true); }
+
   return this.latestUpdatedAt()
   .then((latestUpdatedAt) => {
     if (!latestUpdatedAt) { return Promise.resolve(false); }
+
     return Promise.resolve((latestUpdatedAt > this.pdf.updatedAt));
   });
 };

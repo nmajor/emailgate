@@ -5,19 +5,19 @@ import _ from 'lodash';
 
 class TableOfContentsTemplate {
   constructor(page, props) {
-    if (props.emails.length > 0) {
+    // if (props.emails.length > 0) {
       this.emails = props.emails;
-    } else {
-      this.emails = _.map(_.range(10), (index) => {
-        const date = new Date();
-        date.setDate(date.getDate() + index);
-
-        return {
-          subject: `Example Email Subject ${index + 1}`,
-          date,
-        };
-      });
-    }
+    // } else {
+    //   this.emails = _.map(_.range(10), (index) => {
+    //     const date = new Date();
+    //     date.setDate(date.getDate() + index);
+    //
+    //     return {
+    //       subject: `Example Email Subject ${index + 1}`,
+    //       date,
+    //     };
+    //   });
+    // }
 
     this.renderEntry = this.renderEntry.bind(this);
     this.pageMap = props.pageMap;

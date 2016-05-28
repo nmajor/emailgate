@@ -55,8 +55,7 @@ class CompilationPreviewContainer extends Component {
     return (<div>
       <div className="row">
         <div className="col-md-4">
-          {this.renderBuildCompilationButton()}
-          // {this.renderCompilationPdfProgress()}
+          {this.renderCompilationPdfProgress()}
         </div>
         <div className="col-md-8">
           {this.renderCompilationPdf()}
