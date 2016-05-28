@@ -56,10 +56,11 @@ class MessagePageTemplate {
 
   toString() {
     return `
-      <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
-      <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-
-      ${renderToString(this.render())}
+<div>
+<link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+${renderToString(this.render())}
+</div>
     `;
   }
 }

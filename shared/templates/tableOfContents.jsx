@@ -84,10 +84,11 @@ class TableOfContentsTemplate {
 
   toString() {
     return `
-      <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
-      <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-
-      <div style="padding: 20px;">${renderToString(this.render())}</div>
+<div>
+<link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+${renderToString(this.render())}
+</div>
     `;
   }
 }

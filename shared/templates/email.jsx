@@ -135,18 +135,12 @@ class EmailTemplate {
   }
 
   toString() {
-    const email = this.email;
-
     return `
-      <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
-      <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-
-      ${renderToString(this.renderSubject(email.subject))}
-      ${renderToString(this.renderDate(email.date))}
-      ${renderToString(this.renderFrom(email.from))}
-      ${renderToString(this.renderTo(email.to))}
-      ${renderToString(this.renderBodyDangerously(email.body))}
-      ${renderToString(this.renderAttachments(email.attachments))}
+<div>
+<link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+${renderToString(this.render())}
+</div>
     `;
   }
 }
