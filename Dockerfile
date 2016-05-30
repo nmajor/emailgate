@@ -16,4 +16,4 @@ RUN npm install
 RUN npm -g install webpack
 RUN webpack -p --config webpack.config.prod.js
 
-CMD ["./bin/www"]
+CMD ["npm", "run", "start:prod"]

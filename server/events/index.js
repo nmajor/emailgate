@@ -31,32 +31,6 @@ export default (io) => {
       });
     });
 
-    // socket.on('GET_ACCOUNT_MAILBOXES', (data) => {
-    //   console.log('GET_ACCOUNT_MAILBOXES');
-    //
-    //   User.findOne({ email: socket.request.session.passport.user })
-    //   .then(user => Account.findOne({ _user: user._id, _id: data._id }))
-    //   .then(account => account.checkConnection())
-    //   .then(account => account.getMailboxes())
-    //   .then(account => account.save())
-    //   .then((account) => {
-    //     socket.emit('UPDATED_ACCOUNT', account);
-    //   });
-    // });
-
-    // socket.on('GET_FILTERED_ACCOUNT_EMAILS_COUNT', (data) => {
-    //   console.log('GET_FILTERED_ACCOUNT_EMAILS_COUNT');
-    //   const mailbox = data.filter.mailbox;
-    //   const filter = imapifyFilter(data.filter);
-    //
-    //   User.findOne({ email: socket.request.session.passport.user })
-    //   .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
-    //   .then(account => account.filteredEmailsCount(mailbox, filter))
-    //   .then((count) => {
-    //     socket.emit('FILTERED_ACCOUNT_EMAILS_COUNT', count);
-    //   });
-    // });
-
     socket.on('GET_FILTERED_ACCOUNT_EMAILS', (data) => {
       console.log('GET_FILTERED_ACCOUNT_EMAILS');
 
@@ -89,27 +63,6 @@ export default (io) => {
             console.log(`Error happened when adding compilation email ${err}`);
           });
         }));
-        // .then((emails) => {
-        //   let p = Promise.resolve();
-        //
-        //   _.forEach(emails, (email) => {
-        //     p = p.then(() => {
-        //       return email.countPdfPages()
-        //       .then((emailWithPages) => {
-        //         return emailWithPages.save();
-        //       })
-        //       .then((savedEmail) => {
-        //         socket.emit('UPDATED_COMPILATION_EMAIL', savedEmail);
-        //       });
-        //     });
-        //   });
-        // })
-        // .then(() => {
-        //   return emailPageMap(compilation._id);
-        // })
-        // .then((pageMap) => {
-        //   socket.emit('UPDATED_COMPILATION_EMAIL_PAGE_MAP', pageMap);
-        // });
       });
     });
 
@@ -139,21 +92,6 @@ export default (io) => {
       });
     });
 
-    // socket.on('GET_COMPILATION_EMAIL_PDF', (data) => {
-    //   console.log('GET_COMPILATION_EMAIL_PDF');
-    //   User.findOne({ email: socket.request.session.passport.user })
-    //   .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-    //   .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
-    //   .then((email) => {
-    //     emailPageMap(email._compilation)
-    //     .then((pageMap) => {
-    //       const resStream = ss.createStream();
-    //       ss(socket).emit('COMPILATION_EMAIL_PDF_STREAM', resStream, { email: email.toJSON() });
-    //       emailPdf(email, pageMap[email._id]).pipe(resStream);
-    //     });
-    //   });
-    // });
-
     socket.on('UPDATE_COMPILATION_PAGE', (data) => {
       console.log('UPDATE_COMPILATION_PAGE');
       User.findOne({ email: socket.request.session.passport.user })
@@ -168,18 +106,6 @@ export default (io) => {
       });
     });
 
-    // socket.on('GET_COMPILATION_PAGE_PDF', (data) => {
-    //   console.log('GET_COMPILATION_PAGE_PDF');
-    //   User.findOne({ email: socket.request.session.passport.user })
-    //   .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-    //   .then(compilation => Page.findOne({ _compilation: compilation._id, _id: data.pageId }))
-    //   .then((page) => {
-    //     const resStream = ss.createStream();
-    //     ss(socket).emit('COMPILATION_PAGE_PDF_STREAM', resStream, { page: page.toJSON() });
-    //     pagePdf(page).pipe(resStream);
-    //   });
-    // });
-
     socket.on('BUILD_COMPILATION_PDF', (data) => {
       console.log('BUILD_COMPILATION_PDF');
       User.findOne({ email: socket.request.session.passport.user })
@@ -192,17 +118,18 @@ export default (io) => {
             .then((job) => {
               socket.emit('QUEUE_JOB', slimJob(job));
 
-              watchJob(job, function (updatedJob) { // eslint-disable-line
+              const unwatchJob = watchJob(job, (updatedJob) => {
                 socket.emit('QUEUE_JOB', slimJob(updatedJob));
               });
 
               socket.on('disconnect', () => {
-                job.removeAllListeners('progress');
+                unwatchJob();
               });
 
               job.on('complete', () => {
                 Compilation.findOne({ _user: compilation._user, _id: compilation._id })
                 .then((compilation) => { // eslint-disable-line no-shadow
+                  unwatchJob();
                   socket.emit('UPDATED_COMPILATION', compilation);
                   socket.emit('QUEUE_JOB_COMPLETE', job);
                 });

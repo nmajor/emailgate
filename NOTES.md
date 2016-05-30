@@ -3,6 +3,9 @@
 - http://wkhtmltopdf.org/
 
 
+**** Reduce pdf file size:
+http://askubuntu.com/questions/113544/how-can-i-reduce-the-file-size-of-a-scanned-pdf-file
+
 ### Password Storage Notes
 // Good overview of the basic principles of storing hashed passwords
 http://stackoverflow.com/a/260829/1556952
@@ -26,6 +29,15 @@ https://stripe.com/docs/testing
 ### PDF SIMULTAION NOTES
 
 - http://stackoverflow.com/questions/16977142/html5-js-preprocess-of-uploaded-html-page-and-simulate-pagebreaks
+
+
+### TOP TODOS:
+
+- Monitor and update email and page pdf jobs and push up completed pdf objects to the client after jobs are done. Client should be updated throughout the process.
+- Add a compression step for all generated pdfs.
+- Let user know when compilation PDF job is queued and waiting for stuff. Maybe make it so that queuing a compilation pdf waits until the emails and pages jobs are complete before adding the compilation-pdf job to the queue. You could attach to the redis pubsub to watch it. That way you could give more accurate progress to the user by showing how many other email and pdf stuff is left. It also solves the problems that compilation-pdf has when it is at a lower priority than the email and page pdf jobs.
+- See how the worker does when it is 2gb in size.
+- The prod env is not bulding the css. The css is being loaded through the javascript. Maybe need to add a conditional when including the css file in client/index.js
 
 
 

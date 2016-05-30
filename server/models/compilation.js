@@ -6,7 +6,7 @@ import _ from 'lodash';
 import queue from '../queue';
 import * as sharedHelpers from '../../shared/helpers';
 import * as serverHelpers from '../util/helpers';
-import { findJobs, getJob } from '../util/jobs';
+import { findJobs, getJob, getJobPosition } from '../util/jobs';
 
 const CompilationSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -53,10 +53,11 @@ CompilationSchema.methods.findOrSchedulePdfJob = function findOrSchedulePdfJob()
     if (jobs.length > 0) {
       return Promise.all([
         this.latestUpdatedAt(),
+        getJobPosition(jobs[0]),
         getJob(jobs[0]),
       ])
       .then((results) => {
-        const [latestUpdatedAt, job] = results;
+        const [latestUpdatedAt, position, job] = results;
 
         if (!job) {
           return this.schedulePdfJob();
@@ -66,6 +67,7 @@ CompilationSchema.methods.findOrSchedulePdfJob = function findOrSchedulePdfJob()
         }
 
         job.subscribe(() => {});
+        job.position = position;
         return Promise.resolve(job);
       });
     }

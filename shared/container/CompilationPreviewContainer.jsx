@@ -4,6 +4,7 @@ import { Line } from 'rc-progress';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import moment from 'moment';
+import { getOrdinalNumber } from '../helpers';
 
 class CompilationPreviewContainer extends Component {
   constructor(props, context) {
@@ -37,6 +38,12 @@ class CompilationPreviewContainer extends Component {
   }
   renderCompilationPdfProgress() {
     if (this.pdfJob) {
+      if (this.pdfJob.state === 'inactive') {
+        return (<div>
+          <div>{getOrdinalNumber(this.pdfJob.position)} in Queue.</div>
+        </div>);
+      }
+
       return (<div>
         <div className="text-center">{this.pdfJob.progress}%</div>
         <Line percent={this.pdfJob.progress} />
