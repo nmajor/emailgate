@@ -61,6 +61,9 @@ CompilationSchema.methods.findOrSchedulePdfJob = function findOrSchedulePdfJob()
 
         if (!job) {
           return this.schedulePdfJob();
+        } else if (job.state() === 'failed') {
+          job.remove();
+          return this.schedulePdfJob();
         } else if (latestUpdatedAt > job.created_at) {
           job.remove();
           return this.schedulePdfJob();

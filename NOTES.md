@@ -34,6 +34,9 @@ https://stripe.com/docs/testing
 ### TOP TODOS:
 
 - Monitor and update email and page pdf jobs and push up completed pdf objects to the client after jobs are done. Client should be updated throughout the process.
+- Check position in queue for watched jobs.
+- Do a check before compiling the compilation pdf and update any pdfs that are out of date for emails or pages. This could be inserted in download pdf step. Just do a check first before downloading.
+- In the email-pdf and page-pdf jobs, do a quick check and if the pdf is already up to date, just skip everything and complete the job.
 - Add a compression step for all generated pdfs.
 - Let user know when compilation PDF job is queued and waiting for stuff. Maybe make it so that queuing a compilation pdf waits until the emails and pages jobs are complete before adding the compilation-pdf job to the queue. You could attach to the redis pubsub to watch it. That way you could give more accurate progress to the user by showing how many other email and pdf stuff is left. It also solves the problems that compilation-pdf has when it is at a lower priority than the email and page pdf jobs.
 - See how the worker does when it is 2gb in size.
