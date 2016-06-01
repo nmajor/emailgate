@@ -111,8 +111,7 @@ export function updateCompilationEmail(compilationId, email, newData) {
 }
 
 export function getCompilationEmailPdf(compilationId, email) {
-  return (dispatch) => {
-    dispatch(setPropertyForCompilationEmail(email, 'fetchingPdf', true));
+  return () => {
     socket.emit('GET_COMPILATION_EMAIL_PDF', { compilationId, emailId: email._id });
   };
 }

@@ -107,8 +107,8 @@ export function getCompilations(cookie) {
   };
 }
 
-export function buildCompilationPdf(compilationId) {
+export function getCompilationPdf(compilationId) {
   return () => {
-    socket.emit('BUILD_COMPILATION_PDF', { compilationId });
+    socket.emit('GET_COMPILATION_PDF', { compilationId });
   };
 }

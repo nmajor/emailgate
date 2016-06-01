@@ -5,6 +5,7 @@ import shortid from 'shortid';
 import EmailTemplate from '../../shared/templates/email';
 import queue from '../queue';
 import _ from 'lodash';
+import { findJobs, getJob, getJobPosition } from '../util/jobs';
 
 const EmailSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -39,6 +40,43 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
     next();
   });
 });
+
+EmailSchema.methods.needsNewPdf = function needsNewPdf() {
+  if (!this.pdf || !this.pdf.updatedAt || !this.pdf.modelVersion) { return Promise.resolve(true); }
+  if (this.updatedAt > this.pdf.modelVersion) { return Promise.resolve(true); }
+  return Promise.resolve(false);
+};
+
+EmailSchema.methods.findOrSchedulePdfJob = function findOrSchedulePdfJob() {
+  return findJobs(`email ${this._id}`)
+  .then((jobs) => {
+    if (jobs.length > 0) {
+      return Promise.all([
+        getJobPosition(jobs[0]),
+        getJob(jobs[0]),
+      ])
+      .then((results) => {
+        const [position, job] = results;
+
+        if (!job) {
+          return this.schedulePdfJob();
+        } else if (job.state() === 'failed') {
+          job.remove();
+          return this.schedulePdfJob();
+        } else if (job.state() === 'active' && this.updatedAt > job.created_at) {
+          job.remove();
+          return this.schedulePdfJob();
+        }
+
+        job.subscribe(() => {});
+        job.position = position;
+        return Promise.resolve(job);
+      });
+    }
+
+    return this.schedulePdfJob();
+  });
+};
 
 EmailSchema.methods.schedulePdfJob = function schedulePdfJob() {
   queue.create('worker', {
