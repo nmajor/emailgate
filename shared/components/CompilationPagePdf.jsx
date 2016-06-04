@@ -1,11 +1,11 @@
 import React, { PropTypes, Component } from 'react';
+import Pdf from './Pdf';
 
 class CompilationPagePdf extends Component {
   renderPdf() {
     if (this.props.page.pdf && this.props.page.pdf.url) {
-      return <object className="pdf" data={`${this.props.page.pdf.url}#messages=0&statusbar=0&toolbar=0&navpanes=0&scrollbar=0`} type="application/pdf"></object>;
+      return <Pdf file={this.props.page.pdf.url} pages={this.props.page.pdf.pageCount} />;
     }
-    return <div>No pdf available for this page.</div>;
   }
   render() {
     return (

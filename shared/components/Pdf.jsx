@@ -41,10 +41,6 @@ class Pdf extends Component {
       onDocumentComplete(pdf.numPages);
     }
 
-    console.log('blah 1');
-    console.log(this.props.pages);
-    console.log('blah 2');
-    console.log(_.range(this.props.pages));
     _.forEach(_.range(this.props.pages), (page) => {
       pdf.getPage(page + 1).then(this.onPageComplete);
     });
@@ -54,8 +50,7 @@ class Pdf extends Component {
     const newPagesState = this.state.pages;
     newPagesState[`page-${page.pageIndex + 1}`] = page;
     this.setState({ pages: newPagesState });
-    console.log(`page ${page.pageIndex + 1}`);
-    // this.setState({ page });
+
     this.renderPdf(page.pageIndex);
     const { onPageComplete } = this.props;
     if (typeof onPageComplete === 'function') {
@@ -95,9 +90,6 @@ class Pdf extends Component {
 
   renderPdf(pageIndex) {
     const page = this.state.pages[`page-${pageIndex + 1}`];
-    console.log('blah yoda');
-    console.log(page.pageIndex);
-    console.log(this.refs);
     if (page) {
       let canvas = this.refs[`page-${page.pageIndex + 1}`];
       if (canvas.getDOMNode) { // compatible with react 0.13
@@ -116,16 +108,8 @@ class Pdf extends Component {
   }
   renderPages() {
     return _.map(this.state.pages, (page) => {
-      return <div className="pdf-wrapper"><canvas ref={`page-${page.pageIndex + 1}`} /></div>;
+      return <div className="pdf-page"><canvas ref={`page-${page.pageIndex + 1}`} /></div>;
     });
-    // const loadedPages = _.filter(_.range(this.props.pages), (index) => {
-    //   return this.state.pages[`page-${index + 1}`];
-    // });
-    // console.log('blah loadedPages');
-    // console.log(loadedPages);
-    // return loadedPages.map((pageIndex) => {
-    //   return <canvas ref={`page-${page.pageIndex + 1}`} />;
-    // });
   }
 
   render() {
@@ -133,12 +117,9 @@ class Pdf extends Component {
       return <div>Loading Pdf ...</div>;
     }
 
-    return (<div className="pdf">
+    return (<div className="pdf-wrapper">
       {this.renderPages()}
     </div>);
-    // const { loading } = this.props;
-    // const { page } = this.state;
-    // return page ? <canvas ref="canvas" width="100%" /> : loading || <div>Loading PDF...</div>;
   }
 }
 Pdf.displayName = 'React-PDFjs';

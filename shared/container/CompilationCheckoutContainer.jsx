@@ -12,13 +12,25 @@ class CompilationCheckoutContainer extends Component {
     this.addToCart = this.addToCart.bind(this);
   }
   addToCart(props) {
-    this.props.dispatch(Actions.addCartItem(1, props.quantity, { compilationId: this.props.compilation._id }));
+    this.props.dispatch(Actions.addCartItem(1, props.quantity, {
+      compilationId: this.props.compilation._id,
+      compilationName: this.props.compilation.name,
+    }));
   }
   compilationProducts() {
     const products = _.filter(this.props.config.products, (product) => {
       return product.tags.indexOf('compilation') > -1;
     });
     return products;
+  }
+  renderCartForm() {
+    if (_.get(this.props.cart, 'items.length') > 0) {
+      return (<div className="col-md-6">
+        <div className="padded-box">
+          <CartFormContainer />
+        </div>
+      </div>);
+    }
   }
 
   render() {
@@ -33,11 +45,7 @@ class CompilationCheckoutContainer extends Component {
           />
         </div>
       </div>
-      <div className="col-md-6">
-        <div className="padded-box">
-          <CartFormContainer />
-        </div>
-      </div>
+      {this.renderCartForm()}
     </div>);
   }
 }
@@ -46,6 +54,7 @@ function mapStateToProps(store) {
   return {
     config: store.config,
     compilationEmails: store.compilationEmails,
+    cart: store.cart,
   };
 }
 
@@ -54,6 +63,7 @@ CompilationCheckoutContainer.propTypes = {
   config: PropTypes.object.isRequired,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array.isRequired,
+  cart: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(CompilationCheckoutContainer);

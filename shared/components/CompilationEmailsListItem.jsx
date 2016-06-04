@@ -22,6 +22,9 @@ class CompilationEmailsListItem extends Component {
   }
   render() {
     return (<Link className={this.className()} to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}>
+      <div className="type">
+        <span className="glyphicon glyphicon-envelope" aria-hidden="true"></span> Email
+      </div>
       {this.renderIcon()}
       {this.props.email.subject}
       <div className="date">{moment(this.props.email.date).format('LL')}</div>

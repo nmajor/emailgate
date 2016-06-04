@@ -38,7 +38,7 @@ class MessagePageTemplate {
   }
 
   render() {
-    return (<div style={{ fontSize: '20px', padding: '50px' }}>
+    return (<div style={{ fontSize: '20px', padding: '0 50px' }}>
       {this.renderMessage(this.content.message)}
       {this.renderSignature(this.content.signature)}
     </div>);
@@ -48,7 +48,7 @@ class MessagePageTemplate {
     const messageInput = <div className="editable" name="message" contentEditable onBlur={setFormState}>{this.content.message}</div>;
     const signatureInput = <div className="editable" name="signature" contentEditable onBlur={setFormState}>{this.content.signature}</div>;
 
-    return (<div style={{ fontSize: '20px', padding: '50px' }}>
+    return (<div style={{ fontSize: '20px', padding: '0 50px' }}>
       {this.renderMessage(messageInput)}
       {this.renderSignature(signatureInput)}
     </div>);

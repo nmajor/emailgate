@@ -65,7 +65,7 @@ class TitlePageTemplate {
     const titleInput = <div className="editable" name="title" contentEditable onBlur={setFormState}>{this.content.title}</div>;
     const subtitleInput = <div className="editable" name="subtitle" contentEditable onBlur={setFormState}>{this.content.subtitle}</div>;
 
-    return (<div style={{ fontSize: '20px', padding: '50px' }}>
+    return (<div style={{ fontSize: '20px', padding: '0 50px' }}>
       {this.renderTitle(titleInput)}
       {this.renderSubtitle(subtitleInput)}
       {this.renderDates()}

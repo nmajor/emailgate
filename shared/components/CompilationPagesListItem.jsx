@@ -8,7 +8,7 @@ class CompilationPagesListItem extends Component {
     super(props, context);
   }
   className() {
-    let className = 'compilation-pages-list-item';
+    let className = 'compilation-pages-list-item list-item';
     className += this.props.current ? ' current' : '';
 
     return className;
@@ -24,6 +24,9 @@ class CompilationPagesListItem extends Component {
   render() {
     return (
       <Link className={this.className()} to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
+        <div className="type">
+          <span className="glyphicon glyphicon-file" aria-hidden="true"></span> Page
+        </div>
         {this.renderIcon()}
         {pageMeta(this.props.page).desc}
       </Link>
