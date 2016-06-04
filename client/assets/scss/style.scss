@@ -148,3 +148,10 @@ h1 > .loading {
   border: 1px solid #ccc;
   padding: 10px;
 }
+.pdf-wrapper {
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  canvas {
+    width: 99%;
+  }
+}

@@ -4,9 +4,6 @@ import moment from 'moment';
 import Loading from './Loading';
 
 class CompilationEmailsListItem extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
   className() {
     let className = 'compilation-emails-list-item list-item';
     className += this.props.current ? ' current' : '';
@@ -20,6 +17,8 @@ class CompilationEmailsListItem extends Component {
     if (this.props.email.saving) {
       return this.renderSaving();
     }
+
+    return null;
   }
   render() {
     return (<Link className={this.className()} to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}>

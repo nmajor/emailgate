@@ -141,7 +141,7 @@ const renderFullPage = (html, renderedState) => {
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
-  match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
+  match({ routes, location: req.url }, (err, redirectLocation, renderProps) => { // eslint-disable-line consistent-return
     if (err) {
       return res.status(500).end('Internal server error');
     }
