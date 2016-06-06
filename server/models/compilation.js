@@ -15,6 +15,7 @@ const CompilationSchema = new Schema({
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
   pdf: {},
+  approvedAt: Date,
 }, {
   timestamps: true,
 });

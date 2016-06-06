@@ -151,7 +151,7 @@ h1 > .loading {
 }
 .pdf-page {
   border: 1px solid #ccc;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   canvas {
     width: 100%;
   }
@@ -160,5 +160,13 @@ h1 > .loading {
   .type {
     font-size: 10px;
     color: #929292;
+  }
+}
+.first-step {
+  border: 1px solid #ccc;
+  padding: 30px;
+
+  h4 {
+    margin-bottom: 30px;
   }
 }

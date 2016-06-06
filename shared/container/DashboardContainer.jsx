@@ -27,7 +27,7 @@ class DashboardContainer extends Component {
     if (this.props.fetching.compilations) {
       return <span className="alone-loading"><Loading /></span>;
     } else if (this.props.compilations.length < 1) {
-      return (<div>
+      return (<div className="first-step col-md-6">
         <h4>Create a new compilation to get started.</h4>
         <Link to="/compilations/new" className="btn btn-lg btn-success" >
           New Compilation

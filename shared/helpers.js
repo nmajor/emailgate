@@ -26,12 +26,36 @@ export function pageMeta(page) {
 
   return metaMap[page.type];
 }
+
+export function pdfsCurrent(pages, emails) {
+  return _.every([...pages, ...emails], (component) => {
+    if (!component.pdf || !component.pdf.modelVersion) { return false; }
+
+    return component.updatedAt <= component.pdf.modelVersion;
+  });
+}
+
+export function lastPdfUpdatedAt(pages, emails) {
+  const lastComponent = _.sortBy([...pages, ...emails], (component) => {
+    if (!component.pdf || !component.pdf.updatedAt) { return null; }
+
+    return component.pdf.updatedAt;
+  }).reverse()[0];
+
+  if (!lastComponent.pdf || !lastComponent.pdf.updatedAt) { return null; }
+  return lastComponent.pdf.updatedAt;
+}
+
 export function sortedEmails(emails) {
   return _.sortBy(emails, 'date');
 }
 
 export function sortedPages(pages) {
   return _.sortBy(pages, (page) => { return pageMeta(page).position; });
+}
+
+export function sortedComponents(pages, emails) {
+  return [...sortedPages(pages), ...sortedEmails(emails)];
 }
 
 export function prettyPrice(price) {

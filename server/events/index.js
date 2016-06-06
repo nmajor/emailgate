@@ -31,6 +31,21 @@ export default (io) => {
       });
     });
 
+    socket.on('UPDATE_COMPILATION', (data) => {
+      console.log('UPDATE_COMPILATION');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then((compilation) => {
+        if (data.newData.approvedAt) { compilation.approvedAt = data.newData.approvedAt; } // eslint-disable-line no-param-reassign
+        if (data.newData.name) { compilation.name = data.newData.name; } // eslint-disable-line no-param-reassign
+        return compilation.save();
+      })
+      .then((compilation) => {
+        socket.emit('UPDATED_COMPILATION', compilation);
+        return Promise.resolve(compilation);
+      });
+    });
+
     socket.on('GET_FILTERED_ACCOUNT_EMAILS', (data) => {
       console.log('GET_FILTERED_ACCOUNT_EMAILS');
 

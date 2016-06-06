@@ -58,7 +58,7 @@ class CompilationEmailsContainer extends Component {
           emailCount={this.props.compilationEmails.length}
           fetching={this.props.fetching}
         />
-      <div className="container top-bumper">
+        <div className="container top-bumper">
           { this.renderChildren() }
         </div>
       </div>);

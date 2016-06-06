@@ -112,3 +112,13 @@ export function getCompilationPdf(compilationId) {
     socket.emit('GET_COMPILATION_PDF', { compilationId });
   };
 }
+
+export function updateCompilation(compilation, newData) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilation(compilation._id, 'saving', true));
+    socket.emit('UPDATE_COMPILATION', {
+      compilationId: compilation._id,
+      newData,
+    });
+  };
+}

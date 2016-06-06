@@ -32,6 +32,22 @@ class Pdf extends Component {
       this.setState({ page: null });
       pdf.getPage(newProps.page).then(this.onPageComplete);
     }
+
+    if (pdf && ((newProps.pages && newProps.pages !== this.props.pages) ||
+      (newProps.scale && newProps.scale !== this.props.scale))) {
+      this.setState({ pages: {} });
+
+      const getPages = _.map(_.range(this.props.pages), (page) => {
+        return pdf.getPage(page + 1).then((p) => { return this.onPageComplete(p); });
+      });
+
+      Promise.all(getPages)
+      .then(() => {
+        if (typeof this.props.onPagesComplete === 'function') {
+          this.props.onPagesComplete();
+        }
+      });
+    }
   }
 
   onDocumentComplete(pdf) {
@@ -41,21 +57,30 @@ class Pdf extends Component {
       onDocumentComplete(pdf.numPages);
     }
 
-    _.forEach(_.range(this.props.pages), (page) => {
-      pdf.getPage(page + 1).then(this.onPageComplete);
+    const getPages = _.map(_.range(this.props.pages), (page) => {
+      return pdf.getPage(page + 1).then((p) => { return this.onPageComplete(p); });
+    });
+
+    Promise.all(getPages)
+    .then(() => {
+      if (typeof this.props.onPagesComplete === 'function') {
+        this.props.onPagesComplete();
+      }
     });
   }
 
   onPageComplete(page) {
-    const newPagesState = this.state.pages;
-    newPagesState[`page-${page.pageIndex + 1}`] = page;
-    this.setState({ pages: newPagesState });
+    return new Promise((resolve) => {
+      const newPagesState = this.state.pages;
+      newPagesState[`page-${page.pageIndex + 1}`] = page;
+      this.setState({ pages: newPagesState });
 
-    this.renderPdf(page.pageIndex);
-    const { onPageComplete } = this.props;
-    if (typeof onPageComplete === 'function') {
-      onPageComplete(page.pageIndex);
-    }
+      resolve(this.renderPdf(page.pageIndex));
+      const { onPageComplete } = this.props;
+      if (typeof onPageComplete === 'function') {
+        onPageComplete(page.pageIndex);
+      }
+    });
   }
 
   loadByteArray(byteArray) {
@@ -89,26 +114,27 @@ class Pdf extends Component {
   }
 
   renderPdf(pageIndex) {
-    const page = this.state.pages[`page-${pageIndex + 1}`];
-    if (page) {
-      let canvas = this.refs[`page-${page.pageIndex + 1}`];
-      if (canvas.getDOMNode) { // compatible with react 0.13
-        canvas = canvas.getDOMNode();
+    return new Promise((resolve) => {
+      const page = this.state.pages[`page-${pageIndex + 1}`];
+      if (page) {
+        const canvas = this.refs[`page-${page.pageIndex + 1}`];
+        // if (canvas.getDOMNode) { // compatible with react 0.13
+        //   canvas = canvas.getDOMNode();
+        // }
+        const canvasContext = canvas.getContext('2d');
+        const { scale } = this.props;
+        const viewport = page.getViewport(scale);
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        page.render({ canvasContext, viewport });
+        resolve();
       }
-      const canvasContext = canvas.getContext('2d');
-      const { scale } = this.props;
-      const viewport = page.getViewport(scale);
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-      page.render({ canvasContext, viewport });
-    }
+    });
   }
-  renderPageCanvas() {
 
-  }
   renderPages() {
-    return _.map(this.state.pages, (page) => {
-      return <div className="pdf-page"><canvas ref={`page-${page.pageIndex + 1}`} /></div>;
+    return _.map(_.range(this.props.pages), (pageIndex) => {
+      return <div key={pageIndex} className="pdf-page"><canvas ref={`page-${pageIndex + 1}`} /></div>;
     });
   }
 
@@ -125,6 +151,7 @@ class Pdf extends Component {
 Pdf.displayName = 'React-PDFjs';
 Pdf.propTypes = {
   content: PropTypes.string,
+  pdf: PropTypes.object,
   file: PropTypes.string,
   loading: PropTypes.any,
   page: PropTypes.number,
@@ -132,7 +159,8 @@ Pdf.propTypes = {
   scale: PropTypes.number,
   onDocumentComplete: PropTypes.func,
   onPageComplete: PropTypes.func,
+  onPagesComplete: PropTypes.func,
 };
-Pdf.defaultProps = { page: 1, pages: 1, scale: 1.0 };
+Pdf.defaultProps = { page: 1, pages: 1, scale: 1.5 };
 
 export default Pdf;

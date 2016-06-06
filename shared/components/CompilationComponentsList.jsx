@@ -45,17 +45,13 @@ class CompilationComponentsList extends Component {
   render() {
     return (
       <div>
-        <div className="list-header">
-          Emails: ({this.props.emails.length}) Pages: ({this.props.pages.length})
-        </div>
-        <div>
-          {this.renderAddEmailLink()}
-        </div>
-        <div className="pages-list">
-          {this.renderPages()}
-        </div>
-        <div className="emails-list">
-          {this.renderEmails()}
+        <div className="side-scroll">
+          <div className="pages-list">
+            {this.renderPages()}
+          </div>
+          <div className="emails-list">
+            {this.renderEmails()}
+          </div>
         </div>
       </div>
     );

@@ -13,8 +13,16 @@ class CompilationNav extends Component {
 
     return `(${this.props.emailCount})`;
   }
+  renderAddEmailsNav() {
+    return this.renderNavItem('add-emails', 'Add Emails');
+  }
   renderBuildNav() {
-    return this.renderNavItem('build', 'Build');
+    // Fine Tune
+    // Build
+    // Modify
+    // Tweak
+    // Adjust
+    return this.renderNavItem('build', 'Modify');
   }
   renderPreviewNav() {
     return this.renderNavItem('preview', 'Preview');
@@ -36,6 +44,7 @@ class CompilationNav extends Component {
         <div className="row">
           <div className="col-md-12">
             <ul className="nav nav-pills">
+              {this.renderAddEmailsNav()}
               {this.renderBuildNav()}
               {this.renderPreviewNav()}
               {this.renderCheckoutNav()}
