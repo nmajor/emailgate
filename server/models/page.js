@@ -19,7 +19,7 @@ const PageSchema = new Schema({
 
 PageSchema.statics.defaultPages = function defaultPages() {
   return [
-    { type: 'cover' },
+    // { type: 'cover' },
     { type: 'title-page' },
     { type: 'message-page' },
     { type: 'table-of-contents' },
@@ -34,7 +34,7 @@ PageSchema.pre('save', function (next) { // eslint-disable-line func-names
   this.getHtml()
   .then(() => {
     if (this.propChanged('html')) {
-      return this.schedulePdfJob();
+      return this.findOrSchedulePdfJob();
     }
 
     return Promise.resolve(this);
@@ -82,7 +82,7 @@ PageSchema.methods.findOrSchedulePdfJob = function findOrSchedulePdfJob() {
 };
 
 PageSchema.methods.schedulePdfJob = function schedulePdfJob() {
-  queue.create('worker', {
+  return queue.create('worker', {
     title: `Building pdf file for page ${this._id}`,
     kind: 'page-pdf',
     referenceModel: 'page',

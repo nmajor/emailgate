@@ -1,23 +1,11 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import moment from 'moment';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 class TableOfContentsTemplate {
   constructor(page, props) {
-    // if (props.emails.length > 0) {
-      this.emails = props.emails;
-    // } else {
-    //   this.emails = _.map(_.range(10), (index) => {
-    //     const date = new Date();
-    //     date.setDate(date.getDate() + index);
-    //
-    //     return {
-    //       subject: `Example Email Subject ${index + 1}`,
-    //       date,
-    //     };
-    //   });
-    // }
+    this.emails = props.emails;
 
     this.renderEntry = this.renderEntry.bind(this);
     this.pageMap = props.pageMap;
@@ -28,7 +16,7 @@ class TableOfContentsTemplate {
 
     const entryStyle = {
       padding: '1px 0',
-      marginBottom: '10px',
+      marginBottom: '15px',
       borderBottom: '1px dotted #000',
     };
 
@@ -37,27 +25,34 @@ class TableOfContentsTemplate {
       fontSize: '1em',
       textAlign: 'left',
       fontWeight: 'bold',
+      maxWidth: '80%',
     };
 
     const dateStyle = {
       fontSize: '0.6em',
-      padding: '0 0 0 10px',
       fontFamily: '\'Libre Baskerville\', serif',
+      display: 'inline-block',
+      width: '50%',
+      textAlign: 'left',
     };
 
     const pageStyle = {
-      textAlign: 'right',
+      fontSize: '.8em',
       fontFamily: '\'Montserrat\', sans-serif',
-      float: 'right',
+      display: 'inline-block',
+      width: '50%',
+      textAlign: 'right',
     };
 
     const pageNum = this.pageMap[email._id] || (index + 1);
 
     return (
       <div key={index} style={entryStyle}>
-        <span style={subjectStyle}>{email.subject}</span>
-        <span style={dateStyle}>{prettyDate}</span>
-        <span style={pageStyle}>{pageNum}</span>
+        <div style={subjectStyle}>{email.subject}</div>
+        <div style={{ lineHeight: '1em' }}>
+          <div style={dateStyle}>{prettyDate}</div>
+          <div style={pageStyle}>{pageNum}</div>
+        </div>
       </div>
     );
   }
@@ -76,7 +71,7 @@ class TableOfContentsTemplate {
   }
 
   render() {
-    return (<div style={{ fontSize: '20px', padding: '0 50px' }}>
+    return (<div style={{ fontSize: '20px' }}>
       {this.renderPageHeader()}
       {this.renderEntries()}
     </div>);

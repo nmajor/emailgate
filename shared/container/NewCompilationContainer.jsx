@@ -19,7 +19,7 @@ class NewCompilationContainer extends Component {
   }
 
   redirectToEdit(compilation) {
-    this.context.router.push(`/compilations/${compilation._id}/build`);
+    this.context.router.push(`/compilations/${compilation._id}/add-emails`);
   }
 
   back() {

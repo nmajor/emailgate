@@ -111,7 +111,7 @@ class EmailTemplate {
   render() {
     const email = this.email;
 
-    return (<div style={{ fontSize: '20px', padding: '0 50px' }}>
+    return (<div style={{ fontSize: '20px' }}>
       {this.renderSubject(email.subject)}
       {this.renderDate(email.date)}
       {this.renderFrom(email.from)}
@@ -125,7 +125,7 @@ class EmailTemplate {
     const bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
     const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;
 
-    return (<div style={{ fontSize: '20px', padding: '0 50px' }}>
+    return (<div style={{ fontSize: '20px' }}>
       {this.renderSubject(subjectInput)}
       {this.renderDate(this.email.date)}
       {this.renderFrom(this.email.from)}

@@ -1,5 +1,6 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
+import Page from './page';
 // import { emailPdfToBuffer } from '../util/pdf';
 // import pdfjs from 'pdfjs-dist';
 import EmailTemplate from '../../shared/templates/email';
@@ -27,11 +28,29 @@ EmailSchema.post('init', function () {  // eslint-disable-line func-names
   this._original = this.toObject();
 });
 
+EmailSchema.post('remove', (doc) => {
+  Page.findOne({ _compilation: doc._compilation, type: 'table-of-contents' })
+  .then((page) => {
+    return page.save();
+  });
+});
+
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   this.getTemplateHtml()
   .then(() => {
     if (this.propChanged('body') || this.propChanged('template')) {
-      return this.schedulePdfJob();
+      this.findOrSchedulePdfJob()
+      .then((job) => {
+        function resaveTableOfContentsPage() {
+          Page.findOne({ _compilation: this._compilation, type: 'table-of-contents' })
+          .then((page) => {
+            return page.save();
+          });
+        }
+
+        job.removeListener('complete', resaveTableOfContentsPage);
+        job.on('complete', resaveTableOfContentsPage);
+      });
     }
 
     return Promise.resolve(this);
@@ -79,7 +98,7 @@ EmailSchema.methods.findOrSchedulePdfJob = function findOrSchedulePdfJob() {
 };
 
 EmailSchema.methods.schedulePdfJob = function schedulePdfJob() {
-  queue.create('worker', {
+  return queue.create('worker', {
     title: `Building pdf file for email ${this._id}`,
     kind: 'email-pdf',
     referenceModel: 'email',

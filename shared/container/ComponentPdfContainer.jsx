@@ -12,7 +12,8 @@ class ComponentPdfContainer extends Component {
     this.pdfJob = this.props.queueJobMap[`${this.componentModel}-${this.props.component._id}`];
   }
   componentDidMount() {
-    if (!this.componentPdfCurrent()) {
+    if (!this.componentPdfCurrent()
+    || this.componentModel === 'page' && this.props.component.type === 'table-of-contents') {
       if (this.componentModel === 'email') {
         this.props.dispatch(Actions.getCompilationEmailPdf(this.props.component._compilation, this.props.component));
       } else if (this.componentModel === 'page') {

@@ -21,7 +21,7 @@ class MessagePageTemplate {
       fontFamily: '\'Libre Baskerville\', serif',
       fontSize: '0.8em',
       textAlign: 'left',
-      padding: '250px 60px 0 60px',
+      padding: '250px 10px 0 10px',
     };
 
     return <div style={divStyle}>{message}</div>;
@@ -31,7 +31,7 @@ class MessagePageTemplate {
       fontFamily: '\'Montserrat\', sans-serif',
       fontSize: '1em',
       textAlign: 'left',
-      padding: '15px 60px 250px 60px',
+      padding: '15px 10px 250px 10px',
     };
 
     return <div style={divStyle}>{signature}</div>;
