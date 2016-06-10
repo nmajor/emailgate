@@ -1,8 +1,10 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import _ from 'lodash';
+import Email from './email';
 // import { pageHtml } from '../util/pdf';
 import { pageTemplateFactory } from '../util/helpers';
+import { lastPdfUpdatedAt } from '../../shared/helpers';
 import queue from '../queue';
 import { findJobs, getJob, getJobPosition } from '../util/jobs';
 
@@ -47,6 +49,16 @@ PageSchema.pre('save', function (next) { // eslint-disable-line func-names
 PageSchema.methods.needsNewPdf = function needsNewPdf() {
   if (!this.pdf || !this.pdf.updatedAt || !this.pdf.modelVersion) { return Promise.resolve(true); }
   if (this.updatedAt > this.pdf.modelVersion) { return Promise.resolve(true); }
+  if (this.type === 'table-of-contents') {
+    return Email.find({ _compilation: this._compilation })
+    .then((emails) => {
+      if (lastPdfUpdatedAt([], emails) > this.pdf.updatedAt) {
+        return Promise.resolve(true);
+      }
+
+      return Promise.resolve(false);
+    });
+  }
   return Promise.resolve(false);
 };
 

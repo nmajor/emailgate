@@ -22,7 +22,8 @@ class CompilationNav extends Component {
     // Modify
     // Tweak
     // Adjust
-    return this.renderNavItem('build', 'Modify');
+    // Customize
+    return this.renderNavItem('build', 'Customize');
   }
   renderPreviewNav() {
     return this.renderNavItem('preview', 'Preview');

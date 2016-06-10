@@ -34,7 +34,7 @@ class EditCompilationPageContainer extends Component {
           return new MessagePageTemplate(this.props.currentPage);
         case 'table-of-contents' :
           // Cant edit table of contents page
-          return null
+          return null;
         default :
           return null;
       }

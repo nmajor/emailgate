@@ -21,7 +21,7 @@ class TitlePageTemplate {
   renderTitle(title) {
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif',
-      fontSize: '3em',
+      fontSize: '2em',
       textAlign: 'center',
       padding: '150px 0 0 0',
       fontWeight: 'bold',
@@ -32,7 +32,7 @@ class TitlePageTemplate {
   renderSubtitle(subtitle) {
     const divStyle = {
       fontFamily: '\'Libre Baskerville\', serif',
-      fontSize: '1.5em',
+      fontSize: '1.1em',
       textAlign: 'center',
       padding: '15px 0 250px 0',
     };
@@ -47,7 +47,7 @@ class TitlePageTemplate {
       fontFamily: '\'Montserrat\', sans-serif',
       fontSize: '0.8em',
       textAlign: 'center',
-      padding: '100px 0 50px 0',
+      padding: '80px 0 20px 0',
     };
 
     return <div style={divStyle}>{prettyStartDate} - {prettyEndDate}</div>;

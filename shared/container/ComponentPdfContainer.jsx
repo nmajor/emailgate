@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import JobStatus from '../components/JobStatus';
 import * as Actions from '../redux/actions/index';
 import Pdf from '../components/Pdf';
+import { emailEditPath, pageEditPath } from '../helpers';
 
 class ComponentPdfContainer extends Component {
   constructor(props, context) {
@@ -10,6 +11,7 @@ class ComponentPdfContainer extends Component {
 
     this.componentModel = this.props.component.mid ? 'email' : 'page';
     this.pdfJob = this.props.queueJobMap[`${this.componentModel}-${this.props.component._id}`];
+    this.pageNumOffset = this.props.pageMap ? this.props.pageMap[this.props.component._id] : undefined;
   }
   componentDidMount() {
     if (!this.componentPdfCurrent()
@@ -23,9 +25,17 @@ class ComponentPdfContainer extends Component {
   }
   componentWillReceiveProps(nextProps) {
     this.pdfJob = nextProps.queueJobMap[`${this.componentModel}-${nextProps.component._id}`];
+    this.pageNumOffset = this.props.pageMap ? this.props.pageMap[this.props.component._id] : undefined;
   }
   componentPdfCurrent() {
     return this.props.component.pdf && this.props.component.updatedAt <= this.props.component.pdf.modelVersion;
+  }
+  componentEditPath() {
+    if (this.componentModel === 'page') {
+      return pageEditPath(this.props.component);
+    } else if (this.componentModel === 'email') {
+      return emailEditPath(this.props.component);
+    }
   }
   renderPreview() {
     if (this.pdfJob) {
@@ -33,7 +43,14 @@ class ComponentPdfContainer extends Component {
     } else if (!this.componentPdfCurrent()) {
       return <div className="box bottom-bumper">Rebuilding Pdf.</div>;
     } else if (this.props.component.pdf) {
-      return <Pdf onPagesComplete={this.props.onPagesComplete} pdf={this.props.component.pdf} file={this.props.component.pdf.url} pages={this.props.component.pdf.pageCount} />;
+      return (<Pdf
+        onPagesComplete={this.props.onPagesComplete}
+        pdf={this.props.component.pdf}
+        file={this.props.component.pdf.url}
+        pages={this.props.component.pdf.pageCount}
+        pageNumOffset={this.pageNumOffset}
+        editPath={this.componentEditPath()}
+      />);
     }
   }
 
@@ -52,7 +69,8 @@ ComponentPdfContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   component: PropTypes.object.isRequired,
   queueJobMap: PropTypes.object.isRequired,
-  onPagesComplete: PropTypes.func.isRequired,
+  pageMap: PropTypes.object,
+  onPagesComplete: PropTypes.func,
 };
 
 export default connect(mapStateToProps)(ComponentPdfContainer);

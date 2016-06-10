@@ -98,3 +98,11 @@ export function getOrdinalNumber(n) {
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
+
+export function emailEditPath(email) {
+  return `compilations/${email._compilation}/build/emails/${email._id}/edit`;
+}
+
+export function pageEditPath(page) {
+  return `compilations/${page._compilation}/build/pages/${page._id}/edit`;
+}

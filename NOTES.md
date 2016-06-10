@@ -1,3 +1,6 @@
+START HERE:
+Table of contents is like not updating. Only showing 10 emails.
+
 
 **** Maybe a better lib for pdf generation
 - http://wkhtmltopdf.org/

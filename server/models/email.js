@@ -3,6 +3,7 @@ import shortid from 'shortid';
 import Page from './page';
 // import { emailPdfToBuffer } from '../util/pdf';
 // import pdfjs from 'pdfjs-dist';
+import { sanitizeEmailBody } from '../util/helpers';
 import EmailTemplate from '../../shared/templates/email';
 import queue from '../queue';
 import _ from 'lodash';
@@ -36,6 +37,10 @@ EmailSchema.post('remove', (doc) => {
 });
 
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
+  if (this.propChanged('body') && !_.isEmpty(this.body)) {
+    this.body = sanitizeEmailBody(this.body);
+  }
+
   this.getTemplateHtml()
   .then(() => {
     if (this.propChanged('body') || this.propChanged('template')) {

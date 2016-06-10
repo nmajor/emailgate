@@ -150,13 +150,6 @@ h1 > .loading {
   border: 1px solid #ccc;
   padding: 10px;
 }
-.pdf-page {
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
-  canvas {
-    width: 100%;
-  }
-}
 .list-item {
   .type {
     font-size: 10px;
@@ -169,5 +162,30 @@ h1 > .loading {
 
   h4 {
     margin-bottom: 30px;
+  }
+}
+
+.pdf-page {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+
+  canvas {
+    width: 100%;
+    padding: 1px;
+  }
+
+  .page-num {
+    text-align: center;
+    position: relative;
+    height: 0;
+    top: -36px;
+    line-height: 0;
+  }
+
+  .actions {
+    position: relative;
+    height: 0;
+    top: 15px;
+    left: 15px;
   }
 }

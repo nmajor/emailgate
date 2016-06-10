@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import _ from 'lodash';
 
 if (typeof window !== 'undefined') {
@@ -10,9 +11,12 @@ class Pdf extends Component {
     super(props);
     this.state = {
       pages: {},
+      showActions: false,
     };
     this.onDocumentComplete = this.onDocumentComplete.bind(this);
     this.onPageComplete = this.onPageComplete.bind(this);
+    this.showActions = this.showActions.bind(this);
+    this.hideActions = this.hideActions.bind(this);
   }
 
   componentDidMount() {
@@ -82,6 +86,12 @@ class Pdf extends Component {
       }
     });
   }
+  showActions() {
+    this.setState({ showActions: true });
+  }
+  hideActions() {
+    this.setState({ showActions: false });
+  }
 
   loadByteArray(byteArray) {
     window.PDFJS.getDocument(byteArray).then(this.onDocumentComplete);
@@ -131,10 +141,34 @@ class Pdf extends Component {
       }
     });
   }
+  renderActions() {
+    if (this.state.showActions) {
+      return (<div className="actions">
+        <Link to={this.props.editPath} className="btn btn-default btn-xs">
+          <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        </Link>
+      </div>);
+    }
+  }
+  renderPageNumber(pageIndex) {
+    if (this.props.pageNumOffset) {
+      const pageNum = this.props.pageNumOffset + pageIndex;
 
+      return <div className="page-num">{pageNum}</div>;
+    }
+  }
   renderPages() {
     return _.map(_.range(this.props.pages), (pageIndex) => {
-      return <div key={pageIndex} className="pdf-page"><canvas ref={`page-${pageIndex + 1}`} /></div>;
+      return (<div
+        key={pageIndex}
+        className="pdf-page"
+        onMouseEnter={this.showActions}
+        onMouseLeave={this.hideActions}
+      >
+        {this.renderActions()}
+        <canvas ref={`page-${pageIndex + 1}`} />
+        {this.renderPageNumber(pageIndex)}
+      </div>);
     });
   }
 
@@ -156,11 +190,13 @@ Pdf.propTypes = {
   loading: PropTypes.any,
   page: PropTypes.number,
   pages: PropTypes.number,
+  pageNumOffset: PropTypes.number,
   scale: PropTypes.number,
   onDocumentComplete: PropTypes.func,
   onPageComplete: PropTypes.func,
   onPagesComplete: PropTypes.func,
+  editPath: PropTypes.string,
 };
-Pdf.defaultProps = { page: 1, pages: 1, scale: 1.5 };
+Pdf.defaultProps = { page: 1, pages: 1, scale: 2.0 };
 
 export default Pdf;

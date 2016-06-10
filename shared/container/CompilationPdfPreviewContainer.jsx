@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as sharedHelpers from '../helpers';
 import ComponentPdfContainer from './ComponentPdfContainer';
+import { emailPageMap } from '../helpers';
 
 class CompilationPdfPreviewContainer extends Component {
   constructor(props, context) {
@@ -16,9 +17,14 @@ class CompilationPdfPreviewContainer extends Component {
     this.loadMorePdfs = this.loadMorePdfs.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.sortedComponents = this.sortedComponents.bind(this);
+
+    this.emailPageMap = emailPageMap(this.props.compilationEmails);
   }
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
+  }
+  componentWillReceiveProps(nextProps) {
+    this.emailPageMap = emailPageMap(nextProps.compilationEmails);
   }
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
@@ -65,7 +71,12 @@ class CompilationPdfPreviewContainer extends Component {
   }
   renderCompilationPdf() {
     return this.sortedComponents().slice(0, this.state.pdfs).map((component) => {
-      return <ComponentPdfContainer key={component._id} component={component} onPagesComplete={this.onPdfLoaded} />;
+      return (<ComponentPdfContainer
+        key={component._id}
+        component={component}
+        onPagesComplete={this.onPdfLoaded}
+        pageMap={this.emailPageMap}
+      />);
     });
   }
   render() {

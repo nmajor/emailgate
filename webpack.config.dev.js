@@ -32,6 +32,10 @@ module.exports = {
           presets: ['react-hmre'],
         },
       },
+      // {
+      //   test: /\.json$/,
+      //   loader: 'json',
+      // },
     ],
 
     noParse: [

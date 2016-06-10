@@ -3,6 +3,7 @@ import moment from 'moment';
 import Email from '../models/email';
 import * as sharedHelpers from '../../shared/helpers';
 import _ from 'lodash';
+import sanitizeHtml from 'sanitize-html';
 
 import CoverTemplate from '../../shared/templates/cover';
 import TitlePageTemplate from '../../shared/templates/titlePage';
@@ -61,6 +62,19 @@ export function googlifyFilter(filter) {
   return googleFilter.join(' ');
 }
 
+export function sanitizeEmailBody(text) {
+  return sanitizeHtml(text, {
+    allowedTags: [
+      'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
+      'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
+      'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre',
+    ],
+    allowedAttributes: {
+      a: [],
+    },
+  });
+}
+
 export function processEmails() {
   const transformStream = stream.Transform();  // eslint-disable-line new-cap
 
@@ -79,7 +93,7 @@ export function processEmails() {
       subject: email.subject,
       // messageId: email.messageId,
       // text: email.text,
-      body: email.html,
+      body: sanitizeEmailBody(email.html),
       attachments: email.attachments || [],
     };
 
