@@ -10,7 +10,7 @@ import { findJobs, getJob, getJobPosition } from '../util/jobs';
 
 const PageSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
-  _compilation: { type: String, ref: 'User' },
+  _compilation: { type: String, ref: 'Compilation' },
   type: String,
   content: {},
   html: String,
@@ -35,6 +35,8 @@ PageSchema.post('init', function () {  // eslint-disable-line func-names
 PageSchema.pre('save', function (next) { // eslint-disable-line func-names
   this.getHtml()
   .then(() => {
+    console.log('blah hey page pre save');
+    console.log(this.propChanged('html'));
     if (this.propChanged('html')) {
       return this.findOrSchedulePdfJob();
     }

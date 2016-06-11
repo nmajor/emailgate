@@ -2,17 +2,15 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import CompilationPageNavContainer from './CompilationPageNavContainer';
 import ComponentPdfContainer from './ComponentPdfContainer';
+import { pageMeta } from '../helpers';
 
 class PreviewCompilationPageContainer extends Component {
-  renderPreview() {
+  render() {
     return (<div>
       <CompilationPageNavContainer compilation={this.props.compilation} currentPage={this.props.currentPage} active="preview" />
+      <h3>{pageMeta(this.props.currentPage).desc}</h3>
       <ComponentPdfContainer component={this.props.currentPage} />
     </div>);
-  }
-
-  render() {
-    return <div>{this.renderPreview()}</div>;
   }
 }
 

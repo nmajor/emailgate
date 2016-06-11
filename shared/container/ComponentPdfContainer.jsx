@@ -50,6 +50,7 @@ class ComponentPdfContainer extends Component {
         pages={this.props.component.pdf.pageCount}
         pageNumOffset={this.pageNumOffset}
         editPath={this.componentEditPath()}
+        actions={this.props.actions}
       />);
     }
   }
@@ -71,6 +72,7 @@ ComponentPdfContainer.propTypes = {
   queueJobMap: PropTypes.object.isRequired,
   pageMap: PropTypes.object,
   onPagesComplete: PropTypes.func,
+  actions: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(ComponentPdfContainer);

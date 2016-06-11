@@ -87,10 +87,14 @@ class Pdf extends Component {
     });
   }
   showActions() {
-    this.setState({ showActions: true });
+    if (this.props.actions) {
+      this.setState({ showActions: true });
+    }
   }
   hideActions() {
-    this.setState({ showActions: false });
+    if (this.props.actions) {
+      this.setState({ showActions: false });
+    }
   }
 
   loadByteArray(byteArray) {
@@ -142,7 +146,7 @@ class Pdf extends Component {
     });
   }
   renderActions() {
-    if (this.state.showActions) {
+    if (this.props.actions && this.state.showActions) {
       return (<div className="actions">
         <Link to={this.props.editPath} className="btn btn-default btn-xs">
           <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -196,6 +200,7 @@ Pdf.propTypes = {
   onPageComplete: PropTypes.func,
   onPagesComplete: PropTypes.func,
   editPath: PropTypes.string,
+  actions: PropTypes.bool,
 };
 Pdf.defaultProps = { page: 1, pages: 1, scale: 2.0 };
 

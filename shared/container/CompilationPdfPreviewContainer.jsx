@@ -76,6 +76,7 @@ class CompilationPdfPreviewContainer extends Component {
         component={component}
         onPagesComplete={this.onPdfLoaded}
         pageMap={this.emailPageMap}
+        actions
       />);
     });
   }

@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Loading from './Loading';
+import { pageMeta } from '../helpers';
 
 class CompilationPageForm extends Component {
   constructor(props, context) {
@@ -30,16 +31,14 @@ class CompilationPageForm extends Component {
     }
   }
   render() {
-    return (
-      <div>
-        <h3>{this.props.page.desc}</h3>
-        <div className="compilation-page">
-          {this.renderForm()}
-        </div>
-        <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
-        <span className="left-bumper top-bumper">{this.renderSaving()}</span>
+    return (<div>
+      <h3>{pageMeta(this.props.page).desc}</h3>
+      <div className="compilation-page">
+        {this.renderForm()}
       </div>
-    );
+      <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
+      <span className="left-bumper top-bumper">{this.renderSaving()}</span>
+    </div>);
   }
 }
 
