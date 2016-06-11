@@ -55,11 +55,13 @@ class Header extends Component {
     </ul>);
   }
   render() {
-    return (<div className="navbar navbar-inverse navbar-static-top header">
-      <div className="container-fluid">
-        {this.renderNavbarHeader()}
-        {this.renderNav()}
-        {this.renderUserActions()}
+    return (<div className="header">
+      <div className="navbar navbar-inverse navbar-static-top header">
+        <div className="container-fluid">
+          {this.renderNavbarHeader()}
+          {this.renderNav()}
+          {this.renderUserActions()}
+        </div>
       </div>
     </div>);
   }

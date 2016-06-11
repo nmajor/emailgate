@@ -1,4 +1,10 @@
 var webpack = require('webpack');
+// var path = require('path');
+//
+// const rootPublic = path.resolve('./static');
+// const LOCAL_IDENT_NAME = 'localIdentName=[name]_[local]_[hash:base64:5]';
+// const CSS_LOADER = `css?sourceMap&${LOCAL_IDENT_NAME}&root=${rootPublic}` + (DEBUG ? '&minimize' : '');
+// const CSS_LOADER = `css?sourceMap&${LOCAL_IDENT_NAME}&root=${rootPublic}`;
 
 module.exports = {
   devtool: 'cheap-source-map',
@@ -23,6 +29,7 @@ module.exports = {
       {
           test: /\.scss$/,
           loaders: ["style", "css?sourceMap", "sass?sourceMap"]
+          // loaders: ["style", CSS_LOADER, "sass?sourceMap"]
       },
       {
         test: /\.jsx*$/,
