@@ -10,6 +10,11 @@ class RegisterContainer extends Component {
     this.register = this.register.bind(this);
     this.redirectToDashboard = this.redirectToDashboard.bind(this);
   }
+  componentWillMount() {
+    if (this.props.user.email) {
+      this.context.router.push(`/dashboard`);
+    }
+  }
   componentWillUnmount() {
     this.props.dispatch(Actions.setPropertyUser('registering', undefined));
     this.props.dispatch(Actions.setPropertyUser('errors', undefined));

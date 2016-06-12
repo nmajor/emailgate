@@ -85,7 +85,7 @@ app.use(passport.session());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(cookieParser());
-app.use(Express.static(path.resolve(__dirname, '../static')));
+app.use(Express.static(path.resolve(__dirname, '../public')));
 app.use('/', index);
 app.use('/api', api);
 app.use('/oath2', oath2);
@@ -104,8 +104,7 @@ app.use('/kue', kueUi.app);
 
 // Render Initial HTML
 const renderFullPage = (html, renderedState) => {
-  const cssPath = '';
-  // const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.min.css' : '/css/app.css';
+  const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
   return `
     <!doctype html>
@@ -128,7 +127,7 @@ const renderFullPage = (html, renderedState) => {
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(renderedState)};
         </script>
-        <script src="/dist/bundle.js"></script>
+        <script src="/js/bundle.js"></script>
 
         <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
         <script type="text/javascript">

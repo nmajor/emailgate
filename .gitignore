@@ -4,9 +4,8 @@ npm-debug.log
 .idea/
 dump.rdb
 .vscode/
-public/*
-static/dist
-static/css/app.min.css
+public/js/*
+public/css/*
 .env
 tmp/*
 secret.env

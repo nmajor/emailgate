@@ -7,8 +7,8 @@ module.exports = {
   entry: __dirname + "/client/index.js",
 
   output: {
-    path: __dirname + '/static/dist/',
-    filename: 'bundle.js',
+    path: __dirname + '/public/',
+    filename: 'js/bundle.js',
   },
 
   resolve: {
@@ -19,18 +19,27 @@ module.exports = {
     loaders: [
       {
           test: /\.scss$/,
-          loaders: ["style", "css?sourceMap", "sass?sourceMap"]
+          loader: ExtractTextPlugin.extract("style", "css?minimize!sass")
       },
       {
-        test: /\.jsx*$/,
+        test: /\.jsx*$|\.js*$/,
         exclude: /node_modules/,
         loader: 'babel',
+        query: {
+          presets: ['es2015']
+        }
       }
     ],
 
-    // Shut off warnings about using pre-built javascript files
-    // as Quill.js unfortunately ships one as its `main`.
-    noParse: /node_modules\/quill\/dist/
+    noParse: [
+      // Shut off warnings about using pre-built javascript files
+      // as Quill.js unfortunately ships one as its `main`.
+      /node_modules\/quill\/dist/,
+
+      // Shut off warnings about using pre-built javascript files
+      // Have to do this for a react-credit-card module dependency too
+      /payment\/lib\/payment.js$/
+    ]
   },
 
   plugins: [
@@ -45,6 +54,6 @@ module.exports = {
         warnings: false,
       }
     }),
-    new ExtractTextPlugin("app.css"),
+    new ExtractTextPlugin("css/style.css"),
   ],
 };

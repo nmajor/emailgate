@@ -10,6 +10,11 @@ class LoginContainer extends Component {
     this.login = this.login.bind(this);
     this.redirectToDashboard = this.redirectToDashboard.bind(this);
   }
+  componentWillMount() {
+    if (this.props.user.email) {
+      this.context.router.push(`/dashboard`);
+    }
+  }
   componentWillUnmount() {
     this.props.dispatch(Actions.setPropertyUser('loggingIn', undefined));
     this.props.dispatch(Actions.setPropertyUser('errors', undefined));

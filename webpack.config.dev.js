@@ -15,9 +15,9 @@ module.exports = {
   ],
 
   output: {
-    path: __dirname + '/dist/',
+    path: __dirname + '/public/js/',
     filename: 'bundle.js',
-    publicPath: '/dist/',
+    publicPath: '/js/',
   },
 
   resolve: {
@@ -28,7 +28,8 @@ module.exports = {
     loaders: [
       {
           test: /\.scss$/,
-          loaders: ["style", "css?sourceMap", "sass?sourceMap"]
+          loaders: ["style", "sass?sourceMap"]
+          // loaders: ["style", "css?sourceMap", "sass?sourceMap"]
           // loaders: ["style", CSS_LOADER, "sass?sourceMap"]
       },
       {

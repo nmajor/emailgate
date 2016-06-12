@@ -46,7 +46,6 @@
     "google-auth-library": "^0.9.7",
     "googleapis": "^4.0.0",
     "history": "^1.17.0",
-    "html-pdf": "nmajor/node-html-pdf",
     "imap": "^0.8.16",
     "install": "^0.6.1",
     "isomorphic-fetch": "^2.2.1",

@@ -9,7 +9,7 @@ class Home extends Component {
       <div className="home">
         <div className="banner">
           <div className="content col-md-6 col-md-offset-3">
-            <h1>Save your story</h1>
+            <h1>Publish your story</h1>
             <p>Filter and search your emails and publish them into a custom hardback book. Hidden in your emails is a story. Find your story. Make something you can hold, touch, and keep forever.</p>
             <Link to="/register" className="btn btn-success btn-lg btn-block">Register Now and Demo for Free!</Link>
           </div>
@@ -19,7 +19,7 @@ class Home extends Component {
           <div className="row">
             <div className="col-md-4">
               <div className="item">
-                <h1>Filter</h1>
+                <h1>Find</h1>
                 <div className="icon">
                   <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </div>
