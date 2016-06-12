@@ -28,6 +28,8 @@ class ComponentPdfContainer extends Component {
     this.pageNumOffset = this.props.pageMap ? this.props.pageMap[this.props.component._id] : undefined;
   }
   componentPdfCurrent() {
+    console.log('blah componentPdfCurrent');
+    console.log(this.props.component);
     return this.props.component.pdf && (this.props.component.updatedAt <= this.props.component.pdf.modelVersion);
   }
   componentEditPath() {
