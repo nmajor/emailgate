@@ -15,7 +15,7 @@ class ComponentPdfContainer extends Component {
   }
   componentDidMount() {
     if (!this.componentPdfCurrent()
-    || this.componentModel === 'page' && this.props.component.type === 'table-of-contents') {
+    || (this.componentModel === 'page' && this.props.component.type === 'table-of-contents')) {
       if (this.componentModel === 'email') {
         this.props.dispatch(Actions.getCompilationEmailPdf(this.props.component._compilation, this.props.component));
       } else if (this.componentModel === 'page') {
@@ -28,7 +28,7 @@ class ComponentPdfContainer extends Component {
     this.pageNumOffset = this.props.pageMap ? this.props.pageMap[this.props.component._id] : undefined;
   }
   componentPdfCurrent() {
-    return this.props.component.pdf && this.props.component.updatedAt <= this.props.component.pdf.modelVersion;
+    return this.props.component.pdf && (this.props.component.updatedAt <= this.props.component.pdf.modelVersion);
   }
   componentEditPath() {
     if (this.componentModel === 'page') {

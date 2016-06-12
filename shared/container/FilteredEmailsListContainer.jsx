@@ -4,6 +4,7 @@ import * as Actions from '../redux/actions/index';
 import FilteredEmailsList from '../components/FilteredEmailsList';
 import FilteredEmailsListActions from '../components/FilteredEmailsListActions';
 import _ from 'lodash';
+import { sortedEmails } from '../helpers';
 
 class FilteredEmailsListContainer extends Component {
   constructor(props, context) {
@@ -64,7 +65,7 @@ class FilteredEmailsListContainer extends Component {
           saving={this.isSavingEmails()}
         />
         <FilteredEmailsList
-          emails={this.props.filteredAccountEmails}
+          emails={sortedEmails(this.props.filteredAccountEmails)}
           compilationEmailMids={this.props.compilationEmailMids}
           currentFilteredEmailMid={this.props.currentFilteredEmail.mid}
           deselectEmail={this.deselectEmail}

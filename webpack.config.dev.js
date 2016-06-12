@@ -28,8 +28,7 @@ module.exports = {
     loaders: [
       {
           test: /\.scss$/,
-          loaders: ["style", "sass?sourceMap"]
-          // loaders: ["style", "css?sourceMap", "sass?sourceMap"]
+          loaders: ["style", "css?sourceMap", "sass?sourceMap"]
           // loaders: ["style", CSS_LOADER, "sass?sourceMap"]
       },
       {
