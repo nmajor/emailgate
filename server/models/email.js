@@ -47,12 +47,8 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
       this.findOrSchedulePdfJob()
       .then((job) => {
         function resaveTableOfContentsPage() {
-          console.log('blah hey');
-          console.log(this._compilation);
           Page.findOne({ _compilation: this._compilation, type: 'table-of-contents' })
           .then((page) => {
-            console.log('blah hey page');
-            console.log(page);
             return page.save();
           });
         }

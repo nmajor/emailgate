@@ -21,21 +21,17 @@ class AccountsList extends Component {
     });
   }
   renderNewAccount() {
-    return (
-      <Link to="/accounts/new" className="btn btn-default new-account" >
-        New Account
-      </Link>
-    );
+    return (<Link to="/accounts/new" className="btn btn-default new-account" >
+      New Account
+    </Link>);
   }
   render() {
-    return (
-      <div className="accounts-list row">
-        <div className="col-md-6">
-          {this.renderAccountsList()}
-          {this.renderNewAccount()}
-        </div>
+    return (<div className="accounts-list row">
+      <div className="col-md-6">
+        {this.renderAccountsList()}
+        {this.renderNewAccount()}
       </div>
-    );
+    </div>);
   }
 }
 

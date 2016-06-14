@@ -44,11 +44,13 @@ CartSchema.statics.findOrNew = function findOrNew(query) {
 CartSchema.statics.findOrCreate = function findOrCreate(query) {
   return this.findOrNew(query)
   .then((cart) => {
+    if (cart._id) { return Promise.resolve(cart); }
+
     return cart.save();
   });
 };
 
-CartSchema.statics.findCurrent = function findOrCreate(query) {
+CartSchema.statics.findCurrent = function findCurrent(query) {
   const newQuery = Object.assign({}, query, { _order: null });
 
   return this.findOne(newQuery);

@@ -24,7 +24,8 @@ export function getUserCart(req, res) {
     Cart.findOrCreate({ _user: req.user._id, _order: null })
     .then((cart) => {
       res.json(cart);
-    });
+    })
+    .catch((err) => { console.log(err); });
   } else {
     res.json({});
   }

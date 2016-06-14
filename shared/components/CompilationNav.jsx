@@ -9,12 +9,14 @@ class CompilationNav extends Component {
   renderEmailCount() {
     if (this.props.fetching.compilationEmails) {
       return <span className="button-loading"><Loading /></span>;
+    } else if (this.props.emailCount > 0) {
+      return `(${this.props.emailCount})`;
     }
 
-    return `(${this.props.emailCount})`;
+    return '';
   }
   renderAddEmailsNav() {
-    return this.renderNavItem('add-emails', 'Add Emails');
+    return this.renderNavItem('add-emails', `Add Emails ${this.renderEmailCount()}`);
   }
   renderBuildNav() {
     // Fine Tune
@@ -23,7 +25,7 @@ class CompilationNav extends Component {
     // Tweak
     // Adjust
     // Customize
-    return this.renderNavItem('build', 'Customize');
+    return this.renderNavItem('build', 'Customize', (this.props.emailCount === 0));
   }
   renderPreviewNav() {
     return this.renderNavItem('preview', 'Preview');
@@ -31,12 +33,16 @@ class CompilationNav extends Component {
   renderCheckoutNav() {
     return this.renderNavItem('checkout', 'Checkout');
   }
-  renderNavItem(path, pathName, badge) {
-    return (
-      <li role="presentation" className={this.props.currentPath === path ? 'active' : ''}>
-        <Link to={`/compilations/${this.props.compilationId}/${path}`}>{pathName} {badge}</Link>
-      </li>
-    );
+  renderNavItem(path, pathName) {
+    if (this.props.actionStatusMap[path]) {
+      return (<li role="presentation" className={this.props.currentPath === path ? 'active' : ''}>
+        <Link to={`/compilations/${this.props.compilationId}/${path}`}>{pathName}</Link>
+      </li>);
+    }
+
+    return (<li role="presentation" className="disabled">
+      <a>{pathName}</a>
+    </li>);
   }
 
   render() {
@@ -62,6 +68,7 @@ CompilationNav.propTypes = {
   currentPath: PropTypes.string.isRequired,
   emailCount: PropTypes.number.isRequired,
   fetching: PropTypes.object.isRequired,
+  actionStatusMap: PropTypes.object.isRequired,
 };
 
 export default CompilationNav;

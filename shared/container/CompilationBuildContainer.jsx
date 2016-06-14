@@ -7,7 +7,6 @@ class CompilationBuildContainer extends Component {
   constructor(props, context) {
     super(props, context);
   }
-
   renderChildren() {
     if (this.props.children) {
       return React.Children.map(this.props.children, (child) => {

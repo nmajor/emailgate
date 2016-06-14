@@ -23,16 +23,20 @@ class DashboardContainer extends Component {
       this.props.dispatch(Actions.getOrders());
     }
   }
+  renderHelp() {
+    return (<div className="help">
+      <h4>Create a New Compilation</h4>
+      <p>To get started, create a new compilation.</p>
+      <Link to="/compilations/new" className="btn btn-lg btn-success" >
+        New Compilation
+      </Link>
+    </div>);
+  }
   renderDashboard() {
     if (this.props.fetching.compilations) {
       return <span className="alone-loading"><Loading /></span>;
     } else if (this.props.compilations.length < 1) {
-      return (<div className="first-step col-md-6">
-        <h4>Create a new compilation to get started.</h4>
-        <Link to="/compilations/new" className="btn btn-lg btn-success" >
-          New Compilation
-        </Link>
-      </div>);
+      return <div className="row col-md-6">{this.renderHelp()}</div>;
     }
 
     return (<div>

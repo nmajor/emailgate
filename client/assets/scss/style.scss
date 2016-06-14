@@ -157,13 +157,15 @@ h1 > .loading {
     color: #929292;
   }
 }
-.first-step {
+.help {
   border: 1px solid #ccc;
   padding: 30px;
 
-  h4 {
-    margin-bottom: 30px;
+  h1 {
+    margin-bottom: 20px;
+    font-size: 16px;
   }
+  p { margin-bottom: 20px; }
 }
 
 .pdf-page {

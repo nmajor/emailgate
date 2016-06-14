@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
@@ -29,15 +30,29 @@ class AddCompilationEmailsContainer extends Component {
       return <FilteredAccountEmailsContainer compilation={this.compilation} />;
     }
   }
+  renderHelp() {
+    return (<div className="help">
+      <h4>Connect an Email Account</h4>
+      <p>First step is to securely connect an email account so can search an add emails to your compilation.</p>
+      <Link to="/accounts/new" className="btn btn-lg btn-success new-account" >
+        New Account
+      </Link>
+    </div>);
+  }
+  renderSelectAccount() {
+    if (this.props.accounts.length > 0) {
+      return <SelectAccountContainer />;
+    }
+
+    return <div className="row col-md-6">{this.renderHelp()}</div>;
+  }
   render() {
-    return (
-      <div>
-        <h1>Add Emails to Compilation</h1>
-        <SelectAccountContainer />
-        {this.renderFilterContainer()}
-        {this.renderFilteredAccountEmailsContainer()}
-      </div>
-    );
+    return (<div>
+      <h1>Add Emails to Compilation</h1>
+      {this.renderSelectAccount()}
+      {this.renderFilterContainer()}
+      {this.renderFilteredAccountEmailsContainer()}
+    </div>);
   }
 }
 
