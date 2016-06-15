@@ -32,7 +32,11 @@ class CompilationPageForm extends Component {
   }
   render() {
     return (<div>
-      <h3>{pageMeta(this.props.page).desc}</h3>
+      <h3>
+        {pageMeta(this.props.page).desc}
+        <button className="btn btn-xs btn-success left-bumper" onClick={this.submitForm}>Save</button>
+        <span>{this.renderSaving()}</span>
+      </h3>
       <div className="compilation-page">
         {this.renderForm()}
       </div>

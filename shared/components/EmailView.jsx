@@ -10,8 +10,11 @@ class EmailView extends Component {
     this.template = new EmailTemplate(nextProps.email);
   }
   renderView() {
-    return (<div className="email-view" id={`email-view-${this.props.email._id}`}>
-      {this.template.render()}
+    return (<div>
+      <h3>{this.props.email.subject}</h3>
+      <div className="email-view" id={`email-view-${this.props.email._id}`}>
+        {this.template.render()}
+      </div>
     </div>);
   }
   render() {

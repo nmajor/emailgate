@@ -192,3 +192,8 @@ h1 > .loading {
     left: 15px;
   }
 }
+
+.nav-pills>li.active.loud>a, .nav-pills>li.active.loud>a:focus, .nav-pills>li.active.loud>a:hover {
+    color: #fff;
+    background-color: #5cb85c;
+}

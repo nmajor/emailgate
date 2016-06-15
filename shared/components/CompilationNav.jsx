@@ -33,16 +33,24 @@ class CompilationNav extends Component {
   renderCheckoutNav() {
     return this.renderNavItem('checkout', 'Checkout');
   }
+  renderItemLink(className, path, pathName) {
+    return (<li role="presentation" className={className}>
+      <Link to={`/compilations/${this.props.compilationId}/${path}`}>{pathName}</Link>
+    </li>);
+  }
   renderNavItem(path, pathName) {
-    if (this.props.actionStatusMap[path]) {
-      return (<li role="presentation" className={this.props.currentPath === path ? 'active' : ''}>
-        <Link to={`/compilations/${this.props.compilationId}/${path}`}>{pathName}</Link>
+    console.log(this.props.actionStatusMap);
+    if (this.props.currentPath === path) {
+      return this.renderItemLink('active', path, pathName);
+    } else if (this.props.actionStatusMap[path] === 'loud') {
+      return this.renderItemLink('active loud', path, pathName);
+    } else if (this.props.actionStatusMap[path] === 'disabled') {
+      return (<li role="presentation" className="disabled">
+        <a>{pathName}</a>
       </li>);
     }
 
-    return (<li role="presentation" className="disabled">
-      <a>{pathName}</a>
-    </li>);
+    return this.renderItemLink('', path, pathName);
   }
 
   render() {

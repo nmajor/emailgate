@@ -7,6 +7,7 @@ class PreviewCompilationEmailContainer extends Component {
   renderPreview() {
     return (<div className="compilation-email-preview">
       <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} active="preview" />
+      <h3>{this.props.currentEmail.subject}</h3>
       <ComponentPdfContainer component={this.props.currentEmail} />
     </div>);
   }

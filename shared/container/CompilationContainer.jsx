@@ -13,7 +13,6 @@ class CompilationContainer extends Component {
 
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.compilationId }) || {};
     this.currentCompilationPath = this.props.routes[this.props.routes.length - 1].path.split('/')[3];
-    this.lastPdfUpdatedAt = sharedHelpers.lastPdfUpdatedAt(this.props.compilationPages, this.props.compilationEmails);
   }
   componentDidMount() {
     if (this.props.accounts.length < 1) {
@@ -35,7 +34,6 @@ class CompilationContainer extends Component {
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
     this.currentCompilationPath = nextProps.routes[nextProps.routes.length - 1].path.split('/')[3];
-    this.lastPdfUpdatedAt = sharedHelpers.lastPdfUpdatedAt(nextProps.compilationPages, nextProps.compilationEmails);
   }
   componentWillUnmount() {
     if (window.previousLocation) {
@@ -43,13 +41,9 @@ class CompilationContainer extends Component {
       this.props.dispatch(Actions.setCompilationPages([]));
     }
   }
+
   actionStatusMap() {
-    return {
-      'add-emails': true,
-      build: (this.props.compilationEmails.length > 0),
-      preview: false,
-      checkout: (this.compilation.approvedAt >= this.lastPdfUpdatedAt),
-    };
+    return sharedHelpers.actionStatusMap(this.compilation, this.props.compilationEmails, this.props.compilationPages);
   }
   renderChildren() {
     if (this.props.children && !_.isEmpty(this.compilation)) {

@@ -42,7 +42,7 @@ export function lastPdfUpdatedAt(pages, emails) {
     return component.pdf.updatedAt;
   }).reverse()[0];
 
-  if (!lastComponent.pdf || !lastComponent.pdf.updatedAt) { return null; }
+  if (!lastComponent || !lastComponent.pdf || !lastComponent.pdf.updatedAt) { return null; }
   return lastComponent.pdf.updatedAt;
 }
 
@@ -105,4 +105,70 @@ export function emailEditPath(email) {
 
 export function pageEditPath(page) {
   return `compilations/${page._compilation}/build/pages/${page._id}/edit`;
+}
+
+function actionReadyMap(compilation, emails, pages) {
+  function addEmailsReady() {
+    return true;
+  }
+
+  function buildReady() {
+    return emails.length > 0;
+  }
+
+  function previewReady() {
+    return _.every(pages.map((page) => {
+      if (page.type === 'table-of-contents') { return true; }
+
+      return page.createdAt !== page.updatedAt;
+    }));
+  }
+
+  function checkoutReady() {
+    const latestPdf = lastPdfUpdatedAt(pages, emails);
+
+    return compilation.approvedAt >= latestPdf;
+  }
+
+  return {
+    'add-emails': addEmailsReady(),
+    build: buildReady(),
+    preview: previewReady(),
+    checkout: checkoutReady(),
+  };
+}
+
+export function actionStatusMap(compilation, emails, pages) {
+  const readyMap = actionReadyMap(compilation, emails, pages);
+
+  function addEmailsStatus() {
+    return 'ready';
+  }
+
+  function buildStatus() {
+    if (readyMap.build && !readyMap.preview && !readyMap.checkout) {
+      return 'loud';
+    }
+
+    return readyMap.build ? 'ready' : 'disabled';
+  }
+
+  function previewStatus() {
+    if (readyMap.preview && !readyMap.checkout) {
+      return 'loud';
+    }
+
+    return readyMap.preview ? 'ready' : 'disabled';
+  }
+
+  function checkoutStatus() {
+    return readyMap.checkout ? 'loud' : 'disabled';
+  }
+
+  return {
+    'add-emails': addEmailsStatus(),
+    build: buildStatus(),
+    preview: previewStatus(),
+    checkout: checkoutStatus(),
+  };
 }
