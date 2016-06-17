@@ -26,7 +26,10 @@ class AddCompilationEmailsContainer extends Component {
     }
   }
   renderFilteredAccountEmailsContainer() {
-    if (this.currentAccount && this.currentAccount.connectionValid) {
+    if (this.currentAccount
+      && this.currentAccount.connectionValid
+      && this.props.filteredAccountEmails.length > 0
+    ) {
       return <FilteredAccountEmailsContainer compilation={this.compilation} />;
     }
   }
@@ -59,7 +62,7 @@ class AddCompilationEmailsContainer extends Component {
 function mapStateToProps(store) {
   return {
     accounts: store.accounts,
-    compilationEmails: store.compilationEmails,
+    filteredAccountEmails: store.filteredAccountEmails,
     currentAccountId: store.currentAccountId,
   };
 }
@@ -72,7 +75,7 @@ AddCompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array.isRequired,
   compilation: PropTypes.object.isRequired,
-  compilationEmails: PropTypes.array,
+  filteredAccountEmails: PropTypes.array.isRequired,
   currentAccountId: PropTypes.string,
   params: PropTypes.object,
 };

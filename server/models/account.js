@@ -138,7 +138,7 @@ AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStre
 
         countCb(results.length);
         if (results.length > config.maxFilteredEmails) {
-          errCb({ base: [`Found ${results.length} emails. Please narrow your search parameters.`] });
+          errCb({ base: [`${results.length} results. Please narrow your search parameters.`] });
           imap.end();
           emailStream.end();
           return;

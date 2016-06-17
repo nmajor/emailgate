@@ -42,8 +42,8 @@ class CompilationEmailNav extends Component {
 
   render() {
     return (
-      <div className="compilation-email-nav bottom-bumper">
-        <ul className="nav nav-pills">
+      <div className="compilation-email-nav">
+        <ul className="nav nav-tabs">
           {this.renderViewNav()}
           {this.renderEditNav()}
           {this.renderPreviewNav()}

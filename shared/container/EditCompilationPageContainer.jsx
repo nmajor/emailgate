@@ -4,7 +4,7 @@ import _ from 'lodash';
 import CompilationPageNavContainer from './CompilationPageNavContainer';
 import CompilationPageForm from '../components/CompilationPageForm';
 import * as Actions from '../redux/actions/index';
-
+import { pageMeta } from '../helpers';
 import CoverTemplate from '../templates/cover';
 import TitlePageTemplate from '../templates/titlePage';
 import MessagePageTemplate from '../templates/messagePage';
@@ -21,33 +21,39 @@ class EditCompilationPageContainer extends Component {
   templateFactory() {
     if (this.props.currentPage) {
       switch (this.props.currentPage.type) {
-        case 'cover' :
+        case 'cover' : {
           return new CoverTemplate(this.props.currentPage);
-        case 'title-page' :
+        }
+        case 'title-page' : {
           const sortedEmails = _.sortBy(this.props.compilationEmails, (email) => { return email.date; });
           const firstEmail = sortedEmails[0] || {};
           const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
           const startDate = firstEmail.date;
           const endDate = lastEmail.date;
           return new TitlePageTemplate(this.props.currentPage, { startDate, endDate });
-        case 'message-page' :
+        }
+        case 'message-page' : {
           return new MessagePageTemplate(this.props.currentPage);
-        case 'table-of-contents' :
+        }
+        case 'table-of-contents' : {
           // Cant edit table of contents page
           return null;
-        default :
+        }
+        default : {
           return null;
+        }
       }
     }
   }
 
   render() {
-    return (
-      <div>
-        <CompilationPageNavContainer compilation={this.props.compilation} currentPage={this.props.currentPage} active="edit" />
+    return (<div>
+      <h3>{pageMeta(this.props.currentPage).desc}</h3>
+      <CompilationPageNavContainer compilation={this.props.compilation} currentPage={this.props.currentPage} active="edit" />
+      <div className="tab-content">
         <CompilationPageForm submitForm={this.save} compilation={this.props.compilation} page={this.props.currentPage} template={this.templateFactory()} />
       </div>
-    );
+    </div>);
   }
 }
 

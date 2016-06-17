@@ -2,9 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import FilteredEmailsListItem from './FilteredEmailsListItem';
 
 class FilteredEmailsList extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
   renderEmails() {
     return this.props.emails.map((email, index) => {
       return (<FilteredEmailsListItem
@@ -22,7 +19,7 @@ class FilteredEmailsList extends Component {
   }
   render() {
     return (
-      <div className="emails-list">
+      <div className="component-list emails-list">
         {this.renderEmails()}
       </div>
     );

@@ -95,9 +95,16 @@ export function searchMessages(account, searchOptions, countCb, errCb) {
       return;
     }
 
+    if (!response.messages || response.messages.length < 1) {
+      const count = response.messages ? response.messages.length : 0;
+      countCb(count);
+      messageStream.end();
+      return;
+    }
+
     countCb(response.resultSizeEstimate);
     if (response.resultSizeEstimate > config.maxFilteredEmails) {
-      errCb({ base: [`Found ${response.resultSizeEstimate} emails. Please narrow your search parameters.`] });
+      errCb({ base: [`${response.resultSizeEstimate} results. Please narrow your search parameters.`] });
       messageStream.end();
       return;
     }

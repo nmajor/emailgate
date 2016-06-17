@@ -39,7 +39,7 @@ class CompilationNav extends Component {
     if (this.props.currentPath === path) {
       return this.renderItemLink('active', path, pathName);
     } else if (this.props.actionStatusMap[path] === 'loud') {
-      return this.renderItemLink('active loud', path, pathName);
+      return this.renderItemLink('loud', path, pathName);
     } else if (this.props.actionStatusMap[path] === 'disabled') {
       return (<li role="presentation" className="disabled">
         <a>{pathName}</a>
@@ -50,11 +50,11 @@ class CompilationNav extends Component {
   }
 
   render() {
-    return (
-      <div className="compilation-nav container">
+    return (<div className="compilation-nav">
+      <div className="container">
         <div className="row">
           <div className="col-md-12">
-            <ul className="nav nav-pills">
+            <ul className="nav nav-tabs">
               {this.renderAddEmailsNav()}
               {this.renderBuildNav()}
               {this.renderPreviewNav()}
@@ -63,7 +63,7 @@ class CompilationNav extends Component {
           </div>
         </div>
       </div>
-    );
+    </div>);
   }
 }
 

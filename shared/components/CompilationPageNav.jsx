@@ -3,9 +3,6 @@ import { Link } from 'react-router';
 import { pageMeta } from '../helpers';
 
 class CompilationPageNav extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
   renderViewNav() {
     const path = `/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`;
     return this.renderNavItem(path, 'view', 'View');
@@ -30,8 +27,8 @@ class CompilationPageNav extends Component {
 
   render() {
     return (
-      <div className="compilation-page-nav bottom-bumper">
-        <ul className="nav nav-pills">
+      <div className="compilation-page-nav">
+        <ul className="nav nav-tabs">
           {this.renderViewNav()}
           {this.renderEditNav()}
           {this.renderPreviewNav()}

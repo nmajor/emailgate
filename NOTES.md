@@ -1,18 +1,10 @@
 
 ### TOP TODOS:
 
-- For the google account authentication make it so the token only lasts a day and then the user has to re-authenticate. I dont want to be storing super tokens in my database.
-- Optimize the gmail api integration.
-  - If the query would grab more than 300 emails, ask the user to refine the search.
-  - Make it so that redoing the search cancels the previous task.
-  - Make some sort of cancel button to cancel long running searches.
-- In the email-pdf and page-pdf jobs, do a quick check and if the pdf is already up to date, just skip everything and complete the job.
-
 
 ### Other Todos:
 
 - Add email confirmation to users.
-- Make sure that attachments are included when getting the raw emails from gmail.
 - Need to add validation to the shipping address for the order model.
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
 - Something jankey when creating an imap account. Like maybe the password isnt saved/cached or somehthing. Then there is some strange behaviour when checking the connection on the edit page.
@@ -21,6 +13,10 @@
 
 ### Finished Todos
 
+- Make sure that attachments are included when getting the raw emails from gmail.
+- Optimize the gmail api integration.
+  - If the query would grab more than 300 emails, ask the user to refine the search.
+  - Make it so that redoing the search cancels the previous task.
 - Need to remove the Isaac part as the default value for the email filter subject.
 - I think some duplicates can slip into the compilation emails. Check the select all buttons and take some other precautions to make sure that emails that are saving cant be selected and sent again.
 - Error handling for the OrderForm (/checkout/confirm)

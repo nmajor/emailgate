@@ -4,12 +4,14 @@ import CompilationPageNavContainer from './CompilationPageNavContainer';
 import ComponentPdfContainer from './ComponentPdfContainer';
 import { pageMeta } from '../helpers';
 
-class PreviewCompilationPageContainer extends Component {
+class PreviewCompilationPageContainer extends Component { // eslint-disable-line
   render() {
     return (<div>
-      <CompilationPageNavContainer compilation={this.props.compilation} currentPage={this.props.currentPage} active="preview" />
       <h3>{pageMeta(this.props.currentPage).desc}</h3>
-      <ComponentPdfContainer component={this.props.currentPage} />
+      <CompilationPageNavContainer compilation={this.props.compilation} currentPage={this.props.currentPage} active="preview" />
+      <div className="tab-content">
+        <ComponentPdfContainer component={this.props.currentPage} />
+      </div>
     </div>);
   }
 }

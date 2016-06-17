@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { pageMeta } from '../helpers';
+// import { pageMeta } from '../helpers';
 
 class CompilationPageView extends Component {
   renderTemplate() {
@@ -8,14 +8,9 @@ class CompilationPageView extends Component {
     }
   }
   render() {
-    return (
-      <div>
-        <h3>{pageMeta(this.props.page).desc}</h3>
-        <div className="compilation-page">
-          {this.renderTemplate()}
-        </div>
-      </div>
-    );
+    return (<div className="compilation-page">
+      {this.renderTemplate()}
+    </div>);
   }
 }
 

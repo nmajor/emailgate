@@ -193,7 +193,31 @@ h1 > .loading {
   }
 }
 
-.nav-pills>li.active.loud>a, .nav-pills>li.active.loud>a:focus, .nav-pills>li.active.loud>a:hover {
+.nav-tabs>li.loud>a, .nav-tabs>li.loud>a:focus, .nav-tabs>li.loud>a:hover {
     color: #fff;
     background-color: #5cb85c;
+}
+
+.nav-tabs>li.disabled>a, .nav-tabs>li.disabled>a:focus, .nav-tabs>li.disabled>a:hover {
+    border: none;
+}
+.component-list {
+  max-height: 600px;
+  overflow-y: scroll;
+  padding: 0 10px 0 5px;
+  border: 1px solid #CCC;
+}
+.list-bumper {
+  height: 96px;
+}
+.compilation-nav {
+  border-bottom: 1px solid #ddd;
+  .container { position: relative; top: 1px; }
+}
+.tab-content {
+  border: 1px solid #ddd;
+  border-top: 0;
+  padding: 15px;
+  position: relative;
+  top: -1px;
 }

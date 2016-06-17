@@ -5,20 +5,18 @@ import * as Actions from '../redux/actions/index';
 import { connect } from 'react-redux';
 
 class EditCompilationEmailContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
   removeEmail() {
     this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, this.props.currentEmail));
   }
   renderPreview() {
     if (this.props.currentEmail) {
-      return (
-        <div>
-          <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} active="edit" />
+      return (<div>
+        <h3>{this.props.currentEmail.subject}</h3>
+        <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} active="edit" />
+        <div className="tab-content">
           <CompilationEmailFormContainer compilation={this.props.compilation} email={this.props.currentEmail} />
         </div>
-      );
+      </div>);
     }
   }
 

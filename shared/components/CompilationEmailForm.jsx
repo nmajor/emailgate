@@ -48,11 +48,6 @@ class CompilationEmailForm extends Component {
   }
   render() {
     return (<div>
-      <h3>
-        {this.props.email.subject}
-        <button className="btn btn-xs btn-success left-bumper" onClick={this.submitForm}>Save</button>
-        <span>{this.renderSaving()}</span>
-      </h3>
       <form className="email-form" onSubmit={this.handleSubmit}>
         <div className="email-view">
           {this.renderForm()}

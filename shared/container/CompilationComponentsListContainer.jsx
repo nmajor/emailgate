@@ -4,10 +4,6 @@ import { connect } from 'react-redux';
 import Loading from '../components/Loading';
 
 class CompilationComponentsListContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
-
   renderCompilationComponentsList() {
     if (this.props.fetching.compilationEmails || this.props.fetching.compilationPages) {
       return <span className="alone-loading"><Loading /></span>;

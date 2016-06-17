@@ -65,7 +65,7 @@ class CompilationContainer extends Component {
           actionStatusMap={this.actionStatusMap()}
         />
         <div className="container top-bumper">
-          { this.renderChildren() }
+          {this.renderChildren()}
         </div>
       </div>);
     }

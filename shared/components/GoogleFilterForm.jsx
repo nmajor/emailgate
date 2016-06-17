@@ -69,8 +69,9 @@ class GoogleFilterForm extends Component {
     );
   }
   renderCount() {
-    if (this.props.count && this.props.count > 0) {
-      return <span className="left-bumper">Found {this.props.count} emails</span>;
+    console.log(this.props.count);
+    if (this.props.count !== undefined) {
+      return <span className="left-bumper">{this.props.count} results</span>;
     }
   }
   renderFetching() {

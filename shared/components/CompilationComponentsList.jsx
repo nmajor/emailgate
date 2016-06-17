@@ -43,18 +43,16 @@ class CompilationComponentsList extends Component {
     </Link>);
   }
   render() {
-    return (
-      <div>
-        <div className="side-scroll">
-          <div className="pages-list">
-            {this.renderPages()}
-          </div>
-          <div className="emails-list">
-            {this.renderEmails()}
-          </div>
+    return (<div>
+      <div className="component-list scroll">
+        <div className="pages-list">
+          {this.renderPages()}
+        </div>
+        <div className="emails-list">
+          {this.renderEmails()}
         </div>
       </div>
-    );
+    </div>);
   }
 }
 

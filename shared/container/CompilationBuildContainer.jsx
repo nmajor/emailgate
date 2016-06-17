@@ -4,9 +4,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 class CompilationBuildContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
   renderChildren() {
     if (this.props.children) {
       return React.Children.map(this.props.children, (child) => {
@@ -18,11 +15,17 @@ class CompilationBuildContainer extends Component {
       });
     }
   }
+  renderListBumper() {
+    if (this.props.currentEmail || this.props.currentPage) {
+      return <div className="list-bumper"></div>;
+    }
+  }
   render() {
     return (
       <div>
         <div className="row">
           <div className="col-md-3">
+
             <CompilationComponentsListContainer
               currentEmailId={_.get(this.props.currentEmail, '_id')}
               currentPageId={_.get(this.props.currentPage, '_id')}
