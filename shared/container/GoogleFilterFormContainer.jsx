@@ -25,6 +25,8 @@ class GoogleFilterFormContainer extends Component {
     return (<FilterForm
       submitForm={this.submitForm}
       fetching={this.props.fetching.filteredAccountEmails}
+      count={this.props.filteredAccountEmailsResults.count}
+      errors={this.props.filteredAccountEmailsResults.errors}
     />);
   }
 }
@@ -32,6 +34,7 @@ class GoogleFilterFormContainer extends Component {
 function mapStateToProps(store) {
   return {
     fetching: store.fetching,
+    filteredAccountEmailsResults: store.filteredAccountEmailsResults,
   };
 }
 
@@ -39,6 +42,7 @@ GoogleFilterFormContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   currentAccount: PropTypes.object,
   fetching: PropTypes.object.isRequired,
+  filteredAccountEmailsResults: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(GoogleFilterFormContainer);

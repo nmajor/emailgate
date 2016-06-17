@@ -27,6 +27,8 @@ class ImapFilterFormContainer extends Component {
       submitForm={this.submitForm}
       currentAccount={this.currentAccount}
       fetching={this.props.fetching.filteredAccountEmails}
+      count={this.props.filteredAccountEmailsResults.count}
+      errors={this.props.filteredAccountEmailsResults.errors}
     />);
   }
 }
@@ -35,6 +37,7 @@ function mapStateToProps(store) {
   return {
     fetching: store.fetching,
     accountPasswordMap: store.accountPasswordMap,
+    filteredAccountEmailsResults: store.filteredAccountEmailsResults,
   };
 }
 
@@ -43,6 +46,7 @@ ImapFilterFormContainer.propTypes = {
   currentAccount: PropTypes.object,
   accountPasswordMap: PropTypes.object.isRequired,
   fetching: PropTypes.object.isRequired,
+  filteredAccountEmailsResults: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(ImapFilterFormContainer);

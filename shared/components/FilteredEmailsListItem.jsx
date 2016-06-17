@@ -34,11 +34,7 @@ class FilteredEmailsListItem extends Component {
         </span>
       );
     } else if (this.props.disabled) {
-      return (
-        <span className="selectable selected">
-          <span className="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>
-        </span>
-      );
+      return null;
     } else if (this.props.selected) {
       return (
         <span className="selectable selected" onClick={this.unselect}>

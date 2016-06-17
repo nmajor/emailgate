@@ -63,13 +63,19 @@ class GoogleFilterForm extends Component {
 
         {this.renderErrors('base')}
         <button className="btn btn-success" onClick={this.submitForm}>Submit</button>
-        <span className="left-bumper">{this.renderFetching()}</span>
+        {this.renderFetching()}
+        {this.renderCount()}
       </form>
     );
   }
+  renderCount() {
+    if (this.props.count && this.props.count > 0) {
+      return <span className="left-bumper">Found {this.props.count} emails</span>;
+    }
+  }
   renderFetching() {
     if (this.props.fetching) {
-      return <span className="outside-button-loading"><Loading /></span>;
+      return <span className="left-bumper outside-button-loading"><Loading /></span>;
     }
   }
   renderStartDateFormGroup() {
@@ -134,7 +140,6 @@ class GoogleFilterForm extends Component {
           type="text"
           id="filter-subject"
           onChange={this.setSaveAbility}
-          defaultValue="isaac"
         />
       </div>
     );
@@ -185,6 +190,7 @@ GoogleFilterForm.propTypes = {
   submitForm: PropTypes.func.isRequired,
   errors: PropTypes.object,
   fetching: PropTypes.bool,
+  count: PropTypes.number,
 };
 
 export default GoogleFilterForm;

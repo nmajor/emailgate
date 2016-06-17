@@ -4,17 +4,12 @@ import Compilation from '../models/compilation';
 import Email from '../models/email';
 import Page from '../models/page';
 import Cart from '../models/cart';
-// import { emailPdf, pagePdf } from '../util/pdf';
-// import { uploadStream } from '../util/uploader';
-// import * as Docker from '../util/docker';
 import _ from 'lodash';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
 import { processEmails } from '../util/helpers';
 import { watchJob, slimJob } from '../util/jobs';
-
-// import _ from 'lodash';
 
 export default (io) => {
   io.on('connection', (socket) => {
@@ -52,10 +47,28 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
       .then((account) => {
+        function countCb(count) {
+          socket.emit('FILTERED_ACCOUNT_EMAILS_COUNT', count);
+        }
+
+        function errCb(errs) {
+          socket.emit('FILTERED_ACCOUNT_EMAILS_ERROR', errs);
+        }
+
+        const options = {
+          filter: data.filter,
+          password: data.password,
+          countCb,
+          errCb,
+        };
+
         const resStream = ss.createStream();
         ss(socket).emit('FILTERED_ACCOUNT_EMAILS_STREAM', resStream);
 
-        account.filteredEmailsStream(data.filter, data.password)
+        if (socket.filteredEmailStream) { socket.filteredEmailStream.end(); }
+        socket.filteredEmailStream = account.filteredEmailsStream(options); // eslint-disable-line no-param-reassign
+
+        socket.filteredEmailStream
         .pipe(processEmails())
         .pipe(resStream);
       });

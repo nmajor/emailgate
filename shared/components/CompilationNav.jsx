@@ -3,9 +3,6 @@ import { Link } from 'react-router';
 import Loading from './Loading';
 
 class CompilationNav extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
   renderEmailCount() {
     if (this.props.fetching.compilationEmails) {
       return <span className="button-loading"><Loading /></span>;
@@ -39,7 +36,6 @@ class CompilationNav extends Component {
     </li>);
   }
   renderNavItem(path, pathName) {
-    console.log(this.props.actionStatusMap);
     if (this.props.currentPath === path) {
       return this.renderItemLink('active', path, pathName);
     } else if (this.props.actionStatusMap[path] === 'loud') {

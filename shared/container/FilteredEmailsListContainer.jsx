@@ -47,7 +47,10 @@ class FilteredEmailsListContainer extends Component {
     this.props.dispatch(Actions.setPropertyForSomeFilteredAccountEmails(emailMids, 'selected', false));
   }
   addSelectedToCompilation() {
-    this.props.dispatch(Actions.addEmailsToCompilationEmails(this.props.compilation._id, _.filter(this.props.filteredAccountEmails, { selected: true })));
+    this.props.dispatch(Actions.addEmailsToCompilationEmails(this.props.compilation._id,
+    _.filter(this.props.filteredAccountEmails, (email) => {
+      return email.selected === true && !this.props.compilationEmailMids.indexOf(email.mid) > -1;
+    })));
   }
   isSavingEmails() {
     return _.some(this.props.filteredAccountEmails, (email) => { return email.saving; });

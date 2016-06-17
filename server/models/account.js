@@ -1,11 +1,12 @@
 import Mongoose, { Schema } from 'mongoose';
 import { initImap } from '../util/imap';
-import { searchMessages } from '../util/googleAuth';
+import * as googleAuth from '../util/googleAuth';
 import _ from 'lodash';
 import stream from 'stream';
 import { MailParser } from 'mailparser';
 import shortid from 'shortid';
 import { imapifyFilter } from '../util/helpers';
+import config from '../config';
 
 const AccountSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -92,23 +93,24 @@ AccountSchema.methods.checkImapConnection = function checkImapConnection(passwor
   });
 };
 
-AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(options, password) {
+AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(options) {
   if (this.kind === 'google') {
-    return this.googlefilteredEmailsStream(options);
+    return this.googlefilteredEmailsStream(options.filter, options.countCb, options.errCb);
   }
 
-  return this.imapfilteredEmailsStream(options, password);
+  return this.imapfilteredEmailsStream(options.filter, options.password, options.countCb, options.errCb);
 };
 
-AccountSchema.methods.googlefilteredEmailsStream = function googlefilteredEmailsStream(options) {
-  return searchMessages(this, options);
+AccountSchema.methods.googlefilteredEmailsStream = function googlefilteredEmailsStream(options, countCb, errCb) {
+  return googleAuth.searchMessages(this, options, countCb, errCb);
 };
 
-AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStream(options, password) {
+AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStream(options, password, countCb, errCb) {
   const mailbox = options.mailbox;
   const imapFilter = imapifyFilter(options);
 
   const emailStream = stream.PassThrough(); // eslint-disable-line new-cap
+
   const imap = initImap({
     email: this.email,
     password,
@@ -119,10 +121,28 @@ AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStre
   imap.connect();
   imap.on('ready', () => {
     imap.openBox(mailbox, true, (boxErr) => {
-      if (boxErr) { console.log(`Could not open mailbox ${mailbox} ${boxErr.message}`); return; }
+      if (boxErr) {
+        errCb({ base: [`Could not open mailbox ${mailbox} ${boxErr.message}`] });
+        imap.end();
+        emailStream.end();
+        return;
+      }
 
       imap.seq.search(imapFilter, (searchErr, results) => {
-        if (searchErr) { console.log(`problem searching ${searchErr.message}`); return; }
+        if (searchErr) {
+          errCb({ base: [`problem searching ${searchErr.message}`] });
+          imap.end();
+          emailStream.end();
+          return;
+        }
+
+        countCb(results.length);
+        if (results.length > config.maxFilteredEmails) {
+          errCb({ base: [`Found ${results.length} emails. Please narrow your search parameters.`] });
+          imap.end();
+          emailStream.end();
+          return;
+        }
 
         if (results.length < 1) {
           imap.end();
@@ -135,7 +155,9 @@ AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStre
           msg.on('body', (msgStream) => {
             const mailparser = new MailParser();
             mailparser.on('end', (msgObj) => {
-              emailStream.write(new Buffer(JSON.stringify(msgObj)));
+              try {
+                emailStream.write(new Buffer(JSON.stringify(msgObj)));
+              } catch (err) { console.log('error', err); }
             });
 
             msgStream.pipe(mailparser);
@@ -154,11 +176,16 @@ AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStre
       });
     });
   });
+
   imap.on('error', (err) => {
     if (err.toString() !== 'Error: read ECONNRESET') {
-      console.log(`imap error happened. ${err}`);
+      errCb({ base: [`imap error happened. ${err}`] });
     }
     emailStream.end();
+    imap.end();
+  });
+
+  emailStream.on('finish', () => {
     imap.end();
   });
 

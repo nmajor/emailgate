@@ -22,6 +22,10 @@
         border: 2px solid #777;
       }
 
+      &.disabled {
+        background-color: #CCC;
+      }
+
       .selected-icon {
         margin-right: 3px;
       }

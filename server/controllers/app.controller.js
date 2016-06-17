@@ -7,7 +7,7 @@ export function getAppConfig(req, res) {
   ])
   .then((values) => {
     const [googleAuthUrl] = values;
-    const products = require('../products');
+    const products = require('../products'); // eslint-disable-line global-require
 
     res.json({
       googleAuthUrl,

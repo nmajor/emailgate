@@ -1,6 +1,7 @@
 import * as ActionTypes from '../constants';
 import socket from '../../../client/socket';
 import { setPropertyForFetching } from './fetchingActions';
+import { setFilteredAccountEmailsCount, setFilteredAccountEmailsErrors } from './filteredAccountEmailsResultsActions';
 
 export function setFilteredAccountEmails(emails) {
   return {
@@ -19,6 +20,9 @@ export function addFilteredAccountEmail(email) {
 export function getFilteredAccountEmails(account, filter, password) {
   return (dispatch) => {
     dispatch(setPropertyForFetching('filteredAccountEmails', true));
+    dispatch(setFilteredAccountEmails([]));
+    dispatch(setFilteredAccountEmailsCount(undefined));
+    dispatch(setFilteredAccountEmailsErrors(undefined));
     socket.emit('GET_FILTERED_ACCOUNT_EMAILS', { account, password, filter });
   };
 }

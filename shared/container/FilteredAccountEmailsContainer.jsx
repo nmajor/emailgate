@@ -23,10 +23,18 @@ class FilteredAccountEmailsContainer extends Component {
       this.compilationEmailMids = _.map(nextProps.compilationEmails, (email) => { return email.mid; });
     }
   }
+  renderProgress() {
+    const count = this.props.filteredAccountEmailsResults.count || 0;
+    const errors = this.props.filteredAccountEmailsResults.errors;
+
+    if (this.props.filteredAccountEmails.length !== count && !errors) {
+      return <span>{this.props.filteredAccountEmails.length}/{count}</span>;
+    }
+  }
   render() {
     return (
       <div className="filtered-account-emails-container">
-        <h3>Emails {this.props.filteredAccountEmails.length}</h3>
+        <h3>Emails {this.renderProgress()}</h3>
         <div className="row">
           <div className="col-md-3">
             <FilteredEmailsListContainer
@@ -51,6 +59,7 @@ class FilteredAccountEmailsContainer extends Component {
 function mapStateToProps(store) {
   return {
     filteredAccountEmails: store.filteredAccountEmails,
+    filteredAccountEmailsResults: store.filteredAccountEmailsResults,
     compilationEmails: store.compilationEmails,
     currentFilteredEmailMid: store.currentFilteredEmailMid,
   };
@@ -59,6 +68,7 @@ function mapStateToProps(store) {
 FilteredAccountEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
+  filteredAccountEmailsResults: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array.isRequired,
   currentFilteredEmailMid: PropTypes.string,
   compilation: PropTypes.object,

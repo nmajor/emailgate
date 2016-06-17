@@ -5,6 +5,7 @@ import { MailParser } from 'mailparser';
 import base64 from 'base64url';
 import { googlifyFilter } from './helpers';
 import stream from 'stream';
+import config from '../config';
 // import _ from 'lodash';
 
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
@@ -76,7 +77,7 @@ export function getGoogleAuthToken(code) {
   return getAuthToken(client, code);
 }
 
-export function searchMessages(account, searchOptions) {
+export function searchMessages(account, searchOptions, countCb, errCb) {
   const messageStream = stream.PassThrough(); // eslint-disable-line new-cap
   const client = getClient(account.authProps.token);
   const gmail = google.gmail('v1');
@@ -86,13 +87,22 @@ export function searchMessages(account, searchOptions) {
     auth: client,
     q,
     userId: 'me',
+    maxResults: config.maxFilteredEmails,
   }, (err, response) => {
     if (err) {
-      console.log(`There was a problem searching for gmail messages ${err}`);
+      errCb({ base: [`There was a problem searching for gmail messages ${err}`] });
+      messageStream.end();
       return;
     }
 
-    Promise.all(response.messages.map((message) => {
+    countCb(response.resultSizeEstimate);
+    if (response.resultSizeEstimate > config.maxFilteredEmails) {
+      errCb({ base: [`Found ${response.resultSizeEstimate} emails. Please narrow your search parameters.`] });
+      messageStream.end();
+      return;
+    }
+
+    const messagePromise = Promise.all(response.messages.map((message) => {
       return new Promise((resolve) => {
         gmail.users.messages.get({
           id: message.id,
@@ -101,13 +111,16 @@ export function searchMessages(account, searchOptions) {
           format: 'raw',
         }, (messageErr, messageResponse) => {
           if (messageErr) {
-            console.log(`There was a problem getting the gmail thread ${err}`);
+            errCb({ base: [`There was a problem getting the gmail thread - ${messageErr}`] });
+            messageStream.end();
             return;
           }
 
           const mailparser = new MailParser();
           mailparser.on('end', (msgObj) => {
-            messageStream.write(new Buffer(JSON.stringify(msgObj)));
+            try {
+              messageStream.write(new Buffer(JSON.stringify(msgObj)));
+            } catch (err) { console.log('error', err); } // eslint-disable-line no-shadow
             resolve();
           });
 
@@ -118,6 +131,10 @@ export function searchMessages(account, searchOptions) {
     }))
     .then(() => {
       messageStream.end();
+    });
+
+    messageStream.on('finished', () => {
+      messagePromise.resolve();
     });
   });
 

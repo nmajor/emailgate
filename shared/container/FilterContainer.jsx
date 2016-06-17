@@ -2,10 +2,14 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import ImapFilterFormContainer from './ImapFilterFormContainer';
 import GoogleFilterFormContainer from './GoogleFilterFormContainer';
+import * as Actions from '../redux/actions/index';
 
 class FilterContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
+  componentWillUnmount() {
+    this.props.dispatch(Actions.setFilteredAccountEmails([]));
+    this.props.dispatch(Actions.setCurrentFilteredEmailMid(''));
+    this.props.dispatch(Actions.setFilteredAccountEmailsCount(undefined));
+    this.props.dispatch(Actions.setFilteredAccountEmailsErrors(undefined));
   }
   renderFilterForm() {
     if (this.props.currentAccount.kind === 'imap') {
@@ -25,6 +29,7 @@ class FilterContainer extends Component {
 }
 
 FilterContainer.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   currentAccount: PropTypes.object.isRequired,
 };
 

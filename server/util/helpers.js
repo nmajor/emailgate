@@ -75,6 +75,31 @@ export function sanitizeEmailBody(text) {
   });
 }
 
+export function filteredAttachments(attachments) {
+  const allowedTypes = [
+    'image/png',
+    'image/jpeg',
+  ];
+
+  return _.filter(attachments, (a) => {
+    return allowedTypes.indexOf(a.contentType) > -1;
+  });
+}
+
+export function processAttachments(attachments) {
+  return filteredAttachments(attachments).map((a) => {
+    return {
+      contentType: a.contentType,
+      fileName: a.fileName,
+      contentDisposition: a.contentDisposition,
+      contentId: a.contentId,
+      checksum: a.checksum,
+      length: a.length,
+      content: a.content,
+    };
+  });
+}
+
 export function processEmails() {
   const transformStream = stream.Transform();  // eslint-disable-line new-cap
 
@@ -83,6 +108,9 @@ export function processEmails() {
 
     // mid should be unique to the message not the object
     const mid = email.messageId;
+
+    const attachments = email.attachments ? processAttachments(email.attachments) : [];
+    if (attachments.length > 0) { console.log(attachments); }
 
     const processedEmail = {
       date: email.date,
@@ -94,7 +122,7 @@ export function processEmails() {
       // messageId: email.messageId,
       // text: email.text,
       body: sanitizeEmailBody(email.html),
-      attachments: email.attachments || [],
+      attachments,
     };
 
     transformStream.push(new Buffer(JSON.stringify(processedEmail)));
@@ -131,7 +159,7 @@ export function processPdf(pdfObj) {
 }
 
 export function getProductById(id) {
-  const products = require('../products.json');
+  const products = require('../products.json'); // eslint-disable-line global-require
 
   return _.find(products, (product) => { return parseInt(product._id, 10) === parseInt(id, 10); });
 }

@@ -13,7 +13,7 @@ const compilationEmails = (state = initialState.compilationEmails, action) => {
         action.email,
       ];
 
-    case ActionTypes.REMOVE_COMPILATION_EMAIL :
+    case ActionTypes.REMOVE_COMPILATION_EMAIL : {
       const emailIndex = _.findIndex(state, { _id: action.email._id });
       if (emailIndex > -1) {
         return [
@@ -22,8 +22,9 @@ const compilationEmails = (state = initialState.compilationEmails, action) => {
         ];
       }
       return state;
+    }
 
-    case ActionTypes.SET_PROPERTY_FOR_COMPILATION_EMAIL :
+    case ActionTypes.SET_PROPERTY_FOR_COMPILATION_EMAIL : {
       const propEmailIndex = _.findIndex(state, { _id: action.email._id });
       if (propEmailIndex > -1) {
         const email = Object.assign({}, state[propEmailIndex]);
@@ -35,8 +36,9 @@ const compilationEmails = (state = initialState.compilationEmails, action) => {
         ];
       }
       return state;
+    }
 
-    case ActionTypes.UPDATE_EMAIL_IN_COMPILATION_EMAILS :
+    case ActionTypes.UPDATE_EMAIL_IN_COMPILATION_EMAILS : {
       const updatedEmailIndex = _.findIndex(state, { _id: action.email._id });
       if (updatedEmailIndex > -1) {
         return [
@@ -46,6 +48,7 @@ const compilationEmails = (state = initialState.compilationEmails, action) => {
         ];
       }
       return state;
+    }
 
     default:
       return state;

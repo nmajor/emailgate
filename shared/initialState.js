@@ -12,6 +12,7 @@ export default {
   compilationPages: [],
   currentAccountId: '',
   filteredAccountEmails: [],
+  filteredAccountEmailsResults: {},
   currentFilteredEmailMid: '',
   cart: {},
   checkout: {},

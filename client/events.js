@@ -15,6 +15,11 @@ socket.on('FILTERED_ACCOUNT_EMAILS_COUNT', (count) => {
   store.dispatch(Actions.setFilteredAccountEmailsCount(count));
 });
 
+socket.on('FILTERED_ACCOUNT_EMAILS_ERROR', (errs) => {
+  console.log('event FILTERED_ACCOUNT_EMAILS_ERRORS');
+  store.dispatch(Actions.setFilteredAccountEmailsErrors(errs));
+});
+
 ss(socket).on('FILTERED_ACCOUNT_EMAILS_STREAM', (emailStream) => {
   console.log('event FILTERED_ACCOUNT_EMAILS_STREAM');
   store.dispatch(Actions.setFilteredAccountEmails([]));
@@ -51,19 +56,6 @@ socket.on('UPDATED_COMPILATION_EMAIL', (email) => {
   store.dispatch(Actions.updateEmailInCompilationEmails(email));
 });
 
-// ss(socket).on('COMPILATION_EMAIL_PDF_STREAM', (pdfStream, data) => {
-//   console.log('event COMPILATION_EMAIL_PDF_STREAM');
-//   const email = data.email;
-//
-//   const blobStream = require('blob-stream');
-//   const pdfBlobStream = pdfStream.pipe(blobStream());
-//   pdfBlobStream.on('finish', () => {
-//     const pdf = pdfBlobStream.toBlobURL('application/pdf');
-//     email.pdf = pdf;
-//     store.dispatch(Actions.updateEmailInCompilationEmails(email));
-//   });
-// });
-
 socket.on('UPDATED_COMPILATION_PAGE', (page) => {
   console.log('event UPDATED_COMPILATION_PAGE');
   store.dispatch(Actions.updatePageInCompilationPages(page));
@@ -73,32 +65,6 @@ socket.on('UPDATED_COMPILATION', (compilation) => {
   console.log('event UPDATED_COMPILATION');
   store.dispatch(Actions.updateCompilationInCompilations(compilation));
 });
-
-// ss(socket).on('COMPILATION_PAGE_PDF_STREAM', (pdfStream, data) => {
-//   console.log('event COMPILATION_PAGE_PDF_STREAM');
-//   const page = data.page;
-//
-//   const blobStream = require('blob-stream');
-//   const pdfBlobStream = pdfStream.pipe(blobStream());
-//   pdfBlobStream.on('finish', () => {
-//     const pdf = pdfBlobStream.toBlobURL('application/pdf');
-//     page.pdf = pdf;
-//     store.dispatch(Actions.updatePageInCompilationPages(page));
-//   });
-// });
-
-// ss(socket).on('COMPILATION_PDF_STREAM', (pdfStream, data) => {
-//   console.log('event COMPILATION_PDF_STREAM');
-//   const compilation = data.compilation;
-//
-//   const blobStream = require('blob-stream');
-//   const pdfBlobStream = pdfStream.pipe(blobStream());
-//   pdfBlobStream.on('finish', () => {
-//     const pdf = pdfBlobStream.toBlobURL('application/pdf');
-//     compilation.pdf = pdf;
-//     store.dispatch(Actions.updateCompilationInCompilations(compilation));
-//   });
-// });
 
 socket.on('REMOVED_ACCOUNT', (account) => {
   console.log('event REMOVED_ACCOUNT');

@@ -4,10 +4,11 @@ import _ from 'lodash';
 
 const compilationPages = (state = initialState.compilationPages, action) => {
   switch (action.type) {
-    case ActionTypes.SET_COMPILATION_PAGES :
+    case ActionTypes.SET_COMPILATION_PAGES : {
       return action.pages;
+    }
 
-    case ActionTypes.SET_PROPERTY_FOR_COMPILATION_PAGE :
+    case ActionTypes.SET_PROPERTY_FOR_COMPILATION_PAGE : {
       const propPageIndex = _.findIndex(state, { _id: action.page._id });
       if (propPageIndex > -1) {
         const email = Object.assign({}, state[propPageIndex]);
@@ -19,9 +20,9 @@ const compilationPages = (state = initialState.compilationPages, action) => {
         ];
       }
       return state;
+    }
 
-
-    case ActionTypes.UPDATE_PAGE_IN_COMPILATION_PAGES :
+    case ActionTypes.UPDATE_PAGE_IN_COMPILATION_PAGES : {
       const updatedPageIndex = _.findIndex(state, { _id: action.page._id });
       if (updatedPageIndex > -1) {
         return [
@@ -31,9 +32,11 @@ const compilationPages = (state = initialState.compilationPages, action) => {
         ];
       }
       return state;
+    }
 
-    default:
+    default: {
       return state;
+    }
   }
 };
 

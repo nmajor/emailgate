@@ -18,21 +18,21 @@ class AccountListItem extends Component {
       this.props.handleDeleteClick(this.props.account);
     }
   }
-  renderRemoveLink() {
+  renderRemoveLink() { // eslint-disable-line consistent-return
     if (this.props.handleDeleteClick) {
       return (<span className="btn btn-default btn-xs left-bumper" onClick={this.handleDeleteClick}>
         <span className="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
       </span>);
     }
   }
-  renderEditLink() {
+  renderEditLink() { // eslint-disable-line consistent-return
     if (this.props.account.kind === 'imap') {
       return (<Link className="btn btn-default btn-xs left-bumper" to={`/accounts/${this.props.account._id}/edit`}>
         <span className="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
       </Link>);
     }
   }
-  renderEmail() {
+  renderEmail() { // eslint-disable-line consistent-return
     return <span className="left-bumper">{this.props.account.email}</span>;
   }
   renderConnectionStatus() {
@@ -50,7 +50,7 @@ class AccountListItem extends Component {
       <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
     </span>);
   }
-  renderSelected() {
+  renderSelected() { // eslint-disable-line consistent-return
     if (this.props.selected) {
       return 'selected';
     }

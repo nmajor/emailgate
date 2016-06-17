@@ -8,7 +8,7 @@ import { setPropertyForFetching } from './fetchingActions';
 import {
   setPropertyForSomeFilteredAccountEmails,
   setPropertyForFilteredAccountEmail,
-} from './filteredAccountEmails';
+} from './filteredAccountEmailsActions';
 
 import _ from 'lodash';
 
