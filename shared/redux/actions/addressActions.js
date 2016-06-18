@@ -117,11 +117,10 @@ export function updateAddress(id, addressProps, cb) {
       return res.json();
     })
     .then((res) => {
-      if (res.error) {
-        throw new Error(res.error.message);
+      if (!res.errors) {
+        dispatch(addAddress(res));
       }
 
-      dispatch(updateAddressInAddresses(res));
       cb(res);
     })
     .catch((err) => {

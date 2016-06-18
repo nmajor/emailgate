@@ -60,7 +60,7 @@
     "npm": "^3.8.6",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^4.0.0",
+    "passport-local-mongoose": "nmajor/passport-local-mongoose",
     "pdfjs-dist": "^1.5.285",
     "rc-progress": "^1.0.4",
     "react": "^0.14.7",

@@ -49,7 +49,7 @@ class AddressListItem extends Component {
     }
   }
   render() {
-    return (<div className={`address-list-item selectable ${this.renderSelectedClass()}`} onClick={this.handleItemClick}>
+    return (<div className={`address-list-item ${this.props.handleItemClick ? 'selectable' : ''} ${this.renderSelectedClass()}`} onClick={this.handleItemClick}>
       <h4>
         {this.props.address.firstName} {this.props.address.lastName}
       </h4>

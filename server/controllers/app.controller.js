@@ -30,3 +30,33 @@ export function getUserCart(req, res) {
     res.json({});
   }
 }
+
+function updatePasswordError(field, message) {
+  return {
+    errors: {
+      [field]: { message },
+    },
+  };
+}
+
+export function updatePassword(req, res) {
+  const user = req.user;
+
+  user.checkPassword(req.body.currentPassword, (err, passwordValid) => {
+    if (passwordValid) {
+      if (req.body.newPassword !== req.body.newPasswordConfirm) {
+        res.json(updatePasswordError('newPasswordConfirm', 'Confirm password field does not match new password.'));
+      } else {
+        user.setPassword(req.body.newPassword, (err, user) => { // eslint-disable-line no-shadow
+          if (err) {
+            res.json(err);
+          } else {
+            res.json(user);
+          }
+        });
+      }
+    } else {
+      res.json(updatePasswordError('currentPassword', 'Current password is not correct.'));
+    }
+  });
+}

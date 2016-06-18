@@ -9,9 +9,6 @@ import { Link } from 'react-router';
 import Loading from '../components/Loading';
 
 class DashboardContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
   componentDidMount() {
     if (this.props.compilations.length < 1 && !this.props.fetching.compilations) {
       this.props.dispatch(Actions.getCompilations());

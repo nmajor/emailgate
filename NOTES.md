@@ -1,18 +1,18 @@
 
 ### TOP TODOS:
-
+- Finish update password part
 
 ### Other Todos:
 
 - Add email confirmation to users.
-- Need to add validation to the shipping address for the order model.
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
 - Something jankey when creating an imap account. Like maybe the password isnt saved/cached or somehthing. Then there is some strange behaviour when checking the connection on the edit page.
-- See if it is possible to gzip data when streaming up to the client. It would be great to gzip the emails from searches and any pdf previews, even updated emails or pages, etc...
 
 
 ### Finished Todos
 
+- See if it is possible to gzip data when streaming up to the client. It would be great to gzip the emails from searches and any pdf previews, even updated emails or pages, etc...
+- Need to add validation to the shipping address for the order model.
 - Make sure that attachments are included when getting the raw emails from gmail.
 - Optimize the gmail api integration.
   - If the query would grab more than 300 emails, ask the user to refine the search.

@@ -44,6 +44,11 @@ export function patchAddress(req, res) {
   })
   .then((address) => {
     res.json(address);
+  })
+  .catch((err) => {
+    if (err.name === 'ValidationError') {
+      res.json(err);
+    }
   });
 }
 

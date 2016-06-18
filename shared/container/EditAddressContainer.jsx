@@ -15,9 +15,25 @@ class EditAddressContainer extends Component {
   }
 
   update(props) {
-    this.props.dispatch(Actions.updateAddress(this.address._id, props, () => {
-      this.back();
-    }));
+    return new Promise((resolve, reject) => {
+      this.props.dispatch(Actions.updateAddress(this.address._id, props, (res) => {
+        console.log(res);
+        if (res.errors) {
+          const errors = {
+            _error: 'Could not update address',
+          };
+
+          _.forEach(res.errors, (val, key) => {
+            errors[key] = val.message;
+          });
+
+          reject(errors);
+        } else {
+          this.back();
+          resolve();
+        }
+      }));
+    });
   }
 
   back() {
