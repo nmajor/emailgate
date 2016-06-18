@@ -6,9 +6,6 @@ import BillingAddressContainer from './BillingAddressContainer';
 import BillingInfoFormContainer from './BillingInfoFormContainer';
 
 class CheckoutContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
   renderShippingAddress() {
     return <ShippingAddressContainer />;
   }
@@ -27,9 +24,19 @@ class CheckoutContainer extends Component {
       <Header />
       <div className="container">
         <h1>Checkout</h1>
-        {this.renderShippingAddress()}
-        {this.renderBillingAddress()}
-        {this.renderBillingInfo()}
+        <div className="row">
+          <div className="col-md-6">
+            {this.renderShippingAddress()}
+          </div>
+          <div className="col-md-6">
+            {this.renderBillingAddress()}
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            {this.renderBillingInfo()}
+          </div>
+        </div>
       </div>
     </div>);
   }

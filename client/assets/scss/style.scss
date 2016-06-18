@@ -195,7 +195,8 @@ h1 > .loading {
 
 .nav-tabs>li.loud>a, .nav-tabs>li.loud>a:focus, .nav-tabs>li.loud>a:hover {
     color: #fff;
-    background-color: #5cb85c;
+    background-color: rgba(92,184,92,0.5);
+    // background-color: #5cb85c;
 }
 
 .nav-tabs>li.disabled>a, .nav-tabs>li.disabled>a:focus, .nav-tabs>li.disabled>a:hover {

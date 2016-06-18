@@ -62,15 +62,6 @@ class BillingInfoForm extends Component {
 
     /* eslint-disable camelcase */
     return (<div>
-      <div>
-        <Card
-          number={number.value}
-          expiry={`${exp_month.value}${exp_year.value}`}
-          cvc={cvc.value}
-          name={billingName}
-          focused={this.getFocusedFromActiveField(activeField)}
-        />
-      </div>
       <div className="row">
         <div className="col-md-6">
           <form onSubmit={handleSubmit}>
@@ -79,7 +70,7 @@ class BillingInfoForm extends Component {
                 <div className="form-group">
                   <label>Card Number</label>
                   <div className="input-group">
-                    <input type="text" className="form-control" {...number}/>
+                    <input type="text" className="form-control" {...number} />
                     <span className="input-group-addon"><span className="glyphicon glyphicon-credit-card" aria-hidden="true"></span></span>
                   </div>
                 </div>
@@ -89,19 +80,19 @@ class BillingInfoForm extends Component {
               <div className="col-md-3">
                 <div className="form-group">
                   <label>Exp Month</label>
-                  <input type="text" className="form-control" {...exp_month}/>
+                  <input type="text" className="form-control" {...exp_month} />
                 </div>
               </div>
               <div className="col-md-3">
                 <div className="form-group">
                   <label>Exp Year</label>
-                  <input type="text" className="form-control" {...exp_year}/>
+                  <input type="text" className="form-control" {...exp_year} />
                 </div>
               </div>
               <div className="col-md-6">
                 <div className="form-group">
                   <label>CVC</label>
-                  <input type="text" className="form-control" {...cvc}/>
+                  <input type="text" className="form-control" {...cvc} />
                 </div>
               </div>
             </div>
@@ -111,6 +102,15 @@ class BillingInfoForm extends Component {
               {this.renderSubmitting()}
             </div>
           </form>
+        </div>
+        <div className="col-md-6">
+          <Card
+            number={number.value}
+            expiry={`${exp_month.value}${exp_year.value}`}
+            cvc={cvc.value}
+            name={billingName}
+            focused={this.getFocusedFromActiveField(activeField)}
+          />
         </div>
       </div>
     </div>);
@@ -126,7 +126,7 @@ BillingInfoForm.propTypes = {
   billingAddress: PropTypes.object.isRequired,
 };
 
-BillingInfoForm = reduxForm({
+BillingInfoForm = reduxForm({ // eslint-disable-line no-class-assign
   form: 'billingInfo',
   fields: [
     'number',

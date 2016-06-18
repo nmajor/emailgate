@@ -87,11 +87,10 @@ export function createAddress(addressProps, cb) {
       return res.json();
     })
     .then((res) => {
-      if (res.error) {
-        throw new Error(res.error.message);
+      if (!res.errors) {
+        dispatch(addAddress(res));
       }
 
-      dispatch(addAddress(res));
       cb(res);
     })
     .catch((err) => {

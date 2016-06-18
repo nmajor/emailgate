@@ -28,14 +28,10 @@ class SelectableAddressList extends Component {
     );
   }
   render() {
-    return (
-      <div className="address-list row">
-        <div className="col-md-6">
-          {this.renderAddressList()}
-          {this.renderNewAddress()}
-        </div>
-      </div>
-    );
+    return (<div className="address-list">
+      {this.renderAddressList()}
+      {this.renderNewAddress()}
+    </div>);
   }
 }
 

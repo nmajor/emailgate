@@ -8,7 +8,7 @@ class BillingAddressContainer extends Component {
     super(props, context);
 
     this.state = {
-      selecting: this.props.checkout.billingAddressId ? false : true,
+      selecting: !this.props.checkout.billingAddressId,
     };
 
     this.selectAddress = this.selectAddress.bind(this);

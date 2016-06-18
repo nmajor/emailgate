@@ -20,6 +20,11 @@ export function createAddress(req, res) {
   newAddress.save()
   .then((address) => {
     res.json(address);
+  })
+  .catch((err) => {
+    if (err.name === 'ValidationError') {
+      res.json(err);
+    }
   });
 }
 

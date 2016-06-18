@@ -3,6 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
+import _ from 'lodash';
 
 class NewAddressContainer extends Component {
   constructor(props, context) {
@@ -12,9 +13,24 @@ class NewAddressContainer extends Component {
   }
 
   create(props) {
-    this.props.dispatch(Actions.createAddress(props, () => {
-      this.back();
-    }));
+    return new Promise((resolve, reject) => {
+      this.props.dispatch(Actions.createAddress(props, (res) => {
+        if (res.errors) {
+          const errors = {
+            _error: 'Could not create address',
+          };
+
+          _.forEach(res.errors, (val, key) => {
+            errors[key] = val.message;
+          });
+
+          reject(errors);
+        } else {
+          this.back();
+          resolve();
+        }
+      }));
+    });
   }
 
   back() {

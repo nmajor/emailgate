@@ -34,15 +34,11 @@ class SelectAddressContainer extends Component {
     }
 
     if (this.selectedAddress && !this.props.selecting) {
-      return (<div className="row">
-        <div className="col-md-6">
-          <div className="selected-address">
-            <AddressListItem
-              address={this.selectedAddress}
-              selected
-            />
-          </div>
-        </div>
+      return (<div className="selected-address">
+        <AddressListItem
+          address={this.selectedAddress}
+          selected
+        />
       </div>);
     }
 

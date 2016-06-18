@@ -20,6 +20,9 @@ export function createOrder(req, res) {
   newOrder._user = req.user._id;
   newOrder.save()
   .then((order) => {
+    return order.submitPayment();
+  })
+  .then((order) => {
     if (order.transaction) {
       return Cart.findOne({ _user: order._user, _id: req.body.cartId })
       .then((cart) => {
@@ -32,9 +35,6 @@ export function createOrder(req, res) {
     }
 
     return Promise.resolve(order);
-  })
-  .then((order) => {
-    return order.submitPayment();
   })
   .then((order) => {
     res.json(order);

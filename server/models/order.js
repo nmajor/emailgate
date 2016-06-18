@@ -73,7 +73,7 @@ OrderSchema.methods.getItems = function getItems() {
 
 OrderSchema.methods.submitPayment = function submitPayment() {
   return new Promise((resolve) => {
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // eslint-disable-line global-require
 
     stripe.charges.create({
       amount: this.amount,
