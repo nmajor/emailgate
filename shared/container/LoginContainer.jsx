@@ -29,12 +29,10 @@ class LoginContainer extends Component {
   }
 
   render() {
-    return (
-      <div className="login-container">
-        <Header />
-        <LoginForm loginUser={this.login} errors={this.props.user.errors} user={this.props.user} />
-      </div>
-    );
+    return (<div className="login-container">
+      <Header />
+      <LoginForm loginUser={this.login} errors={this.props.user.errors} user={this.props.user} />
+    </div>);
   }
 }
 

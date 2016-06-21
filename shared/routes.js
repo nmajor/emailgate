@@ -6,6 +6,7 @@ import App from './container/App';
 import Terms from './components/Terms';
 import RegisterContainer from './container/RegisterContainer';
 import LoginContainer from './container/LoginContainer';
+import ForgotPasswordContainer from './container/ForgotPasswordContainer';
 import NewAccountContainer from './container/NewAccountContainer';
 import EditAccountContainer from './container/EditAccountContainer';
 import NewCompilationContainer from './container/NewCompilationContainer';
@@ -38,7 +39,6 @@ import AccountDashboardContainer from './container/AccountDashboardContainer';
 import OrdersDashboardContainer from './container/OrdersDashboardContainer';
 import AddressesDashboardContainer from './container/AddressesDashboardContainer';
 
-
 // components
 import Home from './components/Home';
 
@@ -48,6 +48,7 @@ const routes = (
     <Route path="/terms" component={Terms} />
     <Route path="/register" component={RegisterContainer} />
     <Route path="/login" component={LoginContainer} />
+    <Route path="/forgot" component={ForgotPasswordContainer} />
     <Route path="/cart" component={CartContainer} />
     <Route path="/checkout" component={CheckoutContainer} />
     <Route path="/checkout/confirm" component={CheckoutConfirmContainer} />

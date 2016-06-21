@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import Loading from './Loading';
 
 class LoginForm extends Component {
@@ -33,6 +34,9 @@ class LoginForm extends Component {
         <button className="btn btn-success btn-block" onClick={this.loginUser}>
           Login {this.renderLoading()}
         </button>
+        <div className="top-bumper">
+          <Link to="/forgot">Forgot password?</Link>
+        </div>
       </form>
     );
   }

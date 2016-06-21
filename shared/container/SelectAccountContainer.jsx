@@ -20,10 +20,10 @@ class SelectAccountContainer extends Component {
   }
   renderHeaderText() {
     if (this.props.accounts.length > 0) {
-      return 'Select an account';
+      return 'Select an email account';
     }
 
-    return 'Add an account to begin';
+    return 'Add an email account to begin';
   }
   renderSelectAccount() {
     return (<div>

@@ -51,7 +51,6 @@ class AddCompilationEmailsContainer extends Component {
   }
   render() {
     return (<div>
-      <h1>Add Emails to Compilation</h1>
       {this.renderSelectAccount()}
       {this.renderFilterContainer()}
       {this.renderFilteredAccountEmailsContainer()}
