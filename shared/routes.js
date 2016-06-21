@@ -7,6 +7,7 @@ import Terms from './components/Terms';
 import RegisterContainer from './container/RegisterContainer';
 import LoginContainer from './container/LoginContainer';
 import ForgotPasswordContainer from './container/ForgotPasswordContainer';
+import ResetPasswordContainer from './container/ResetPasswordContainer';
 import NewAccountContainer from './container/NewAccountContainer';
 import EditAccountContainer from './container/EditAccountContainer';
 import NewCompilationContainer from './container/NewCompilationContainer';
@@ -49,6 +50,7 @@ const routes = (
     <Route path="/register" component={RegisterContainer} />
     <Route path="/login" component={LoginContainer} />
     <Route path="/forgot" component={ForgotPasswordContainer} />
+    <Route path="/reset/:token" component={ResetPasswordContainer} />
     <Route path="/cart" component={CartContainer} />
     <Route path="/checkout" component={CheckoutContainer} />
     <Route path="/checkout/confirm" component={CheckoutConfirmContainer} />

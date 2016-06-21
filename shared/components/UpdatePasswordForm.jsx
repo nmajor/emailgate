@@ -35,14 +35,14 @@ class UpdatePasswordForm extends Component {
         <div className="col-md-12">
           <div className={`form-group ${this.renderErrorClass(currentPassword)}`}>
             <label className="control-label">Current Password</label>
-            <input type="text" className="form-control" {...currentPassword} />
+            <input type="password" className="form-control" {...currentPassword} />
             {this.renderError(currentPassword)}
           </div>
         </div>
         <div className="col-md-12">
           <div className={`form-group ${this.renderErrorClass(newPassword)}`}>
             <label className="control-label">New Password</label>
-            <input type="text" className="form-control" {...newPassword} />
+            <input type="password" className="form-control" {...newPassword} />
             {this.renderError(newPassword)}
           </div>
         </div>
@@ -51,16 +51,18 @@ class UpdatePasswordForm extends Component {
         <div className="col-md-12">
           <div className={`form-group ${this.renderErrorClass(newPasswordConfirm)}`}>
             <label className="control-label">Confirm New Password</label>
-            <input type="text" className="form-control" {...newPasswordConfirm} />
+            <input type="password" className="form-control" {...newPasswordConfirm} />
             {this.renderError(newPasswordConfirm)}
           </div>
         </div>
       </div>
       <div className="form-group">
-        {error && <div className="text-danger">{error}</div>}
         <button className="btn btn-success" type="submit">Submit</button>
         {this.renderSubmitting()}
-        {success && <span className="text-success">{success}</span>}
+        <span className="left-bumper">
+          {error && <div className="text-danger">{error}</div>}
+          {success && <span className="text-success">{success}</span>}
+        </span>
       </div>
     </form>);
   }

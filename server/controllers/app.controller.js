@@ -48,11 +48,11 @@ export function forgotPassword(req, res) {
   User.findOne({ email: req.body.email })
   .then((user) => {
     if (!user) {
-      res.json({ errors: { email: { message: 'Could not find user.' } } });
+      return res.json({ errors: { email: { message: 'Could not find user.' } } });
     }
 
-    user.sendForgotPassword()
-    .then(() => { // eslint-disable-line no-shadow
+    return user.sendForgotPassword()
+    .then(() => {
       res.json({});
     })
     .catch((err) => {
@@ -65,5 +65,21 @@ export function forgotPassword(req, res) {
 }
 
 export function resetPassword(req, res) {
-  res.json({ errors: { email: { message: 'Could not find user.' } } });
+  User.findOne({ resetPasswordToken: req.body.token, resetPasswordExpires: { $gt: Date.now() } })
+  .then((user) => {
+    if (!user) {
+      return res.json({ errors: { email: { message: 'Password reset token is invalid or has expired.' } } });
+    }
+
+    return user.resetPassword(req.body.newPassword, req.body.newPasswordConfirm)
+    .then(() => { // eslint-disable-line no-shadow
+      res.json({});
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 }

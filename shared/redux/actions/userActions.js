@@ -222,3 +222,29 @@ export function forgotPassword(data, cb) {
     });
   };
 }
+
+export function resetPassword(data, cb) {
+  return () => {
+    return fetch(`${baseURL}/api/reset-password`, {
+      credentials: 'include',
+      method: 'put',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}

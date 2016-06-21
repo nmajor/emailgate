@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { reduxForm } from 'redux-form';
 import Loading from './Loading';
 
-class ForgotPasswordForm extends Component {
+class ResetPasswordForm extends Component {
   renderSubmitting() {
     if (this.props.submitting) {
       return <span className="outside-button-loading"><Loading /></span>;
@@ -21,7 +22,8 @@ class ForgotPasswordForm extends Component {
   render() {
     const {
       fields: {
-        email,
+        newPassword,
+        newPasswordConfirm,
       },
       error,
       success,
@@ -29,14 +31,23 @@ class ForgotPasswordForm extends Component {
     } = this.props;
 
     return (<div className="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-      <h1>Forgot Password</h1>
+      <h1>Reset Password</h1>
       <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-md-12">
-            <div className={`form-group ${this.renderErrorClass(email)}`}>
-              <label className="control-label">Email</label>
-              <input type="text" className="form-control" {...email} />
-              {this.renderError(email)}
+            <div className={`form-group ${this.renderErrorClass(newPassword)}`}>
+              <label className="control-label">New Password</label>
+              <input type="password" className="form-control" {...newPassword} />
+              {this.renderError(newPassword)}
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            <div className={`form-group ${this.renderErrorClass(newPasswordConfirm)}`}>
+              <label className="control-label">Confirm New Password</label>
+              <input type="password" className="form-control" {...newPasswordConfirm} />
+              {this.renderError(newPasswordConfirm)}
             </div>
           </div>
         </div>
@@ -47,13 +58,16 @@ class ForgotPasswordForm extends Component {
             {error && <div className="text-danger">{error}</div>}
             {success && <span className="text-success">{success}</span>}
           </span>
+          <div className="top-bumper">
+            <Link to="/login">Back to login</Link>
+          </div>
         </div>
       </form>
     </div>);
   }
 }
 
-ForgotPasswordForm.propTypes = {
+ResetPasswordForm.propTypes = {
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   error: PropTypes.string,
@@ -61,11 +75,12 @@ ForgotPasswordForm.propTypes = {
   submitting: PropTypes.bool.isRequired,
 };
 
-ForgotPasswordForm = reduxForm({ // eslint-disable-line no-class-assign
-  form: 'forgotPassword',
+ResetPasswordForm = reduxForm({ // eslint-disable-line no-class-assign
+  form: 'resetPassword',
   fields: [
-    'email',
+    'newPassword',
+    'newPasswordConfirm',
   ],
-})(ForgotPasswordForm);
+})(ResetPasswordForm);
 
-export default ForgotPasswordForm;
+export default ResetPasswordForm;
