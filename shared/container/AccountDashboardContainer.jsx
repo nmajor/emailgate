@@ -24,7 +24,7 @@ class AccountDashboardContainer extends Component { // eslint-disable-line
   }
   render() {
     return (<div className="dashboard-wrapper">
-      <div className="container">
+      <div className="container-fluid">
         <h1 className="hdash">Manage Account</h1>
         {this.renderPasswordContainer()}
         {this.renderAddressList()}

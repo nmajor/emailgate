@@ -13,7 +13,6 @@ class DashboardNavWrapper extends Component { // eslint-disable-line
     this.currentPath = nextProps.routes[nextProps.routes.length - 1].path;
   }
   renderNavItem(path, text) {
-    console.log(this.currentPath);
     return <li className={this.currentPath === path ? 'active' : ''}><Link to={path}>{text}</Link></li>;
   }
   render() {
@@ -21,7 +20,7 @@ class DashboardNavWrapper extends Component { // eslint-disable-line
       <Header />
       <div className="container-fluid">
         <div className="row">
-          <div className="dashboard-nav col-sm-3 col-lg-2 navbar-inverse">
+          <div className="dashboard-nav hidden-xs col-sm-3 col-lg-2 navbar-inverse">
             <ul className="nav navbar-nav">
               {this.renderNavItem('/dashboard', 'Summary')}
               {this.renderNavItem('/dashboard/compilations', 'Compilations')}

@@ -10,7 +10,7 @@ class OrdersDashboardContainer extends Component {
     }
   }
   render() {
-    return (<div className="container">
+    return (<div className="container-fluid">
       <h1 className="hdash">Orders</h1>
       <OrdersListContainer />
     </div>);
