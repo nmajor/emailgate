@@ -197,11 +197,11 @@ export function updatePassword(data, cb) {
   };
 }
 
-export function resetPassword(data, cb) {
+export function forgotPassword(data, cb) {
   return () => {
-    return fetch(`${baseURL}/api/reset-password`, {
+    return fetch(`${baseURL}/api/forgot-password`, {
       credentials: 'include',
-      method: 'put',
+      method: 'post',
       body: JSON.stringify(data),
       headers: new Headers({
         'Content-Type': 'application/json',

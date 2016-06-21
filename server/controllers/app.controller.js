@@ -1,5 +1,6 @@
 import { getGoogleAuthUrl } from '../util/googleAuth';
 import Cart from '../models/cart';
+import User from '../models/user';
 
 export function getAppConfig(req, res) {
   Promise.all([
@@ -31,35 +32,38 @@ export function getUserCart(req, res) {
   }
 }
 
-function updatePasswordError(field, message) {
-  return {
-    errors: {
-      [field]: { message },
-    },
-  };
-}
-
 export function updatePassword(req, res) {
   const user = req.user;
 
-  user.checkPassword(req.body.currentPassword, (err, passwordValid) => {
-    if (passwordValid) {
-      if (req.body.newPassword !== req.body.newPasswordConfirm) {
-        res.json(updatePasswordError('newPasswordConfirm', 'Confirm password field does not match new password.'));
-      } else {
-        user.setPassword(req.body.newPassword, (err, user) => { // eslint-disable-line no-shadow
-          if (err) {
-            res.json(err);
-          } else {
-            user.save()
-            .then((user) => { // eslint-disable-line no-shadow
-              res.json(user);
-            });
-          }
-        });
-      }
-    } else {
-      res.json(updatePasswordError('currentPassword', 'Current password is not correct.'));
-    }
+  user.updatePassword(req.body.currentPassword, req.body.newPassword, req.body.newPasswordConfirm)
+  .then((user) => { // eslint-disable-line no-shadow
+    res.json(user);
+  })
+  .catch((err) => {
+    res.json(err);
   });
+}
+
+export function forgotPassword(req, res) {
+  User.findOne({ email: req.body.email })
+  .then((user) => {
+    if (!user) {
+      res.json({ errors: { email: { message: 'Could not find user.' } } });
+    }
+
+    user.sendForgotPassword()
+    .then(() => { // eslint-disable-line no-shadow
+      res.json({});
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+}
+
+export function resetPassword(req, res) {
+  res.json({ errors: { email: { message: 'Could not find user.' } } });
 }

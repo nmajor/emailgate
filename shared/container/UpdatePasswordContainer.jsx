@@ -10,13 +10,13 @@ class UpdatePasswordContainer extends Component {
     super(props, context);
     this.submit = this.submit.bind(this);
 
-    this.state = { submitSuccess: false };
+    this.state = { submitSuccess: '' };
   }
   flashSuccess() {
     this.setState({ submitSuccess: 'Password updated' });
 
     setTimeout(() => {
-      this.setState({ submitSuccess: false });
+      this.setState({ submitSuccess: '' });
     }, 3000);
   }
   submit(props) {

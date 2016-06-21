@@ -11,22 +11,21 @@ class ForgotPasswordContainer extends Component {
     super(props, context);
     this.submit = this.submit.bind(this);
 
-    this.state = { submitSuccess: false };
+    this.state = { submitSuccess: '' };
   }
   flashSuccess() {
     this.setState({ submitSuccess: 'Password reset sent' });
 
     setTimeout(() => {
-      this.setState({ submitSuccess: false });
+      this.setState({ submitSuccess: '' });
     }, 3000);
   }
   submit(props) {
     return new Promise((resolve, reject) => {
-      this.props.dispatch(Actions.resetPassword(props, (res) => {
+      this.props.dispatch(Actions.forgotPassword(props, (res) => {
         if (res.errors) {
-          const errors = {
-            _error: 'Could not update password',
-          };
+          console.log(res.errors);
+          const errors = {};
 
           _.forEach(res.errors, (val, key) => {
             errors[key] = val.message;
@@ -34,7 +33,7 @@ class ForgotPasswordContainer extends Component {
 
           reject(errors);
         } else {
-          this.props.dispatch(reset('updatePassword'));
+          this.props.dispatch(reset('forgotPassword'));
           this.flashSuccess();
           resolve();
         }

@@ -80,7 +80,15 @@ function ensureAdmin(req, res, next) {
 
 router.get('/config', AppController.getAppConfig);
 router.get('/cart', AppController.getUserCart);
+
 router.put('/update-password', AppController.updatePassword);
+router.post('/update-password', AppController.updatePassword);
+
+router.put('/forgot-password', AppController.forgotPassword);
+router.post('/forgot-password', AppController.forgotPassword);
+
+router.put('/reset-password', AppController.resetPassword);
+router.post('/reset-password', AppController.resetPassword);
 
 router.get('/orders', ensureAuthenticated, OrderController.getOrders);
 router.get('/orders/:id', ensureAuthenticated, OrderController.findOneOrder);

@@ -26,19 +26,17 @@ class LoginForm extends Component {
     }
   }
   renderForm() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        {this.renderEmailFormGroup()}
-        {this.renderPasswordFormGroup()}
-        {this.renderErrors('base')}
-        <button className="btn btn-success btn-block" onClick={this.loginUser}>
-          Login {this.renderLoading()}
-        </button>
-        <div className="top-bumper">
-          <Link to="/forgot">Forgot password?</Link>
-        </div>
-      </form>
-    );
+    return (<form onSubmit={this.handleSubmit}>
+      {this.renderEmailFormGroup()}
+      {this.renderPasswordFormGroup()}
+      {this.renderErrors('base')}
+      <button className="btn btn-success btn-block" onClick={this.loginUser}>
+        Login {this.renderLoading()}
+      </button>
+      <div className="top-bumper">
+        <Link to="/forgot">Forgot password?</Link>
+      </div>
+    </form>);
   }
   renderEmailFormGroup() {
     return (
