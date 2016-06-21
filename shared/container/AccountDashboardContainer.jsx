@@ -1,24 +1,11 @@
 import React, { Component } from 'react';
 import UpdatePasswordContainer from './UpdatePasswordContainer';
-import AddressListContainer from './AddressListContainer';
 
 class AccountDashboardContainer extends Component { // eslint-disable-line
   renderPasswordContainer() {
     return (<div className="row">
       <div className="col-md-6">
-        <div className="box">
-          <UpdatePasswordContainer />
-        </div>
-      </div>
-    </div>);
-  }
-  renderAddressList() {
-    return (<div className="row top-bumper">
-      <div className="col-md-6">
-        <div className="box">
-          <h3>Addresses</h3>
-          <AddressListContainer />
-        </div>
+        <UpdatePasswordContainer />
       </div>
     </div>);
   }
@@ -27,7 +14,6 @@ class AccountDashboardContainer extends Component { // eslint-disable-line
       <div className="container-fluid">
         <h1 className="hdash">Manage Account</h1>
         {this.renderPasswordContainer()}
-        {this.renderAddressList()}
       </div>
     </div>);
   }

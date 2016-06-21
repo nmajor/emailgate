@@ -36,6 +36,7 @@ import CompilationsDashboardContainer from './container/CompilationsDashboardCon
 import EmailAccountsDashbaordContainer from './container/EmailAccountsDashboardContainer';
 import AccountDashboardContainer from './container/AccountDashboardContainer';
 import OrdersDashboardContainer from './container/OrdersDashboardContainer';
+import AddressesDashboardContainer from './container/AddressesDashboardContainer';
 
 
 // components
@@ -63,6 +64,7 @@ const routes = (
       <Route path="/dashboard/email-accounts" component={EmailAccountsDashbaordContainer} />
       <Route path="/dashboard/orders" component={OrdersDashboardContainer} />
       <Route path="/dashboard/account" component={AccountDashboardContainer} />
+      <Route path="/dashboard/addresses" component={AddressesDashboardContainer} />
     </Route>
 
     <Route component={CompilationContainer}>

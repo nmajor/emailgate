@@ -26,6 +26,7 @@ class DashboardNavWrapper extends Component { // eslint-disable-line
               {this.renderNavItem('/dashboard/compilations', 'Compilations')}
               {this.renderNavItem('/dashboard/email-accounts', 'Email Accounts')}
               {this.renderNavItem('/dashboard/orders', 'Orders')}
+              {this.renderNavItem('/dashboard/addresses', 'Addresses')}
               {this.renderNavItem('/dashboard/account', 'Manage Account')}
             </ul>
           </div>
