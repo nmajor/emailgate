@@ -1,12 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
-import Header from '../components/Header';
 import AccountsListContainer from '../container/AccountsListContainer';
 import CompilationsListContainer from '../container/CompilationsListContainer';
 import OrdersListContainer from '../container/OrdersListContainer';
 import { Link } from 'react-router';
-import Loading from '../components/Loading';
+// import Loading from '../components/Loading';
 
 class DashboardContainer extends Component {
   componentDidMount() {
@@ -30,28 +29,34 @@ class DashboardContainer extends Component {
     </div>);
   }
   renderDashboard() {
-    if (this.props.fetching.compilations) {
-      return <span className="alone-loading"><Loading /></span>;
-    } else if (this.props.compilations.length < 1) {
+    if (!this.props.fetching.compilations && this.props.compilations.length < 1) {
       return <div className="row col-md-6">{this.renderHelp()}</div>;
     }
 
     return (<div>
-      <CompilationsListContainer />
-      <AccountsListContainer />
-      <OrdersListContainer />
+      <div>
+        <h3>Compilations</h3>
+        <CompilationsListContainer />
+      </div>
+      <div>
+        <h3>Email Accounts</h3>
+        <AccountsListContainer />
+      </div>
+      <div>
+        <h3>Orders</h3>
+        <OrdersListContainer />
+      </div>
     </div>);
   }
   render() {
-    return (
-      <div className="dashboard-wrapper">
-        <Header />
-        <div className="container">
-          <h1>Dashboard</h1>
+    return (<div className="dashboard-wrapper">
+      <div className="container">
+        <h1>Dashboard</h1>
+        <div className="content">
           {this.renderDashboard()}
         </div>
       </div>
-    );
+    </div>);
   }
 }
 

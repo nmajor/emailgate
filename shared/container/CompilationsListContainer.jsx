@@ -5,9 +5,6 @@ import CompilationsList from '../components/CompilationsList';
 import Loading from '../components/Loading';
 
 class CompilationsListContainer extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
   componentDidMount() {
     if (this.props.compilations.length < 1 && !this.props.fetching.compilations) {
       this.props.dispatch(Actions.getCompilations());
@@ -24,7 +21,6 @@ class CompilationsListContainer extends Component {
   render() {
     return (
       <div className="compilations-list-container">
-        <h3>Compilations</h3>
         {this.renderCompilationsList()}
       </div>
     );

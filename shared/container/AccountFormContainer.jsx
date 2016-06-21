@@ -57,6 +57,7 @@ class AccountFormContainer extends Component {
     return (<div>
       {this.renderAccountKindOptions()}
       {this.renderImapForm()}
+      <div className="btn btn-danger" onClick={this.props.back}>Back</div>
     </div>);
   }
 }

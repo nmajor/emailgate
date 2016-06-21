@@ -26,6 +26,7 @@ class UpdatePasswordForm extends Component {
         newPasswordConfirm,
       },
       error,
+      success,
       handleSubmit,
     } = this.props;
 
@@ -59,6 +60,7 @@ class UpdatePasswordForm extends Component {
         {error && <div className="text-danger">{error}</div>}
         <button className="btn btn-success" type="submit">Submit</button>
         {this.renderSubmitting()}
+        {success && <span className="text-success">{success}</span>}
       </div>
     </form>);
   }
@@ -68,6 +70,7 @@ UpdatePasswordForm.propTypes = {
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   error: PropTypes.string,
+  success: PropTypes.string,
   submitting: PropTypes.bool.isRequired,
 };
 

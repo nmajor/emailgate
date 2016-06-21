@@ -30,11 +30,16 @@ import ViewOrderContainer from './container/ViewOrderContainer';
 import CompilationCheckoutContainer from './container/CompilationCheckoutContainer';
 import AdminContainer from './container/AdminContainer';
 import AdminDashboardContainer from './container/AdminDashboardContainer';
+import DashboardContainer from './container/DashboardContainer';
+import DashboardNavWrapper from './container/DashboardNavWrapper';
+import CompilationsDashboardContainer from './container/CompilationsDashboardContainer';
+import EmailAccountsDashbaordContainer from './container/EmailAccountsDashboardContainer';
+import AccountDashboardContainer from './container/AccountDashboardContainer';
+import OrdersDashboardContainer from './container/OrdersDashboardContainer';
+
 
 // components
 import Home from './components/Home';
-import DashboardContainer from './container/DashboardContainer';
-import AccountContainer from './container/AccountContainer';
 
 const routes = (
   <Route path="/" component={App} >
@@ -42,8 +47,6 @@ const routes = (
     <Route path="/terms" component={Terms} />
     <Route path="/register" component={RegisterContainer} />
     <Route path="/login" component={LoginContainer} />
-    <Route path="/account" component={AccountContainer} />
-    <Route path="/dashboard" component={DashboardContainer} />
     <Route path="/cart" component={CartContainer} />
     <Route path="/checkout" component={CheckoutContainer} />
     <Route path="/checkout/confirm" component={CheckoutConfirmContainer} />
@@ -54,9 +57,19 @@ const routes = (
     <Route path="/accounts/:id/edit" component={EditAccountContainer} />
     <Route path="/compilations/new" component={NewCompilationContainer} />
 
+    <Route component={DashboardNavWrapper}>
+      <Route path="/dashboard" component={DashboardContainer} />
+      <Route path="/dashboard/compilations" component={CompilationsDashboardContainer} />
+      <Route path="/dashboard/email-accounts" component={EmailAccountsDashbaordContainer} />
+      <Route path="/dashboard/orders" component={OrdersDashboardContainer} />
+      <Route path="/dashboard/account" component={AccountDashboardContainer} />
+    </Route>
+
     <Route component={CompilationContainer}>
-      <Route path="/compilations/:compilationId/build" component={CompilationBuildContainer} />
       <Route path="/compilations/:compilationId/add-emails" component={AddCompilationEmailsContainer} />
+      <Route path="/compilations/:compilationId/build" component={CompilationBuildContainer} />
+      <Route path="/compilations/:compilationId/preview" component={CompilationPreviewContainer} />
+      <Route path="/compilations/:compilationId/checkout" component={CompilationCheckoutContainer} />
       <Route component={CompilationEmailsContainer}>
         <Route path="/compilations/:compilationId/build/emails/:emailId" component={ViewCompilationEmailContainer} />
         <Route path="/compilations/:compilationId/build/emails/:emailId/edit" component={EditCompilationEmailContainer} />
@@ -67,8 +80,6 @@ const routes = (
         <Route path="/compilations/:compilationId/build/pages/:pageId/edit" component={EditCompilationPageContainer} />
         <Route path="/compilations/:compilationId/build/pages/:pageId/preview" component={PreviewCompilationPageContainer} />
       </Route>
-      <Route path="/compilations/:compilationId/preview" component={CompilationPreviewContainer} />
-      <Route path="/compilations/:compilationId/checkout" component={CompilationCheckoutContainer} />
     </Route>
 
     <Route component={AdminContainer}>

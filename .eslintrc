@@ -1,6 +1,7 @@
 {
   "extends": "airbnb",
   "parser": "babel-eslint",
+  "ignore-path": ".eslintignore",
   "env": {
     "browser": true,
     "node": true,

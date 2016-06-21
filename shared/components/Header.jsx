@@ -44,7 +44,7 @@ class Header extends Component {
     if (this.props.user.email) {
       return (<ul className="nav navbar-nav navbar-right">
         <li>{this.renderCartAction()}</li>
-        <li><Link to="/account">{this.props.user.email}</Link></li>
+        <li><Link to="/dashboard/account">{this.props.user.email}</Link></li>
         <li><a href="#" onClick={this.logout}>Log Out</a></li>
       </ul>);
     }

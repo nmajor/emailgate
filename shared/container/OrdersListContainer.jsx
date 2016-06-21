@@ -24,7 +24,6 @@ class OrdersListContainer extends Component {
   render() {
     return (
       <div className="orders-list-container">
-        <h3>Orders</h3>
         {this.renderOrdersList()}
       </div>
     );

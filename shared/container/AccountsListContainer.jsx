@@ -31,7 +31,6 @@ class AccountsListContainer extends Component {
   render() {
     return (
       <div className="accounts-list-container">
-        <h3>Connected Email Accounts</h3>
         {this.renderAccountsList()}
       </div>
     );

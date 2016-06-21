@@ -51,7 +51,10 @@ export function updatePassword(req, res) {
           if (err) {
             res.json(err);
           } else {
-            res.json(user);
+            user.save()
+            .then((user) => { // eslint-disable-line no-shadow
+              res.json(user);
+            });
           }
         });
       }
