@@ -44,7 +44,7 @@ export function getUser() {
     })
     .then((res) => {
       if (res.status === 401) {
-        throw new Error('User not found');
+        throw new Error('Invalid username or password');
       } else if (res.status >= 400) {
         throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
       }
@@ -145,7 +145,7 @@ export function loginUser(userData, cb) {
     })
     .then((res) => {
       if (res.status === 401) {
-        throw new Error('User not found');
+        throw new Error('Invalid username or password');
       } else if (res.status >= 400) {
         throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
       }

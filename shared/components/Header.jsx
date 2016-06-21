@@ -13,6 +13,7 @@ class Header extends Component {
     };
 
     this.logout = this.logout.bind(this);
+    this.forceCollapse = this.forceCollapse.bind(this);
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
   }
 
@@ -20,6 +21,10 @@ class Header extends Component {
     this.props.dispatch(Actions.logoutUser(() => {
       this.context.router.push('/');
     }));
+    this.forceCollapse();
+  }
+  forceCollapse() {
+    this.setState({ collapsed: true });
   }
   toggleCollapsed() {
     this.setState({ collapsed: !this.state.collapsed });
@@ -31,7 +36,7 @@ class Header extends Component {
   }
   renderCartAction() {
     if (_.get(this.props.cart, 'items.length') > 0) {
-      return (<Link to="/cart">
+      return (<Link to="/cart" onClick={this.forceCollapse}>
         <span className="hidden-xs">
           <span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> {this.renderCartBadge()}
         </span>
@@ -47,12 +52,12 @@ class Header extends Component {
   }
   renderNavItem(path, text) {
     const className = `visible-xs ${this.props.currentPath === path ? 'active' : ''}`;
-    return <li className={className}><Link to={path}>{text}</Link></li>;
+    return <li className={className}><Link to={path} onClick={this.forceCollapse}>{text}</Link></li>;
   }
   renderNav() {
     if (!_.isEmpty(this.props.user.email)) {
       return (<ul className="nav navbar-nav">
-        <li><Link to="/dashboard">Dashboard</Link></li>
+        <li><Link to="/dashboard" onClick={this.forceCollapse}>Dashboard</Link></li>
         {this.renderNavItem('/dashboard', 'Summary')}
         {this.renderNavItem('/dashboard/compilations', 'Compilations')}
         {this.renderNavItem('/dashboard/email-accounts', 'Email Accounts')}
@@ -65,14 +70,14 @@ class Header extends Component {
     if (this.props.user.email) {
       return (<ul className="nav navbar-nav navbar-right">
         <li>{this.renderCartAction()}</li>
-        <li className="hidden-xs"><Link to="/dashboard/account">{this.props.user.email}</Link></li>
+        <li className="hidden-xs"><Link to="/dashboard/account" onClick={this.forceCollapse}>{this.props.user.email}</Link></li>
         <li><a href="#" onClick={this.logout}>Log Out</a></li>
       </ul>);
     }
 
     return (<ul className="nav navbar-nav navbar-right">
-      <li><Link to="/login">Login</Link></li>
-      <li><Link to="/register">Register</Link></li>
+      <li><Link to="/login" onClick={this.forceCollapse}>Login</Link></li>
+      <li><Link to="/register" onClick={this.forceCollapse}>Register</Link></li>
     </ul>);
   }
   renderExpandIcon() {

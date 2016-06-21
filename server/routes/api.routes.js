@@ -60,7 +60,6 @@ router.get('/logout', (req, res) => {
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    console.log('User is authenticated.');
     next();
   } else {
     res.status(401);

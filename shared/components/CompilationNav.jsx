@@ -1,12 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
-import Loading from './Loading';
+// import Loading from './Loading';
 
 class CompilationNav extends Component {
   renderEmailCount() {
-    if (this.props.fetching.compilationEmails) {
-      return <span className="button-loading"><Loading /></span>;
-    } else if (this.props.emailCount > 0) {
+    if (this.props.emailCount > 0 && !this.props.fetching.compilationEmails) {
       return `(${this.props.emailCount})`;
     }
 
