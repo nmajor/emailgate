@@ -26,8 +26,8 @@ class DashboardNavWrapper extends Component { // eslint-disable-line
               {this.renderNavItem('/dashboard', 'Summary')}
               {this.renderNavItem('/dashboard/compilations', 'Compilations')}
               {this.renderNavItem('/dashboard/email-accounts', 'Email Accounts')}
-              {this.renderNavItem('/dashboard/account', 'Manage Account')}
               {this.renderNavItem('/dashboard/orders', 'Orders')}
+              {this.renderNavItem('/dashboard/account', 'Manage Account')}
             </ul>
           </div>
           <div className="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">

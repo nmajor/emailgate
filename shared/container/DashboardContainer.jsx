@@ -49,12 +49,10 @@ class DashboardContainer extends Component {
     </div>);
   }
   render() {
-    return (<div className="dashboard-wrapper">
-      <div className="container">
-        <h1>Dashboard</h1>
-        <div className="content">
-          {this.renderDashboard()}
-        </div>
+    return (<div className="container">
+      <h1 className="hdash">Dashboard</h1>
+      <div className="content">
+        {this.renderDashboard()}
       </div>
     </div>);
   }

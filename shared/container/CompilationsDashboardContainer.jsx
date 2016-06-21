@@ -10,8 +10,8 @@ class CompilationsDashboardContainer extends Component {
     }
   }
   render() {
-    return (<div>
-      <h1>Compilations</h1>
+    return (<div className="container">
+      <h1 className="hdash">Compilations</h1>
       <CompilationsListContainer />
     </div>);
   }

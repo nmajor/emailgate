@@ -10,8 +10,8 @@ class EmailAccountsDashboardContainer extends Component {
     }
   }
   render() {
-    return (<div>
-      <h1>Email Accounts</h1>
+    return (<div className="container">
+      <h1 className="hdash">Email Accounts</h1>
       <AccountsListContainer />
     </div>);
   }
