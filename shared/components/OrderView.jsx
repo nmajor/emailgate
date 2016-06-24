@@ -2,8 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import AddressListItem from './AddressListItem';
 import BillingInfoSummary from './BillingInfoSummary';
-import CartForm from './CartForm';
-import _ from 'lodash';
+import CartView from './CartView';
+// import _ from 'lodash';
 
 class OrderView extends Component {
   constructor(props, context) {
@@ -12,7 +12,7 @@ class OrderView extends Component {
   renderShippingAddress() {
     if (this.props.order.shippingAddress) {
       return (<div>
-        <h3>Ship To:</h3>
+        <h3>Shipped To</h3>
         <div className="selected-address">
           <AddressListItem address={this.props.order.shippingAddress} />
         </div>
@@ -21,16 +21,18 @@ class OrderView extends Component {
   }
   renderBillingInfoSummary() {
     return (<div>
-      <h3>Bill To:</h3>
+      <h3>Billed To</h3>
       <BillingInfoSummary billingInfo={this.props.order.data.stripeToken} />
     </div>);
   }
   renderCartSummary() {
-    console.log(_.map(this.props.order.items, (item) => { return item.product; }));
-    return (<CartForm
-      cart={this.props.order}
-      editable={false}
-    />);
+    return (<div>
+      <h3>Order Summary</h3>
+      <CartView
+        cart={this.props.order}
+        editable={false}
+      />
+    </div>);
   }
   render() {
     return (<div>

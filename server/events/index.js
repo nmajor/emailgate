@@ -4,7 +4,7 @@ import Compilation from '../models/compilation';
 import Email from '../models/email';
 import Page from '../models/page';
 import Cart from '../models/cart';
-import _ from 'lodash';
+// import _ from 'lodash';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
@@ -266,8 +266,8 @@ export default (io) => {
       .then((cart) => {
         cart.addItem(data);
         return cart.save();
-      }).
-      then((cart) => {
+      })
+      .then((cart) => {
         socket.emit('UPDATED_CART', cart);
       });
     });
@@ -277,15 +277,10 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Cart.findCurrent({ _user: user._id, _order: null }))
       .then((cart) => {
-        const cartItemIndex = _.findIndex(cart.items, (cartItem) => { return cartItem._id === data.cartItemId; });
-        if (cartItemIndex > -1) {
-          cart.items[cartItemIndex].remove();
-          return cart.save();
-        }
-
-        return Promise.resolve(cart);
-      }).
-      then((cart) => {
+        cart.removeItem(data.cartItemId);
+        return cart.save();
+      })
+      .then((cart) => {
         socket.emit('UPDATED_CART', cart);
       })
       .catch((err) => {
@@ -298,13 +293,8 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Cart.findOne({ _user: user._id }))
       .then((cart) => {
-        const cartItemIndex = _.findIndex(cart.items, (cartItem) => { return cartItem._id === data.cartItemId; });
-        if (cartItemIndex > -1) {
-          cart.items[cartItemIndex].quantity = data.newData.quantity; // eslint-disable-line no-param-reassign
-          return cart.save();
-        }
-
-        return Promise.resolve(cart);
+        cart.updateItem(data.cartItemId, data.newData);
+        return cart.save();
       }).
       then((cart) => {
         socket.emit('UPDATED_CART', cart);

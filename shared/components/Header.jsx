@@ -35,7 +35,7 @@ class Header extends Component {
     }
   }
   renderCartAction() {
-    if (_.get(this.props.cart, 'items.length') > 0) {
+    if (!this.props.hideCart && _.get(this.props.cart, 'items.length') > 0) {
       return (<Link to="/cart" onClick={this.forceCollapse}>
         <span className="hidden-xs">
           <span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> {this.renderCartBadge()}
@@ -137,6 +137,7 @@ Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   cart: PropTypes.object.isRequired,
+  hideCart: PropTypes.bool,
   currentPath: PropTypes.string,
 };
 

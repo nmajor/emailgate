@@ -5,6 +5,7 @@ import baseURL from '../../baseURL';
 // import socket from '../../../client/socket';
 
 import { setPropertyForFetching } from './fetchingActions';
+import { setPropertyForCheckout } from './checkoutActions';
 
 export function addOrder(order) {
   return {
@@ -24,6 +25,38 @@ export function setOrders(orders) {
   return {
     type: ActionTypes.SET_ORDERS,
     orders,
+  };
+}
+
+export function getOrderPreview(orderProps) {
+  return (dispatch) => {
+    dispatch(setPropertyForCheckout('orderPreview', { fetching: true }));
+
+    return fetch(`${baseURL}/api/orders/preview`, {
+      credentials: 'include',
+      method: 'post',
+      body: JSON.stringify(orderProps),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error && !res._id) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(setPropertyForCheckout('orderPreview', res));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   };
 }
 

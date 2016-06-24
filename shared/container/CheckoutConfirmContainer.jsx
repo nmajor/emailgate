@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import Header from '../components/Header';
 import AddressListItem from '../components/AddressListItem';
-import CartFormContainer from './CartFormContainer';
+import CartView from '../components/CartView';
 import BillingInfoSummary from '../components/BillingInfoSummary';
 import OrderForm from '../components/OrderForm';
+import Loading from '../components/Loading';
 import * as Actions from '../redux/actions/index';
 
 class CheckoutConfirmContainer extends Component {
@@ -18,23 +19,36 @@ class CheckoutConfirmContainer extends Component {
     };
 
     this.shippingAddress = _.find(this.props.addresses, (address) => { return address._id === this.props.checkout.shippingAddressId; });
-    // this.billingAddress = _.find(this.props.addresses, (address) => { return address._id === this.props.checkout.billingAddressId; });
+    this.billingAddress = _.find(this.props.addresses, (address) => { return address._id === this.props.checkout.billingAddressId; });
+
+    if (!this.props.checkout.orderPreview) {
+      this.getOrderPreview();
+    }
+
     this.submitOrder = this.submitOrder.bind(this);
     this.back = this.back.bind(this);
+    this.getOrderPreview = this.getOrderPreview.bind(this);
+    this.orderProps = this.orderProps.bind(this);
+  }
+  getOrderPreview() {
+    this.props.dispatch(Actions.getOrderPreview(this.orderProps()));
+  }
+  orderProps() {
+    return {
+      cartId: this.props.cart._id,
+      shippingAddress: this.shippingAddress,
+      billingAddress: this.billingAddress,
+      data: {
+        stripeToken: this.props.checkout.stripeToken,
+      },
+    };
   }
   back() {
     this.context.router.goBack();
   }
   submitOrder(props) {
-    const orderProps = {
-      cartId: this.props.cart._id,
-      shippingAddress: this.shippingAddress,
-      // billingAddress: this.billingAddress,
-      data: {
-        terms: props.terms,
-        stripeToken: this.props.checkout.stripeToken,
-      },
-    };
+    const orderProps = this.orderProps();
+    orderProps.data.terms = props.terms;
 
     this.setState({ submitting: true, error: null });
     this.props.dispatch(Actions.createOrder(orderProps, (order) => {
@@ -52,7 +66,14 @@ class CheckoutConfirmContainer extends Component {
     this.context.router.push(`/orders/${order._id}`);
   }
   renderCartSummary() {
-    return <CartFormContainer editable={false} />;
+    if (this.props.checkout.orderPreview && !this.props.checkout.orderPreview.fetching) {
+      return (<CartView
+        cart={this.props.checkout.orderPreview}
+        editable={false}
+      />);
+    }
+
+    return <span className="alone-loading"><Loading /></span>;
   }
   renderShippingAddress() {
     if (this.shippingAddress) {
@@ -80,7 +101,7 @@ class CheckoutConfirmContainer extends Component {
   }
   render() {
     return (<div>
-      <Header />
+      <Header hideCart />
       <div className="container">
         <h1>Confirm Order</h1>
         <div className="row">
@@ -91,7 +112,10 @@ class CheckoutConfirmContainer extends Component {
             {this.renderBillingInfoSummary()}
           </div>
         </div>
-        {this.renderCartSummary()}
+        <div>
+          <h3>Order Summary</h3>
+          {this.renderCartSummary()}
+        </div>
         {this.renderOrderForm()}
       </div>
     </div>);

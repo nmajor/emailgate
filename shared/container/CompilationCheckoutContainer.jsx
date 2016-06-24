@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import CompilationAddToCart from '../components/CompilationAddToCart';
-import CartFormContainer from './CartFormContainer';
+import CartViewContainer from './CartViewContainer';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
 
@@ -23,11 +23,11 @@ class CompilationCheckoutContainer extends Component {
     });
     return products;
   }
-  renderCartForm() {
+  renderCartView() {
     if (_.get(this.props.cart, 'items.length') > 0) {
       return (<div className="col-md-6">
         <div className="padded-box">
-          <CartFormContainer />
+          <CartViewContainer />
         </div>
       </div>);
     }
@@ -45,7 +45,7 @@ class CompilationCheckoutContainer extends Component {
           />
         </div>
       </div>
-      {this.renderCartForm()}
+      {this.renderCartView()}
     </div>);
   }
 }

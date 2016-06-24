@@ -4,6 +4,8 @@
     "name": "Custom Email Compilation Publishing",
     "desc": "",
     "tags": ["compilation"],
+    "taxCode": 81100,
+    "taxCodeCategory": "Books",
     "price": 6999
   },
   {
@@ -11,6 +13,8 @@
     "name": "Compilation Pdf Download",
     "desc": "",
     "tags": ["compilation"],
+    "taxCode": 31000,
+    "taxCodeCategory": "Digital Goods",
     "price": 999
   }
 ]

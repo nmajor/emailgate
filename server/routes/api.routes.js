@@ -90,8 +90,8 @@ router.put('/reset-password', AppController.resetPassword);
 router.post('/reset-password', AppController.resetPassword);
 
 router.get('/orders', ensureAuthenticated, OrderController.getOrders);
-router.get('/orders/:id', ensureAuthenticated, OrderController.findOneOrder);
 router.post('/orders', ensureAuthenticated, OrderController.createOrder);
+router.post('/orders/preview', ensureAuthenticated, OrderController.getOrderPreview);
 
 router.get('/accounts', ensureAuthenticated, AccountController.getAccounts);
 router.get('/accounts/:id', ensureAuthenticated, AccountController.findOneAccount);

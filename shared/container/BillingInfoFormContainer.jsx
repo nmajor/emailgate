@@ -62,7 +62,7 @@ class BillingInfoFormContainer extends Component {
 
   render() {
     return (<div>
-      <h1>Billing Info Container</h1>
+      <h3>Billing Info</h3>
       <BillingInfoForm
         billingAddress={this.billingAddress}
         onSubmit={this.submitBillingForm}

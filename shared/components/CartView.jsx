@@ -1,29 +1,44 @@
 import React, { PropTypes, Component } from 'react';
 import CartItemForm from './CartItemForm';
-import _ from 'lodash';
+// import _ from 'lodash';
 import { cartItemsTotal, prettyPrice } from '../helpers';
 import Loading from './Loading';
 import { Link } from 'react-router';
 
-class CartForm extends Component {
+class CartView extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.getCartTotal = this.getCartTotal.bind(this);
   }
   getCartTotal() {
-    return cartItemsTotal(this.props.cart.items, this.props.products);
+    if (this.props.cart.amount) {
+      return this.props.cart.amount;
+    }
+
+    let amount = cartItemsTotal(this.props.cart.items);
+    if (this.props.cart.shipping) {
+      amount += this.props.cart.shipping;
+    } else if (this.props.cart.shippingEst) {
+      amount += this.props.cart.shippingEst;
+    }
+
+    if (this.props.cart.tax) {
+      amount += this.props.cart.tax;
+    }
+
+    return amount;
   }
   renderItemForms() {
     return this.props.cart.items.map((cartItem) => {
-      const product = cartItem.product || _.find(this.props.products, (prod) => {
-        return parseInt(prod._id, 10) === parseInt(cartItem.productId, 10);
-      });
+      // const product = cartItem.product || _.find(this.props.products, (prod) => {
+      //   return parseInt(prod._id, 10) === parseInt(cartItem.productId, 10);
+      // });
 
       return (<CartItemForm
         key={cartItem._id}
         cartItem={cartItem}
-        product={product}
+        product={cartItem.product}
         remove={this.props.removeItem}
         update={this.props.updateItem}
         editable={this.props.editable}
@@ -89,19 +104,47 @@ class CartForm extends Component {
       </tr>);
     }
   }
+  renderShipping() {
+    if (this.props.cart.shipping || this.props.cart.shippingEst) {
+      const amount = this.props.cart.shipping || this.props.cart.shippingEst;
+      const desc = this.props.cart.shipping ? 'Shipping' : 'Estimated Shipping';
+
+      return (<tr>
+        <td colSpan="3" className="text-right text-bold">{desc}:</td>
+        <td className="text-right">${prettyPrice(amount)}</td>
+        {this.renderActionFooter()}
+      </tr>);
+    }
+  }
+  renderTax() {
+    if (this.props.cart.tax) {
+      return (<tr>
+        <td colSpan="3" className="text-right text-bold">Sales Tax:</td>
+        <td className="text-right">${prettyPrice(this.props.cart.tax)}</td>
+        {this.renderActionFooter()}
+      </tr>);
+    }
+  }
+  renderTotal() {
+    return (<tr>
+      <td></td>
+      <td></td>
+      <td colSpan="2" className={`text-bold ${this.props.editable ? 'text-center' : 'text-right'}`}>
+        Total: ${prettyPrice(this.getCartTotal())}
+      </td>
+      {this.renderActionFooter()}
+    </tr>);
+  }
   renderTableFooter() {
     return (<tfoot>
-			<tr>
-				<td></td>
-				<td colSpan="2"></td>
-				<td className={this.props.editable ? 'text-center' : 'text-right'}><strong>Total ${prettyPrice(this.getCartTotal())}</strong></td>
-        {this.renderActionFooter()}
-			</tr>
+      {this.renderShipping()}
+      {this.renderTax()}
+      {this.renderTotal()}
       {this.renderActions()}
-		</tfoot>);
+    </tfoot>);
   }
   render() {
-    return (<table id="cart" className="table table-hover table-condensed">
+    return (<table id="cart" className={`table ${this.props.editable ? 'table-hover' : ''} table-condensed`}>
       {this.renderTableHeader()}
       <tbody>
         {this.renderItemForms()}
@@ -111,7 +154,7 @@ class CartForm extends Component {
   }
 }
 
-CartForm.propTypes = {
+CartView.propTypes = {
   cart: PropTypes.object.isRequired,
   products: PropTypes.array,
   removeItem: PropTypes.func,
@@ -119,4 +162,4 @@ CartForm.propTypes = {
   editable: PropTypes.bool,
 };
 
-export default CartForm;
+export default CartView;

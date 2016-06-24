@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import * as Actions from '../redux/actions/index';
-import CartFormContainer from './CartFormContainer';
+import CartViewContainer from './CartViewContainer';
 import Header from '../components/Header';
 
 class CartContainer extends Component {
@@ -10,9 +10,10 @@ class CartContainer extends Component {
   }
   render() {
     return (<div>
-      <Header />
+    <Header hideCart />
       <div className="container">
-        <CartFormContainer />
+        <h1>Cart</h1>
+        <CartViewContainer />
       </div>
     </div>);
   }

@@ -24,7 +24,7 @@ class UpdatePasswordContainer extends Component {
       this.props.dispatch(Actions.updatePassword(props, (res) => {
         if (res.errors) {
           const errors = {
-            _error: 'Could not update password',
+            _error: res.errors.base || 'Could not update password',
           };
 
           _.forEach(res.errors, (val, key) => {

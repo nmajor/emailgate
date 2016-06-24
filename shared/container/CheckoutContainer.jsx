@@ -21,7 +21,7 @@ class CheckoutContainer extends Component {
   }
   render() {
     return (<div>
-      <Header />
+      <Header hideCart />
       <div className="container">
         <h1>Checkout</h1>
         <div className="row">

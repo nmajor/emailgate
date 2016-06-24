@@ -25,6 +25,14 @@ function formattedError(field, message) {
   };
 }
 
+function passwordValidator(password, cb) {
+  if (!password || typeof(password) !== 'string' || password.length < 8) {
+    return cb(formattedError('base', 'Invalid password. Must be at least 8 characters long.'));
+  }
+
+  return cb(null);
+}
+
 UserSchema.methods.updatePassword = function updatePassword(currentPassword, newPassword, newPasswordConfirm) {
   return new Promise((resolve, reject) => {
     this.checkPassword(currentPassword, (err, passwordValid) => {
@@ -76,6 +84,6 @@ UserSchema.methods.sendForgotPassword = function sendForgotPassword() {
   });
 };
 
-UserSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
+UserSchema.plugin(passportLocalMongoose, { usernameField: 'email', passwordValidator });
 
 export default Mongoose.model('User', UserSchema);

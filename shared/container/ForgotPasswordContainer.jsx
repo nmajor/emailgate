@@ -24,7 +24,7 @@ class ForgotPasswordContainer extends Component {
     return new Promise((resolve, reject) => {
       this.props.dispatch(Actions.forgotPassword(props, (res) => {
         if (res.errors) {
-          const errors = {};
+          const errors = { _error: res.errors.base };
 
           _.forEach(res.errors, (val, key) => {
             errors[key] = val.message;

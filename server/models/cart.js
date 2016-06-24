@@ -1,6 +1,6 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
-import { getProductById } from '../util/helpers';
+import { getProductById, calculateShipping } from '../util/helpers';
 import _ from 'lodash';
 
 const CartItemSchema = new Schema({
@@ -15,6 +15,7 @@ const CartItemSchema = new Schema({
       required: true,
     },
   },
+  product: {},
   quantity: { type: Number, required: true },
   props: {},
 });
@@ -23,10 +24,25 @@ const CartSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _user: { type: String, ref: 'User' },
   _order: { type: String, ref: 'Order' },
+  shippingEst: Number,
   items: [CartItemSchema],
 }, {
   timestamps: true,
 });
+
+CartSchema.pre('save', function (next) { // eslint-disable-line func-names
+  return this.getEstimatedShipping()
+  .then(() => {
+    next();
+  });
+});
+
+CartSchema.methods.getEstimatedShipping = function getEstimatedShipping() {
+  return new Promise((resolve) => {
+    this.shippingEst = calculateShipping(this.items, this.shippingAddress);
+    return resolve(this);
+  });
+};
 
 CartSchema.statics.findOrNew = function findOrNew(query) {
   return new Promise((resolve) => {
@@ -64,8 +80,30 @@ CartSchema.methods.addItem = function addItem(itemData) {
   if (existingItemIndex > -1) {
     this.items[existingItemIndex].quantity += parseInt(itemData.quantity, 10);
   } else {
+    if (_.isEmpty(itemData.product)) {
+      itemData.product = getProductById(parseInt(itemData.productId, 10)); // eslint-disable-line no-param-reassign
+    }
     this.items.push(itemData);
   }
+};
+
+CartSchema.methods.removeItem = function removeItem(itemId) {
+  const cartItemIndex = _.findIndex(this.items, (item) => { return item._id === itemId; });
+
+  if (cartItemIndex > -1) {
+    this.items[cartItemIndex].remove();
+  }
+
+  return Promise.resolve(this);
+};
+
+CartSchema.methods.updateItem = function updateItem(itemId, newData) {
+  const cartItemIndex = _.findIndex(this.items, (item) => { return item._id === itemId; });
+  if (cartItemIndex > -1) {
+    this.items[cartItemIndex].quantity = newData.quantity; // eslint-disable-line no-param-reassign
+  }
+
+  return Promise.resolve(this);
 };
 
 export default Mongoose.model('Cart', CartSchema);

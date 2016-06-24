@@ -66,16 +66,9 @@ export function prettyPrice(price) {
   return priceString;
 }
 
-export function cartItemsTotal(items, products) {
-  const itemSubtotals = _.map(items, (item) => {
-    const product = item.product || _.find(products, (prod) => {
-      return parseInt(prod._id, 10) === parseInt(item.productId, 10);
-    });
-
-    return product.price * item.quantity;
-  });
-
-  return _.reduce(itemSubtotals, (sum, subtotal) => { return sum + subtotal; });
+export function cartItemsTotal(items) {
+  const itemAmounts = _.map(items, (item) => { return (item.product.price * item.quantity); });
+  return _.reduce(itemAmounts, (sum, amount) => { return sum + amount; });
 }
 
 export function emailPageMap(emails) {
