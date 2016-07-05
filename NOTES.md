@@ -1,4 +1,8 @@
 
+docker run -it --rm -v /Users/nmajor/tmp:/tmp ubuntu:trusty /bin/bash
+
+-v /Users/nmajor/dev/contracts/Flvid:/var/www
+
 ### TOP TODOS:
 - Finish update password part
 
@@ -7,7 +11,6 @@
 - Add email confirmation to users.
 - Make the date picker more intuitive. Like make sure any incomplete end date settings jump to the end of the given data. Like if only the year. go to the end of the year. If only year and month go to the end of the month. But keep the start date stuff to go to the beginning of the given data.
 - Something jankey when creating an imap account. Like maybe the password isnt saved/cached or somehthing. Then there is some strange behaviour when checking the connection on the edit page.
-
 
 ### Finished Todos
 
