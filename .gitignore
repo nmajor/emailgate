@@ -5,7 +5,8 @@ npm-debug.log
 dump.rdb
 .vscode/
 public/js/*
-public/css/*
+public/css/style.css
+public/css/style.css.map
 .env
 tmp/*
 secret.env
