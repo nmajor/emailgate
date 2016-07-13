@@ -4,7 +4,8 @@ npm-debug.log
 .idea/
 dump.rdb
 .vscode/
-public/js/*
+public/js/bundle.js
+public/js/bundle.js.map
 public/css/style.css
 public/css/style.css.map
 .env
@@ -15,3 +16,4 @@ myemailbook.com.key
 myemailbook.com.ca-bundle
 myemailbook.com.crt
 myemailbook.com.p7b
+myemailbook.com.bundle.crt
