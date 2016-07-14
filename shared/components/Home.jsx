@@ -7,7 +7,7 @@ class Home extends Component { // eslint-disable-line
       <nav className="navbar navbar-inverse navbar-fixed-top">
         <div className="container">
           <div className="navbar-header">
-            <a className="navbar-brand" href="#">My Email Book</a>
+            <a className="navbar-brand" href="#">myemailbook.com</a>
           </div>
           <div id="navbar" className="collapse navbar-collapse">
             <ul className="nav navbar-nav">
@@ -19,8 +19,8 @@ class Home extends Component { // eslint-disable-line
       <div id="headerwrap">
         <div className="container">
           <div className="row">
-            <h1>My Email Book</h1>
-            <h2>Print your digital story</h2>
+            <h1>myemailbook.com</h1>
+            <h2>You have a story online. Print it now. Keep it forever.</h2>
             <br /><br />
             <a href="#" className="btn btn-success">LEARN MORE</a>
             <a href="#" className="btn btn-transparent">GET STARTED</a>
@@ -38,7 +38,7 @@ class Home extends Component { // eslint-disable-line
           </div>
 
           <div className="col-md-4">
-            <img role="presentation" style={{ marginTop: '80px' }} className="img-responsive" src="/img/bookstack.jpg" />
+            <img role="presentation" style={{ marginTop: '90px' }} className="img-responsive" src="/img/bookstack.jpg" />
           </div>
 
         </div>
@@ -133,7 +133,7 @@ class Home extends Component { // eslint-disable-line
 
       <div className="container">
         <div className="row mt-row">
-          <h3 style="text-align:center">TRY US NOW</h3>
+          <h3 style={{ textAlign: 'center' }}>TRY US NOW</h3>
           <br />
           <div className="col-md-6 col-md-offset-3">
             <form role="form" action="register.php" method="post">
