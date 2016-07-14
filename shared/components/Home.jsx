@@ -1,17 +1,46 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import * as Actions from '../redux/actions';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 class Home extends Component { // eslint-disable-line
+  constructor(props, context) {
+    super(props, context);
+
+    this.logout = this.logout.bind(this);
+  }
+
+  logout() {
+    this.props.dispatch(Actions.logoutUser(() => {
+      this.context.router.push('/');
+    }));
+  }
+
+  renderUserActions() {
+    if (this.props.user.email) {
+      return (<ul className="nav navbar-nav navbar-right">
+        <li className="hidden-xs"><Link to="/dashboard/account" onClick={this.forceCollapse}>{this.props.user.email}</Link></li>
+        <li><a href="#" onClick={this.logout}>Log Out</a></li>
+      </ul>);
+    }
+
+    return (<ul className="nav navbar-nav navbar-right">
+      <li><Link to="/login" onClick={this.forceCollapse}>Login</Link></li>
+      <li><Link to="/register" onClick={this.forceCollapse}>Register</Link></li>
+    </ul>);
+  }
+
   render() {
     return (<div>
-      <nav className="navbar navbar-inverse navbar-fixed-top">
+      <nav className="landing navbar navbar-inverse navbar-fixed-top">
         <div className="container">
-          <div className="navbar-header">
-            <a className="navbar-brand" href="#">myemailbook.com</a>
+          <div className="landing navbar-header">
+            <a className="landing navbar-brand" href="#">myemailbook.com</a>
           </div>
           <div id="navbar" className="collapse navbar-collapse">
             <ul className="nav navbar-nav">
             </ul>
+            {this.renderUserActions()}
           </div>
         </div>
       </nav>
@@ -185,4 +214,15 @@ class Home extends Component { // eslint-disable-line
   // }
 }
 
-export default Home;
+function mapStateToProps(store) {
+  return {
+    user: store.user,
+  };
+}
+
+Home.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
+
+export default connect(mapStateToProps)(Home);

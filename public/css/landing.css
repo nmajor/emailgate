@@ -13,11 +13,11 @@ body {
 	color: white;
 }
 
-.navbar-inverse .navbar-brand {
+.landing.navbar-inverse .navbar-brand {
     color: #ddd;
 }
 
-.navbar-inverse {
+.landing.navbar-inverse {
 	background-color: transparent;
 	border: 0px;
 }

@@ -94,12 +94,14 @@ h1 > .loading {
 .btn.half-left {
   width: 48%;
   margin-right: 2%;
+  margin-left: 0;
   display: inline-block;
 }
 
 .btn.half-right {
   width: 48%;
   margin-left: 2%;
+  margin-right: 0;
   display: inline-block;
 }
 
