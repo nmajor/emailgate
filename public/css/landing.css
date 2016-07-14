@@ -197,3 +197,16 @@ input {
 	border: none;
 	background: #2cce78;
 }
+
+.big-price {
+  text-align: center;
+  font-size: 150px;
+  font-weight: 200;
+  line-height: 150px;
+  margin: 10px 0 40px 0;
+}
+
+.price-book {
+  font-size: 80px;
+  margin: 20px 0 10px 0;
+}
