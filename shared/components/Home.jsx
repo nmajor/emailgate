@@ -29,16 +29,21 @@ class Home extends Component { // eslint-disable-line
       <li><Link to="/register" onClick={this.forceCollapse}>Register</Link></li>
     </ul>);
   }
-
+  renderDashboardLink() {
+    if (this.props.user.email) {
+      return <li><Link to="/dashboard">Dashboard</Link></li>;
+    }
+  }
   render() {
     return (<div>
       <nav className="landing navbar navbar-inverse navbar-fixed-top">
-        <div className="container">
+        <div className="container-fluid">
           <div className="landing navbar-header">
-            <a className="landing navbar-brand" href="#">myemailbook.com</a>
+            <Link to="/" className="landing navbar-brand">myemailbook.com</Link>
           </div>
           <div id="navbar" className="collapse navbar-collapse">
             <ul className="nav navbar-nav">
+              {this.renderDashboardLink()}
             </ul>
             {this.renderUserActions()}
           </div>
@@ -59,7 +64,7 @@ class Home extends Component { // eslint-disable-line
       <div className="container">
         <div className="row mt-row">
           <div className="col-md-5 col-md-offset-1">
-            <h3>WHY YOU MIGHT WANT AN EMAIL BOOK?</h3>
+            <h3>WHY?</h3>
             <p>You know that shoebox on the top shelf of your closet where you keep all your favorite letters people have written you over the years?</p>
             <p>Probably not!</p>
             <p>People dont write letters anymore. We Facebook message, we text, we snapchat, and sometimes we even email.</p>
@@ -81,7 +86,7 @@ class Home extends Component { // eslint-disable-line
               <img style={{ marginTop: '30px' }} src="/img/bookinhand.jpg" className="img-responsive" role="presentation" />
             </div>
             <div className="col-md-4">
-              <h3>WHAT IS MYEMAILBOOK.COM?</h3>
+              <h3>WHAT?</h3>
               <p>MYEMAILBOOK.COM is a website that lets you build and publish a book from your emails.</p>
               <p>Search and filter your emails and export them into our custom email book builder.</p>
               <p>Edit, tweak and customize your emailbook, and check PDF previews so you know exactly what you are getting.</p>

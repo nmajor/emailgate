@@ -25,7 +25,11 @@ class AccountsListContainer extends Component {
       return <span className="alone-loading"><Loading /></span>;
     }
 
-    return <AccountsList onDeleteClick={this.handleDeleteClick} accounts={this.props.accounts} />;
+    return (<AccountsList
+      onDeleteClick={this.handleDeleteClick}
+      accounts={this.props.accounts}
+      googleAuthUrl={this.props.config.googleAuthUrl}
+    />);
   }
 
   render() {
@@ -41,12 +45,14 @@ function mapStateToProps(store) {
   return {
     accounts: store.accounts,
     fetching: store.fetching,
+    config: store.config,
   };
 }
 
 AccountsListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array,
+  config: PropTypes.object.isRequired,
   fetching: PropTypes.object.isRequired,
 };
 

@@ -192,4 +192,17 @@ AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStre
   return emailStream;
 };
 
+AccountSchema.statics.findOrNew = function findOrNew(query) {
+  return new Promise((resolve) => {
+    this.findOne(query)
+    .then((account) => {
+      if (account) {
+        resolve(account);
+      } else {
+        resolve(new this(query));
+      }
+    });
+  });
+};
+
 export default Mongoose.model('Account', AccountSchema);

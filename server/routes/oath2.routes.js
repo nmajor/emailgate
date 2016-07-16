@@ -13,19 +13,17 @@ router.get('/google', (req, res) => {
 
   getGoogleAuthToken(authCode)
   .then((token) => {
-    const newAccount = new Account({
-      _user: userId,
-      kind: 'google',
-      authProps: {
-        token,
-      },
-    });
-
-    return getGoogleProfile(newAccount)
+    return getGoogleProfile(token)
     .then((profile) => {
-      newAccount.email = profile.emailAddress;
-
-      return newAccount.save();
+      return Account.findOrNew({
+        _user: userId,
+        kind: 'google',
+        email: profile.emailAddress,
+      })
+      .then((account) => {
+        account.authProps = { token }; // eslint-disable-line no-param-reassign
+        return account.save();
+      });
     });
   })
   .then(() => {

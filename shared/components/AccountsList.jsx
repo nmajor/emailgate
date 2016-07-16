@@ -17,6 +17,7 @@ class AccountsList extends Component {
         selected={this.props.selectable && this.props.currentAccountId === account._id}
         handleClick={this.props.onItemClick}
         handleDeleteClick={this.props.onDeleteClick}
+        googleAuthUrl={this.props.googleAuthUrl}
       />);
     });
   }
@@ -37,6 +38,7 @@ class AccountsList extends Component {
 
 AccountsList.propTypes = {
   accounts: PropTypes.array.isRequired,
+  googleAuthUrl: PropTypes.string.isRequired,
   currentAccountId: PropTypes.string,
   selectable: PropTypes.bool,
   onItemClick: PropTypes.func,

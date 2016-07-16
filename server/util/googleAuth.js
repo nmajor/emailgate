@@ -53,9 +53,9 @@ function getClient(token) {
   return oauth2Client;
 }
 
-export function getGoogleProfile(account) {
+export function getGoogleProfile(token) {
   return new Promise((resolve) => {
-    const client = getClient(account.authProps.token);
+    const client = getClient(token);
     const gmail = google.gmail('v1');
 
     gmail.users.getProfile({
