@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from 'react';
+import AccountExpiryLabel from './AccountExpiryLabel';
 import { Link } from 'react-router';
 import _ from 'lodash';
-import moment from 'moment';
-import base64 from 'base64url';
 
 class AccountListItem extends Component {
   constructor(props, context) {
@@ -37,26 +36,6 @@ class AccountListItem extends Component {
   }
   renderEmail() { // eslint-disable-line consistent-return
     return <span className="left-bumper">{this.props.account.email}</span>;
-  }
-  renderGoogleAuthUrl() {
-    const userReturnTo = window.previousLocation ? window.previousLocation.pathname : '/dashboard';
-    const stateParam = JSON.stringify({ userReturnTo });
-    const stateString = base64.encode(stateParam);
-
-    return `${this.props.googleAuthUrl}&login_hint=${this.props.account.email}&state=${stateString}`;
-  }
-  renderExpiration() {
-    if (_.get(this.props.account, 'authProps.token.expiry_date')) {
-      if ((new Date).getTime() > this.props.account.authProps.token.expiry_date) {
-        return (<a href={this.renderGoogleAuthUrl()} className="btn btn-warning right-bumper">
-          Expired!
-        </a>);
-      }
-
-      return (<span className="label label-success right-bumper">
-        Expires: {moment(this.props.account.authProps.token.expiry_date).fromNow()}
-      </span>);
-    }
   }
   renderConnectionStatus() {
     if (this.props.account.connectionValid === false
@@ -97,7 +76,7 @@ class AccountListItem extends Component {
           {this.renderEmail()}
         </h4>
         <div className="actions">
-          {this.renderExpiration()}
+          <AccountExpiryLabel account={this.props.account} googleAuthUrl={this.props.googleAuthUrl} />
           {this.renderKind()}
           {this.renderEditLink()}
           {this.renderRemoveLink()}

@@ -4,6 +4,7 @@ import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
 import ImapAccountPasswordFormContainer from './ImapAccountPasswordFormContainer';
+import ReconnectGoogleAccount from '../components/ReconnectGoogleAccount';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -19,10 +20,12 @@ class AddCompilationEmailsContainer extends Component {
   }
   renderFilterContainer() {
     if (this.currentAccount) {
-      if (this.currentAccount.connectionValid) {
-        return <FilterContainer currentAccount={this.currentAccount} />;
+      if (this.currentAccount.kind === 'imap' && !this.currentAccount.connectionValid) {
+        return <ImapAccountPasswordFormContainer currentAccount={this.currentAccount} />;
+      } else if (this.currentAccount.kind === 'google' && (new Date).getTime() > _.get(this.currentAccount, 'authProps.token.expiry_date')) {
+        return <ReconnectGoogleAccount account={this.currentAccount} googleAuthUrl={this.props.config.googleAuthUrl} />;
       }
-      return <ImapAccountPasswordFormContainer currentAccount={this.currentAccount} />;
+      return <FilterContainer currentAccount={this.currentAccount} />;
     }
   }
   renderFilteredAccountEmailsContainer() {
@@ -60,6 +63,7 @@ class AddCompilationEmailsContainer extends Component {
 
 function mapStateToProps(store) {
   return {
+    config: store.config,
     accounts: store.accounts,
     filteredAccountEmails: store.filteredAccountEmails,
     currentAccountId: store.currentAccountId,
@@ -73,6 +77,7 @@ AddCompilationEmailsContainer.contextTypes = {
 AddCompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array.isRequired,
+  config: PropTypes.object.isRequired,
   compilation: PropTypes.object.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
   currentAccountId: PropTypes.string,

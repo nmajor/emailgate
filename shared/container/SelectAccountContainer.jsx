@@ -34,6 +34,7 @@ class SelectAccountContainer extends Component {
         currentAccountId={this.props.currentAccountId}
         onItemClick={this.handleItemClick}
         onDeleteClick={this.handleDeleteClick}
+        googleAuthUrl={this.props.config.googleAuthUrl}
       />
     </div>);
   }
@@ -47,6 +48,7 @@ class SelectAccountContainer extends Component {
 
 function mapStateToProps(store) {
   return {
+    config: store.config,
     accounts: store.accounts,
     currentAccountId: store.currentAccountId,
   };
@@ -54,6 +56,7 @@ function mapStateToProps(store) {
 
 SelectAccountContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  config: PropTypes.object.isRequired,
   currentAccountId: PropTypes.string,
   accounts: PropTypes.array,
 };
