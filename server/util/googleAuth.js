@@ -13,8 +13,8 @@ const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 function getAuthUrl(client) {
   return new Promise((resolve) => {
     const options = {
-      access_type: 'offline',
-      approval_prompt: 'force',
+      access_type: 'online',
+      approval_prompt: 'auto',
       scope: SCOPES,
     };
 

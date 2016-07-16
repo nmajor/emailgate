@@ -71,7 +71,7 @@ class AccountListItem extends Component {
           {this.renderConnectionStatus()}
           {this.renderEmail()}
         </h4>
-        <div>
+        <div className="actions">
           {this.renderKind()}
           {this.renderEditLink()}
           {this.renderRemoveLink()}

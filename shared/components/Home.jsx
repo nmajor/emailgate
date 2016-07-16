@@ -49,7 +49,7 @@ class Home extends Component { // eslint-disable-line
         <div className="container">
           <div className="row">
             <h1>myemailbook.com</h1>
-            <h2>You have a story in your emails. Publish it. Keep it forever.</h2>
+            <h2>There's a story in your emails. Find it. Publish it. Keep it forever.</h2>
             <br /><br />
             <Link to="/register" className="btn btn-transparent">CREATE AN ACCOUNT TO GET STARTED</Link>
           </div>
@@ -59,7 +59,7 @@ class Home extends Component { // eslint-disable-line
       <div className="container">
         <div className="row mt-row">
           <div className="col-md-5 col-md-offset-1">
-            <h3>WHY MIGHT YOU WANT AN EMAIL BOOK?</h3>
+            <h3>WHY YOU MIGHT WANT AN EMAIL BOOK?</h3>
             <p>You know that shoebox on the top shelf of your closet where you keep all your favorite letters people have written you over the years?</p>
             <p>Probably not!</p>
             <p>People dont write letters anymore. We Facebook message, we text, we snapchat, and sometimes we even email.</p>
@@ -159,7 +159,7 @@ class Home extends Component { // eslint-disable-line
 
       <div className="container">
         <div className="row mt-row">
-          <div style={{ textAlign: 'center' }}>&#169; myemailbook.com</div>
+          <div style={{ textAlign: 'center' }}>Copyright &#169; 2016 MYEMAILBOOK.COM All rights reserved.</div>
         </div>
       </div>
 
