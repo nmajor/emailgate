@@ -4,7 +4,7 @@ import UpdatePasswordContainer from './UpdatePasswordContainer';
 class AccountDashboardContainer extends Component { // eslint-disable-line
   renderPasswordContainer() {
     return (<div className="row">
-      <div className="col-md-6">
+      <div className="col-lg-6">
         <UpdatePasswordContainer />
       </div>
     </div>);

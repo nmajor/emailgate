@@ -28,7 +28,7 @@ class AccountsList extends Component {
   }
   render() {
     return (<div className="accounts-list row">
-      <div className="col-md-6">
+      <div className="col-lg-6">
         {this.renderAccountsList()}
         {this.renderNewAccount()}
       </div>

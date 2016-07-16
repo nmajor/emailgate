@@ -65,10 +65,10 @@ class Home extends Component { // eslint-disable-line
         <div className="row mt-row">
           <div className="col-md-5 col-md-offset-1">
             <h3>WHY?</h3>
-            <p>You know that shoebox on the top shelf of your closet where you keep all your favorite letters people have written you over the years?</p>
+            <p>You know that shoebox on your top shelf where you keep all your favorite letters?</p>
             <p>Probably not!</p>
             <p>People dont write letters anymore. We Facebook message, we text, we snapchat, and sometimes we even email.</p>
-            <p>Most of the time those emails are meaningless. But sometimes there is something special. Sometimes there are whole threads of emails that actually mean a lot to you.</p>
+            <p>Most of the time those emails are meaningless. But sometimes there is something special, something you would like to keep forever.</p>
             <p>There is something special and cool about physical objects. So much of our lives are digital these days. When you build and publish your email book, you are converting an part of your digital life into something physical. Something touchable. Something keepable.</p>
           </div>
 
@@ -88,9 +88,9 @@ class Home extends Component { // eslint-disable-line
             <div className="col-md-4">
               <h3>WHAT?</h3>
               <p>MYEMAILBOOK.COM is a website that lets you build and publish a book from your emails.</p>
-              <p>Search and filter your emails and export them into our custom email book builder.</p>
-              <p>Edit, tweak and customize your emailbook, and check PDF previews so you know exactly what you are getting.</p>
-              <p>Finally, we will print and publish your book on demand and ship as many as your want to your door.</p>
+              <p>Search and filter your emails, then export them into our custom email book builder.</p>
+              <p>Edit, tweak, and preview your email book.</p>
+              <p>We will print and publish your book on demand and ship as many as your want to your door.</p>
               <p><Link to="/register" className="btn btn-success">CREATE AN ACCOUNT TO GET STARTED</Link></p>
             </div>
           </div>

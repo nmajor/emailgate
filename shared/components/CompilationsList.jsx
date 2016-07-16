@@ -26,7 +26,7 @@ class CompilationsList extends Component {
   render() {
     return (
       <div className="compilations-list row">
-        <div className="col-md-6">
+        <div className="col-lg-6">
           {this.renderCompilationsList()}
           {this.renderNewCompilation()}
         </div>

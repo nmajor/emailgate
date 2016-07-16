@@ -14,7 +14,7 @@ class OrdersList extends Component {
   render() {
     return (
       <div className="orders-list row">
-        <div className="col-md-6">
+        <div className="col-lg-6">
           {this.renderOrdersList()}
         </div>
       </div>
