@@ -71,12 +71,12 @@ class GoogleFilterForm extends Component {
   renderCount() {
     console.log(this.props.count);
     if (this.props.count !== undefined) {
-      return <span className="left-bumper">{this.props.count} results</span>;
+      return <span>{this.props.count} results</span>;
     }
   }
   renderFetching() {
     if (this.props.fetching) {
-      return <span className="left-bumper outside-button-loading"><Loading /></span>;
+      return <span className="outside-button-loading"><Loading /></span>;
     }
   }
   renderStartDateFormGroup() {

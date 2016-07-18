@@ -29,7 +29,7 @@ class AccountExpiryLabel extends Component {
     }, 15000);
   }
   renderGoogleAuthUrl() {
-    const userReturnTo = window.previousLocation ? window.previousLocation.pathname : '/dashboard';
+    const userReturnTo = window.location.pathname ? window.location.pathname : '/dashboard';
     const stateParam = JSON.stringify({ userReturnTo });
     const stateString = base64.encode(stateParam);
 

@@ -40,7 +40,7 @@ class AccountListItem extends Component {
   renderConnectionStatus() {
     if (this.props.account.connectionValid === false
     || (new Date).getTime() > _.get(this.props.account, 'authProps.token.expiry_date')) {
-      return (<span className="label label-danger">
+      return (<span className="label label-warning">
         <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
       </span>);
     } else if (this.props.account.connectionValid === true

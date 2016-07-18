@@ -73,12 +73,12 @@ class ImapFilterForm extends Component {
   }
   renderCount() {
     if (this.props.count && this.props.count > 0) {
-      return <span className="left-bumper">{this.props.count} results</span>;
+      return <span>{this.props.count} results</span>;
     }
   }
   renderFetching() {
     if (this.props.fetching) {
-      return <span className="left-bumper outside-button-loading"><Loading /></span>;
+      return <span className="outside-button-loading"><Loading /></span>;
     }
   }
   renderStartDateFormGroup() {

@@ -110,7 +110,6 @@ export function processEmails() {
     const mid = email.messageId;
 
     const attachments = email.attachments ? processAttachments(email.attachments) : [];
-    if (attachments.length > 0) { console.log(attachments); }
 
     const processedEmail = {
       date: email.date,

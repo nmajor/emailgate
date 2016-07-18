@@ -54,7 +54,7 @@ class NewCompilationForm extends Component {
           Save
           {this.renderLoading()}
         </button>
-        <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
+        <button className="btn btn-danger" onClick={this.back}>Back</button>
       </form>
     );
   }
