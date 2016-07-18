@@ -5,6 +5,8 @@ import Account from '../models/account';
 import base64 from 'base-64';
 
 router.get('/google', (req, res) => {
+  if (!req.user) { return res.redirect('/'); }
+
   const authCode = req.query.code;
   const userId = req.user._id;
   const statePropJsonString = base64.decode(req.query.state) || '{}';
