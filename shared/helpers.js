@@ -36,11 +36,16 @@ export function pdfsCurrent(pages, emails) {
 }
 
 export function lastPdfUpdatedAt(pages, emails) {
-  const lastComponent = _.sortBy([...pages, ...emails], (component) => {
+  const sorted = _.sortBy([...pages, ...emails], (component) => {
     if (!component.pdf || !component.pdf.updatedAt) { return null; }
 
     return component.pdf.updatedAt;
-  }).reverse()[0];
+  }).reverse().filter((component) => {
+    if (!component.pdf || !component.pdf.updatedAt) { return false; }
+    return true;
+  });
+
+  const lastComponent = sorted[0];
 
   if (!lastComponent || !lastComponent.pdf || !lastComponent.pdf.updatedAt) { return null; }
   return lastComponent.pdf.updatedAt;

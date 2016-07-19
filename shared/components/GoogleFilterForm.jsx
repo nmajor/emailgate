@@ -69,7 +69,6 @@ class GoogleFilterForm extends Component {
     );
   }
   renderCount() {
-    console.log(this.props.count);
     if (this.props.count !== undefined) {
       return <span>{this.props.count} results</span>;
     }

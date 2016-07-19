@@ -55,7 +55,7 @@ class CompilationEmailForm extends Component {
 
         {this.renderErrors('base')}
         <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
-        <span className="left-bumper top-bumper">{this.renderSaving()}</span>
+        <span className="top-bumper">{this.renderSaving()}</span>
       </form>
     </div>);
   }
