@@ -75,7 +75,7 @@ class CartView extends Component {
   }
   renderContinueShoppingAction() {
     if (this.props.cart.items && this.props.cart.items.length > 0) {
-      return <a href="#" className="btn btn-warning left-bumper"><i className="fa fa-angle-left"></i> Continue Shopping</a>;
+      return <a href="#" className="btn btn-warning left-bumper">Back to Dashboard</a>;
     }
   }
   renderCheckoutAction() {

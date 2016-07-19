@@ -4,7 +4,14 @@ docker run -it --rm -v /Users/nmajor/tmp:/tmp ubuntu:trusty /bin/bash
 -v /Users/nmajor/dev/contracts/Flvid:/var/www
 
 ### TOP TODOS:
-- Finish update password part
+- Rebuild a mini cart thing to display on the compilation checkout page instead of the full cart.
+- Load the price of the compilation on the home page from the product.json
+- Need to add the compilation name to the cart item description
+- On the preview page, check for any components with a missing or undefined pdf object.
+  - Make a request to get those pdfs.
+  - Maybe show a loading gif that important things are happening.
+  - Probably disable the approve button until it is finished
+  - Maybe do some long polling to keep checking until they are all up to date.
 
 ### Other Todos:
 
