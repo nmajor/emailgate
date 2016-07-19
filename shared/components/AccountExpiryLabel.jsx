@@ -10,6 +10,9 @@ class AccountExpiryLabel extends Component {
     this.state = {
       fromNow: moment(this.props.account.authProps.token.expiry_date).fromNow(),
     };
+
+    this.handleExpiryClick = this.handleExpiryClick.bind(this);
+    this.googleAuthUrl = this.googleAuthUrl.bind(this);
   }
   componentDidMount() {
     this.startPolling();
@@ -28,8 +31,12 @@ class AccountExpiryLabel extends Component {
       }
     }, 15000);
   }
-  renderGoogleAuthUrl() {
-    const userReturnTo = window.location.pathname ? window.location.pathname : '/dashboard';
+  handleExpiryClick() {
+    const googleAuthUrl = this.googleAuthUrl();
+    window.location = googleAuthUrl;
+  }
+  googleAuthUrl() {
+    const userReturnTo = _.get(window, 'location.pathname') ? window.location.pathname : '/dashboard';
     const stateParam = JSON.stringify({ userReturnTo });
     const stateString = base64.encode(stateParam);
 
@@ -38,9 +45,9 @@ class AccountExpiryLabel extends Component {
   renderExpiration() {
     if (_.get(this.props.account, 'authProps.token.expiry_date')) {
       if ((new Date).getTime() > this.props.account.authProps.token.expiry_date) {
-        return (<a href={this.renderGoogleAuthUrl()} className="btn btn-warning right-bumper">
+        return (<div onClick={this.handleExpiryClick} className="btn btn-warning right-bumper">
           Expired!
-        </a>);
+        </div>);
       }
 
       return (<span className="label label-success right-bumper">

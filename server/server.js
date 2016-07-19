@@ -179,7 +179,7 @@ app.use((req, res) => {
 
         res.status(200).end(renderFullPage(initialView, finalState));
       })
-      .catch(() => {
+      .catch(() => { // eslint-disable-line no-shadow
         res.end(renderFullPage('Error', {}));
       });
   });

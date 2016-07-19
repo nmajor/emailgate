@@ -2,8 +2,18 @@ import React, { PropTypes, Component } from 'react';
 import base64 from 'base64url';
 
 class AccountExpiryLabel extends Component {
-  renderGoogleAuthUrl() {
-    const userReturnTo = window.previousLocation ? window.previousLocation.pathname : '/dashboard';
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleExpiryClick = this.handleExpiryClick.bind(this);
+    this.googleAuthUrl = this.googleAuthUrl.bind(this);
+  }
+  handleExpiryClick() {
+    const googleAuthUrl = this.googleAuthUrl();
+    window.location = googleAuthUrl;
+  }
+  googleAuthUrl() {
+    const userReturnTo = window.location.pathname ? window.location.pathname : '/dashboard';
     const stateParam = JSON.stringify({ userReturnTo });
     const stateString = base64.encode(stateParam);
 
@@ -12,9 +22,9 @@ class AccountExpiryLabel extends Component {
   render() {
     return (<div className="padded-box top-bumper">
       <div className="bottom-bumper">Our access to your email account {this.props.account.email} has expired.</div>
-      <a href={this.renderGoogleAuthUrl()} className="btn btn-warning right-bumper">
+      <div onClick={this.handleExpiryClick} className="btn btn-warning right-bumper">
         Click here to reconnect
-      </a>
+      </div>
     </div>);
   }
 }
