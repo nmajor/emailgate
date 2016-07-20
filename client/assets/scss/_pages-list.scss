@@ -15,5 +15,15 @@
     &.current {
       border: 2px solid #777;
     }
+
+    &.loud {
+      color: #fff;
+      background-color: rgba(92,184,92,0.8);
+      border: 1px solid darken(rgba(92,184,92,0.8), 10);
+
+      .type {
+        color: #f1f1f1;
+      }
+    }
   }
 }

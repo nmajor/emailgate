@@ -39,10 +39,14 @@ class ViewCompilationPageContainer extends Component {
       }
     }
   }
-
+  renderMessage() {
+    if (this.props.currentPage.type !== 'table-of-contents' && this.props.currentPage.updatedAt === this.props.currentPage.createdAt) {
+      return <span className="text-loud h3-header-helper left-bumper">This page needs to be customized</span>;
+    }
+  }
   render() {
     return (<div>
-      <h3>{pageMeta(this.props.currentPage).desc}</h3>
+      <h3>{pageMeta(this.props.currentPage).desc}{this.renderMessage()}</h3>
       <CompilationPageNavContainer compilation={this.props.compilation} currentPage={this.props.currentPage} active="view" />
       <div className="tab-content">
         <CompilationPageView compilation={this.props.compilation} page={this.props.currentPage} template={this.templateFactory()} />

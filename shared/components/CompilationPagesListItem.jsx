@@ -4,12 +4,14 @@ import { pageMeta } from '../helpers';
 import Loading from './Loading';
 
 class CompilationPagesListItem extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
   className() {
     let className = 'compilation-pages-list-item list-item';
-    className += this.props.current ? ' current' : '';
+    if (this.props.current) {
+      className += ' current';
+    } else if (this.props.page.type !== 'table-of-contents' && this.props.page.createdAt === this.props.page.updatedAt) {
+      console.log('hey');
+      className += ' loud';
+    }
 
     return className;
   }
@@ -21,9 +23,16 @@ class CompilationPagesListItem extends Component {
       return this.renderSaving();
     }
   }
+  renderLink() {
+    if (this.props.page.type !== 'table-of-contents' && this.props.page.createdAt === this.props.page.updatedAt) {
+      return `/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}/edit`;
+    }
+
+    return `/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`;
+  }
   render() {
     return (
-      <Link className={this.className()} to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
+      <Link className={this.className()} to={this.renderLink()}>
         <div className="type">
           <span className="glyphicon glyphicon-file" aria-hidden="true"></span> Page
         </div>

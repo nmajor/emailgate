@@ -196,10 +196,20 @@ h1 > .loading {
   }
 }
 
-.nav-tabs>li.loud>a, .nav-tabs>li.loud>a:focus, .nav-tabs>li.loud>a:hover {
+.nav-tabs>li.loud-nav>a, .nav-tabs>li.loud-nav>a:focus, .nav-tabs>li.loud-nav>a:hover {
     color: #fff;
     background-color: rgba(92,184,92,0.8);
     // background-color: #5cb85c;
+}
+.loud {
+  color: #fff;
+  background-color: rgba(92,184,92,0.8);
+}
+.text-loud {
+  color: rgba(92,184,92,0.8);
+}
+.h3-header-helper {
+  font-size: 16px;
 }
 
 .nav-tabs>li.disabled>a, .nav-tabs>li.disabled>a:focus, .nav-tabs>li.disabled>a:hover {

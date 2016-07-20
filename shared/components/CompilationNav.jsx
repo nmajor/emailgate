@@ -37,7 +37,7 @@ class CompilationNav extends Component {
     if (this.props.currentPath === path) {
       return this.renderItemLink('active', path, pathName);
     } else if (this.props.actionStatusMap[path] === 'loud') {
-      return this.renderItemLink('loud', path, pathName);
+      return this.renderItemLink('loud-nav', path, pathName);
     } else if (this.props.actionStatusMap[path] === 'disabled') {
       return (<li role="presentation" className="disabled">
         <a>{pathName}</a>
