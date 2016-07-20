@@ -74,9 +74,9 @@ class CartView extends Component {
     </thead>);
   }
   renderContinueShoppingAction() {
-    if (this.props.cart.items && this.props.cart.items.length > 0) {
-      return <a href="#" className="btn btn-warning">Back to Dashboard</a>;
-    }
+    // if (this.props.cart.items && this.props.cart.items.length > 0) {
+    //   return <Link to="/dashboard" className="btn btn-warning">Back to Dashboard</Link>;
+    // }
   }
   renderCheckoutAction() {
     if (this.props.cart.items && this.props.cart.items.length > 0) {
@@ -96,7 +96,7 @@ class CartView extends Component {
   renderActions() {
     if (this.props.editable !== false) {
       return (<tr>
-        <td colSpan="5" className="text-right">
+        <td colSpan="5" className="text-right top-bumper">
           {this.renderLoading()}
           {this.renderContinueShoppingAction()}
           {this.renderCheckoutAction()}

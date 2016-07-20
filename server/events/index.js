@@ -290,8 +290,9 @@ export default (io) => {
 
     socket.on('UPDATE_CART_ITEM', (data) => {
       console.log('UPDATE_CART_ITEM');
+      console.log(data);
       User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Cart.findOne({ _user: user._id }))
+      .then(user => Cart.findOne({ _user: user._id, _order: null }))
       .then((cart) => {
         cart.updateItem(data.cartItemId, data.newData);
         return cart.save();

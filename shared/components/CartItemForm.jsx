@@ -6,21 +6,33 @@ class CartItemForm extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.setFormState = this.setFormState.bind(this);
+    // this.setFormState = this.setFormState.bind(this);
     this.remove = this.remove.bind(this);
+    this.addQuantity = this.addQuantity.bind(this);
+    this.removeQuantity = this.removeQuantity.bind(this);
   }
-  setFormState(event) {
-    const newState = {};
-    newState[event.target.getAttribute('name')] = event.target.value;
-
-    this.props.update(this.props.cartItem, newState);
-  }
+  // setFormState(event) {
+  //   const newState = {};
+  //   newState[event.target.getAttribute('name')] = event.target.value;
+  //
+  //   this.props.update(this.props.cartItem, newState);
+  // }
   remove() {
     this.props.remove(this.props.cartItem);
   }
+  addQuantity() {
+    console.log('addQuantity', (this.props.cartItem.quantity + 1));
+    this.props.update(this.props.cartItem, { quantity: (this.props.cartItem.quantity + 1) });
+  }
+  removeQuantity() {
+    if (this.props.cartItem.quantity > 0) {
+      console.log('removeQuantity', (this.props.cartItem.quantity + 1));
+      this.props.update(this.props.cartItem, { quantity: (this.props.cartItem.quantity - 1) });
+    }
+  }
   renderProductDesc() {
     return (<td>
-      <h4 className="nomargin">{this.props.cartItem.props.compilationName}</h4>
+      <h4>{this.props.cartItem.props.compilationName}</h4>
       <h6>{this.props.product.desc}</h6>
     </td>);
   }
@@ -29,14 +41,10 @@ class CartItemForm extends Component {
   }
   renderItemQuantity() {
     if (this.props.editable !== false) {
-      return (<td>
-        <input
-          name="quantity"
-          type="number"
-          className="form-control text-center basic"
-          onChange={this.setFormState}
-          value={this.props.cartItem.quantity}
-        />
+      return (<td className="text-center">
+        <span className="btn btn-default basic no-margin" onClick={this.removeQuantity}>-</span>
+        <span className="cart-quantity">{this.props.cartItem.quantity}</span>
+        <span className="btn btn-default basic no-margin" onClick={this.addQuantity}>+</span>
       </td>);
     }
 
