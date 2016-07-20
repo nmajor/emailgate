@@ -118,7 +118,7 @@ export function updateAddress(id, addressProps, cb) {
     })
     .then((res) => {
       if (!res.errors) {
-        dispatch(addAddress(res));
+        dispatch(updateAddressInAddresses(res));
       }
 
       cb(res);
