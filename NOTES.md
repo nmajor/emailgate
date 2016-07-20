@@ -5,8 +5,6 @@ docker run -it --rm -v /Users/nmajor/tmp:/tmp ubuntu:trusty /bin/bash
 
 ### TOP TODOS:
 - Rebuild a mini cart thing to display on the compilation checkout page instead of the full cart.
-- Load the price of the compilation on the home page from the product.json
-- Need to add the compilation name to the cart item description
 - On the preview page, check for any components with a missing or undefined pdf object.
   - Make a request to get those pdfs.
   - Maybe show a loading gif that important things are happening.
@@ -21,6 +19,8 @@ docker run -it --rm -v /Users/nmajor/tmp:/tmp ubuntu:trusty /bin/bash
 
 ### Finished Todos
 
+- Load the price of the compilation on the home page from the product.json
+- Need to add the compilation name to the cart item description
 - See if it is possible to gzip data when streaming up to the client. It would be great to gzip the emails from searches and any pdf previews, even updated emails or pages, etc...
 - Need to add validation to the shipping address for the order model.
 - Make sure that attachments are included when getting the raw emails from gmail.
