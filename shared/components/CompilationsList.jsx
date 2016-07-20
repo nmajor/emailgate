@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 class CompilationsList extends Component {
   renderCompilationsList() {
     if (!this.props.compilations.length || this.props.compilations.length < 1) {
-      return 'No compilations';
+      return 'No email books';
     }
 
     return this.props.compilations.map((compilation) => {
@@ -16,7 +16,7 @@ class CompilationsList extends Component {
   renderNewCompilation() {
     return (<div>
       <Link to="/compilations/new" className="btn btn-default new-compilation" >
-        New Compilation
+        New Email Book
       </Link>
     </div>);
   }

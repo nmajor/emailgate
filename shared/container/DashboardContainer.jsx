@@ -21,10 +21,10 @@ class DashboardContainer extends Component {
   }
   renderHelp() {
     return (<div className="help">
-      <h4>Create a New Compilation</h4>
-      <p>To get started, create a new compilation.</p>
+      <h4>Create a New Email Book</h4>
+      <p>To get started, create a new email book.</p>
       <Link to="/compilations/new" className="btn btn-lg btn-success" >
-        New Compilation
+        New Email Book
       </Link>
     </div>);
   }
@@ -35,7 +35,7 @@ class DashboardContainer extends Component {
 
     return (<div>
       <div>
-        <h3>Compilations</h3>
+        <h3>Email Books</h3>
         <CompilationsListContainer />
       </div>
       <div>

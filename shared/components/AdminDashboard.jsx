@@ -22,7 +22,7 @@ class AdminDashboard extends Component {
     return (<div className="container">
       <div className="row">
         <div className="col-md-12">
-          <h1>Compilations</h1>
+          <h1>Email Books</h1>
           {this.renderCompilations()}
         </div>
       </div>

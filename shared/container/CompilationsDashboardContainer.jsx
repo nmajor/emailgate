@@ -11,7 +11,7 @@ class CompilationsDashboardContainer extends Component {
   }
   render() {
     return (<div className="container-fluid">
-      <h1 className="hdash">Compilations</h1>
+      <h1 className="hdash">Email Books</h1>
       <CompilationsListContainer />
     </div>);
   }

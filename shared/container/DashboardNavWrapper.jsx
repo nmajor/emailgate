@@ -23,7 +23,7 @@ class DashboardNavWrapper extends Component { // eslint-disable-line
           <div className="dashboard-nav hidden-xs col-sm-3 col-lg-2 navbar-inverse">
             <ul className="nav navbar-nav">
               {this.renderNavItem('/dashboard', 'Overview')}
-              {this.renderNavItem('/dashboard/compilations', 'Compilations')}
+              {this.renderNavItem('/dashboard/compilations', 'Email Books')}
               {this.renderNavItem('/dashboard/email-accounts', 'Email Accounts')}
               {this.renderNavItem('/dashboard/orders', 'Orders')}
               {this.renderNavItem('/dashboard/addresses', 'Addresses')}
