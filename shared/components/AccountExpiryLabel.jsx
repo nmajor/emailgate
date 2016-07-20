@@ -24,7 +24,7 @@ class AccountExpiryLabel extends Component {
     }
   }
   startPolling() {
-    self._timer = setInterval(() => {
+    this._timer = setInterval(() => {
       const fromNow = moment(this.props.account.authProps.token.expiry_date).fromNow();
       if (fromNow !== this.state.fromNow) {
         this.setState({ fromNow: moment(this.props.account.authProps.token.expiry_date).fromNow() });

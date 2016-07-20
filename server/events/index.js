@@ -301,6 +301,26 @@ export default (io) => {
       });
     });
 
+    socket.on('REFRESH_PAGE_PDFS', (data) => {
+      console.log('REFRESH_PAGE_PDFS');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then(compilation => Page.find({ _compilation: compilation._id, _id: { $in: data.pageIds } }).select('pdf'))
+      .then((pages) => {
+        socket.emit('REFRESHED_PAGE_PDFS', pages);
+      });
+    });
+
+    socket.on('REFRESH_EMAIL_PDFS', (data) => {
+      console.log('REFRESH_EMAIL_PDFS');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then(compilation => Email.find({ _compilation: compilation._id, _id: { $in: data.emailIds } }).select('pdf'))
+      .then((emails) => {
+        socket.emit('REFRESHED_EMAIL_PDFS', emails);
+      });
+    });
+
     socket.on('disconnect', () => {
       console.log('a user disconnected');
     });

@@ -62,7 +62,7 @@ ViewCompilationPageContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array.isRequired,
-  currentPage: PropTypes.object.isRequired,
+  currentPage: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(ViewCompilationPageContainer);

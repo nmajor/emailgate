@@ -31,11 +31,12 @@ const filteredAccountEmails = (state = initialState.filteredAccountEmails, actio
 
     case ActionTypes.SET_PROPERTY_FOR_SOME_FILTERED_ACCOUNT_EMAILS : {
       return _.map(state, (email) => {
-        const newEmail = email;
-        if (action.emailMids.indexOf(newEmail.mid) > -1) {
+        if (action.emailMids.indexOf(email.mid) > -1) {
+          const newEmail = Object.assign({}, email);
           newEmail[action.prop] = action.val;
+          return newEmail;
         }
-        return newEmail;
+        return email;
       });
     }
 

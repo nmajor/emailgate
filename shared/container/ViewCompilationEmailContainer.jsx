@@ -23,7 +23,7 @@ class ViewCompilationEmailContainer extends Component {
 
 ViewCompilationEmailContainer.propTypes = {
   compilation: PropTypes.object.isRequired,
-  currentEmail: PropTypes.object.isRequired,
+  currentEmail: PropTypes.object,
 };
 
 export default connect()(ViewCompilationEmailContainer);

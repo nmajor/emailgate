@@ -49,6 +49,13 @@ export function updateEmailInCompilationEmails(email) {
   };
 }
 
+export function updateEmailPdfs(emails) {
+  return {
+    type: ActionTypes.UPDATE_EMAIL_PDFS,
+    emails,
+  };
+}
+
 export function getCompilationEmails(compilationId, cookie) {
   return (dispatch) => {
     dispatch(setPropertyForFetching('compilationEmails', true));
@@ -113,5 +120,11 @@ export function updateCompilationEmail(compilationId, email, newData) {
 export function getCompilationEmailPdf(compilationId, email) {
   return () => {
     socket.emit('GET_COMPILATION_EMAIL_PDF', { compilationId, emailId: email._id });
+  };
+}
+
+export function refreshEmailPdfs(compilationId, emailIds) {
+  return () => {
+    socket.emit('REFRESH_EMAIL_PDFS', { compilationId, emailIds });
   };
 }

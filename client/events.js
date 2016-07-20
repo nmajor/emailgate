@@ -85,3 +85,13 @@ socket.on('QUEUE_JOB_COMPLETE', (job) => {
   console.log('event QUEUE_JOB_COMPLETE');
   store.dispatch(Actions.removeQueueJobMapItem(job));
 });
+
+socket.on('REFRESHED_EMAIL_PDFS', (emails) => {
+  console.log('event REFRESHED_EMAIL_PDFS');
+  store.dispatch(Actions.updateEmailPdfs(emails));
+});
+
+socket.on('REFRESHED_PAGE_PDFS', (pages) => {
+  console.log('event REFRESHED_PAGE_PDFS');
+  store.dispatch(Actions.updatePagePdfs(pages));
+});

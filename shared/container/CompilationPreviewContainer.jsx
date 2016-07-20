@@ -3,22 +3,72 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import * as sharedHelpers from '../helpers';
 import CompilationPdfPreviewContainer from './CompilationPdfPreviewContainer';
+// import ComponentPdfStatusThumbContainer from './ComponentPdfStatusThumbContainer';
 import { Link } from 'react-router';
+import Loading from '../components/Loading';
+import _ from 'lodash';
 
 class CompilationPreviewContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.state = {};
+
     this.approve = this.approve.bind(this);
-    this.pdfsCurrent = sharedHelpers.pdfsCurrent(this.props.compilationPages, this.props.compilationEmails);
+    // this.pdfsCurrent = sharedHelpers.pdfsCurrent(this.props.compilationPages, this.props.compilationEmails);
+    this.componentsWithObsoletePdf = sharedHelpers.withObsoletePdf(this.props.compilationPages, this.props.compilationEmails);
     this.lastPdfUpdatedAt = sharedHelpers.lastPdfUpdatedAt(this.props.compilationPages, this.props.compilationEmails);
+    this.startPolling = this.startPolling.bind(this);
+    this.stopPolling = this.stopPolling.bind(this);
+    this.updateObsoletePdfs = this.updateObsoletePdfs.bind(this);
+  }
+  componentDidMount() {
+    if (this.componentsWithObsoletePdf.length > 0) {
+      this.updateObsoletePdfs();
+      this.startPolling();
+    }
   }
   componentWillReceiveProps(nextProps) {
-    this.pdfsCurrent = sharedHelpers.pdfsCurrent(nextProps.compilationPages, nextProps.compilationEmails);
+    // this.pdfsCurrent = sharedHelpers.pdfsCurrent(nextProps.compilationPages, nextProps.compilationEmails);
+    this.componentsWithObsoletePdf = sharedHelpers.withObsoletePdf(nextProps.compilationPages, nextProps.compilationEmails);
     this.lastPdfUpdatedAt = sharedHelpers.lastPdfUpdatedAt(nextProps.compilationPages, nextProps.compilationEmails);
+
+    if (!(this.componentsWithObsoletePdf.length > 0) && this._timer) {
+      this.stopPolling();
+    }
+  }
+  componentWillUnmount() {
+    this.stopPolling();
+  }
+  startPolling() {
+    this._timer = setInterval(() => {
+      console.log('polling');
+      this.updateObsoletePdfs();
+    }, 3000);
+  }
+  stopPolling() {
+    if (this._timer) {
+      clearInterval(this._timer);
+      this._timer = null;
+    }
+  }
+  updateObsoletePdfs() {
+    const emailsWithObsoletePdfs = _.filter(this.componentsWithObsoletePdf, (component) => { return component.mid; });
+    const pagesWithObsoletePdfs = _.filter(this.componentsWithObsoletePdf, (component) => { return !component.mid; });
+
+    if (emailsWithObsoletePdfs.length > 0) {
+      const emailIds = _.map(emailsWithObsoletePdfs, (email) => { return email._id; });
+      this.props.dispatch(Actions.refreshEmailPdfs(this.props.compilation._id, emailIds));
+    }
+    if (pagesWithObsoletePdfs.length > 0) {
+      const pageIds = _.map(pagesWithObsoletePdfs, (page) => { return page._id; });
+      this.props.dispatch(Actions.refreshPagePdfs(this.props.compilation._id, pageIds));
+    }
   }
   approve() {
-    this.props.dispatch(Actions.updateCompilation(this.props.compilation, { approvedAt: new Date() }));
+    if (!(this.componentsWithObsoletePdf.length > 0)) {
+      this.props.dispatch(Actions.updateCompilation(this.props.compilation, { approvedAt: new Date() }));
+    }
   }
   renderApproval() {
     return (<div>
@@ -26,7 +76,7 @@ class CompilationPreviewContainer extends Component {
         <div className="bottom-bumper">Please scroll through and check the entire document.</div>
         <div className="bottom-bumper">When you are satisfied with the document, click below to continue.</div>
       </div>
-      <div className="btn btn-success btn-block" onClick={this.approve}>Approve Preview</div>
+      <div className={`btn btn-success btn-block ${this.componentsWithObsoletePdf.length > 0 ? 'disabled' : ''}`} onClick={this.approve}>Approve Preview</div>
     </div>);
   }
   renderCheckoutReady() {
@@ -40,12 +90,27 @@ class CompilationPreviewContainer extends Component {
       </Link>
     </div>);
   }
+  renderUpdatingComponents() {
+    return (<div className="padded-box text-center">
+      <span className="outside-button-loading"><Loading /></span> Updating {this.componentsWithObsoletePdf.length} pdfs.
+    </div>);
+    // const componentStatusThumbs = this.componentsWithObsoletePdf.map((component) => {
+    //   return <ComponentPdfStatusThumbContainer key={component._id} component={component} />;
+    // });
+    // return (<div>{componentStatusThumbs}</div>);
+  }
   renderActions() {
-    if (this.props.compilation.approvedAt >= this.lastPdfUpdatedAt) {
+    if (this.props.compilation.approvedAt >= this.lastPdfUpdatedAt && !(this.componentsWithObsoletePdf.length > 0)) {
       return this.renderCheckoutReady();
     }
 
     return this.renderApproval();
+  }
+  renderPreview() {
+    if (this.componentsWithObsoletePdf.length > 0) {
+      return this.renderUpdatingComponents();
+    }
+    return <CompilationPdfPreviewContainer />;
   }
   render() {
     return (<div className="row">
@@ -53,7 +118,7 @@ class CompilationPreviewContainer extends Component {
         {this.renderActions()}
       </div>
       <div className="col-md-9">
-        <CompilationPdfPreviewContainer />
+        {this.renderPreview()}
       </div>
     </div>);
   }

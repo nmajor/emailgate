@@ -35,6 +35,14 @@ export function pdfsCurrent(pages, emails) {
   });
 }
 
+export function withObsoletePdf(pages, emails) {
+  return _.filter([...pages, ...emails], (component) => { // eslint-disable-line no-param-reassign
+    if (!component.pdf || !component.pdf.updatedAt || !component.pdf.modelVersion) { return true; }
+
+    return component.updatedAt > component.pdf.modelVersion;
+  });
+}
+
 export function lastPdfUpdatedAt(pages, emails) {
   const sorted = _.sortBy([...pages, ...emails], (component) => {
     if (!component.pdf || !component.pdf.updatedAt) { return null; }

@@ -34,6 +34,18 @@ const compilationPages = (state = initialState.compilationPages, action) => {
       return state;
     }
 
+    case ActionTypes.UPDATE_PAGE_PDFS : {
+      return _.map(state, (page) => {
+        const updatedPage = _.find(action.pages, ['_id', page._id]);
+        if (updatedPage) {
+          const pageCopy = Object.assign({}, page);
+          pageCopy.pdf = updatedPage.pdf;
+          return pageCopy;
+        }
+        return page;
+      });
+    }
+
     default: {
       return state;
     }
