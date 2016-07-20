@@ -9,10 +9,12 @@ export function getAppConfig(req, res) {
   .then((values) => {
     const [googleAuthUrl] = values;
     const products = require('../products'); // eslint-disable-line global-require
+    const staticData = require('../staticData'); // eslint-disable-line global-require
 
     res.json({
       googleAuthUrl,
       products,
+      staticData,
     });
   })
   .catch((err) => {

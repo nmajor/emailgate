@@ -43,11 +43,17 @@ class NewAddressContainer extends Component {
         <Header />
         <div className="container">
           <h1>New Address</h1>
-          <AddressForm onSubmit={this.create} back={this.back} submitting={false} />
+          <AddressForm onSubmit={this.create} back={this.back} submitting={false} states={this.props.config.staticData.states} />
         </div>
       </div>
     );
   }
+}
+
+function mapStateToProps(store) {
+  return {
+    config: store.config,
+  };
 }
 
 NewAddressContainer.contextTypes = {
@@ -56,6 +62,7 @@ NewAddressContainer.contextTypes = {
 
 NewAddressContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  config: PropTypes.object.isRequired,
 };
 
-export default connect()(NewAddressContainer);
+export default connect(mapStateToProps)(NewAddressContainer);

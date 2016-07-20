@@ -46,7 +46,7 @@ class EditAddressContainer extends Component {
         <Header />
         <div className="container">
           <h1>Edit Address</h1>
-          <AddressForm initialValues={this.address} onSubmit={this.update} back={this.back} submitting={false} />
+          <AddressForm initialValues={this.address} onSubmit={this.update} back={this.back} submitting={false} states={this.props.config.staticData.states} />
         </div>
       </div>
     );
@@ -56,6 +56,7 @@ class EditAddressContainer extends Component {
 function mapStateToProps(store) {
   return {
     addresses: store.addresses,
+    config: store.config,
   };
 }
 
@@ -67,6 +68,7 @@ EditAddressContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   addresses: PropTypes.array.isRequired,
   params: PropTypes.object.isRequired,
+  config: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(EditAddressContainer);

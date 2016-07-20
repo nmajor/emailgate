@@ -1,17 +1,17 @@
 [
   {
     "_id": 1,
-    "name": "Custom Email Compilation Publishing",
-    "desc": "",
+    "name": "email_book",
+    "desc": "Custom Email Book Publishing",
     "tags": ["compilation"],
     "taxCode": 81100,
     "taxCodeCategory": "Books",
-    "price": 6999
+    "price": 4900
   },
   {
     "_id": 2,
-    "name": "Compilation Pdf Download",
-    "desc": "",
+    "name": "email_book_pdf",
+    "desc": "Email Book Pdf Download",
     "tags": ["compilation"],
     "taxCode": 31000,
     "taxCodeCategory": "Digital Goods",

@@ -20,8 +20,8 @@ class CartItemForm extends Component {
   }
   renderProductDesc() {
     return (<td>
-      <h4 className="nomargin">{this.props.product.name}</h4>
-      <p></p>
+      <h4 className="nomargin">{this.props.cartItem.props.compilationName}</h4>
+      <h6>{this.props.product.desc}</h6>
     </td>);
   }
   renderProductPrice() {
@@ -33,7 +33,7 @@ class CartItemForm extends Component {
         <input
           name="quantity"
           type="number"
-          className="form-control text-center"
+          className="form-control text-center basic"
           onChange={this.setFormState}
           value={this.props.cartItem.quantity}
         />
@@ -51,7 +51,7 @@ class CartItemForm extends Component {
     </td>);
   }
   renderRemoveAction() {
-    return (<span className="btn btn-danger btn-xs" onClick={this.remove}>
+    return (<span className="btn btn-danger btn-xs basic right-most" onClick={this.remove}>
       <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
     </span>);
   }

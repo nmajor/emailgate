@@ -67,8 +67,14 @@ export function prettyPrice(price) {
   if (!price) { return '0.00'; }
   price = price.toString(); // eslint-disable-line no-param-reassign
 
-  const priceString = `${price.slice(0, -2)}.${price.slice(-2)}`;
-  return priceString;
+  return `${price.slice(0, -2)}.${price.slice(-2)}`;
+}
+
+export function prettyIntegerPrice(price) {
+  if (!price) { return '0'; }
+  price = price.toString(); // eslint-disable-line no-param-reassign
+
+  return price.slice(0, -2);
 }
 
 export function cartItemsTotal(items) {

@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import * as Actions from '../redux/actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { prettyIntegerPrice } from '../helpers';
+import _ from 'lodash';
 
 class Home extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -14,6 +16,9 @@ class Home extends Component { // eslint-disable-line
     this.props.dispatch(Actions.logoutUser(() => {
       this.context.router.push('/');
     }));
+  }
+  renderProductPrice() {
+    return prettyIntegerPrice(_.find(this.props.config.products, { _id: 1 }).price);
   }
 
   renderUserActions() {
@@ -155,7 +160,7 @@ class Home extends Component { // eslint-disable-line
             <div className="col-md-4 col-md-offset-4 text-center">
               <h2>PRICING</h2>
               <span className="fa fa-book price-book"></span>
-              <div className="big-price">40$</div>
+              <div className="big-price">${this.renderProductPrice()}</div>
               <p><Link to="/register" className="btn btn-success">CREATE AN ACCOUNT TO GET STARTED</Link></p>
             </div>
           </div>
@@ -222,12 +227,14 @@ class Home extends Component { // eslint-disable-line
 function mapStateToProps(store) {
   return {
     user: store.user,
+    config: store.config,
   };
 }
 
 Home.propTypes = {
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
+  config: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(Home);

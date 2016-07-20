@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import Loading from './Loading';
+import _ from 'lodash';
 
 class AddressForm extends Component {
   renderSubmitting() {
@@ -17,6 +18,11 @@ class AddressForm extends Component {
     if (field.touched && field.error) {
       return <span className="help-block">{field.error}</span>;
     }
+  }
+  renderStateOptions() {
+    return _.map(this.props.states, (val, key) => {
+      return <option key={key} value={key}>{val}</option>;
+    });
   }
   render() {
     const {
@@ -80,7 +86,10 @@ class AddressForm extends Component {
         <div className="col-md-3">
           <div className={`form-group ${this.renderErrorClass(region)}`}>
             <label className="control-label">State/Region</label>
-            <input type="text" className="form-control" {...region} />
+            <select className="form-control" {...region} value={region.value || ''}>
+              <option value="">- State</option>
+              {this.renderStateOptions()}
+            </select>
             {this.renderError(region)}
           </div>
         </div>
@@ -117,6 +126,7 @@ AddressForm.propTypes = {
   back: PropTypes.func.isRequired,
   error: PropTypes.string,
   submitting: PropTypes.bool.isRequired,
+  states: PropTypes.object.isRequired,
 };
 
 AddressForm = reduxForm({ // eslint-disable-line no-class-assign

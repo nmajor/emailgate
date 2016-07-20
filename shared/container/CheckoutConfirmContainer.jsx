@@ -30,6 +30,11 @@ class CheckoutConfirmContainer extends Component {
     this.getOrderPreview = this.getOrderPreview.bind(this);
     this.orderProps = this.orderProps.bind(this);
   }
+  componentWillMount() {
+    if (!this.props.checkout.stripeToken) {
+      this.context.router.push('/checkout');
+    }
+  }
   getOrderPreview() {
     this.props.dispatch(Actions.getOrderPreview(this.orderProps()));
   }

@@ -75,17 +75,17 @@ class CartView extends Component {
   }
   renderContinueShoppingAction() {
     if (this.props.cart.items && this.props.cart.items.length > 0) {
-      return <a href="#" className="btn btn-warning left-bumper">Back to Dashboard</a>;
+      return <a href="#" className="btn btn-warning">Back to Dashboard</a>;
     }
   }
   renderCheckoutAction() {
     if (this.props.cart.items && this.props.cart.items.length > 0) {
-      return <Link to="/checkout" className="btn btn-success left-bumper">Checkout</Link>;
+      return <Link to="/checkout" className="btn btn-success right-most">Checkout</Link>;
     }
   }
   renderLoading() {
     if (this.props.cart.fetching) {
-      return <span className="outside-button-loading"><Loading /></span>;
+      return <span className="outside-button-loading right-bumper"><Loading /></span>;
     }
   }
   renderActionFooter() {

@@ -109,12 +109,12 @@ OrderSchema.methods.getTax = function getTax() {
     return taxjar.taxForOrder({
       to_country: 'US',
       to_zip: this.shippingAddress.postalCode,
-      to_state: 'NJ',
+      to_state: this.shippingAddress.region,
       amount: (this.amount / 100),
       shipping: (this.shipping / 100),
       line_items: lineItems,
     }).then((res) => {
-      this.tax = res.tax.amount_to_collect;
+      this.tax = parseInt(res.tax.amount_to_collect * 100, 10);
       return Promise.resolve(this);
     });
   });

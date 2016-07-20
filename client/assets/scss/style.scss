@@ -247,3 +247,20 @@ h1 > .loading {
   font-weight: 300;
   font-size: 12px;
 }
+input {
+  &.basic {
+    min-height: inherit;
+    margin-bottom: 0;
+  }
+}
+.btn {
+  &.basic {
+    padding-left: inherit;
+    padding-right: inherit;
+    padding-top: inherit;
+    padding-bottom: inherit;
+  }
+}
+.right-most {
+  margin-right: 0;
+}
