@@ -41,7 +41,8 @@ class AccountImapForm extends Component {
     this.props.back();
   }
   renderForm() {
-    return (
+    return (<div>
+      <h2>Connect an IMAP Account</h2>
       <form onSubmit={this.handleSubmit}>
         {this.renderEmailFormGroup()}
         {this.renderHostFormGroup()}
@@ -50,9 +51,9 @@ class AccountImapForm extends Component {
 
         {this.renderErrors('base')}
         <button className={`btn btn-success ${this.formChanged() ? '' : 'disabled'}`} onClick={this.submitForm}>Save</button>
-        <button className="btn btn-danger left-bumper" onClick={this.back}>Back</button>
+        <button className="btn btn-danger" onClick={this.back}>Back</button>
       </form>
-    );
+    </div>);
   }
   // renderConnectionStatus() {
   //   if (this.props.checkConnection) {
@@ -85,18 +86,18 @@ class AccountImapForm extends Component {
     return (
       <div className="form-group">
         <label htmlFor="account-email">Email</label>
-          <div className="input-group">
-            <span className="input-group-addon">@</span>
-            <input
-              name="email"
-              id="account-email"
-              className="form-control"
-              type="text"
-              placeholder="john@example.com"
-              value={this.state.email}
-              onChange={this.setFormState}
-            />
-          </div>
+        <div className="input-group">
+          <span className="input-group-addon">@</span>
+          <input
+            name="email"
+            id="account-email"
+            className="form-control"
+            type="text"
+            placeholder="john@example.com"
+            value={this.state.email}
+            onChange={this.setFormState}
+          />
+        </div>
       </div>
     );
   }
@@ -112,7 +113,7 @@ class AccountImapForm extends Component {
           value={this.state.password}
           onChange={this.setFormState}
         />
-      <p className="help-block">For security reasons, we never store your email password on our servers, so you may need to re-enter this later if you refresh the page.</p>
+        <p className="help-block">For security reasons, we never store your email password on our servers, so you may need to re-enter this later if you refresh the page.</p>
       </div>
     );
   }

@@ -39,7 +39,7 @@ class NewAccountContainer extends Component {
       <div className="new-account-container">
         <Header />
         <div className="container">
-          <h1>Connect New Account</h1>
+          <h1>Connect New Email Account</h1>
           <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} />
         </div>
       </div>

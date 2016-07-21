@@ -52,12 +52,16 @@ class AccountFormContainer extends Component {
       />);
     }
   }
-
+  renderBackButton() {
+    if (this.state.account.kind !== 'imap') {
+      return <div className="btn btn-danger" onClick={this.props.back}>Back</div>;
+    }
+  }
   render() {
     return (<div>
       {this.renderAccountKindOptions()}
       {this.renderImapForm()}
-      <div className="btn btn-danger" onClick={this.props.back}>Back</div>
+      {this.renderBackButton()}
     </div>);
   }
 }

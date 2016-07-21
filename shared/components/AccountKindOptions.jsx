@@ -10,14 +10,19 @@ class AccountKindOptions extends Component {
     this.props.setKind('imap');
   }
   renderImapKind() {
-    return (<div className={`account-kind-option ${this.props.account.kind === 'imap' ? 'selected' : ''}`} onClick={this.setKindToImap}>
-      Imap
+    return (<div className="col-md-3">
+      <div className={`account-kind-option text-center ${this.props.account.kind === 'imap' ? 'selected' : ''}`} onClick={this.setKindToImap}>
+        <div className="icon"><span className="fa fa-envelope-o"></span></div>
+        <div>IMAP</div>
+      </div>
     </div>);
   }
   renderGoogleKind() {
-    return (<a className="account-kind-option" href={this.props.authUrls.googleAuthUrl}>
-      Gmail
-    </a>);
+    return (<div className="col-md-3">
+      <a className="account-kind-option" href={this.props.authUrls.googleAuthUrl}>
+        <img role="presentation" src="/img/gmail_logo.png" />
+      </a>
+    </div>);
   }
   renderKindOptions() {
     return (<div>
@@ -26,13 +31,12 @@ class AccountKindOptions extends Component {
     </div>);
   }
   render() {
-    return (
+    return (<div className="account-kind-options">
+      <h4>Which type of email would you like to connect?</h4>
       <div className="row">
-        <div className="col-md-6 col-sm-8">
-          {this.renderKindOptions()}
-        </div>
+        {this.renderKindOptions()}
       </div>
-    );
+    </div>);
   }
 }
 

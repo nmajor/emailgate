@@ -113,7 +113,9 @@ h1 > .loading {
     font-weight: bold;
   }
 }
-
+.account-kind-options {
+  margin: 40px 0 30px 0;
+}
 .account-kind-option {
   color: #000;
   display: inline-block;
@@ -122,6 +124,16 @@ h1 > .loading {
   border: 1px solid #ccc;
   width: 100%;
   padding: 30px;
+  line-height: 1.9em;
+  font-size: 1.9em;
+
+  .icon {
+    line-height: 1.25em;
+  }
+
+  img {
+    width: 100%;
+  }
 
   &.selected {
     border: 2px solid #777;
