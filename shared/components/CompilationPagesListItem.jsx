@@ -9,7 +9,6 @@ class CompilationPagesListItem extends Component {
     if (this.props.current) {
       className += ' current';
     } else if (this.props.page.type !== 'table-of-contents' && this.props.page.createdAt === this.props.page.updatedAt) {
-      console.log('hey');
       className += ' loud';
     }
 

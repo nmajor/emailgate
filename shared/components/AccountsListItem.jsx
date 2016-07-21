@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import AccountExpiryLabel from './AccountExpiryLabel';
+// import AccountExpiryLabel from './AccountExpiryLabel';
 import { Link } from 'react-router';
 import _ from 'lodash';
 
@@ -16,7 +16,7 @@ class AccountListItem extends Component {
     }
   }
   handleDeleteClick() {
-    if (this.props.handleDeleteClick) {
+    if (this.props.handleDeleteClick && window.confirm('Are you sure you want to delete this account?')) { // eslint-disable-line no-alert
       this.props.handleDeleteClick(this.props.account);
     }
   }
@@ -38,21 +38,31 @@ class AccountListItem extends Component {
     return <span className="left-bumper">{this.props.account.email}</span>;
   }
   renderConnectionStatus() {
-    if (this.props.account.connectionValid === false
-    || (new Date).getTime() > _.get(this.props.account, 'authProps.token.expiry_date')) {
-      return (<span className="label label-warning">
-        <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
-      </span>);
-    } else if (this.props.account.connectionValid === true
-    && (new Date).getTime() < _.get(this.props.account, 'authProps.token.expiry_date')) {
+    if (this.props.account.connectionValid === true
+    && (
+      (new Date).getTime() < _.get(this.props.account, 'authProps.token.expiry_date'))
+      || this.props.account.kind === 'imap'
+    ) {
       return (<span className="label label-success">
         <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
       </span>);
     }
 
-    return (<span className="label label-default">
-      <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
-    </span>);
+    // if (this.props.account.connectionValid === false
+    // || (new Date).getTime() > _.get(this.props.account, 'authProps.token.expiry_date')) {
+    //   return (<span className="label label-warning">
+    //     <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+    //   </span>);
+    // } else if (this.props.account.connectionValid === true
+    // && (new Date).getTime() < _.get(this.props.account, 'authProps.token.expiry_date')) {
+    //   return (<span className="label label-success">
+    //     <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+    //   </span>);
+    // }
+    //
+    // return (<span className="label label-default">
+    //   <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
+    // </span>);
   }
   renderSelected() { // eslint-disable-line consistent-return
     if (this.props.selected) {
@@ -66,7 +76,15 @@ class AccountListItem extends Component {
     return className;
   }
   renderKind() {
-    return <span className="label label-default">{this.props.account.kind}</span>;
+    const kindMap = {
+      google: 'Gmail',
+      imap: 'IMAP',
+    };
+
+    return <span className="label label-default">{kindMap[this.props.account.kind]}</span>;
+  }
+  renderExpiryLabel() {
+    // return <AccountExpiryLabel account={this.props.account} googleAuthUrl={this.props.googleAuthUrl} />;
   }
   render() {
     return (
@@ -76,7 +94,7 @@ class AccountListItem extends Component {
           {this.renderEmail()}
         </h4>
         <div className="actions">
-          <AccountExpiryLabel account={this.props.account} googleAuthUrl={this.props.googleAuthUrl} />
+          {this.renderExpiryLabel()}
           {this.renderKind()}
           {this.renderEditLink()}
           {this.renderRemoveLink()}
