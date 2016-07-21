@@ -21,7 +21,7 @@ class DashboardContainer extends Component {
   }
   renderHelp() {
     return (<div className="help">
-      <h4>Create a New Email Book</h4>
+      <h4>Hello!</h4>
       <p>To get started, create a new email book.</p>
       <Link to="/compilations/new" className="btn btn-lg btn-success" >
         New Email Book
