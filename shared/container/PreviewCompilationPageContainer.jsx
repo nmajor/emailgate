@@ -7,7 +7,7 @@ import { pageMeta } from '../helpers';
 class PreviewCompilationPageContainer extends Component { // eslint-disable-line
   renderMessage() {
     if (this.props.currentPage.type !== 'table-of-contents' && this.props.currentPage.updatedAt === this.props.currentPage.createdAt) {
-      return <span className="text-loud h3-header-helper left-bumper">This page needs to be customized</span>;
+      return <span className="text-loud h3-header-helper left-bumper">Please customize this page to continue</span>;
     }
   }
   render() {

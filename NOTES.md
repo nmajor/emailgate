@@ -1,3 +1,8 @@
+PDF.js cors:
+
+Setting custom header for the request.
+https://groups.google.com/forum/#!topic/mozilla.dev.pdf-js/iDUqbjMRcGc
+
 
 docker run -it --rm -v /Users/nmajor/tmp:/tmp ubuntu:trusty /bin/bash
 

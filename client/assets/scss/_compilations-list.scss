@@ -7,9 +7,10 @@
     text-decoration: inherit;
     color: inherit;
 
-    &:hover {
-      border-color: #909090;
-      cursor: pointer;
+    h3 { margin-top: 0; }
+
+    .actions {
+      margin-top: 10px;
     }
   }
 }

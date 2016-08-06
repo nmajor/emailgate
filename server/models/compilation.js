@@ -20,6 +20,33 @@ const CompilationSchema = new Schema({
   timestamps: true,
 });
 
+CompilationSchema.virtual('emailsCount').get(function getConnectionValid() {
+  return this._emailsCount;
+});
+
+CompilationSchema.virtual('emailsCount').set(function setConnectionValid(val) {
+  this._emailsCount = val;
+  return;
+});
+
+CompilationSchema.set('toObject', {
+  getters: true,
+  virtuals: true,
+});
+
+CompilationSchema.set('toJSON', {
+  getters: true,
+  virtuals: true,
+});
+
+CompilationSchema.post('init', (doc, next) => {
+  Email.count({ _compilation: doc._id })
+  .then((emailsCount) => {
+    doc.set('emailsCount', emailsCount);
+    next();
+  });
+});
+
 CompilationSchema.post('save', (doc) => {
   doc.seedPages();
 });
@@ -82,8 +109,11 @@ CompilationSchema.methods.findOrSchedulePdfJob = function findOrSchedulePdfJob()
 
 CompilationSchema.methods.latestUpdatedAt = function latestUpdatedAt() {
   return Promise.all([
-    Email.find({ _compilation: this._id }).select('updatedAt').sort('-updatedAt').limit(1),
-    Page.find({ _compilation: this._id }).select('updatedAt').sort('-updatedAt').limit(1),
+    Email.find({ _compilation: this._id }).select('updatedAt').sort('-updatedAt')
+    .limit(1),
+
+    Page.find({ _compilation: this._id }).select('updatedAt').sort('-updatedAt')
+    .limit(1),
   ])
   .then((results) => {
     results = _.flattenDeep(results); // eslint-disable-line no-param-reassign

@@ -22,20 +22,20 @@ class AccountListItem extends Component {
   }
   renderRemoveLink() { // eslint-disable-line consistent-return
     if (this.props.handleDeleteClick) {
-      return (<span className="btn btn-default btn-xs left-bumper" onClick={this.handleDeleteClick}>
+      return (<span className="btn btn-default btn-xs" onClick={this.handleDeleteClick}>
         <span className="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
       </span>);
     }
   }
   renderEditLink() { // eslint-disable-line consistent-return
     if (this.props.account.kind === 'imap') {
-      return (<Link className="btn btn-default btn-xs left-bumper" to={`/accounts/${this.props.account._id}/edit`}>
+      return (<Link className="btn btn-default btn-xs" to={`/accounts/${this.props.account._id}/edit`}>
         <span className="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
       </Link>);
     }
   }
   renderEmail() { // eslint-disable-line consistent-return
-    return <span className="left-bumper">{this.props.account.email}</span>;
+    return <span>{this.props.account.email}</span>;
   }
   renderConnectionStatus() {
     if (this.props.account.connectionValid === true
@@ -43,7 +43,7 @@ class AccountListItem extends Component {
       (new Date).getTime() < _.get(this.props.account, 'authProps.token.expiry_date'))
       || this.props.account.kind === 'imap'
     ) {
-      return (<span className="label label-success">
+      return (<span className="label label-success right-bumper">
         <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
       </span>);
     }
@@ -81,11 +81,16 @@ class AccountListItem extends Component {
       imap: 'IMAP',
     };
 
-    return <span className="label label-default">{kindMap[this.props.account.kind]}</span>;
+    return <span className="label label-default right-bumper">{kindMap[this.props.account.kind]}</span>;
   }
   renderExpiryLabel() {
     // return <AccountExpiryLabel account={this.props.account} googleAuthUrl={this.props.googleAuthUrl} />;
   }
+  // renderSelectLink() {
+  //   if (this.props.selectable) {
+  //     return <span className="btn btn-success">Select</span>;
+  //   }
+  // }
   render() {
     return (
       <div className={this.renderClassName()} onClick={this.handleClick}>

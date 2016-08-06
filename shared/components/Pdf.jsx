@@ -109,8 +109,7 @@ class Pdf extends Component {
       }
       // Is a File object
       const reader = new FileReader();
-      reader.onloadend = () =>
-        this.loadByteArray(new Uint8Array(reader.result));
+      reader.onloadend = () => this.loadByteArray(new Uint8Array(reader.result));
       reader.readAsArrayBuffer(props.file);
     } else if (!!props.content) {
       const bytes = window.atob(props.content);
