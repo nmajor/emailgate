@@ -27,6 +27,10 @@ export function pageMeta(page) {
   return metaMap[page.type];
 }
 
+export function pdfPath(pdf) {
+  return pdf.path.replace('/nmajor/', '/files/');
+}
+
 export function pdfsCurrent(pages, emails) {
   return _.every([...pages, ...emails], (component) => {
     if (!component.pdf || !component.pdf.modelVersion) { return false; }

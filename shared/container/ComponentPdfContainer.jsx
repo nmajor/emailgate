@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import JobStatus from '../components/JobStatus';
 import * as Actions from '../redux/actions/index';
 import Pdf from '../components/Pdf';
-import { emailEditPath, pageEditPath } from '../helpers';
+import { emailEditPath, pageEditPath, pdfPath } from '../helpers';
 
 class ComponentPdfContainer extends Component {
   constructor(props, context) {
@@ -46,7 +46,7 @@ class ComponentPdfContainer extends Component {
       return (<Pdf
         onPagesComplete={this.props.onPagesComplete}
         pdf={this.props.component.pdf}
-        file={this.props.component.pdf.url}
+        file={pdfPath(this.props.component.pdf)}
         pages={this.props.component.pdf.pageCount}
         pageNumOffset={this.pageNumOffset}
         editPath={this.componentEditPath()}
