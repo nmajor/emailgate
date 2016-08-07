@@ -8,10 +8,8 @@ import store from './store';
 
 require('./events');
 
-if (process.env.NODE_ENV !== 'production') {
-  // Pull in the styles for development
-  require('./assets/scss/style.scss'); // eslint-disable-line
-}
+// Pull in the styles for webpack
+require('./assets/scss/style.scss'); // eslint-disable-line
 
 const history = browserHistory;
 const dest = document.getElementById('root');
