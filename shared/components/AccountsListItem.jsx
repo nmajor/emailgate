@@ -71,7 +71,7 @@ class AccountListItem extends Component {
   }
   renderClassName() {
     let className = 'accounts-list-item ';
-    className += this.props.selectable ? 'selectable ' : '';
+    // className += this.props.selectable ? 'selectable ' : '';
     className += this.props.selected ? 'selected ' : '';
     return className;
   }
@@ -91,6 +91,11 @@ class AccountListItem extends Component {
   //     return <span className="btn btn-success">Select</span>;
   //   }
   // }
+  renderSelectAction() {
+    if (this.props.selectable) {
+      return <span className={`btn btn-success btn-xs ${this.props.selected ? 'disabled' : ''}`} onClick={this.handleClick}>Select</span>;
+    }
+  }
   render() {
     return (
       <div className={this.renderClassName()} onClick={this.handleClick}>
@@ -101,6 +106,7 @@ class AccountListItem extends Component {
         <div className="actions">
           {this.renderExpiryLabel()}
           {this.renderKind()}
+          {this.renderSelectAction()}
           {this.renderEditLink()}
           {this.renderRemoveLink()}
         </div>
