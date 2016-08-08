@@ -30,12 +30,12 @@ class OrderForm extends Component {
   }
   renderBackAction() {
     if (this.props.error) {
-      return <div className="btn btn-danger left-bumper" disabled={this.props.submitting} onClick={this.props.back}>Back</div>;
+      return <div className="btn btn-danger" disabled={this.props.submitting} onClick={this.props.back}>Back</div>;
     }
   }
   renderError() {
     if (this.props.error) {
-      return <div className="text-danger bottom-bumper">{this.props.error.message}</div>;
+      return <div className="text-danger bottom-bumper">{this.props.error.base}</div>;
     }
   }
   renderTerms() {

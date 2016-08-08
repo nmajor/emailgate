@@ -17,7 +17,7 @@ class BillingInfoSummary extends Component { // eslint-disable-line
 }
 
 BillingInfoSummary.propTypes = {
-  billingInfo: PropTypes.object,
+  billingInfo: PropTypes.object.isRequired,
 };
 
 export default BillingInfoSummary;

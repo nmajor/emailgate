@@ -36,7 +36,11 @@ class CheckoutConfirmContainer extends Component {
     }
   }
   getOrderPreview() {
-    this.props.dispatch(Actions.getOrderPreview(this.orderProps()));
+    this.props.dispatch(Actions.getOrderPreview(this.orderProps(), (res) => {
+      if (res.error) {
+        this.setState({ error: res.error });
+      }
+    }));
   }
   orderProps() {
     return {
@@ -91,10 +95,12 @@ class CheckoutConfirmContainer extends Component {
     }
   }
   renderBillingInfoSummary() {
-    return (<div>
-      <h3>Bill To:</h3>
-      <BillingInfoSummary billingInfo={this.props.checkout.stripeToken} />
-    </div>);
+    if (this.props.checkout.stripeToken) {
+      return (<div>
+        <h3>Bill To:</h3>
+        <BillingInfoSummary billingInfo={this.props.checkout.stripeToken} />
+      </div>);
+    }
   }
   renderOrderForm() {
     return (<OrderForm

@@ -114,6 +114,12 @@ OrderSchema.methods.getTax = function getTax() {
       shipping: (this.shipping / 100),
       line_items: lineItems,
     }).then((res) => {
+      if (res.error) {
+        this.error = { base: res.detail };
+        this.tax = 0;
+        return;
+      }
+
       this.tax = parseInt(res.tax.amount_to_collect * 100, 10);
       return Promise.resolve(this);
     });

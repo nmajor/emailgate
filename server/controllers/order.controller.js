@@ -14,8 +14,7 @@ export function getOrderPreview(req, res) {
   order.build()
   .then((order) => { // eslint-disable-line no-shadow
     res.json(order);
-  })
-  .catch((err) => { console.log(err); });
+  });
 }
 
 export function getOrders(req, res) {
@@ -48,5 +47,8 @@ export function createOrder(req, res) {
   })
   .then((order) => {
     res.json(order);
+  })
+  .catch((err) => {
+    console.log(err);
   });
 }

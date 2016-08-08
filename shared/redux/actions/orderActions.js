@@ -28,7 +28,7 @@ export function setOrders(orders) {
   };
 }
 
-export function getOrderPreview(orderProps) {
+export function getOrderPreview(orderProps, cb) {
   return (dispatch) => {
     dispatch(setPropertyForCheckout('orderPreview', { fetching: true }));
 
@@ -48,11 +48,8 @@ export function getOrderPreview(orderProps) {
       return res.json();
     })
     .then((res) => {
-      if (res.error && !res._id) {
-        throw new Error(res.error.message);
-      }
-
       dispatch(setPropertyForCheckout('orderPreview', res));
+      cb(res);
     })
     .catch((err) => {
       console.log(err);

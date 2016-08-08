@@ -18,7 +18,7 @@ class CompilationsListItem extends Component { // eslint-disable-line
     }
   }
   renderButton() {
-    return (<Link className="btn btn-success" to={this.renderCompilationLink()}>
+    return (<Link className="btn btn-success btn-xs" to={this.renderCompilationLink()}>
       <span className="glyphicon glyphicon-eye-open right-bumper" aria-hidden="true"></span>
       View
     </Link>);

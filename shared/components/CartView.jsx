@@ -30,20 +30,18 @@ class CartView extends Component {
     return amount;
   }
   renderItemForms() {
-    return this.props.cart.items.map((cartItem) => {
-      // const product = cartItem.product || _.find(this.props.products, (prod) => {
-      //   return parseInt(prod._id, 10) === parseInt(cartItem.productId, 10);
-      // });
-
-      return (<CartItemForm
-        key={cartItem._id}
-        cartItem={cartItem}
-        product={cartItem.product}
-        remove={this.props.removeItem}
-        update={this.props.updateItem}
-        editable={this.props.editable}
-      />);
-    });
+    if (this.props.cart.items) {
+      return this.props.cart.items.map((cartItem) => {
+        return (<CartItemForm
+          key={cartItem._id}
+          cartItem={cartItem}
+          product={cartItem.product}
+          remove={this.props.removeItem}
+          update={this.props.updateItem}
+          editable={this.props.editable}
+        />);
+      });
+    }
   }
   renderActionsHeader() {
     if (this.props.editable !== false) {
