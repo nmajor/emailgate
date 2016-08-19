@@ -25,7 +25,7 @@ class AddressListItem extends Component {
   }
   renderRemoveLink() {
     if (this.props.deleteItem) {
-      return (<span className="btn btn-default btn-xs left-bumper" onClick={this.handleDeleteClick}>
+      return (<span className="btn btn-default btn-xs" onClick={this.handleDeleteClick}>
         <span className="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete
       </span>);
     }
