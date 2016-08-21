@@ -44,19 +44,19 @@ class GoogleFilterForm extends Component {
         {this.renderSubjectFormGroup()}
 
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-sm-6">
             {this.renderToFormGroup()}
           </div>
-          <div className="col-md-6">
+          <div className="col-sm-6">
             {this.renderFromFormGroup()}
           </div>
         </div>
 
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-sm-6">
             {this.renderStartDateFormGroup()}
           </div>
-          <div className="col-md-6">
+          <div className="col-sm-6">
             {this.renderEndDateFormGroup()}
           </div>
         </div>
@@ -109,19 +109,19 @@ class GoogleFilterForm extends Component {
 
     return (
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-sm-6">
           <select ref={`${ref}Month`} className="form-control">
             <option value="">- Month</option>
             {monthOptions}
           </select>
         </div>
-        <div className="col-md-3">
+        <div className="col-sm-3">
           <select ref={`${ref}Day`} className="form-control">
             <option value="">- Day</option>
             {dayOptions}
           </select>
         </div>
-        <div className="col-md-3">
+        <div className="col-sm-3">
           <select ref={`${ref}Year`} className="form-control">
             <option value="">- Year</option>
             {yearOptions}

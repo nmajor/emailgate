@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { prettyIntegerPrice } from '../helpers';
 import _ from 'lodash';
+import CopyrightText from '../components/CopyrightText';
 
 class Home extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -169,7 +170,7 @@ class Home extends Component { // eslint-disable-line
 
       <div className="container">
         <div className="row mt-row">
-          <div style={{ textAlign: 'center' }}>Copyright &#169; 2016 MYEMAILBOOK.COM All rights reserved.</div>
+          <div style={{ textAlign: 'center' }}><CopyrightText /></div>
         </div>
       </div>
 

@@ -20,7 +20,7 @@ class FilteredEmailsListActions extends Component {
   }
   renderAddSelectedAction() {
     return (<div className={`btn btn-success btn-block add-selected ${this.props.canAdd ? '' : 'disabled'}`} onClick={this.addSelected}>
-      Add <span className="glyphicon glyphicon-check" aria-hidden="true"></span> to Compilation ({this.props.selectedEmailsCount})
+      Add <span className="glyphicon glyphicon-check" aria-hidden="true"></span> Emails ({this.props.selectedEmailsCount})
       {this.renderLoading()}
     </div>);
   }

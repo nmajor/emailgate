@@ -4,6 +4,7 @@ import React from 'react';
 // containers
 import App from './container/App';
 import Terms from './components/Terms';
+import About from './components/About';
 import RegisterContainer from './container/RegisterContainer';
 import LoginContainer from './container/LoginContainer';
 import ForgotPasswordContainer from './container/ForgotPasswordContainer';
@@ -47,6 +48,7 @@ const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={Home} />
     <Route path="/terms" component={Terms} />
+    <Route path="/about" component={About} />
     <Route path="/register" component={RegisterContainer} />
     <Route path="/login" component={LoginContainer} />
     <Route path="/forgot" component={ForgotPasswordContainer} />

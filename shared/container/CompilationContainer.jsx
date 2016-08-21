@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import CompilationNav from '../components/CompilationNav';
 import CompilationHeader from '../components/CompilationHeader';
 import { connect } from 'react-redux';
@@ -64,9 +65,10 @@ class CompilationContainer extends Component {
           fetching={this.props.fetching}
           actionStatusMap={this.actionStatusMap()}
         />
-        <div className="container top-bumper">
+        <div className="container top-bumper bottom-bumper">
           {this.renderChildren()}
         </div>
+        <Footer />
       </div>);
     }
 

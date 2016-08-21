@@ -36,14 +36,14 @@ class FilteredAccountEmailsContainer extends Component {
       <div className="filtered-account-emails-container">
         <h3>Emails {this.renderProgress()}</h3>
         <div className="row">
-          <div className="col-md-3">
+          <div className="col-sm-3 col-md-3">
             <FilteredEmailsListContainer
               compilation={this.props.compilation}
               compilationEmailMids={this.compilationEmailMids}
               currentFilteredEmail={this.currentFilteredEmail}
             />
           </div>
-          <div className="col-md-9">
+          <div className="col-sm-9 col-md-9">
             <FilteredEmailMainContainer
               compilation={this.props.compilation}
               compilationEmailMids={this.compilationEmailMids}
