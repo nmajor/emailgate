@@ -50,15 +50,9 @@ class AddressListItem extends Component {
   }
   render() {
     return (<div className={`address-list-item ${this.props.handleItemClick ? 'selectable' : ''} ${this.renderSelectedClass()}`} onClick={this.handleItemClick}>
-      <h4>
-        {this.props.address.firstName} {this.props.address.lastName}
-      </h4>
-      <div>
-        {this.props.address.address1} {this.props.address.address2}
-      </div>
-      <div>
-        {this.props.address.city}, {this.props.address.region} {this.props.address.postalCode}
-      </div>
+      <h4>{this.props.address.firstName} {this.props.address.lastName}</h4>
+      <div>{this.props.address.address1} {this.props.address.address2}</div>
+      <div>{this.props.address.city}, {this.props.address.region} {this.props.address.postalCode}</div>
       {this.renderPhone()}
       {this.renderActions()}
     </div>);
