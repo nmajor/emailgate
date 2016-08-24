@@ -86,6 +86,7 @@ AccountSchema.methods.checkImapConnection = function checkImapConnection(passwor
         }
 
         imap.end();
+        console.log(err);
         this.set('connectionValid', false);
         return resolve(this);
       });

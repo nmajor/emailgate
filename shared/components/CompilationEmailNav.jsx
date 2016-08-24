@@ -23,7 +23,7 @@ class CompilationEmailNav extends Component {
   }
   renderPreviewNav() {
     const path = `/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}/preview`;
-    return this.renderNavItem(path, 'preview', 'Preview');
+    return this.renderNavItem(path, 'preview', 'PDF Preview');
   }
   renderNavItem(path, active, pageName) {
     return (

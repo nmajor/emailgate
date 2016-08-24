@@ -43,8 +43,21 @@ class ImapFilterForm extends Component {
   renderForm() {
     return (
       <form onSubmit={this.handleSubmit}>
-        {this.renderMailboxFormGroup()}
-        {this.renderSubjectFormGroup()}
+        <div className="row">
+          <div className="col-md-12">
+            <div className="padded-box bottom-bumper">
+              {this.renderMailboxFormGroup()}
+              <div className="row">
+                <div className="col-sm-6">
+                  {this.renderStartDateFormGroup()}
+                </div>
+                <div className="col-sm-6">
+                  {this.renderEndDateFormGroup()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className="row">
           <div className="col-sm-6">
@@ -54,15 +67,7 @@ class ImapFilterForm extends Component {
             {this.renderFromFormGroup()}
           </div>
         </div>
-
-        <div className="row">
-          <div className="col-sm-6">
-            {this.renderStartDateFormGroup()}
-          </div>
-          <div className="col-sm-6">
-            {this.renderEndDateFormGroup()}
-          </div>
-        </div>
+        {this.renderSubjectFormGroup()}
 
         {this.renderErrors('base')}
         <button className="btn btn-success" onClick={this.submitForm}>Submit</button>
@@ -84,16 +89,18 @@ class ImapFilterForm extends Component {
   renderStartDateFormGroup() {
     return (
       <div className="form-group">
-        <label htmlFor="login-email">Start Date</label>
+        <label htmlFor="login-email">Start Date *</label>
         {this.renderDatePicker('startDate')}
+        {this.renderErrors('startDate')}
       </div>
     );
   }
   renderEndDateFormGroup() {
     return (
       <div className="form-group">
-        <label htmlFor="login-email">End Date</label>
+        <label htmlFor="login-email">End Date *</label>
         {this.renderDatePicker('endDate')}
+        {this.renderErrors('endDate')}
       </div>
     );
   }
@@ -149,7 +156,7 @@ class ImapFilterForm extends Component {
   }
   renderMailboxFormGroup() {
     return (<div className="form-group">
-      <label htmlFor="filter-mailbox">Mailbox</label>
+      <label htmlFor="filter-mailbox">Mailbox *</label>
       <select
         ref="mailbox"
         className="form-control"
@@ -158,6 +165,7 @@ class ImapFilterForm extends Component {
         defaultValue="[Gmail]/All Mail"
       >
         {this.renderMailboxOptions()}
+        {this.renderErrors('mailbox')}
       </select>
     </div>);
   }
@@ -192,7 +200,7 @@ class ImapFilterForm extends Component {
     });
   }
   renderErrors(type) {
-    if (this.props.errors) {
+    if (this.props.errors && this.props.errors[type]) {
       return this.props.errors[type].map((error, index) => {
         return <p key={index} className="text-danger">{error}</p>;
       });

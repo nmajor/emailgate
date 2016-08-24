@@ -123,6 +123,14 @@ export function pageEditPath(page) {
   return `compilations/${page._compilation}/build/pages/${page._id}/edit`;
 }
 
+export function compilationTotalPageCount(emails, pages) {
+  const emailPdfPages = emails.map((e) => { return e.pdf.pageCount; }).reduce((pre, cur) => { return pre + cur; });
+
+  const pagePdfPages = pages.map((p) => { return p.pdf.pageCount; }).reduce((pre, cur) => { return pre + cur; });
+
+  return emailPdfPages + pagePdfPages;
+}
+
 function actionReadyMap(compilation, emails, pages) {
   function addEmailsReady() {
     return true;

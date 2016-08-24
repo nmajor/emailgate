@@ -27,9 +27,9 @@ class ShippingAddressContainer extends Component {
   }
   renderSelectingAction() {
     if (this.state.selecting === false) {
-      return <span className="btn btn-default btn-xs" onClick={this.setSelecting}>Change</span>;
+      return <span className="btn btn-default btn-xs btn-h" onClick={this.setSelecting}>Change</span>;
     } else if (this.props.checkout.shippingAddressId && this.state.selecting === true) {
-      return <span className="btn btn-danger btn-xs" onClick={this.unsetSelecting}>Cancel</span>;
+      return <span className="btn btn-danger btn-xs btn-h" onClick={this.unsetSelecting}>Cancel</span>;
     }
   }
   render() {

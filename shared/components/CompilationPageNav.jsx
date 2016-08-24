@@ -15,7 +15,7 @@ class CompilationPageNav extends Component {
   }
   renderPreviewNav() {
     const path = `/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}/preview`;
-    return this.renderNavItem(path, 'preview', 'Preview');
+    return this.renderNavItem(path, 'preview', 'PDF Preview');
   }
   renderNavItem(path, active, pageName) {
     return (

@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { prettyPrice } from '../helpers';
+import { prettyPrice, compilationPageCount } from '../helpers';
 
 class CompilationAddToCart extends Component {
   constructor(props, context) {
@@ -22,38 +22,41 @@ class CompilationAddToCart extends Component {
   }
   renderAddToCartForm() {
     return (<form>
+      <label htmlFor="quantity">How many copies would you like to orpder?</label>
       <div className="form-group">
-        <label htmlFor="quantity">Quantity</label>
         <input type="number" name="quantity" className="form-control" id="quantity" value={this.state.quantity} onChange={this.setFormState} />
       </div>
       <button type="submit" className="btn btn-success btn-block" onClick={this.submitForm}>Add to Cart</button>
     </form>);
   }
   renderEmailCount() {
-    return (<div>
-      Emails: {this.props.compilationEmailsCount}
-    </div>);
+    return <div>Emails: {this.props.compilationEmailsCount}</div>;
   }
   renderPdfPageCount() {
-    if (this.props.compilation.pdf && this.props.compilation.pdf.pageCount) {
-      return (<div>
-        Pages: {this.props.compilation.pdf.pageCount}
-      </div>);
-    }
+    return <div>Pages: {this.props.compilationTotalPageCount}</div>;
+  }
+  renderProductDesc() {
+    return <h5>{this.props.products[0].desc}</h5>;
   }
   renderProductInfo() {
-    return (<div>
-      <h5>{this.props.products[0].desc}</h5>
-      <div>Price: ${prettyPrice(this.props.products[0].price)}</div>
-    </div>);
+    return (<div>Price: ${prettyPrice(this.props.products[0].price)}</div>);
   }
   render() {
     return (<div>
-      <h3>{this.props.compilation.name}</h3>
-      {this.renderEmailCount()}
-      {this.renderPdfPageCount()}
-      {this.renderProductInfo()}
-      {this.renderAddToCartForm()}
+      <div className="row">
+        <div className="col-sm-6">
+          <div className="padded-box">
+            <h3 className="margin-topless">{this.props.compilation.name}</h3>
+            {this.renderProductDesc()}
+            {this.renderEmailCount()}
+            {this.renderPdfPageCount()}
+            {this.renderProductInfo()}
+          </div>
+        </div>
+        <div className="col-sm-6">
+          {this.renderAddToCartForm()}
+        </div>
+      </div>
     </div>);
   }
 }
@@ -61,6 +64,7 @@ class CompilationAddToCart extends Component {
 CompilationAddToCart.propTypes = {
   compilation: PropTypes.object.isRequired,
   compilationEmailsCount: PropTypes.number.isRequired,
+  compilationTotalPageCount: PropTypes.number.isRequired,
   products: PropTypes.array.isRequired,
   submitForm: PropTypes.func.isRequired,
 };

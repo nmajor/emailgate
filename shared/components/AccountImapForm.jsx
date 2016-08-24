@@ -42,7 +42,6 @@ class AccountImapForm extends Component {
   }
   renderForm() {
     return (<div>
-      <h2>Connect an IMAP Account</h2>
       <form onSubmit={this.handleSubmit}>
         {this.renderEmailFormGroup()}
         {this.renderHostFormGroup()}

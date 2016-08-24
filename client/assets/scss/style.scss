@@ -230,7 +230,7 @@ h1 > .loading {
     border: none;
 }
 .component-list {
-  max-height: 600px;
+  height: 600px;
   overflow-y: scroll;
   padding: 0 10px 0 5px;
   border: 1px solid #CCC;
@@ -285,6 +285,14 @@ input {
     padding-bottom: inherit;
   }
 }
+
+.btn-h {
+  padding: 1px 5px;
+}
+.margin-topless {
+  margin-top: 0;
+}
+
 .right-most {
   margin-right: 0;
 }

@@ -73,16 +73,15 @@ class CompilationPreviewContainer extends Component {
   renderApproval() {
     return (<div>
       <div className="box bottom-bumper">
-        <div className="bottom-bumper">Please scroll through and check the entire document.</div>
-        <div className="bottom-bumper">When you are satisfied with the document, click below to continue.</div>
+        <div>When you are satisfied with your email book, please approve it by clicking the button below.</div>
       </div>
-      <div className={`btn btn-success btn-block ${this.componentsWithObsoletePdf.length > 0 ? 'disabled' : ''}`} onClick={this.approve}>Approve Preview</div>
+      <div className={`btn btn-success btn-block bottom-bumper ${this.componentsWithObsoletePdf.length > 0 ? 'disabled' : ''}`} onClick={this.approve}>Approve Preview</div>
     </div>);
   }
   renderCheckoutReady() {
     return (<div>
       <div className="box bottom-bumper">
-        <div className="bottom-bumper">There have been no changes made to the compilation since you marked it approved.</div>
+        <div className="bottom-bumper">There have been no changes made to the compilation since you marked it as approved.</div>
         <h5>You are ready to checkout!</h5>
       </div>
       <Link className="btn btn-success btn-block" to={`/compilations/${this.props.compilation._id}/checkout`}>
@@ -114,10 +113,10 @@ class CompilationPreviewContainer extends Component {
   }
   render() {
     return (<div className="row">
-      <div className="col-md-3">
+      <div className="col-sm-3">
         {this.renderActions()}
       </div>
-      <div className="col-md-9">
+      <div className="col-sm-9">
         {this.renderPreview()}
       </div>
     </div>);

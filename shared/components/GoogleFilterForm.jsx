@@ -41,8 +41,20 @@ class GoogleFilterForm extends Component {
   renderForm() {
     return (
       <form>
-        {this.renderSubjectFormGroup()}
-
+        <div className="row">
+          <div className="col-md-12">
+            <div className="padded-box bottom-bumper">
+              <div className="row">
+                <div className="col-sm-6">
+                  {this.renderStartDateFormGroup()}
+                </div>
+                <div className="col-sm-6">
+                  {this.renderEndDateFormGroup()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="row">
           <div className="col-sm-6">
             {this.renderToFormGroup()}
@@ -51,16 +63,7 @@ class GoogleFilterForm extends Component {
             {this.renderFromFormGroup()}
           </div>
         </div>
-
-        <div className="row">
-          <div className="col-sm-6">
-            {this.renderStartDateFormGroup()}
-          </div>
-          <div className="col-sm-6">
-            {this.renderEndDateFormGroup()}
-          </div>
-        </div>
-
+        {this.renderSubjectFormGroup()}
         {this.renderErrors('base')}
         <button className="btn btn-success" onClick={this.submitForm}>Submit</button>
         {this.renderFetching()}
@@ -81,16 +84,18 @@ class GoogleFilterForm extends Component {
   renderStartDateFormGroup() {
     return (
       <div className="form-group">
-        <label htmlFor="login-email">Start Date</label>
+        <label htmlFor="login-email">Start Date *</label>
         {this.renderDatePicker('startDate')}
+        {this.renderErrors('startDate')}
       </div>
     );
   }
   renderEndDateFormGroup() {
     return (
       <div className="form-group">
-        <label htmlFor="login-email">End Date</label>
+        <label htmlFor="login-email">End Date *</label>
         {this.renderDatePicker('endDate')}
+        {this.renderErrors('endDate')}
       </div>
     );
   }
@@ -169,7 +174,7 @@ class GoogleFilterForm extends Component {
     </div>);
   }
   renderErrors(type) {
-    if (this.props.errors) {
+    if (this.props.errors && this.props.errors[type]) {
       return this.props.errors[type].map((error, index) => {
         return <p key={index} className="text-danger">{error}</p>;
       });

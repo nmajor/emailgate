@@ -23,7 +23,7 @@ class CompilationNav extends Component {
     return this.renderNavItem('build', 'Customize', (this.props.emailCount === 0));
   }
   renderPreviewNav() {
-    return this.renderNavItem('preview', 'Preview');
+    return this.renderNavItem('preview', 'PDF Preview');
   }
   renderCheckoutNav() {
     return this.renderNavItem('checkout', 'Checkout');

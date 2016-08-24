@@ -26,7 +26,7 @@ export function createAccount(req, res) {
 export function patchAccount(req, res) {
   Account.findOne({ _user: req.user._id, _id: req.params.id })
   .then((account) => {
-    account.imap = req.body.imap; // eslint-disable-line no-param-reassign
+    account.authProps = req.body.authProps; // eslint-disable-line no-param-reassign
 
     return account.save();
   })

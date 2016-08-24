@@ -42,17 +42,16 @@ class ImapAccountPasswordForm extends Component {
     if (this.props.currentAccount.checkingConnection) {
       return this.renderLoading();
     } else if (this.props.currentAccount.connectionValid === false) {
-      return <span className="left-bumper">Could Not Connect.</span>;
+      return <span className="text-danger">Could Not Connect.</span>;
     }
   }
   render() {
-    return (<div className="top-bumper">
-      <h3>Account Password</h3>
-      <label htmlFor="login-password">Please re-enter your password for {this.props.currentAccount.email} so we can connect.</label>
+    return (<div className="top-bumper padded-box">
+      <div className="bottom-bumper">Please re-enter your password for {this.props.currentAccount.email} so we can connect.</div>
       <form className="form-inline" onSubmit={this.handleSubmit}>
-      {this.renderPasswordFormGroup()}
-      <button className="btn btn-success left-bumper" onClick={this.submitForm}>Submit</button>
-      {this.renderConnectionStatus()}
+        {this.renderPasswordFormGroup()}
+        <button className="btn btn-success left-bumper" onClick={this.submitForm}>Submit</button>
+        {this.renderConnectionStatus()}
       </form>
     </div>);
   }

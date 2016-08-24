@@ -1,28 +1,26 @@
-.accounts-list {
-  .accounts-list-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
+.accounts-list-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
 
-    .actions {
-      margin-top: 20px;
-    }
+  .actions {
+    margin-top: 20px;
+  }
 
-    h4 {
-      .label {
-        padding: 5px;
-      }
+  h4 {
+    .label {
+      padding: 5px;
     }
+  }
 
-    &.selectable {
-      &:hover {
-        border-color: #909090;
-        cursor: pointer;
-      }
+  &.selectable {
+    &:hover {
+      border-color: #909090;
+      cursor: pointer;
     }
+  }
 
-    &.selected {
-      border: 2px solid #777;
-    }
+  &.selected {
+    border: 2px solid #777;
   }
 }
