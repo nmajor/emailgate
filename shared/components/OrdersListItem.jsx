@@ -11,8 +11,8 @@ class OrdersListItem extends Component {
     </Link>);
   }
   renderItemSummary() {
-    return this.props.order.items.map((item) => {
-      return (<div>
+    return this.props.order.items.map((item, index) => {
+      return (<div key={index}>
         <h4>{item.props.compilationName}{item.quantity > 1 ? ` - x${item.quantity}` : ''}</h4>
         <h6>{item.product.desc || item.product.name}</h6>
       </div>);

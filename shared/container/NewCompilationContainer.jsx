@@ -31,7 +31,7 @@ class NewCompilationContainer extends Component {
       <div className="new-compilation-container">
         <Header />
         <div className="container">
-          <h1>New Compilation</h1>
+          <h1>New Email Book</h1>
           <NewCompilationForm compilation={{}} submitForm={this.create} back={this.back} fetching={this.props.fetching} />
         </div>
       </div>

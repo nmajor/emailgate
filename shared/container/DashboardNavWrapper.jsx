@@ -2,13 +2,18 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
+// import Footer from '../components/Footer';
 
-class DashboardNavWrapper extends Component { // eslint-disable-line
+class DashboardNavWrapper extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.currentPath = this.props.routes[this.props.routes.length - 1].path;
+  }
+  componentWillMount() {
+    if (!this.props.user.email) {
+      this.context.router.push('/login');
+    }
   }
   componentWillReceiveProps(nextProps) {
     this.currentPath = nextProps.routes[nextProps.routes.length - 1].path;
@@ -40,10 +45,21 @@ class DashboardNavWrapper extends Component { // eslint-disable-line
   }
 }
 
+function mapStateToProps(store) {
+  return {
+    user: store.user,
+  };
+}
+
+DashboardNavWrapper.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
+
 DashboardNavWrapper.propTypes = {
   dispatch: PropTypes.func.isRequired,
   children: PropTypes.object,
   routes: PropTypes.array,
+  user: PropTypes.object,
 };
 
-export default connect()(DashboardNavWrapper);
+export default connect(mapStateToProps)(DashboardNavWrapper);
