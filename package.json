@@ -1,7 +1,7 @@
 {
-  "name": "mern-starter",
+  "name": "emailgate",
   "version": "1.0.0",
-  "description": "Boilerplate project for building Isomorphic apps using React and Redux",
+  "description": "Emailgate",
   "scripts": {
     "test": "mocha shared/tests/*.spec.js --compilers js:babel-register",
     "test:server": "NODE_ENV=test PORT=8080 MONGO_URL=mongodb://localhost:27017/mern-test mocha --compilers js:babel-register --recursive server/tests/**/*.spec.js",
@@ -20,14 +20,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Hashnode/mern-starter.git"
+    "url": ""
   },
-  "bugs": {
-    "url": "https://github.com/Hashnode/mern-starter/issues"
-  },
-  "homepage": "https://github.com/Hashnode/mern-starter#readme",
-  "author": "Prashant Abhishek <prashant.abhishek7g@gmail.com>, Mayank Chandola <imayankchd@gmail.com>, Sandeep Panda <sandeep@hashnode.com>, Syed Fazle Rahman <fazle@hashnode.com>, Alkshendra Maurya <alkshendra@hashnode.com>",
-  "license": "MIT",
   "dependencies": {
     "babel-core": "^6.4.5",
     "base-64": "^0.1.0",
@@ -84,9 +78,7 @@
     "socket.io-stream": "^0.9.0",
     "stripe": "^4.6.0",
     "taxjar": "^1.2.0",
-    "util": "^0.10.3"
-  },
-  "devDependencies": {
+    "util": "^0.10.3",
     "babel-eslint": "^5.0.0-beta6",
     "babel-loader": "^6.2.1",
     "babel-plugin-react-transform": "^2.0.0",
@@ -95,19 +87,24 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-react-hmre": "^1.1.0",
     "babel-register": "^6.4.3",
-    "chai": "^3.5.0",
     "clean-css": "^3.4.9",
     "css-loader": "^0.23.1",
     "css-modules-require-hook": "^2.1.0",
-    "deep-freeze": "0.0.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "node-sass": "^3.4.2",
+    "sass-loader": "^3.1.2",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.13.0",
+    "deep-freeze": "0.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^4.0.0",
     "eslint-plugin-react": "^3.16.1",
     "expect": "^1.13.4",
     "expect-jsx": "^2.2.2",
-    "extract-text-webpack-plugin": "^1.0.1",
     "mocha": "^2.4.5",
-    "node-sass": "^3.4.2",
     "nodemon": "^1.9.1",
     "pre-commit": "^1.1.2",
     "react-addons-test-utils": "^0.14.7",
@@ -116,10 +113,7 @@
     "redux-devtools-dock-monitor": "^1.1.0",
     "redux-devtools-log-monitor": "^1.0.4",
     "rimraf": "^2.5.1",
-    "sass-loader": "^3.1.2",
-    "style-loader": "^0.13.0",
     "supertest": "^1.1.0",
-    "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.5.1",
     "webpack-hot-middleware": "^2.9.1"
   },

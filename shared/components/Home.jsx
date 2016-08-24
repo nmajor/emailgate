@@ -69,7 +69,7 @@ class Home extends Component { // eslint-disable-line
 
       <div className="container">
         <div className="row mt-row">
-          <div className="col-md-5 col-md-offset-1">
+          <div className="col-sm-5 col-sm-offset-1">
             <h3>WHY?</h3>
             <p>You know that shoebox on your top shelf where you keep all your favorite letters?</p>
             <p>Probably not!</p>
@@ -78,7 +78,7 @@ class Home extends Component { // eslint-disable-line
             <p>There is something special and cool about physical objects. So much of our lives are digital these days. When you build and publish your email book, you are converting an part of your digital life into something physical. Something touchable. Something keepable.</p>
           </div>
 
-          <div className="col-md-6">
+          <div className="col-sm-6">
             <img role="presentation" style={{ marginTop: '90px' }} className="img-responsive" src="/img/bookstack.jpg" />
           </div>
 
@@ -88,10 +88,10 @@ class Home extends Component { // eslint-disable-line
       <div id="gwrap">
         <div className="container">
           <div className="row">
-            <div className="col-md-6 mac">
+            <div className="col-sm-6 mac">
               <img style={{ marginTop: '30px' }} src="/img/bookinhand.jpg" className="img-responsive" role="presentation" />
             </div>
-            <div className="col-md-4">
+            <div className="col-sm-4">
               <h3>WHAT?</h3>
               <p>MYEMAILBOOK.COM is a website that lets you build and publish a book from your emails.</p>
               <p>Search and filter your emails, then export them into our custom email book builder.</p>
@@ -107,21 +107,21 @@ class Home extends Component { // eslint-disable-line
         <div className="container">
           <div className="row">
             <h2>FEATURES</h2>
-            <div className="col-md-4">
+            <div className="col-sm-4">
               <div className="block">
                 <span className="fa fa-link"></span>
                 <h4>Connect</h4>
                 <p>Emails spread across multiple email accounts? No problem, connect and export from as many accounts as you need.</p>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-sm-4">
               <div className="block">
                 <span className="fa fa-search"></span>
                 <h4>Find</h4>
                 <p>Our filtering tools allow you to find emails by date range, subject line, sender, and receiver. So you can find all the emails you need for your emailbook.</p>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-sm-4">
               <div className="block">
                 <span className="fa fa-edit"></span>
                 <h4>Edit</h4>
@@ -130,21 +130,21 @@ class Home extends Component { // eslint-disable-line
             </div>
           </div>
           <div className="row" style={{ marginTop: '15px' }}>
-            <div className="col-md-4">
+            <div className="col-sm-4">
               <div className="block">
                 <span className="fa fa-image"></span>
                 <h4>Photos</h4>
                 <p>Emails are more than just text these days. All photo attachments are automatically appended to the bottom of each email. </p>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-sm-4">
               <div className="block">
                 <span className="fa fa-file"></span>
                 <h4>Pages</h4>
                 <p>Your email book will be more than just a bundle of emails. Add a title page, a forward, and a table of contents to give your email book that professionally published feel.</p>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-sm-4">
               <div className="block">
                 <span className="fa fa-book"></span>
                 <h4>Publish</h4>

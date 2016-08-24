@@ -8,7 +8,7 @@ RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD package.json /tmp/package.json
-RUN cd /tmp && npm install
+RUN cd /tmp && npm install --production
 RUN npm -g install webpack
 
 ADD container/containerbuddy/containerbuddy /sbin/containerbuddy
