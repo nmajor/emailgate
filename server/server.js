@@ -21,16 +21,15 @@ const ConnectMongo = connectMongo(session);
 import initialState from '../shared/initialState';
 import socketEvents from './events/index';
 
-// Webpack Requirements
-import webpack from 'webpack';
-import config from '../webpack.config.dev';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-
 // Initialize the Express App
 const app = new Express();
 
 if (process.env.NODE_ENV !== 'production') {
+  // Webpack Requirements
+  const webpack = require('webpack'); // eslint-disable-line global-require
+  const config = require('../webpack.config.dev');  // eslint-disable-line global-require
+  const webpackDevMiddleware = require('webpack-dev-middleware');  // eslint-disable-line global-require
+  const webpackHotMiddleware = require('webpack-hot-middleware');  // eslint-disable-line global-require
   const compiler = webpack(config);
   app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
   app.use(webpackHotMiddleware(compiler));
