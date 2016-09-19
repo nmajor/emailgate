@@ -1,35 +1,43 @@
 import React, { PropTypes, Component } from 'react';
-import CompilationEmailNavContainer from './CompilationEmailNavContainer';
-import CompilationEmailFormContainer from './CompilationEmailFormContainer';
-import * as Actions from '../redux/actions/index';
 import { connect } from 'react-redux';
+import _ from 'lodash';
+import CompilationBuildContainer from './CompilationBuildContainer';
+import * as Actions from '../redux/actions/index';
 
-class EditCompilationEmailContainer extends Component {
-  removeEmail() {
-    this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, this.props.currentEmail));
-  }
-  renderPreview() {
-    if (this.props.currentEmail) {
-      return (<div>
-        <h3>{this.props.currentEmail.subject}</h3>
-        <CompilationEmailNavContainer compilation={this.props.compilation} currentEmail={this.props.currentEmail} active="edit" />
-        <div className="tab-content">
-          <CompilationEmailFormContainer compilation={this.props.compilation} email={this.props.currentEmail} />
-        </div>
-      </div>);
+class ViewCompilationEmailContainer extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.save = this.save.bind(this);
+
+    if (this.props.params.emailId) {
+      this.currentEmail = _.find(this.props.compilationEmails, { _id: this.props.params.emailId });
     }
   }
-
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.params.emailId) {
+      this.currentEmail = _.find(nextProps.compilationEmails, { _id: nextProps.params.emailId });
+    }
+  }
+  save(emailProps) {
+    this.props.dispatch(Actions.updateCompilationEmail(this.currentEmail._compilation, this.currentEmail, emailProps));
+  }
   render() {
-    return <div>{this.renderPreview()}</div>;
+    return <CompilationBuildContainer compilation={this.props.compilation} currentEmail={this.currentEmail} edit={this.save} />;
   }
 }
 
-EditCompilationEmailContainer.propTypes = {
+function mapStateToProps(store) {
+  return {
+    compilationEmails: store.compilationEmails,
+  };
+}
+
+ViewCompilationEmailContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
-  currentEmail: PropTypes.object.isRequired,
+  compilationEmails: PropTypes.array.isRequired,
   params: PropTypes.object,
 };
 
-export default connect()(EditCompilationEmailContainer);
+export default connect(mapStateToProps)(ViewCompilationEmailContainer);

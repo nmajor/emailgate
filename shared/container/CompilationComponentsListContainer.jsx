@@ -15,12 +15,11 @@ class CompilationComponentsListContainer extends Component {
       pages={this.props.compilationPages}
       currentEmailId={this.props.currentEmailId}
       currentPageId={this.props.currentPageId}
+      edit={this.props.edit}
     />);
   }
   render() {
-    return (<div>
-      {this.renderCompilationComponentsList()}
-    </div>);
+    return this.renderCompilationComponentsList();
   }
 }
 
@@ -39,6 +38,7 @@ CompilationComponentsListContainer.propTypes = {
   compilationPages: PropTypes.array,
   currentEmailId: PropTypes.string,
   currentPageId: PropTypes.string,
+  edit: PropTypes.func,
   fetching: PropTypes.object.isRequired,
 };
 

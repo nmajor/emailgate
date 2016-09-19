@@ -3,52 +3,54 @@ import CompilationComponentsListContainer from './CompilationComponentsListConta
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-class CompilationBuildContainer extends Component {
-  renderChildren() {
-    if (this.props.children) {
-      return React.Children.map(this.props.children, (child) => {
-        return React.cloneElement(child, {
-          compilation: this.props.compilation,
-          currentEmail: this.props.currentEmail,
-          currentPage: this.props.currentPage,
-        });
-      });
-    }
+class CompilationBuildContainer extends Component { // eslint-disable-line react/prefer-stateless-function
+  renderDefaultFooterContent() {
+    return (<div>
+      <div className="btn btn-success">Add Emails</div>
+    </div>);
   }
-  renderListBumper() {
-    if (this.props.currentEmail || this.props.currentPage) {
-      return <div className="list-bumper"></div>;
-    }
+  renderEditFooterContent() {
+    return (<div>
+      <div className="btn btn-success">Save</div>
+    </div>);
   }
-  render() {
-    return (
-      <div>
-        <div className="row">
-          <div className="col-sm-3">
-            <CompilationComponentsListContainer
-              currentEmailId={_.get(this.props.currentEmail, '_id')}
-              currentPageId={_.get(this.props.currentPage, '_id')}
-              compilation={this.props.compilation}
-            />
-          </div>
-          <div className="col-sm-9">
-            {this.renderChildren()}
-          </div>
+  renderFooterContent() {
+    if (this.props.edit) {
+      return this.renderEditFooterContent();
+    }
+
+    return this.renderDefaultFooterContent();
+  }
+  renderFixedFooter() {
+    return (<div className="compilation-footer container">
+      <div className="row">
+        <div className="col-sm-12">
+          {this.renderFooterContent()}
         </div>
       </div>
-    );
+    </div>);
+  }
+  render() {
+    console.log(this.props.compilation);
+    return (<div className="row">
+      <div className="col-sm-12">
+        <CompilationComponentsListContainer
+          currentEmailId={_.get(this.props.currentEmail, '_id')}
+          currentPageId={_.get(this.props.currentPage, '_id')}
+          compilation={this.props.compilation}
+          edit={this.props.edit}
+        />
+      </div>
+      {this.renderFixedFooter()}
+    </div>);
   }
 }
 
-CompilationBuildContainer.contextTypes = {
-  router: PropTypes.object.isRequired,
-};
-
 CompilationBuildContainer.propTypes = {
-  children: PropTypes.object,
   compilation: PropTypes.object.isRequired,
   currentEmail: PropTypes.object,
   currentPage: PropTypes.object,
+  edit: PropTypes.func,
   params: PropTypes.object,
 };
 

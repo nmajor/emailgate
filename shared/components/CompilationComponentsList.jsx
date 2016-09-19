@@ -18,10 +18,18 @@ class CompilationComponentsList extends Component {
   }
   renderEmails() {
     return this.sortedEmails().map((email) => {
+      const current = email._id === this.props.currentEmailId;
+      let show = 'thumb';
+      if (current && this.props.edit) {
+        show = 'edit';
+      } else if (current) {
+        show = 'view';
+      }
+
       return (<CompilationEmailsListItem
         key={`${email._id}`}
-        current={email._id === this.props.currentEmailId}
         email={email}
+        show={show}
       />);
     });
   }
@@ -31,6 +39,7 @@ class CompilationComponentsList extends Component {
         key={`${page._id}`}
         current={page._id === this.props.currentPageId}
         page={page}
+        edit={this.props.edit}
       />);
     });
   }
@@ -43,8 +52,8 @@ class CompilationComponentsList extends Component {
     </Link>);
   }
   render() {
-    return (<div>
-      <div className="component-list scroll">
+    return (<div className="row">
+      <div className="component-list col-md-6 col-md-offset-3">
         <div className="pages-list">
           {this.renderPages()}
         </div>
@@ -62,6 +71,7 @@ CompilationComponentsList.propTypes = {
   pages: PropTypes.array.isRequired,
   currentEmailId: PropTypes.string,
   currentPageId: PropTypes.string,
+  edit: PropTypes.func,
 };
 
 export default CompilationComponentsList;

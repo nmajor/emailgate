@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import CompilationNav from '../components/CompilationNav';
+// import CompilationNav from '../components/CompilationNav';
 import CompilationHeader from '../components/CompilationHeader';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
@@ -58,14 +58,7 @@ class CompilationContainer extends Component {
       return (<div>
         <Header />
         <CompilationHeader compilation={this.compilation} />
-        <CompilationNav
-          compilationId={this.props.params.compilationId}
-          currentPath={this.currentCompilationPath}
-          emailCount={this.props.compilationEmails.length}
-          fetching={this.props.fetching}
-          actionStatusMap={this.actionStatusMap()}
-        />
-        <div className="container top-bumper bottom-bumper">
+        <div className="container-fluid top-bumper bottom-bumper">
           {this.renderChildren()}
         </div>
         <Footer />

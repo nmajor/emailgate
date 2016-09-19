@@ -230,10 +230,18 @@ h1 > .loading {
     border: none;
 }
 .component-list {
-  height: 600px;
-  overflow-y: scroll;
-  padding: 0 10px 0 5px;
-  border: 1px solid #CCC;
+  .list-item-actions {
+    position: absolute;
+    width: 100%;
+    text-align: right;
+    padding: 8px 38px 0 0;
+
+    .btn {
+      margin-right: 0;
+      margin-left: 5px;
+      padding: 6px 10px;
+    }
+  }
 }
 .list-bumper {
   height: 96px;
@@ -295,4 +303,18 @@ input {
 
 .right-most {
   margin-right: 0;
+}
+.compilation-footer {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:30px;
+   width:100%;
+   background:#999;
+}
+
+/* IE 6 */
+* html .compilation-footer {
+   position:absolute;
+   top:expression((0-(footer.offsetHeight)+(document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight)+(ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop))+'px');
 }

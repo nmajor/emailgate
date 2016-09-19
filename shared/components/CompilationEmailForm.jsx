@@ -46,6 +46,14 @@ class CompilationEmailForm extends Component {
       return <span className="outside-button-loading"><Loading /></span>;
     }
   }
+  renderAction() {
+    if (this.props.submitForm) {
+      return (<div>
+        <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
+        <span className="top-bumper">{this.renderSaving()}</span>
+      </div>);
+    }
+  }
   render() {
     return (<div>
       <form className="email-form" onSubmit={this.handleSubmit}>
@@ -54,8 +62,7 @@ class CompilationEmailForm extends Component {
         </div>
 
         {this.renderErrors('base')}
-        <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
-        <span className="top-bumper">{this.renderSaving()}</span>
+        {this.renderAction()}
       </form>
     </div>);
   }

@@ -10,7 +10,7 @@ class CompilationEmailFormContainer extends Component {
   }
 
   save(emailProps) {
-    this.props.dispatch(Actions.updateCompilationEmail(this.props.compilation._id, this.props.email, emailProps));
+    this.props.dispatch(Actions.updateCompilationEmail(this.props.email._compilation, this.props.email, emailProps));
   }
 
   render() {
@@ -28,7 +28,6 @@ class CompilationEmailFormContainer extends Component {
 
 CompilationEmailFormContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  compilation: PropTypes.object.isRequired,
   email: PropTypes.object.isRequired,
 };
 
