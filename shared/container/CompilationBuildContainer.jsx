@@ -1,39 +1,22 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import CompilationComponentsListContainer from './CompilationComponentsListContainer';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import FixedFooter from '../components/FixedFooter';
 
 class CompilationBuildContainer extends Component { // eslint-disable-line react/prefer-stateless-function
-  renderDefaultFooterContent() {
-    return (<div>
-      <div className="btn btn-success">Add Emails</div>
-    </div>);
-  }
-  renderEditFooterContent() {
-    return (<div>
-      <div className="btn btn-success">Save</div>
-    </div>);
-  }
-  renderFooterContent() {
-    if (this.props.edit) {
-      return this.renderEditFooterContent();
-    }
-
-    return this.renderDefaultFooterContent();
-  }
   renderFixedFooter() {
-    return (<div className="compilation-footer container">
-      <div className="row">
-        <div className="col-sm-12">
-          {this.renderFooterContent()}
-        </div>
-      </div>
-    </div>);
+    if (!this.props.edit) {
+      return (<FixedFooter>
+        <Link to={`/compilations/${this.props.compilation._id}/add-emails`} className="btn btn-success">Add Emails</Link>
+        <Link to={`/compilations/${this.props.compilation._id}/checkout`} className="btn btn-success">Checkout</Link>
+      </FixedFooter>);
+    }
   }
   render() {
-    console.log(this.props.compilation);
     return (<div className="row">
-      <div className="col-sm-12">
+      <div className="col-md-6 col-md-offset-3">
         <CompilationComponentsListContainer
           currentEmailId={_.get(this.props.currentEmail, '_id')}
           currentPageId={_.get(this.props.currentPage, '_id')}

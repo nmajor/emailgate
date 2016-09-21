@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import EmailTemplate from '../templates/email';
 import Loading from './Loading';
+import FixedFooter from './FixedFooter';
 
 class CompilationEmailForm extends Component {
   constructor(props, context) {
@@ -48,10 +49,10 @@ class CompilationEmailForm extends Component {
   }
   renderAction() {
     if (this.props.submitForm) {
-      return (<div>
+      return (<FixedFooter>
         <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
         <span className="top-bumper">{this.renderSaving()}</span>
-      </div>);
+      </FixedFooter>);
     }
   }
   render() {

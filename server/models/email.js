@@ -3,7 +3,7 @@ import shortid from 'shortid';
 import Page from './page';
 // import { emailPdfToBuffer } from '../util/pdf';
 // import pdfjs from 'pdfjs-dist';
-import { sanitizeEmailBody } from '../util/helpers';
+import { sanitizeEmailBody, sanitizeEmailBodyPreview } from '../util/helpers';
 import EmailTemplate from '../../shared/templates/email';
 import queue from '../queue';
 import _ from 'lodash';
@@ -18,6 +18,7 @@ const EmailSchema = new Schema({
   from: [],
   subject: String,
   body: String,
+  bodyPreview: String,
   template: String,
   attachments: [],
   pdf: {},
@@ -43,8 +44,8 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
 
   this.getTemplateHtml()
   .then(() => {
-    if (this.propChanged('body') || this.propChanged('template')) {
-      this.findOrSchedulePdfJob()
+    if (this.propChanged('body') || this.propChanged('subject') || this.propChanged('template')) {
+      return this.findOrSchedulePdfJob()
       .then((job) => {
         function resaveTableOfContentsPage() {
           Page.findOne({ _compilation: this._compilation, type: 'table-of-contents' })
@@ -58,6 +59,13 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
         job.removeListener('complete', completeCallback);
         job.on('complete', completeCallback);
       });
+    }
+
+    return Promise.resolve(this);
+  })
+  .then(() => {
+    if (this.propChanged('body')) {
+      this.bodyPreview = sanitizeEmailBodyPreview(this.body);
     }
 
     return Promise.resolve(this);

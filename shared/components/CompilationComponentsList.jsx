@@ -30,6 +30,7 @@ class CompilationComponentsList extends Component {
         key={`${email._id}`}
         email={email}
         show={show}
+        edit={this.props.edit}
       />);
     });
   }
@@ -52,14 +53,12 @@ class CompilationComponentsList extends Component {
     </Link>);
   }
   render() {
-    return (<div className="row">
-      <div className="component-list col-md-6 col-md-offset-3">
-        <div className="pages-list">
-          {this.renderPages()}
-        </div>
-        <div className="emails-list">
-          {this.renderEmails()}
-        </div>
+    return (<div className="component-list">
+      <div className="pages-list">
+        {this.renderPages()}
+      </div>
+      <div className="emails-list">
+        {this.renderEmails()}
       </div>
     </div>);
   }

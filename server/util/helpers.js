@@ -75,6 +75,13 @@ export function sanitizeEmailBody(text) {
   });
 }
 
+export function sanitizeEmailBodyPreview(text) {
+  return sanitizeHtml(text, { // eslint-disable-line prefer-template
+    allowedTags: [],
+    allowedAttributes: [],
+  }).substring(0, 300) + '...';
+}
+
 export function filteredAttachments(attachments) {
   const allowedTypes = [
     'image/png',
@@ -121,6 +128,7 @@ export function processEmails() {
       // messageId: email.messageId,
       // text: email.text,
       body: sanitizeEmailBody(email.html),
+      bodyPreview: `${email.text.substring(0, 300)}...`,
       attachments,
     };
 

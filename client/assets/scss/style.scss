@@ -304,17 +304,20 @@ input {
 .right-most {
   margin-right: 0;
 }
-.compilation-footer {
-   position:fixed;
-   left:0px;
-   bottom:0px;
-   height:30px;
-   width:100%;
-   background:#999;
+.fixed-footer {
+  border-top: 1px solid #ccc;
+  text-align: left;
+  position:fixed;
+  left:0px;
+  bottom:0px;
+  padding: 10px 0;
+  width:100%;
+  background: #fff;
+  z-index: 1;
 }
 
 /* IE 6 */
-* html .compilation-footer {
+* html .fixed-footer {
    position:absolute;
    top:expression((0-(footer.offsetHeight)+(document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight)+(ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop))+'px');
 }
