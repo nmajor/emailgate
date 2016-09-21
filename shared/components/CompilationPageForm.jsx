@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import Loading from './Loading';
+import FixedFooter from './FixedFooter';
 
 class CompilationPageForm extends Component {
   constructor(props, context) {
@@ -26,7 +28,15 @@ class CompilationPageForm extends Component {
   }
   renderSaving() {
     if (this.props.page.saving) {
-      return <span className="outside-button-loading"><Loading /></span>;
+      return <span className="button-loading"><Loading /></span>;
+    }
+  }
+  renderAction() {
+    if (this.props.submitForm) {
+      return (<FixedFooter>
+        <button className="btn btn-success" onClick={this.submitForm}>Save Page {this.renderSaving()}</button>
+        <Link to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`} className="btn btn-danger">Back</Link>
+      </FixedFooter>);
     }
   }
   render() {
@@ -34,14 +44,12 @@ class CompilationPageForm extends Component {
       <div className="compilation-page">
         {this.renderForm()}
       </div>
-      <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
-      <span className="left-bumper top-bumper">{this.renderSaving()}</span>
+      {this.renderAction()}
     </div>);
   }
 }
 
 CompilationPageForm.propTypes = {
-  compilation: PropTypes.object.isRequired,
   page: PropTypes.object.isRequired,
   template: PropTypes.object,
   submitForm: PropTypes.func.isRequired,

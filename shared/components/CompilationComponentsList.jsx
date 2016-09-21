@@ -49,6 +49,7 @@ class CompilationComponentsList extends Component {
         page={page}
         show={show}
         edit={this.props.edit}
+        componentProps={this.props.componentProps}
       />);
     });
   }
@@ -79,6 +80,7 @@ CompilationComponentsList.propTypes = {
   currentEmailId: PropTypes.string,
   currentPageId: PropTypes.string,
   edit: PropTypes.func,
+  componentProps: PropTypes.object,
 };
 
 export default CompilationComponentsList;

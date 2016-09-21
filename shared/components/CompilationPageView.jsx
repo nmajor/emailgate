@@ -1,19 +1,18 @@
 import React, { PropTypes, Component } from 'react';
-// import CoverTemplate from '../templates/cover';
-// import TitlePageTemplate from '../templates/titlePage';
-// import MessagePageTemplate from '../templates/messagePage';
-// import TableOfContentsTemplate from '../templates/tableOfContents';
-// import _ from 'lodash';
-// import { pageMeta } from '../helpers';
 
 class CompilationPageView extends Component {
+  componentDidMount() {
+    this.refs.view.scrollIntoView(true);
+  }
   renderTemplate() {
-    if (this.props.page.html) {
-      return <div dangerouslySetInnerHTML={{ __html: this.props.page.html }} />;
+    const template = this.props.componentProps.templateFactory(this.props.page);
+
+    if (template) {
+      return template.render();
     }
   }
   render() {
-    return (<div className="compilation-page">
+    return (<div ref="view" className="compilation-page">
       {this.renderTemplate()}
     </div>);
   }
@@ -21,6 +20,7 @@ class CompilationPageView extends Component {
 
 CompilationPageView.propTypes = {
   page: PropTypes.object.isRequired,
+  componentProps: PropTypes.object,
 };
 
 export default CompilationPageView;

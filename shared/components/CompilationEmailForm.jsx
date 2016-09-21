@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import EmailTemplate from '../templates/email';
 import Loading from './Loading';
 import FixedFooter from './FixedFooter';
@@ -44,14 +45,14 @@ class CompilationEmailForm extends Component {
   }
   renderSaving() {
     if (this.props.email.saving) {
-      return <span className="outside-button-loading"><Loading /></span>;
+      return <span className="button-loading"><Loading /></span>;
     }
   }
   renderAction() {
     if (this.props.submitForm) {
       return (<FixedFooter>
-        <button className="btn btn-success top-bumper" onClick={this.submitForm}>Save</button>
-        <span className="top-bumper">{this.renderSaving()}</span>
+        <button className="btn btn-success" onClick={this.submitForm}>Save Email {this.renderSaving()}</button>
+        <Link to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`} className="btn btn-danger">Back</Link>
       </FixedFooter>);
     }
   }
@@ -68,6 +69,10 @@ class CompilationEmailForm extends Component {
     </div>);
   }
 }
+
+CompilationEmailForm.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 CompilationEmailForm.propTypes = {
   email: PropTypes.object.isRequired,

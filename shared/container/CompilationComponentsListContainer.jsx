@@ -16,6 +16,7 @@ class CompilationComponentsListContainer extends Component {
       currentEmailId={this.props.currentEmailId}
       currentPageId={this.props.currentPageId}
       edit={this.props.edit}
+      componentProps={this.props.componentProps}
     />);
   }
   render() {
@@ -39,6 +40,7 @@ CompilationComponentsListContainer.propTypes = {
   currentEmailId: PropTypes.string,
   currentPageId: PropTypes.string,
   edit: PropTypes.func,
+  componentProps: PropTypes.object,
   fetching: PropTypes.object.isRequired,
 };
 

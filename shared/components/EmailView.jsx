@@ -6,22 +6,19 @@ class EmailView extends Component {
     super(props, context);
     this.template = new EmailTemplate(this.props.email);
   }
+  componentDidMount() {
+    this.refs.view.scrollIntoView(true);
+  }
   componentWillReceiveProps(nextProps) {
     this.template = new EmailTemplate(nextProps.email);
   }
   renderView() {
-    return (<div>
-      <div className="email-view" id={`email-view-${this.props.email._id}`}>
-        {this.template.render()}
-      </div>
+    return (<div ref="view" className="email-view" id={`email-view-${this.props.email._id}`}>
+      {this.template.render()}
     </div>);
   }
   render() {
-    return (
-      <div>
-        {this.renderView()}
-      </div>
-    );
+    return this.renderView();
   }
 }
 

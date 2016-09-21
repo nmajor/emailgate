@@ -11,12 +11,12 @@ class CompilationPagesListItem extends Component {
     </Link>);
   }
   renderEditAction() {
-    return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build/emails/${this.props.page._id}/edit`}>
+    return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}/edit`}>
       <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
     </Link>);
   }
   renderViewAction() {
-    return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build/emails/${this.props.page._id}`}>
+    return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
       <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
     </Link>);
   }
@@ -35,7 +35,7 @@ class CompilationPagesListItem extends Component {
           {this.renderEditAction()}
           {this.renderHideAction()}
         </div>
-        <CompilationPageView page={this.props.page} />
+        <CompilationPageView componentProps={this.props.componentProps} page={this.props.page} />
       </div>);
     } else if (this.props.show === 'edit') {
       return (<div>
@@ -43,7 +43,11 @@ class CompilationPagesListItem extends Component {
           {this.renderViewAction()}
           {this.renderHideAction()}
         </div>
-        <CompilationPageForm page={this.props.page} submitForm={this.props.edit} />
+        <CompilationPageForm
+          page={this.props.page}
+          template={this.props.componentProps.templateFactory(this.props.page)}
+          submitForm={this.props.edit}
+        />
       </div>);
     }
 
@@ -58,6 +62,7 @@ CompilationPagesListItem.propTypes = {
   page: PropTypes.object.isRequired,
   show: PropTypes.string,
   edit: PropTypes.func,
+  componentProps: PropTypes.object,
 };
 
 export default CompilationPagesListItem;

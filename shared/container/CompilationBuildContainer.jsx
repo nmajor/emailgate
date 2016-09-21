@@ -22,6 +22,7 @@ class CompilationBuildContainer extends Component { // eslint-disable-line react
           currentPageId={_.get(this.props.currentPage, '_id')}
           compilation={this.props.compilation}
           edit={this.props.edit}
+          componentProps={this.props.componentProps}
         />
       </div>
       {this.renderFixedFooter()}
@@ -34,6 +35,7 @@ CompilationBuildContainer.propTypes = {
   currentEmail: PropTypes.object,
   currentPage: PropTypes.object,
   edit: PropTypes.func,
+  componentProps: PropTypes.object,
   params: PropTypes.object,
 };
 

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import CompilationBuildContainer from './CompilationBuildContainer';
 import * as Actions from '../redux/actions/index';
 
-class ViewCompilationEmailContainer extends Component {
+class EditCompilationEmailContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -33,11 +33,11 @@ function mapStateToProps(store) {
   };
 }
 
-ViewCompilationEmailContainer.propTypes = {
+EditCompilationEmailContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array.isRequired,
   params: PropTypes.object,
 };
 
-export default connect(mapStateToProps)(ViewCompilationEmailContainer);
+export default connect(mapStateToProps)(EditCompilationEmailContainer);
