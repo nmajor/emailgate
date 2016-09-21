@@ -8,11 +8,11 @@ import Loading from './Loading';
 class CompilationEmailsListItem extends Component {
   renderHideAction() {
     return (<Link className="btn btn-default" to={`/compilations/${this.props.email._compilation}/build`}>
-      <span className="glyphicon glyphicon-collapse-up" aria-hidden="true"></span>
+      <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
     </Link>);
   }
   renderRemoveAction() {
-    const icon = <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>;
+    const icon = <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>;
     const loading = <span className="alone-button-loading"><Loading /></span>;
     return (<span className="btn btn-danger" onClick={this.props.componentProps.remove}>
       {this.props.email.saving ? loading : icon}

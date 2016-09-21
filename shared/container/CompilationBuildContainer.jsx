@@ -7,7 +7,7 @@ import FixedFooter from '../components/FixedFooter';
 
 class CompilationBuildContainer extends Component { // eslint-disable-line react/prefer-stateless-function
   renderFixedFooter() {
-    if (!this.props.edit) {
+    if (!this.props.edit && this.props.ffooter !== false) {
       return (<FixedFooter>
         <Link to={`/compilations/${this.props.compilation._id}/add-emails`} className="btn btn-success">Add Emails</Link>
         <Link to={`/compilations/${this.props.compilation._id}/checkout`} className="btn btn-success">Checkout</Link>
@@ -36,6 +36,7 @@ CompilationBuildContainer.propTypes = {
   currentPage: PropTypes.object,
   edit: PropTypes.func,
   componentProps: PropTypes.object,
+  ffooter: PropTypes.bool,
   params: PropTypes.object,
 };
 

@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
+import Modal from '../components/Modal';
+import CompilationBuildContainer from './CompilationBuildContainer';
 import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
@@ -12,11 +14,16 @@ class AddCompilationEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.back = this.back.bind(this);
+
     this.compilation = this.props.compilation;
     this.currentAccount = _.find(this.props.accounts, { _id: this.props.currentAccountId });
   }
   componentWillReceiveProps(nextProps) {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.currentAccountId });
+  }
+  back() {
+    this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
   renderFilterContainer() {
     if (this.currentAccount) {
@@ -54,9 +61,12 @@ class AddCompilationEmailsContainer extends Component {
   }
   render() {
     return (<div>
-      {this.renderSelectAccount()}
-      {this.renderFilterContainer()}
-      {this.renderFilteredAccountEmailsContainer()}
+      <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
+      <Modal close={this.back}>
+        {this.renderSelectAccount()}
+        {this.renderFilterContainer()}
+        {this.renderFilteredAccountEmailsContainer()}
+      </Modal>
     </div>);
   }
 }

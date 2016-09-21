@@ -5,6 +5,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import store from './store';
+import Modal from 'react-modal';
 
 require('./events');
 
@@ -27,6 +28,8 @@ if (process.env.NODE_ENV !== 'production') {
     console.error('Server-side React render was discarded. Make sure that your initial render does not contain any client-side code.'); // eslint-disable-line
   }
 }
+
+Modal.setAppElement('#root');
 
 // if (process.env.CLIENT) {
 //   console.log('Rendered twice in when using development webpack');
