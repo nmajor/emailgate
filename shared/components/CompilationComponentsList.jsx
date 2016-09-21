@@ -36,10 +36,18 @@ class CompilationComponentsList extends Component {
   }
   renderPages() {
     return this.sortedPages().map((page) => {
+      const current = page._id === this.props.currentPageId;
+      let show = 'thumb';
+      if (current && this.props.edit) {
+        show = 'edit';
+      } else if (current) {
+        show = 'view';
+      }
+
       return (<CompilationPagesListItem
         key={`${page._id}`}
-        current={page._id === this.props.currentPageId}
         page={page}
+        show={show}
         edit={this.props.edit}
       />);
     });
