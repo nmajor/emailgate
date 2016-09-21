@@ -11,12 +11,12 @@ class CompilationPagesListItem extends Component {
     </Link>);
   }
   renderEditAction() {
-    return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}/edit`}>
+    return (<Link className="btn btn-warning" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}/edit`}>
       <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
     </Link>);
   }
   renderViewAction() {
-    return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
+    return (<Link className="btn btn-primary" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
       <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
     </Link>);
   }

@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import EmailView from './EmailView';
 import CompilationEmailForm from './CompilationEmailForm';
+import Loading from './Loading';
 
 class CompilationEmailsListItem extends Component {
   renderHideAction() {
@@ -10,13 +11,20 @@ class CompilationEmailsListItem extends Component {
       <span className="glyphicon glyphicon-collapse-up" aria-hidden="true"></span>
     </Link>);
   }
+  renderRemoveAction() {
+    const icon = <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>;
+    const loading = <span className="alone-button-loading"><Loading /></span>;
+    return (<span className="btn btn-danger" onClick={this.props.componentProps.remove}>
+      {this.props.email.saving ? loading : icon}
+    </span>);
+  }
   renderEditAction() {
-    return (<Link className="btn btn-default" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}/edit`}>
+    return (<Link className="btn btn-warning" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}/edit`}>
       <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
     </Link>);
   }
   renderViewAction() {
-    return (<Link className="btn btn-default" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}>
+    return (<Link className="btn btn-primary" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}>
       <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
     </Link>);
   }
@@ -45,6 +53,7 @@ class CompilationEmailsListItem extends Component {
       return (<div>
         <div className="list-item-actions">
           {this.renderEditAction()}
+          {this.renderRemoveAction()}
           {this.renderHideAction()}
         </div>
         <EmailView email={this.props.email} />
@@ -53,6 +62,7 @@ class CompilationEmailsListItem extends Component {
       return (<div>
         <div className="list-item-actions">
           {this.renderViewAction()}
+          {this.renderRemoveAction()}
           {this.renderHideAction()}
         </div>
         <CompilationEmailForm email={this.props.email} submitForm={this.props.edit} />
@@ -71,6 +81,7 @@ CompilationEmailsListItem.propTypes = {
   view: PropTypes.bool,
   show: PropTypes.string,
   edit: PropTypes.func,
+  componentProps: PropTypes.object,
 };
 
 export default CompilationEmailsListItem;

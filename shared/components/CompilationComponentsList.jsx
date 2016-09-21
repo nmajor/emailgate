@@ -31,6 +31,7 @@ class CompilationComponentsList extends Component {
         email={email}
         show={show}
         edit={this.props.edit}
+        componentProps={this.props.componentProps || {}}
       />);
     });
   }
@@ -49,7 +50,7 @@ class CompilationComponentsList extends Component {
         page={page}
         show={show}
         edit={this.props.edit}
-        componentProps={this.props.componentProps}
+        componentProps={this.props.componentProps || {}}
       />);
     });
   }
