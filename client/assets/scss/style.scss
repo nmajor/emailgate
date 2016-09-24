@@ -305,7 +305,9 @@ input {
 .margin-topless {
   margin-top: 0;
 }
-
+.unscrollable {
+  overflow: hidden;
+}
 .right-most {
   margin-right: 0;
 }

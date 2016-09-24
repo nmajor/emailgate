@@ -1,7 +1,18 @@
 import React, { PropTypes, Component } from 'react';
 import ReactModal from 'react-modal';
 
-class Modal extends Component { // eslint-disable-line
+class Modal extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.bodyClass = 'unscrollable';
+  }
+  componentDidMount() {
+    document.body.className = `${document.body.className} ${this.bodyClass}`;
+  }
+  componentWillUnmount() {
+    document.body.className = document.body.className.replace(` ${this.bodyClass}`, '');
+  }
   render() {
     const styles = {
       overlay: {

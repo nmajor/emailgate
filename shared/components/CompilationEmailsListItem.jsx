@@ -8,7 +8,7 @@ import Loading from './Loading';
 class CompilationEmailsListItem extends Component {
   renderHideAction() {
     return (<Link className="btn btn-default" to={`/compilations/${this.props.email._compilation}/build`}>
-      <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
     </Link>);
   }
   renderRemoveAction() {

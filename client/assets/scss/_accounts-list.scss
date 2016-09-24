@@ -24,3 +24,24 @@
     border: 2px solid #777;
   }
 }
+
+.selected-account-list-item {
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-bottom: 10px;
+
+  .actions {
+    margin-top: 20px;
+  }
+
+  &.selectable {
+    &:hover {
+      border-color: #909090;
+      cursor: pointer;
+    }
+  }
+
+  &.selected {
+    border: 2px solid #777;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import AccountsListItem from './AccountsListItem';
+import SelectAccountListItem from './SelectAccountListItem';
 import { Link } from 'react-router';
 
 
@@ -10,11 +11,21 @@ class AccountsList extends Component {
     }
 
     return this.props.accounts.map((account) => {
+      if (this.props.selectable) {
+        return (<SelectAccountListItem
+          key={account._id}
+          account={account}
+          selectable={this.props.selectable}
+          selected={this.props.selectable && this.props.currentAccountId === account._id}
+          handleClick={this.props.onItemClick}
+          handleDeleteClick={this.props.onDeleteClick}
+          googleAuthUrl={this.props.googleAuthUrl}
+        />);
+      }
+
       return (<AccountsListItem
         key={account._id}
         account={account}
-        selectable={this.props.selectable}
-        selected={this.props.selectable && this.props.currentAccountId === account._id}
         handleClick={this.props.onItemClick}
         handleDeleteClick={this.props.onDeleteClick}
         googleAuthUrl={this.props.googleAuthUrl}
@@ -27,11 +38,9 @@ class AccountsList extends Component {
     </Link>);
   }
   render() {
-    return (<div className="accounts-list row">
-      <div className="col-lg-6">
-        {this.renderAccountsList()}
-        {this.renderNewAccount()}
-      </div>
+    return (<div className="accounts-list">
+      {this.renderAccountsList()}
+      {this.renderNewAccount()}
     </div>);
   }
 }
