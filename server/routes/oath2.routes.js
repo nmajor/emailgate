@@ -11,7 +11,12 @@ router.get('/google', (req, res) => {
   const userId = req.user._id;
   const statePropJsonString = base64.decode(req.query.state) || '{}';
   const stateProp = JSON.parse(statePropJsonString);
-  const nextPath = stateProp.userReturnTo || '/';
+
+  let nextPath = '/';
+
+  if (stateProp.userReturnTo) {
+    nextPath = `${stateProp.userReturnTo}?currentAccountId=Byd05mj9`;
+  }
 
   getGoogleAuthToken(authCode)
   .then((token) => {

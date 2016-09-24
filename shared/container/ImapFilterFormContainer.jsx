@@ -44,7 +44,7 @@ class ImapFilterFormContainer extends Component {
         endDate: props.endDate,
       };
 
-      this.props.dispatch(Actions.getFilteredAccountEmails(this.currentAccount, filter, this.props.accountPasswordMap[this.currentAccount._id]));
+      this.props.dispatch(Actions.getFilteredAccountEmailsStream(this.currentAccount, filter, this.props.accountPasswordMap[this.currentAccount._id]));
     }
   }
   render() {

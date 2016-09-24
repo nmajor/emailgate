@@ -9,6 +9,12 @@ const filteredAccountEmailsResults = (state = initialState.filteredAccountEmails
     case ActionTypes.SET_FILTERED_ACCOUNT_EMAILS_ERRORS :
       return Object.assign({}, state, { errors: action.errors });
 
+    case ActionTypes.SET_PROPERTY_FOR_FILTERED_ACCOUNT_EMAILS_RESULTS : {
+      const resultsCopy = Object.assign({}, state);
+      resultsCopy[action.prop] = action.val;
+      return resultsCopy;
+    }
+
     default:
       return state;
   }

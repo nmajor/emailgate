@@ -47,6 +47,27 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
       .then((account) => {
+        const options = {
+          filter: data.filter,
+          password: data.password,
+        };
+
+        return account.filteredEmails(options);
+      })
+      .then((results) => {
+        socket.emit('FILTERED_ACCOUNT_EMAILS', results);
+      })
+      .catch((err) => {
+        socket.emit('FILTERED_ACCOUNT_EMAILS_ERROR', err);
+      });
+    });
+
+    socket.on('GET_FILTERED_ACCOUNT_EMAILS_STREAM', (data) => {
+      console.log('GET_FILTERED_ACCOUNT_EMAILS_STREAM');
+
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
+      .then((account) => {
         function countCb(count) {
           socket.emit('FILTERED_ACCOUNT_EMAILS_COUNT', count);
         }

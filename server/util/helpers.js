@@ -37,29 +37,7 @@ export function imapifyFilter(filter) {
 }
 
 export function googlifyFilter(filter) {
-  const googleFilter = [];
-
-  if (filter.subject) {
-    googleFilter.push(`subject:${filter.subject}`);
-  }
-
-  if (filter.to) {
-    googleFilter.push(`to:${filter.to}`);
-  }
-
-  if (filter.from) {
-    googleFilter.push(`from:${filter.from}`);
-  }
-
-  if (filter.startDate) {
-    googleFilter.push(`after:${moment(filter.startDate).format('YYYY/MM/DD')}`);
-  }
-
-  if (filter.endDate) {
-    googleFilter.push(`before:${moment(filter.endDate).format('YYYY/MM/DD')}`);
-  }
-
-  return googleFilter.join(' ');
+  return filter.q;
 }
 
 export function sanitizeEmailBody(text) {

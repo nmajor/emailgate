@@ -77,7 +77,59 @@ export function getGoogleAuthToken(code) {
   return getAuthToken(client, code);
 }
 
-export function searchMessages(account, searchOptions, countCb, errCb) {
+export function searchMessages(account, searchOptions) {
+  return new Promise((resolve, reject) => {
+    const client = getClient(account.authProps.token);
+    const gmail = google.gmail('v1');
+    const q = googlifyFilter(searchOptions);
+
+    gmail.users.messages.list({
+      auth: client,
+      q,
+      userId: 'me',
+      pageToken: searchOptions.pageToken,
+      maxResults: config.maxFilteredEmails,
+    }, (err, response) => {
+      if (err) {
+        return reject({ base: [`There was a problem searching for gmail messages ${err}`] });
+      }
+
+      console.log('blah', response);
+
+      Promise.all(response.messages.map((message) => {
+        return new Promise((reso) => {
+          gmail.users.messages.get({
+            id: message.id,
+            auth: client,
+            userId: 'me',
+            format: 'raw',
+          }, (messageErr, messageResponse) => {
+            if (messageErr) {
+              return reject({ base: [`There was a problem getting the gmail thread - ${messageErr}`] });
+            }
+
+            const mailparser = new MailParser();
+            mailparser.on('end', (msgObj) => {
+              return reso(msgObj);
+            });
+
+            mailparser.write(base64.decode(messageResponse.raw));
+            mailparser.end();
+          });
+        });
+      }))
+      .then((messages) => {
+        resolve({
+          nextPageToken: response.nextPageToken,
+          messages,
+          count: response.resultSizeEstimate,
+        });
+      });
+    });
+  });
+}
+
+export function searchMessagesStream(account, searchOptions, countCb, errCb) {
   const messageStream = stream.PassThrough(); // eslint-disable-line new-cap
   const client = getClient(account.authProps.token);
   const gmail = google.gmail('v1');
@@ -88,6 +140,7 @@ export function searchMessages(account, searchOptions, countCb, errCb) {
     q,
     userId: 'me',
     maxResults: config.maxFilteredEmails,
+    singleEvents: true,
   }, (err, response) => {
     if (err) {
       errCb({ base: [`There was a problem searching for gmail messages ${err}`] });

@@ -9,9 +9,6 @@ class SelectAccountList extends Component {
       return <div>No connected accounts</div>;
     }
 
-    console.log('blah hey');
-    console.log(this.props.currentAccountId);
-
     return this.props.accounts.map((account) => {
       return (<SelectAccountListItem
         key={account._id}
@@ -24,15 +21,9 @@ class SelectAccountList extends Component {
       />);
     });
   }
-  renderNewAccount() {
-    return (<Link to="/accounts/new" className="btn btn-default new-account" >
-      New Account
-    </Link>);
-  }
   render() {
     return (<div className="accounts-list">
       {this.renderAccountsList()}
-      {this.renderNewAccount()}
     </div>);
   }
 }

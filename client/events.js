@@ -20,6 +20,14 @@ socket.on('FILTERED_ACCOUNT_EMAILS_ERROR', (errs) => {
   store.dispatch(Actions.setFilteredAccountEmailsErrors(errs));
 });
 
+socket.on('FILTERED_ACCOUNT_EMAILS', (data) => {
+  console.log('event FILTERED_ACCOUNT_EMAILS');
+  store.dispatch(Actions.setFilteredAccountEmailsCount(data.count));
+  store.dispatch(Actions.setFilteredAccountEmails(data.messages));
+  store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('nextPageToken', data.nextPageToken));
+  store.dispatch(Actions.setPropertyForFetching('filteredAccountEmails', false));
+});
+
 ss(socket).on('FILTERED_ACCOUNT_EMAILS_STREAM', (emailStream) => {
   console.log('event FILTERED_ACCOUNT_EMAILS_STREAM');
   store.dispatch(Actions.setFilteredAccountEmails([]));

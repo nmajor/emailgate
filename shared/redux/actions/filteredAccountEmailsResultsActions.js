@@ -13,3 +13,11 @@ export function setFilteredAccountEmailsErrors(errors) {
     errors,
   };
 }
+
+export function setPropertyFilteredAccountEmailsResults(prop, val) {
+  return {
+    type: ActionTypes.SET_PROPERTY_FOR_FILTERED_ACCOUNT_EMAILS_RESULTS,
+    prop,
+    val,
+  };
+}

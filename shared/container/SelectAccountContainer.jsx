@@ -1,7 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
+import NewAccountContainer from  './NewAccountContainer';
 import SelectAccountList from '../components/SelectAccountList';
 import SelectAccountListItem from '../components/SelectAccountListItem';
 
@@ -27,17 +29,22 @@ class SelectAccountContainer extends Component {
   handleDeleteClick(account) {
     this.props.dispatch(Actions.removeAccount(account));
   }
-  renderHeaderText() {
-    if (this.props.currentAccountId) { return null; }
+  renderNewAccountAction() {
+    return (<Link to="/accounts/new" className="btn btn-success btn-xs-true new-account" >
+      add a new one
+    </Link>);
+  }
+  renderFooter() {
+    if (this.currentAccount) { return null; }
 
     if (this.props.accounts.length > 0) {
-      return 'Select an email account';
+      return <div>Select an existing email account or {this.renderNewAccountAction()}</div>;
     }
 
-    return 'Add an email account to begin';
+    return <NewAccountContainer />;
   }
   renderSelectAccount() {
-    if (this.props.currentAccountId) {
+    if (this.currentAccount) {
       return (<SelectAccountListItem
         selected
         selectAccount={this.selectAccount}
@@ -59,8 +66,8 @@ class SelectAccountContainer extends Component {
   }
   render() {
     return (<div className="accounts-list-container">
-      <h3>{this.renderHeaderText()}</h3>
       {this.renderSelectAccount()}
+      {this.renderFooter()}
     </div>);
   }
 }
@@ -72,6 +79,10 @@ function mapStateToProps(store) {
     currentAccountId: store.currentAccountId,
   };
 }
+
+SelectAccountContainer.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 SelectAccountContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,

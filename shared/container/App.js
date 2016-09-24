@@ -11,6 +11,11 @@ class App extends Component {
       this.props.dispatch(Actions.getConfig());
     }
   }
+  componentWillMount() {
+    if (window.location.search) {
+      this.context.router.push(window.location.pathname);
+    }
+  }
   componentWillReceiveProps() {
     window.previousLocation = this.props.location;
 
@@ -46,6 +51,10 @@ function mapStateToProps(store) {
     cart: store.cart,
   };
 }
+
+App.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 App.propTypes = {
   dispatch: PropTypes.func.isRequired,

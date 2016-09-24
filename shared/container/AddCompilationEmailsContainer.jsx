@@ -63,9 +63,11 @@ class AddCompilationEmailsContainer extends Component {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
       <Modal close={this.back}>
-        {this.renderSelectAccount()}
-        {this.renderFilterContainer()}
-        {this.renderFilteredAccountEmailsContainer()}
+        <div>
+          {this.renderSelectAccount()}
+          {this.renderFilterContainer()}
+          {this.renderFilteredAccountEmailsContainer()}
+        </div>
       </Modal>
     </div>);
   }

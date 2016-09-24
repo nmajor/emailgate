@@ -94,16 +94,28 @@ AccountSchema.methods.checkImapConnection = function checkImapConnection(passwor
   });
 };
 
+AccountSchema.methods.filteredEmails = function filteredEmails(options) {
+  if (this.kind === 'google') {
+    return this.googlefilteredEmails(options.filter);
+  }
+
+  // return this.imapfilteredEmailsStream(options.filter, options.password, options.countCb, options.errCb);
+};
+
 AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(options) {
   if (this.kind === 'google') {
-    return this.googlefilteredEmailsStream(options.filter, options.countCb, options.errCb);
+    return this.googlefilteredEmailsStream(options.filter);
   }
 
   return this.imapfilteredEmailsStream(options.filter, options.password, options.countCb, options.errCb);
 };
 
-AccountSchema.methods.googlefilteredEmailsStream = function googlefilteredEmailsStream(options, countCb, errCb) {
-  return googleAuth.searchMessages(this, options, countCb, errCb);
+AccountSchema.methods.googlefilteredEmailsStream = function googlefilteredEmailsStream(options) {
+  return googleAuth.searchMessagesStream(this, options);
+};
+
+AccountSchema.methods.googlefilteredEmails = function googlefilteredEmails(options) {
+  return googleAuth.searchMessages(this, options);
 };
 
 AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStream(options, password, countCb, errCb) {
