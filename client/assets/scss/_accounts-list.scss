@@ -12,36 +12,26 @@
       padding: 5px;
     }
   }
-
-  &.selectable {
-    &:hover {
-      border-color: #909090;
-      cursor: pointer;
-    }
-  }
-
-  &.selected {
-    border: 2px solid #777;
-  }
 }
 
 .selected-account-list-item {
   border: 1px solid #ccc;
-  padding: 5px;
+  padding: 6px;
   margin-bottom: 10px;
 
-  .actions {
-    margin-top: 20px;
-  }
+  .my-checkbox {
+    padding: 5px 12px 2px 12px;
+    border: 1px solid #ccc;
 
-  &.selectable {
     &:hover {
       border-color: #909090;
       cursor: pointer;
     }
   }
-
-  &.selected {
-    border: 2px solid #777;
+  .actions {
+    float: right;
+  }
+  .email {
+    font-size: 18px;
   }
 }

@@ -1,19 +1,24 @@
 import React, { PropTypes, Component } from 'react';
-import AccountsListItem from './AccountsListItem';
+import SelectAccountListItem from './SelectAccountListItem';
 import { Link } from 'react-router';
 
 
-class AccountsList extends Component {
+class SelectAccountList extends Component {
   renderAccountsList() {
     if (!this.props.accounts.length || this.props.accounts.length < 1) {
       return <div>No connected accounts</div>;
     }
 
+    console.log('blah hey');
+    console.log(this.props.currentAccountId);
+
     return this.props.accounts.map((account) => {
-      return (<AccountsListItem
+      return (<SelectAccountListItem
         key={account._id}
         account={account}
-        handleClick={this.props.onItemClick}
+        selected={this.props.currentAccountId === account._id}
+        selectAccount={this.props.selectAccount}
+        deselectAccount={this.props.deselectAccount}
         handleDeleteClick={this.props.onDeleteClick}
         googleAuthUrl={this.props.googleAuthUrl}
       />);
@@ -32,13 +37,14 @@ class AccountsList extends Component {
   }
 }
 
-AccountsList.propTypes = {
+SelectAccountList.propTypes = {
   accounts: PropTypes.array.isRequired,
   googleAuthUrl: PropTypes.string.isRequired,
   currentAccountId: PropTypes.string,
   selectable: PropTypes.bool,
-  onItemClick: PropTypes.func,
+  selectAccount: PropTypes.func,
+  deselectAccount: PropTypes.func,
   onDeleteClick: PropTypes.func,
 };
 
-export default AccountsList;
+export default SelectAccountList;

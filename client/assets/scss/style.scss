@@ -297,6 +297,25 @@ input {
     padding-top: inherit;
     padding-bottom: inherit;
   }
+
+  &.btn-xs-true {
+    padding: 2px 4px;
+    margin-right: 0;
+  }
+}
+
+.my-checkbox {
+  padding: 5px 12px 2px 12px;
+  border: 1px solid #ccc;
+
+  &.checked {
+    padding: 5px 6px 2px 6px;;
+  }
+
+  &:hover {
+    border-color: #909090;
+    cursor: pointer;
+  }
 }
 
 .btn-h {
