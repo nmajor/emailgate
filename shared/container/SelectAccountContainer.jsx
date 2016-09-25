@@ -50,7 +50,6 @@ class SelectAccountContainer extends Component {
         selectAccount={this.selectAccount}
         deselectAccount={this.deselectAccount}
         account={this.currentAccount}
-        handleDeleteClick={this.handleDeleteClick}
         googleAuthUrl={this.props.config.googleAuthUrl}
       />);
     }
