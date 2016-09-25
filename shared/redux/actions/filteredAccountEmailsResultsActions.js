@@ -1,5 +1,12 @@
 import * as ActionTypes from '../constants';
 
+export function setFilteredAccountEmailsResults(val) {
+  return {
+    type: ActionTypes.SET_FILTERED_EMAILS_RESULTS,
+    val,
+  };
+}
+
 export function setFilteredAccountEmailsCount(count) {
   return {
     type: ActionTypes.SET_FILTERED_ACCOUNT_EMAILS_COUNT,

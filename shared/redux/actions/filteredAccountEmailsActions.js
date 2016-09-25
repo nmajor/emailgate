@@ -23,6 +23,7 @@ export function getFilteredAccountEmailsStream(account, filter, password) {
     dispatch(setFilteredAccountEmails([]));
     dispatch(setFilteredAccountEmailsCount(undefined));
     dispatch(setFilteredAccountEmailsErrors(undefined));
+    dispatch(setFilteredAccountEmailsErrors(undefined));
     socket.emit('GET_FILTERED_ACCOUNT_EMAILS_STREAM', { account, password, filter });
   };
 }

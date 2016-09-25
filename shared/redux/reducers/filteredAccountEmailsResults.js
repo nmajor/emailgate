@@ -3,6 +3,9 @@ import initialState from '../../initialState';
 
 const filteredAccountEmailsResults = (state = initialState.filteredAccountEmailsResults, action) => {
   switch (action.type) {
+    case ActionTypes.SET_FILTERED_EMAILS_RESULTS :
+      return action.val;
+
     case ActionTypes.SET_FILTERED_ACCOUNT_EMAILS_COUNT :
       return Object.assign({}, state, { count: action.count });
 

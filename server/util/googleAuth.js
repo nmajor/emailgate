@@ -83,6 +83,8 @@ export function searchMessages(account, searchOptions) {
     const gmail = google.gmail('v1');
     const q = googlifyFilter(searchOptions);
 
+    console.log('blah searchOptions', searchOptions);
+
     gmail.users.messages.list({
       auth: client,
       q,
