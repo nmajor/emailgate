@@ -56,9 +56,9 @@ class GoogleFilterFormContainer extends Component {
 
       const resultInfo = <li><div className="filter-result-info">{this.getResultRange()} of {this.props.filteredAccountEmailsResults.count}</div></li>;
 
-      const prevLink = <li className="previous" aria-hidden="true" onClick={this.prevPage}><span>&larr; Prev</span></li>;
+      const prevLink = <li className="previous" aria-hidden="true" onClick={this.prevPage}><span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></li>;
 
-      const nextLink = <li className="next" aria-hidden="true" onClick={this.nextPage}><span>Older &rarr;</span></li>;
+      const nextLink = <li className="next" aria-hidden="true" onClick={this.nextPage}><span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></li>;
 
       return (<nav className="navresults">
         <ul className="pager">

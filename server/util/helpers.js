@@ -85,31 +85,33 @@ export function processAttachments(attachments) {
   });
 }
 
-export function processEmails() {
+export function processEmail(email) {
+  // mid should be unique to the message not the object
+  const mid = email.messageId;
+
+  const attachments = email.attachments ? processAttachments(email.attachments) : [];
+
+  return {
+    date: email.date,
+    mid,
+    // headers: email.headers,
+    to: email.to,
+    from: email.from,
+    subject: email.subject,
+    // messageId: email.messageId,
+    // text: email.text,
+    body: sanitizeEmailBody(email.html),
+    bodyPreview: email.text ? `${email.text.substring(0, 300)}...` : '',
+    attachments,
+  };
+}
+
+export function processEmailStream() {
   const transformStream = stream.Transform();  // eslint-disable-line new-cap
 
   transformStream._transform = (chunk, enc, next) => {
     const email = JSON.parse(chunk.toString('utf8'));
-
-    // mid should be unique to the message not the object
-    const mid = email.messageId;
-
-    const attachments = email.attachments ? processAttachments(email.attachments) : [];
-
-    const processedEmail = {
-      date: email.date,
-      mid,
-      // headers: email.headers,
-      to: email.to,
-      from: email.from,
-      subject: email.subject,
-      // messageId: email.messageId,
-      // text: email.text,
-      body: sanitizeEmailBody(email.html),
-      bodyPreview: `${email.text.substring(0, 300)}...`,
-      attachments,
-    };
-
+    const processedEmail = processEmail(email);
     transformStream.push(new Buffer(JSON.stringify(processedEmail)));
     next();
   };

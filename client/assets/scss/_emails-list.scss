@@ -1,3 +1,17 @@
+.filtered-emails-list {
+  .list-item-actions {
+    position: absolute;
+    width: 100%;
+    text-align: right;
+    padding: 8px 48px 0 0;
+
+    .btn {
+      margin-right: 0;
+      margin-left: 5px;
+      padding: 6px 10px;
+    }
+  }
+}
 .emails-list {
   .list-item {
     border: 1px solid #ccc;
@@ -16,28 +30,42 @@
       color: #929292;
       margin-top: 2px;
     }
+    .subject {
+      font-weight: 600;
+      font-size: 16px;
+      margin: 3px 0;
+    }
 
     &.filtered-emails-list-item {
+      .my-checkbox {
+        &.disabled {
+          border: 1px solid #777;
+        }
+      }
+
       &.previewing {
         border: 2px solid #777;
       }
 
       &.disabled {
         background-color: #CCC;
+        &:hover {
+          cursor: inherit;
+          border: 1px solid #ccc;
+        }
       }
-
-      .selected-icon {
-        margin-right: 3px;
+      .select-email {
+        position: absolute;
+        padding: 10px 0 0 2px;
+      }
+      .email-thumb-main {
+        padding-top: 5px;
+        padding-left: 36px;
       }
     }
     &.compilation-emails-list-item {
       &.current {
         border: 2px solid #777;
-      }
-
-      .subject {
-        font-size: 16px;
-        margin: 3px 0;
       }
     }
   }

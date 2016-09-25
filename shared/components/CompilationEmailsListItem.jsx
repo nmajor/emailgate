@@ -8,7 +8,7 @@ import Loading from './Loading';
 class CompilationEmailsListItem extends Component {
   renderHideAction() {
     return (<Link className="btn btn-default" to={`/compilations/${this.props.email._compilation}/build`}>
-      <span className="glyphicon glyphicon-minus" aria-hidden="true"></span>
+      <span className="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
     </Link>);
   }
   renderRemoveAction() {
@@ -56,7 +56,7 @@ class CompilationEmailsListItem extends Component {
           {this.renderRemoveAction()}
           {this.renderHideAction()}
         </div>
-        <EmailView email={this.props.email} />
+        <EmailView email={this.props.email} scroll />
       </div>);
     } else if (this.props.show === 'edit') {
       return (<div>

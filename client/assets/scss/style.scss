@@ -332,7 +332,12 @@ input {
 
 .filter-result-info {
   display: inline-block;
-  padding-top: 6px;
+  padding-top: 5px;
+}
+.navresults {
+  .pager {
+    margin: 10px 0;
+  }
 }
 
 .fixed-footer {

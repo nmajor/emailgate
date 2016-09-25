@@ -25,6 +25,7 @@ class GoogleFilterForm extends Component {
                 type="text"
                 id="filter-q"
                 placeholder="Search Gmail..."
+                autoComplete="off"
                 onChange={this.setSaveAbility}
               />
               <div className="input-group-btn">

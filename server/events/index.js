@@ -8,7 +8,7 @@ import Cart from '../models/cart';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
-import { processEmails } from '../util/helpers';
+import { processEmailStream } from '../util/helpers';
 import { watchJob, slimJob } from '../util/jobs';
 
 export default (io) => {
@@ -47,7 +47,6 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
       .then((account) => {
-        console.log('blah data', data);
         const options = {
           filter: data.filter,
           password: data.password,
@@ -91,7 +90,7 @@ export default (io) => {
         socket.filteredEmailStream = account.filteredEmailsStream(options); // eslint-disable-line no-param-reassign
 
         socket.filteredEmailStream
-        .pipe(processEmails())
+        .pipe(processEmailStream())
         .pipe(resStream);
       });
     });

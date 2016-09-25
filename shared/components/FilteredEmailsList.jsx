@@ -10,7 +10,7 @@ class FilteredEmailsList extends Component {
         disabled={this.props.compilationEmailMids.indexOf(email.mid) > -1}
         selected={email.selected}
         saving={email.saving}
-        previewing={email.mid === this.props.currentFilteredEmailMid}
+        previewing={email.mid ? (email.mid === this.props.currentFilteredEmailMid) : false}
         selectEmail={this.props.selectEmail}
         deselectEmail={this.props.deselectEmail}
         setCurrentFilteredEmail={this.props.setCurrentFilteredEmail}
@@ -19,7 +19,7 @@ class FilteredEmailsList extends Component {
   }
   render() {
     return (
-      <div className="component-list emails-list">
+      <div className="filtered-emails-list emails-list">
         {this.renderEmails()}
       </div>
     );

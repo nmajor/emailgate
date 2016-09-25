@@ -3,7 +3,7 @@ import google from 'googleapis';
 import GoogleAuth from 'google-auth-library';
 import { MailParser } from 'mailparser';
 import base64 from 'base64url';
-import { googlifyFilter } from './helpers';
+import { googlifyFilter, processEmail } from './helpers';
 import stream from 'stream';
 import config from '../config';
 // import _ from 'lodash';
@@ -94,8 +94,6 @@ export function searchMessages(account, searchOptions) {
         return reject({ base: [`There was a problem searching for gmail messages ${err}`] });
       }
 
-      console.log('blah', response);
-
       Promise.all(response.messages.map((message) => {
         return new Promise((reso) => {
           gmail.users.messages.get({
@@ -110,7 +108,7 @@ export function searchMessages(account, searchOptions) {
 
             const mailparser = new MailParser();
             mailparser.on('end', (msgObj) => {
-              return reso(msgObj);
+              return reso(processEmail(msgObj));
             });
 
             mailparser.write(base64.decode(messageResponse.raw));

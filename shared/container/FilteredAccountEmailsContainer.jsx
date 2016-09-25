@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import FilteredEmailsListContainer from './FilteredEmailsListContainer';
-import FilteredEmailMainContainer from './FilteredEmailMainContainer';
+// import FilteredEmailMainContainer from './FilteredEmailMainContainer';
 import _ from 'lodash';
 
 class FilteredAccountEmailsContainer extends Component {
@@ -23,34 +23,14 @@ class FilteredAccountEmailsContainer extends Component {
       this.compilationEmailMids = _.map(nextProps.compilationEmails, (email) => { return email.mid; });
     }
   }
-  renderProgress() {
-    const count = this.props.filteredAccountEmailsResults.count || 0;
-    const errors = this.props.filteredAccountEmailsResults.errors;
-
-    if (this.props.filteredAccountEmails.length !== count && !errors) {
-      return <span>{this.props.filteredAccountEmails.length}/{count}</span>;
-    }
-  }
   render() {
     return (
       <div className="filtered-account-emails-container">
-        <h3>Emails {this.renderProgress()}</h3>
-        <div className="row">
-          <div className="col-sm-3 col-md-3">
-            <FilteredEmailsListContainer
-              compilation={this.props.compilation}
-              compilationEmailMids={this.compilationEmailMids}
-              currentFilteredEmail={this.currentFilteredEmail}
-            />
-          </div>
-          <div className="col-sm-9 col-md-9">
-            <FilteredEmailMainContainer
-              compilation={this.props.compilation}
-              compilationEmailMids={this.compilationEmailMids}
-              currentFilteredEmail={this.currentFilteredEmail}
-            />
-          </div>
-        </div>
+        <FilteredEmailsListContainer
+          compilation={this.props.compilation}
+          compilationEmailMids={this.compilationEmailMids}
+          currentFilteredEmail={this.currentFilteredEmail}
+        />
       </div>
     );
   }

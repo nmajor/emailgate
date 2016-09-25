@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import Loading from './Loading';
 import moment from 'moment';
+import EmailView from './EmailView';
 
 class FilteredEmailsListItem extends Component {
   constructor(props, context) {
@@ -9,15 +9,23 @@ class FilteredEmailsListItem extends Component {
     this.select = this.select.bind(this);
     this.unselect = this.unselect.bind(this);
     this.preview = this.preview.bind(this);
+    this.unpreview = this.unpreview.bind(this);
   }
   select() {
-    this.props.selectEmail(this.props.email);
+    if (this.props.email.mid) {
+      this.props.selectEmail(this.props.email);
+    }
   }
   unselect() {
     this.props.deselectEmail(this.props.email);
   }
   preview() {
-    this.props.setCurrentFilteredEmail(this.props.email);
+    if (this.props.email.mid) {
+      this.props.setCurrentFilteredEmail(this.props.email);
+    }
+  }
+  unpreview() {
+    this.props.setCurrentFilteredEmail();
   }
   className() {
     let className = 'filtered-emails-list-item list-item';
@@ -26,41 +34,59 @@ class FilteredEmailsListItem extends Component {
 
     return className;
   }
-  renderSelected() {
-    if (this.props.saving) {
-      return (
-        <span className="selectable selected">
-          <Loading />
-        </span>
-      );
-    } else if (this.props.disabled) {
-      return null;
+  renderHideAction() {
+    return (<div className="btn btn-default" onClick={this.unpreview}>
+      <span className="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+    </div>);
+  }
+  renderCheckbox() {
+    if (this.props.disabled) {
+      return (<span className="my-checkbox checked disabled" onClick={this.select}>
+        <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      </span>);
     } else if (this.props.selected) {
-      return (
-        <span className="selectable selected" onClick={this.unselect}>
-          <span className="glyphicon glyphicon-check" aria-hidden="true"></span>
-        </span>
-      );
+      return (<span className="my-checkbox checked" onClick={this.select}>
+        <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      </span>);
     }
 
-    return (
-      <span className="selectable unselected" onClick={this.select}>
-        <span className="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
-      </span>
-    );
+    return (<span className="my-checkbox" onClick={this.select}></span>);
+  }
+  renderDate() {
+    return (<div className="type">
+      <span className="glyphicon glyphicon-envelope" aria-hidden="true"></span> <span className="date">{moment(this.props.email.date).format('LL')}</span>
+    </div>);
+  }
+  renderSubject() {
+    return <div className="subject">{this.props.email.subject || 'No subject'}</div>;
+  }
+  renderBodyPreview() {
+    return <div>{this.props.email.bodyPreview || 'There is nothing in this email...'}</div>;
+  }
+  renderEmailThumb() {
+    return (<div className={this.className()}>
+      <div className="select-email">{this.renderCheckbox()}</div>
+      <div className="email-thumb-main" onClick={this.preview}>
+        {this.renderDate()}
+        {this.renderSubject()}
+        {this.renderBodyPreview()}
+      </div>
+    </div>);
+  }
+  renderEmailListItem() {
+    if (this.props.previewing) {
+      return (<div>
+        <div className="list-item-actions">
+          {this.renderHideAction()}
+        </div>
+        <EmailView email={this.props.email} />
+      </div>);
+    }
+
+    return this.renderEmailThumb();
   }
   render() {
-    return (
-      <div className={this.className()} onClick={this.preview}>
-        <div>
-          <span className="selected-icon">{this.renderSelected()}</span>
-          {this.props.email.subject}
-        </div>
-        <div className="date">
-          {moment(this.props.email.date).format('LL')}
-        </div>
-      </div>
-    );
+    return this.renderEmailListItem();
   }
 }
 

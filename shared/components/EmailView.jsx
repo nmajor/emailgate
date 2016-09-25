@@ -7,7 +7,9 @@ class EmailView extends Component {
     this.template = new EmailTemplate(this.props.email);
   }
   componentDidMount() {
-    this.refs.view.scrollIntoView(true);
+    if (this.props.scroll) {
+      this.refs.view.scrollIntoView(true);
+    }
   }
   componentWillReceiveProps(nextProps) {
     this.template = new EmailTemplate(nextProps.email);
@@ -24,6 +26,7 @@ class EmailView extends Component {
 
 EmailView.propTypes = {
   email: PropTypes.object.isRequired,
+  scroll: PropTypes.bool,
 };
 
 export default EmailView;

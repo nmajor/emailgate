@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import FilteredEmailsList from '../components/FilteredEmailsList';
-import FilteredEmailsListActions from '../components/FilteredEmailsListActions';
+// import FilteredEmailsListActions from '../components/FilteredEmailsListActions';
 import _ from 'lodash';
 import { sortedEmails } from '../helpers';
 
@@ -20,7 +20,7 @@ class FilteredEmailsListContainer extends Component {
   }
 
   setCurrentFilteredEmail(email) {
-    this.props.dispatch(Actions.setCurrentFilteredEmailMid(email.mid));
+    this.props.dispatch(Actions.setCurrentFilteredEmailMid(email ? email.mid : ''));
   }
   selectEmail(email) {
     this.props.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', true));
@@ -63,16 +63,6 @@ class FilteredEmailsListContainer extends Component {
   render() {
     return (
       <div>
-        <FilteredEmailsListActions
-          selectAll={this.selectAll}
-          deselectAll={this.deselectAll}
-          addSelectedToCompilation={this.addSelectedToCompilation}
-          canAdd={_.some(this.props.filteredAccountEmails, { selected: true })}
-          compilationEmailsCount={this.props.compilationEmailMids.length}
-          selectedEmailsCount={this.selectedEmailsCount()}
-          compilationId={this.props.compilation._id}
-          saving={this.isSavingEmails()}
-        />
         <FilteredEmailsList
           emails={sortedEmails(this.props.filteredAccountEmails)}
           compilationEmailMids={this.props.compilationEmailMids}

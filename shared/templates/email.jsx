@@ -40,7 +40,7 @@ class EmailTemplate {
       if (['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
         const imageString = new Buffer(attachment.content).toString('base64');
-        return <img style={divStyle} key={index} src={dataUriPrefix + imageString} />;
+        return <img role="presentation" style={divStyle} key={index} src={dataUriPrefix + imageString} />;
       }
       return null;
     });
@@ -49,6 +49,8 @@ class EmailTemplate {
   }
 
   renderSubject(subject) {
+    subject = subject || 'No subject'; // eslint-disable-line no-param-reassign
+
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
       fontWeight: 'bold',
@@ -70,6 +72,7 @@ class EmailTemplate {
   }
 
   renderFrom(from) {
+    if (!from) { return null; }
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
       fontSize: '0.8em',
@@ -80,6 +83,7 @@ class EmailTemplate {
   }
 
   renderTo(to) {
+    if (!to) { return null; }
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
       fontSize: '0.8em',
