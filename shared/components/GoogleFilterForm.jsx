@@ -10,11 +10,8 @@ class GoogleFilterForm extends Component {
   submitForm(e) {
     e.preventDefault();
 
-    const subject = (this.refs.subject || {}).value;
-
-    this.props.submitForm({
-      q: subject,
-    });
+    const q = (this.refs.q || {}).value;
+    this.props.submitForm({ q });
   }
   renderForm() {
     return (

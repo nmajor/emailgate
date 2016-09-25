@@ -8,10 +8,8 @@ class GoogleFilterFormContainer extends Component {
     super(props, context);
 
     this.state = {
-      filter: {
-        pageTokens: [undefined],
-        pageTokenIndex: 0,
-      },
+      filter: {},
+      currentPage: 0,
     };
 
     this.nextPage = this.nextPage.bind(this);
@@ -20,8 +18,15 @@ class GoogleFilterFormContainer extends Component {
 
     this.currentAccount = this.props.currentAccount;
   }
+  getResultRange() {
+    const resultsPerPage = this.props.filteredAccountEmailsResults.resultsPerPage;
+    const startingPage = 1 + (this.state.currentPage * resultsPerPage);
+    const endingPage = startingPage + resultsPerPage;
+    return <span>{startingPage} - {endingPage}</span>;
+  }
   nextPage() {
     this.props.dispatch(Actions.setPropertyFilteredAccountEmailsResults('prevPageToken', this.props.filteredAccountEmailsResults.nextPageToken));
+    this.state.currentPage = this.state.currentPage += 1;
 
     this.submitForm({
       q: this.state.filter.q,
@@ -29,6 +34,8 @@ class GoogleFilterFormContainer extends Component {
     });
   }
   prevPage() {
+    this.state.currentPage = this.state.currentPage -= 1;
+
     this.submitForm({
       q: this.state.filter.q,
       pageToken: this.props.filteredAccountEmailsResults.prevPageToken,
@@ -39,11 +46,15 @@ class GoogleFilterFormContainer extends Component {
       q: props.q,
       pageToken: props.pageToken,
     };
+
     this.props.dispatch(Actions.getFilteredAccountEmails(this.currentAccount, this.state.filter));
   }
   renderNavResults() {
     if (this.props.filteredAccountEmailsResults.count) {
-      const resultInfo = <li><div className='filter-result-info'>1-20 of {this.props.filteredAccountEmailsResults.count}</div></li>;
+      const nextToken = this.props.filteredAccountEmailsResults.nextPageToken;
+      const prevToken = this.props.filteredAccountEmailsResults.prevPageToken;
+
+      const resultInfo = <li><div className="filter-result-info">{this.getResultRange()} of {this.props.filteredAccountEmailsResults.count}</div></li>;
 
       const prevLink = <li className="previous" aria-hidden="true" onClick={this.prevPage}><span>&larr; Prev</span></li>;
 
@@ -51,9 +62,9 @@ class GoogleFilterFormContainer extends Component {
 
       return (<nav className="navresults">
         <ul className="pager">
-          {prevLink}
+          {prevToken ? prevLink : null}
           {resultInfo}
-          {nextLink}
+          {nextToken ? nextLink : null}
         </ul>
       </nav>);
     }
@@ -67,8 +78,6 @@ class GoogleFilterFormContainer extends Component {
       />
       {this.renderNavResults()}
       <div className="navresults"></div>
-      <div onClick={this.nextPage}>next</div>
-      <div onClick={this.prevPage}>prev</div>
     </div>);
   }
 }

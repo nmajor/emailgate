@@ -47,6 +47,7 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Account.findOne({ _user: user._id, _id: data.account._id }))
       .then((account) => {
+        console.log('blah data', data);
         const options = {
           filter: data.filter,
           password: data.password,

@@ -122,7 +122,8 @@ export function searchMessages(account, searchOptions) {
         resolve({
           nextPageToken: response.nextPageToken,
           messages,
-          count: response.resultSizeEstimate,
+          totalResults: response.resultSizeEstimate,
+          resultsPerPage: config.maxFilteredEmails,
         });
       });
     });
