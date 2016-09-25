@@ -90,7 +90,7 @@ export function searchMessages(account, searchOptions) {
       q,
       userId: 'me',
       pageToken: searchOptions.pageToken,
-      maxResults: config.maxFilteredEmails,
+      maxResults: config.emailsPerPage,
     }, (err, response) => {
       if (err) {
         return reject({ base: [`There was a problem searching for gmail messages ${err}`] });
@@ -123,7 +123,7 @@ export function searchMessages(account, searchOptions) {
           nextPageToken: response.nextPageToken,
           messages,
           totalResults: response.resultSizeEstimate,
-          resultsPerPage: config.maxFilteredEmails,
+          resultsPerPage: config.emailsPerPage,
         });
       });
     });

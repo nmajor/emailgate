@@ -55,24 +55,36 @@ class FilteredAccountActions extends Component {
 
       const resultInfo = <div className="filter-result-info">{this.getResultRange()} of {this.props.filteredAccountEmailsResults.count}</div>;
 
-      const prevLink = <span aria-hidden="true" onClick={this.prevPage}><span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></span>;
+      const prevLink = <span className="prev btn btn-default btn-xs-true" aria-hidden="true" onClick={this.prevPage}><span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></span>;
 
-      const nextLink = <span className="next" aria-hidden="true" onClick={this.nextPage}><span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>;
+      const nextLink = <span className="next btn btn-default btn-xs-true" aria-hidden="true" onClick={this.nextPage}><span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>;
 
-      return (<div className="text-right">
+      return (<div className="navresults text-right">
           {showPrev ? prevLink : null}
           {resultInfo}
           {showNext ? nextLink : null}
       </div>);
     }
   }
-  renderActions() {}
+  renderCheckAll() {
+    return (<span className="my-checkbox checked" onClick={this.select}>
+      <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+    </span>);
+  }
+  renderActions() {
+    if (this.props.filteredAccountEmailsResults.count) {
+      return (<div className="filter-email-actions">
+        {this.renderCheckAll()}
+        <span className="btn btn-success btn-xs-true">Add checked emails to Email Book</span>
+      </div>);
+    }
+  }
   render() {
     return (<div className="row">
-      <div className="col-md-6">
+      <div className="col-sm-6">
         {this.renderActions()}
       </div>
-      <div className="col-md-6">
+      <div className="col-sm-6">
         {this.renderNavResults()}
       </div>
     </div>);

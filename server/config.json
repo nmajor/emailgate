@@ -1,3 +1,4 @@
 {
-  "maxFilteredEmails": 20
+  "maxFilteredEmails": 300,
+  "emailsPerPage": 30, 
 }

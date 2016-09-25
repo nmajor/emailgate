@@ -332,12 +332,20 @@ input {
 
 .filter-result-info {
   display: inline-block;
-  padding-top: 5px;
-  margin: 0 5px;
+  position: relative;
+  margin: 0 20px;
+  top: 2px;
 }
 .navresults {
-  .pager {
-    margin: 10px 0;
+  margin: 12px 0 10px 0;
+}
+.filter-email-actions {
+  margin: 12px 0 10px 0;
+
+  .my-checkbox {
+    position: relative;
+    top: 3px;
+    margin: 0 10px;
   }
 }
 
