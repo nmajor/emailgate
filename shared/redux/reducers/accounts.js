@@ -13,7 +13,7 @@ const accounts = (state = initialState.accounts, action) => {
         action.account,
       ];
 
-    case ActionTypes.UPDATE_ACCOUNT_IN_ACCOUNTS :
+    case ActionTypes.UPDATE_ACCOUNT_IN_ACCOUNTS : {
       const accountIndex = _.findIndex(state, { _id: action.account._id });
       if (accountIndex > -1) {
         return [
@@ -23,8 +23,9 @@ const accounts = (state = initialState.accounts, action) => {
         ];
       }
       return state;
+    }
 
-    case ActionTypes.REMOVE_ACCOUNT_FROM_ACCOUNTS :
+    case ActionTypes.REMOVE_ACCOUNT_FROM_ACCOUNTS : {
       const removeAccountIndex = _.findIndex(state, { _id: action.account._id });
       if (removeAccountIndex > -1) {
         return [
@@ -33,6 +34,7 @@ const accounts = (state = initialState.accounts, action) => {
         ];
       }
       return state;
+    }
 
     default:
       return state;

@@ -23,10 +23,10 @@ class FilteredEmailsListContainer extends Component {
     this.props.dispatch(Actions.setCurrentFilteredEmailMid(email ? email.mid : ''));
   }
   selectEmail(email) {
-    this.props.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', true));
+    this.props.dispatch(Actions.addIdToSelectedFilteredEmailIds(email.id));
   }
   deselectEmail(email) {
-    this.props.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', false));
+    this.props.dispatch(Actions.removeIdFromSelectedFilteredEmailIds(email.id));
   }
   selectAll() {
     const nonCompilationEmails = _.filter(this.props.filteredAccountEmails, (email) => {
@@ -70,6 +70,7 @@ class FilteredEmailsListContainer extends Component {
           deselectEmail={this.deselectEmail}
           selectEmail={this.selectEmail}
           setCurrentFilteredEmail={this.setCurrentFilteredEmail}
+          selectedIds={this.props.selectedFilteredEmailIds}
         />
       </div>
     );
@@ -79,12 +80,14 @@ class FilteredEmailsListContainer extends Component {
 function mapStateToProps(store) {
   return {
     filteredAccountEmails: store.filteredAccountEmails,
+    selectedFilteredEmailIds: store.selectedFilteredEmailIds,
   };
 }
 
 FilteredEmailsListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
+  selectedFilteredEmailIds: PropTypes.array.isRequired,
   compilationEmailMids: PropTypes.array.isRequired,
   currentFilteredEmail: PropTypes.object,
   compilation: PropTypes.object,

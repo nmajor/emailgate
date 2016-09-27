@@ -7,7 +7,7 @@ class FilteredEmailsListItem extends Component {
     super(props, context);
 
     this.select = this.select.bind(this);
-    this.unselect = this.unselect.bind(this);
+    this.deselect = this.deselect.bind(this);
     this.preview = this.preview.bind(this);
     this.unpreview = this.unpreview.bind(this);
   }
@@ -16,7 +16,7 @@ class FilteredEmailsListItem extends Component {
       this.props.selectEmail(this.props.email);
     }
   }
-  unselect() {
+  deselect() {
     this.props.deselectEmail(this.props.email);
   }
   preview() {
@@ -41,11 +41,11 @@ class FilteredEmailsListItem extends Component {
   }
   renderCheckbox() {
     if (this.props.disabled) {
-      return (<span className="my-checkbox checked disabled" onClick={this.select}>
+      return (<span className="my-checkbox checked disabled">
         <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
       </span>);
     } else if (this.props.selected) {
-      return (<span className="my-checkbox checked" onClick={this.select}>
+      return (<span className="my-checkbox checked" onClick={this.deselect}>
         <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
       </span>);
     }

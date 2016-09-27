@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 
-class FilteredAccountActions extends Component {
+class FilteredEmailsActions extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -67,14 +67,24 @@ class FilteredAccountActions extends Component {
     }
   }
   renderCheckAll() {
-    return (<span className="my-checkbox checked" onClick={this.select}>
-      <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+    if (this.props.allSelected) {
+      return (<span className="my-checkbox checked" onClick={this.props.deselectAll}>
+        <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      </span>);
+    }
+
+    return (<span className="my-checkbox" onClick={this.props.selectAll}>
     </span>);
+  }
+  renderSelectedCount() {
+    const selectedCount = this.props.selectedFilteredEmailIds.length;
+    return (<span className="right-bumper">{selectedCount} Emails Selected</span>);
   }
   renderActions() {
     if (this.props.filteredAccountEmailsResults.count) {
       return (<div className="filter-email-actions">
         {this.renderCheckAll()}
+        {this.renderSelectedCount()}
         <span className="btn btn-success btn-xs-true">Add checked emails to Email Book</span>
       </div>);
     }
@@ -94,13 +104,18 @@ class FilteredAccountActions extends Component {
 function mapStateToProps(store) {
   return {
     filteredAccountEmailsResults: store.filteredAccountEmailsResults,
+    selectedFilteredEmailIds: store.selectedFilteredEmailIds,
   };
 }
 
-FilteredAccountActions.propTypes = {
+FilteredEmailsActions.propTypes = {
   dispatch: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
   filteredAccountEmailsResults: PropTypes.object.isRequired,
+  selectedFilteredEmailIds: PropTypes.array.isRequired,
+  selectAll: PropTypes.func.isRequired,
+  deselectAll: PropTypes.func.isRequired,
+  allSelected: PropTypes.bool.isRequired,
 };
 
-export default connect(mapStateToProps)(FilteredAccountActions);
+export default connect(mapStateToProps)(FilteredEmailsActions);

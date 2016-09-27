@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import FilterForm from '../components/GoogleFilterForm';
 import FilteredEmailsActions from './FilteredEmailsActions';
+import _ from 'lodash';
 
 class GoogleFilterFormContainer extends Component {
   constructor(props, context) {
@@ -34,7 +35,7 @@ class GoogleFilterFormContainer extends Component {
         fetching={this.props.fetching.filteredAccountEmails}
         errors={this.props.filteredAccountEmailsResults.errors}
       />
-      <FilteredEmailsActions submitForm={this.submitForm} />
+      <FilteredEmailsActions submitForm={this.submitForm} selectAll={this.props.selectAll} deselectAll={this.props.deselectAll} allSelected={this.props.allSelected} />
     </div>);
   }
 }
@@ -43,6 +44,8 @@ function mapStateToProps(store) {
   return {
     fetching: store.fetching,
     filteredAccountEmailsResults: store.filteredAccountEmailsResults,
+    filteredAccountEmails: store.filteredAccountEmails,
+    selectedFilteredEmailIds: store.selectedFilteredEmailIds,
   };
 }
 
@@ -51,6 +54,9 @@ GoogleFilterFormContainer.propTypes = {
   currentAccount: PropTypes.object,
   fetching: PropTypes.object.isRequired,
   filteredAccountEmailsResults: PropTypes.object.isRequired,
+  selectAll: PropTypes.func.isRequired,
+  deselectAll: PropTypes.func.isRequired,
+  allSelected: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(GoogleFilterFormContainer);

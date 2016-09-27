@@ -110,6 +110,7 @@ export function searchMessages(account, searchOptions) {
 
             const mailparser = new MailParser();
             mailparser.on('end', (msgObj) => {
+              msgObj.id = message.id; // eslint-disable-line no-param-reassign
               return reso(processEmail(msgObj));
             });
 
