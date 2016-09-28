@@ -39,7 +39,6 @@ function getAuthToken(client, code) {
 }
 
 export function getClient(token) {
-  console.log('blah blah yoda', token);
   const credentials = JSON.parse(process.env.GOOGLE_API_CREDENTIALS);
   const clientSecret = credentials.web.client_secret;
   const clientId = credentials.web.client_id;
@@ -81,8 +80,6 @@ export function getGoogleAuthToken(code) {
 export function getMessagesById(client, messageIds) {
   const gmail = google.gmail('v1');
 
-  console.log('blah blah blah 1');
-
   return Promise.all(messageIds.map((id) => {
     return new Promise((resolve, reject) => {
       gmail.users.messages.get({
@@ -91,7 +88,6 @@ export function getMessagesById(client, messageIds) {
         userId: 'me',
         format: 'raw',
       }, (messageErr, messageResponse) => {
-        console.log('blah got message ', id);
         if (messageErr) {
           return reject({ base: [`There was a problem getting the gmail thread - ${messageErr}`] });
         }
@@ -114,8 +110,6 @@ export function searchMessages(account, searchOptions) {
     const client = getClient(account.authProps.token);
     const gmail = google.gmail('v1');
     const q = googlifyFilter(searchOptions);
-
-    console.log('blah searchOptions', searchOptions);
 
     gmail.users.messages.list({
       auth: client,

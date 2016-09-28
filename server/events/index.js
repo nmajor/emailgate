@@ -106,11 +106,9 @@ export default (io) => {
       })
       .then((results) => {
         const [account, compilation] = results;
-        console.log('blah1', data.emailIds);
 
         return account.getEmailsById(data.emailIds)
         .then((emails) => {
-          console.log('blah2', emails.length);
           return Promise.all(emails.map((emailData) => {
             const newEmail = new Email(emailData);
             newEmail._compilation = compilation._id;
