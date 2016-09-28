@@ -95,6 +95,38 @@ export default (io) => {
       });
     });
 
+    socket.on('ADD_COMPILATION_EMAILS_BY_ID', (data) => {
+      console.log('ADD_COMPILATION_EMAILS_BY_ID');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then((user) => {
+        return Promise.all([
+          Account.findOne({ _user: user._id, _id: data.accountId }),
+          Compilation.findOne({ _user: user._id, _id: data.compilationId }),
+        ]);
+      })
+      .then((results) => {
+        const [account, compilation] = results;
+        console.log('blah1', data.emailIds);
+
+        return account.getEmailsById(data.emailIds)
+        .then((emails) => {
+          console.log('blah2', emails.length);
+          return Promise.all(emails.map((emailData) => {
+            const newEmail = new Email(emailData);
+            newEmail._compilation = compilation._id;
+            return newEmail.save()
+            .then((email) => {
+              socket.emit('ADDED_COMPILATION_EMAIL', email);
+              return Promise.resolve(email);
+            })
+            .catch((err) => {
+              console.log(`Error happened when adding compilation email ${err}`);
+            });
+          }));
+        });
+      });
+    });
+
     socket.on('ADD_COMPILATION_EMAILS', (data) => {
       console.log('ADD_COMPILATION_EMAILS');
       User.findOne({ email: socket.request.session.passport.user })

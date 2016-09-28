@@ -38,7 +38,8 @@ function getAuthToken(client, code) {
   });
 }
 
-function getClient(token) {
+export function getClient(token) {
+  console.log('blah blah yoda', token);
   const credentials = JSON.parse(process.env.GOOGLE_API_CREDENTIALS);
   const clientSecret = credentials.web.client_secret;
   const clientId = credentials.web.client_id;
@@ -77,6 +78,37 @@ export function getGoogleAuthToken(code) {
   return getAuthToken(client, code);
 }
 
+export function getMessagesById(client, messageIds) {
+  const gmail = google.gmail('v1');
+
+  console.log('blah blah blah 1');
+
+  return Promise.all(messageIds.map((id) => {
+    return new Promise((resolve, reject) => {
+      gmail.users.messages.get({
+        id,
+        auth: client,
+        userId: 'me',
+        format: 'raw',
+      }, (messageErr, messageResponse) => {
+        console.log('blah got message ', id);
+        if (messageErr) {
+          return reject({ base: [`There was a problem getting the gmail thread - ${messageErr}`] });
+        }
+
+        const mailparser = new MailParser();
+        mailparser.on('end', (msgObj) => {
+          msgObj.id = id; // eslint-disable-line no-param-reassign
+          return resolve(processEmail(msgObj));
+        });
+
+        mailparser.write(base64.decode(messageResponse.raw));
+        mailparser.end();
+      });
+    });
+  }));
+}
+
 export function searchMessages(account, searchOptions) {
   return new Promise((resolve, reject) => {
     const client = getClient(account.authProps.token);
@@ -96,29 +128,7 @@ export function searchMessages(account, searchOptions) {
         return reject({ base: [`There was a problem searching for gmail messages ${err}`] });
       }
 
-      Promise.all(response.messages.map((message) => {
-        return new Promise((reso) => {
-          gmail.users.messages.get({
-            id: message.id,
-            auth: client,
-            userId: 'me',
-            format: 'raw',
-          }, (messageErr, messageResponse) => {
-            if (messageErr) {
-              return reject({ base: [`There was a problem getting the gmail thread - ${messageErr}`] });
-            }
-
-            const mailparser = new MailParser();
-            mailparser.on('end', (msgObj) => {
-              msgObj.id = message.id; // eslint-disable-line no-param-reassign
-              return reso(processEmail(msgObj));
-            });
-
-            mailparser.write(base64.decode(messageResponse.raw));
-            mailparser.end();
-          });
-        });
-      }))
+      getMessagesById(client, response.messages.map((m) => { return m.id; }))
       .then((messages) => {
         resolve({
           nextPageToken: response.nextPageToken,

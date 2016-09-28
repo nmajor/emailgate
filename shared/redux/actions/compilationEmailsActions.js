@@ -7,6 +7,7 @@ import { setPropertyForFetching } from './fetchingActions';
 
 import {
   setPropertyForSomeFilteredAccountEmails,
+  setPropertyForSomeFilteredAccountEmailsById,
   setPropertyForFilteredAccountEmail,
 } from './filteredAccountEmailsActions';
 
@@ -88,6 +89,13 @@ export function getCompilationEmails(compilationId, cookie) {
       dispatch(setPropertyForFetching('compilationEmails', false));
       console.log(err);
     });
+  };
+}
+
+export function addEmailsToCompilationEmailsById(compilationId, accountId, emailIds) {
+  return (dispatch) => {
+    dispatch(setPropertyForSomeFilteredAccountEmailsById(emailIds, 'saving', true));
+    socket.emit('ADD_COMPILATION_EMAILS_BY_ID', { compilationId, accountId, emailIds });
   };
 }
 

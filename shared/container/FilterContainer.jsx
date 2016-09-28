@@ -12,6 +12,7 @@ class FilterContainer extends Component {
     this.selectAll = this.selectAll.bind(this);
     this.deselectAll = this.deselectAll.bind(this);
     this.allSelected = this.allSelected.bind(this);
+    this.addSelected = this.addSelected.bind(this);
   }
   componentWillUnmount() {
     this.props.dispatch(Actions.setFilteredAccountEmails([]));
@@ -36,6 +37,9 @@ class FilterContainer extends Component {
     const selectedEmailIds = this.props.selectedFilteredEmailIds;
     return !_.some(this.props.filteredAccountEmails, (email) => { return selectedEmailIds.indexOf(email.id) < 0; });
   }
+  addSelected() {
+    this.props.dispatch(Actions.addEmailsToCompilationEmailsById(this.props.compilation._id, this.props.currentAccount._id, this.props.selectedFilteredEmailIds));
+  }
   renderFilterForm() {
     if (this.props.currentAccount.kind === 'imap') {
       return (<ImapFilterFormContainer
@@ -45,9 +49,11 @@ class FilterContainer extends Component {
     } else if (this.props.currentAccount.kind === 'google') {
       return (<GoogleFilterFormContainer
         currentAccount={this.props.currentAccount}
+        addSelected={this.addSelected}
         selectAll={this.selectAll}
         deselectAll={this.deselectAll}
         allSelected={this.allSelected()}
+        addSelected={this.addSelected}
       />);
     }
   }
@@ -70,6 +76,7 @@ function mapStateToProps(store) {
 
 FilterContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  compilation: PropTypes.object.isRequired,
   currentAccount: PropTypes.object.isRequired,
   selectedFilteredEmailIds: PropTypes.array.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,

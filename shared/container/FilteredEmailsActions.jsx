@@ -80,12 +80,15 @@ class FilteredEmailsActions extends Component {
     const selectedCount = this.props.selectedFilteredEmailIds.length;
     return (<span className="right-bumper">{selectedCount} Emails Selected</span>);
   }
+  renderAddAction() {
+    return (<span className="btn btn-success btn-xs-true" onClick={this.props.addSelected}>Add checked emails to Email Book</span>);
+  }
   renderActions() {
     if (this.props.filteredAccountEmailsResults.count) {
       return (<div className="filter-email-actions">
         {this.renderCheckAll()}
         {this.renderSelectedCount()}
-        <span className="btn btn-success btn-xs-true">Add checked emails to Email Book</span>
+        {this.renderAddAction()}
       </div>);
     }
   }
@@ -116,6 +119,7 @@ FilteredEmailsActions.propTypes = {
   selectAll: PropTypes.func.isRequired,
   deselectAll: PropTypes.func.isRequired,
   allSelected: PropTypes.bool.isRequired,
+  addSelected: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(FilteredEmailsActions);

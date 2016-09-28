@@ -32,7 +32,7 @@ class AddCompilationEmailsContainer extends Component {
       } else if (this.currentAccount.kind === 'google' && (new Date).getTime() > _.get(this.currentAccount, 'authProps.token.expiry_date')) {
         return <ReconnectGoogleAccount account={this.currentAccount} googleAuthUrl={this.props.config.googleAuthUrl} />;
       }
-      return <FilterContainer currentAccount={this.currentAccount} />;
+      return <FilterContainer compilation={this.props.compilation} currentAccount={this.currentAccount} />;
     }
   }
   renderFilteredAccountEmailsContainer() {

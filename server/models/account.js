@@ -205,6 +205,18 @@ AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStre
   return emailStream;
 };
 
+AccountSchema.methods.getEmailsById = function getEmailsById(ids) {
+  console.log('blah blah1');
+  if (this.kind === 'google') {
+    console.log('blah blah2');
+    const client = googleAuth.getClient(this.authProps.token);
+    console.log('blah blah3');
+    return googleAuth.getMessagesById(client, ids);
+  }
+
+  // return this.imapfilteredEmailsStream(options.filter, options.password, options.countCb, options.errCb);
+};
+
 AccountSchema.statics.findOrNew = function findOrNew(query) {
   return new Promise((resolve) => {
     this.findOne(query)

@@ -40,7 +40,9 @@ class FilteredEmailsListItem extends Component {
     </div>);
   }
   renderCheckbox() {
-    if (this.props.disabled) {
+    if (this.props.email.saving) {
+      return <span>s</span>;
+    } else if (this.props.disabled) {
       return (<span className="my-checkbox checked disabled">
         <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
       </span>);
@@ -95,7 +97,6 @@ FilteredEmailsListItem.propTypes = {
   previewing: PropTypes.bool,
   disabled: PropTypes.bool,
   selected: PropTypes.bool,
-  saving: PropTypes.bool,
   selectEmail: PropTypes.func.isRequired,
   deselectEmail: PropTypes.func.isRequired,
   setCurrentFilteredEmail: PropTypes.func.isRequired,

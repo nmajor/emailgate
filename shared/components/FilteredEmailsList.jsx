@@ -10,7 +10,6 @@ class FilteredEmailsList extends Component {
         email={email}
         disabled={this.props.compilationEmailMids.indexOf(email.mid) > -1}
         selected={selected}
-        saving={email.saving}
         previewing={email.mid ? (email.mid === this.props.currentFilteredEmailMid) : false}
         selectEmail={this.props.selectEmail}
         deselectEmail={this.props.deselectEmail}

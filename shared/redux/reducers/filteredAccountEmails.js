@@ -40,6 +40,17 @@ const filteredAccountEmails = (state = initialState.filteredAccountEmails, actio
       });
     }
 
+    case ActionTypes.SET_PROPERTY_FOR_SOME_FILTERED_ACCOUNT_EMAILS_BY_ID : {
+      return _.map(state, (email) => {
+        if (action.emailIds.indexOf(email.id) > -1) {
+          const newEmail = Object.assign({}, email);
+          newEmail[action.prop] = action.val;
+          return newEmail;
+        }
+        return email;
+      });
+    }
+
     case ActionTypes.SET_PROPERTY_FOR_ALL_FILTERED_ACCOUNT_EMAILS : {
       return _.map(state, (email) => {
         const newEmail = email;
