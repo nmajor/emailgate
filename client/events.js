@@ -22,6 +22,7 @@ socket.on('FILTERED_ACCOUNT_EMAILS_ERROR', (errs) => {
 
 socket.on('FILTERED_ACCOUNT_EMAILS', (data) => {
   console.log('event FILTERED_ACCOUNT_EMAILS');
+  console.log(data);
   store.dispatch(Actions.setFilteredAccountEmailsCount(data.totalResults));
   store.dispatch(Actions.setFilteredAccountEmails(data.messages));
   store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('resultsPerPage', data.resultsPerPage));
@@ -49,6 +50,7 @@ socket.on('ADDED_COMPILATION_EMAIL', (email) => {
 
   store.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', false));
   store.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'saving', false));
+  store.dispatch(Actions.removeIdFromSelectedFilteredEmailIds(email._id));
   store.dispatch(Actions.addCompilationEmail(email));
 });
 

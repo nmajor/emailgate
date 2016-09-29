@@ -13,7 +13,7 @@ class App extends Component {
   }
   componentWillMount() {
     if (window.location.search) {
-      this.context.router.push(window.location.pathname);
+      window.history.pushState('', '', window.location.pathname);
     }
   }
   componentWillReceiveProps() {

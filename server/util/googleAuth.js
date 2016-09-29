@@ -105,30 +105,55 @@ export function getMessagesById(client, messageIds) {
   }));
 }
 
+function queryResults(client, q) {
+  return new Promise((resolve, reject) => {
+    const gmail = google.gmail('v1');
+    gmail.users.messages.list({
+      auth: client,
+      q,
+      userId: 'me',
+    }, (err, response) => {
+      if (err) {
+        return reject({ base: [`There was a problem searching for gmail messages ${err}`] });
+      }
+
+      const totalResultsIds = response.messages.map((message) => { return message.id; });
+      console.log(totalResultsIds);
+
+      resolve({ totalResults: response.resultSizeEstimate, totalResultsIds });
+    });
+  });
+}
+
 export function searchMessages(account, searchOptions) {
   return new Promise((resolve, reject) => {
     const client = getClient(account.authProps.token);
     const gmail = google.gmail('v1');
     const q = googlifyFilter(searchOptions);
 
-    gmail.users.messages.list({
-      auth: client,
-      q,
-      userId: 'me',
-      pageToken: searchOptions.pageToken,
-      maxResults: config.emailsPerPage,
-    }, (err, response) => {
-      if (err) {
-        return reject({ base: [`There was a problem searching for gmail messages ${err}`] });
-      }
+    queryResults(client, q)
+    .then((results) => {
+      gmail.users.messages.list({
+        auth: client,
+        q,
+        userId: 'me',
+        pageToken: searchOptions.pageToken,
+        maxResults: config.emailsPerPage,
+      }, (err, response) => {
+        if (err) {
+          return reject({ base: [`There was a problem searching for gmail messages ${err}`] });
+        }
 
-      getMessagesById(client, response.messages.map((m) => { return m.id; }))
-      .then((messages) => {
-        resolve({
-          nextPageToken: response.nextPageToken,
-          messages,
-          totalResults: response.resultSizeEstimate,
-          resultsPerPage: config.emailsPerPage,
+        getMessagesById(client, response.messages.map((m) => { return m.id; }))
+        .then((messages) => {
+          console.log(response);
+          resolve({
+            nextPageToken: response.nextPageToken,
+            messages,
+            totalResults: results.totalResults,
+            totalResultsIds: results.totalResultsIds,
+            resultsPerPage: config.emailsPerPage,
+          });
         });
       });
     });
