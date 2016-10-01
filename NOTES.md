@@ -1,3 +1,17 @@
+
+
+
+TODO:
+Move selected account id to a URL param
+Add an add-title page/modal
+Add an add-message page/modal
+
+
+
+
+
+
+
 PDF.js cors:
 
 Setting custom header for the request.

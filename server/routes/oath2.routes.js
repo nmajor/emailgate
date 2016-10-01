@@ -11,12 +11,7 @@ router.get('/google', (req, res) => {
   const userId = req.user._id;
   const statePropJsonString = base64.decode(req.query.state) || '{}';
   const stateProp = JSON.parse(statePropJsonString);
-
-  let nextPath = '/';
-
-  if (stateProp.userReturnTo) {
-    nextPath = `${stateProp.userReturnTo}?currentAccountId=Byd05mj9`;
-  }
+  const nextPath = stateProp.userReturnTo || '/dashboard';
 
   getGoogleAuthToken(authCode)
   .then((token) => {
@@ -31,6 +26,11 @@ router.get('/google', (req, res) => {
         account.authProps = { token }; // eslint-disable-line no-param-reassign
         return account.save();
       });
+      // .then((account) => {
+      //   if (stateProp.userReturnTo.indexOf('add-emails') > -1) {
+      //     nextPath = `${stateProp.userReturnTo}/${account._id}`;
+      //   }
+      // });
     });
   })
   .then(() => {

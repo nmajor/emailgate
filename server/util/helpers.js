@@ -102,7 +102,7 @@ export function processEmail(email) {
     // messageId: email.messageId,
     // text: email.text,
     body: sanitizeEmailBody(email.html),
-    bodyPreview: email.text ? `${email.text.substring(0, 300)}...` : '',
+    bodyPreview: email.text ? `${email.text.substring(0, 150)}...` : '',
     attachments,
   };
 }

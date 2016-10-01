@@ -9,7 +9,7 @@ class CompilationBuildContainer extends Component { // eslint-disable-line react
   renderFixedFooter() {
     if (!this.props.edit && this.props.ffooter !== false) {
       return (<FixedFooter>
-        <Link to={`/compilations/${this.props.compilation._id}/add-emails`} className="btn btn-success">Add Emails</Link>
+        <Link to={`/compilations/${this.props.compilation._id}/build/add-emails`} className="btn btn-success">Add Emails</Link>
         <Link to={`/compilations/${this.props.compilation._id}/checkout`} className="btn btn-success">Checkout</Link>
       </FixedFooter>);
     }

@@ -17,10 +17,10 @@ class AddCompilationEmailsContainer extends Component {
     this.back = this.back.bind(this);
 
     this.compilation = this.props.compilation;
-    this.currentAccount = _.find(this.props.accounts, { _id: this.props.currentAccountId });
+    this.currentAccount = _.find(this.props.accounts, { _id: this.props.params.accountId });
   }
   componentWillReceiveProps(nextProps) {
-    this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.currentAccountId });
+    this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.params.accountId });
   }
   back() {
     this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
@@ -54,7 +54,7 @@ class AddCompilationEmailsContainer extends Component {
   }
   renderSelectAccount() {
     if (this.props.accounts.length > 0) {
-      return <SelectAccountContainer />;
+      return <SelectAccountContainer compilation={this.props.compilation} currentAccountId={this.props.params.accountId} />;
     }
 
     return <div className="row col-md-6">{this.renderHelp()}</div>;
@@ -79,7 +79,6 @@ function mapStateToProps(store) {
     config: store.config,
     accounts: store.accounts,
     filteredAccountEmails: store.filteredAccountEmails,
-    currentAccountId: store.currentAccountId,
   };
 }
 
@@ -93,7 +92,6 @@ AddCompilationEmailsContainer.propTypes = {
   config: PropTypes.object.isRequired,
   compilation: PropTypes.object.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
-  currentAccountId: PropTypes.string,
   params: PropTypes.object,
 };
 

@@ -80,7 +80,8 @@ const routes = (
       <Route path="/compilations/:compilationId/build/emails/:emailId/edit" component={EditCompilationEmailContainer} />
       <Route path="/compilations/:compilationId/build/pages/:pageId" component={ViewCompilationPageContainer} />
       <Route path="/compilations/:compilationId/build/pages/:pageId/edit" component={EditCompilationPageContainer} />
-      <Route path="/compilations/:compilationId/add-emails" component={AddCompilationEmailsContainer} />
+      <Route path="/compilations/:compilationId/build/add-emails/:accountId" component={AddCompilationEmailsContainer} />
+      <Route path="/compilations/:compilationId/build/add-emails" component={AddCompilationEmailsContainer} />
       // <Route component={CompilationEmailsContainer}>
         // <Route path="/compilations/:compilationId/build/emails/:emailId/preview" component={PreviewCompilationEmailContainer} />
       // </Route>

@@ -166,8 +166,6 @@ app.use((req, res) => {
     }
 
     initialState.user = req.user || {};
-    initialState.currentAccountId = req.query.currentAccountId || initialState.currentAccountId;
-
     const store = configureStore(initialState);
 
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params, req.headers.cookie)

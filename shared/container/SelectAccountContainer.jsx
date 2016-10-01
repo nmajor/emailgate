@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
-import NewAccountContainer from  './NewAccountContainer';
+import NewAccountContainer from './NewAccountContainer';
 import SelectAccountList from '../components/SelectAccountList';
 import SelectAccountListItem from '../components/SelectAccountListItem';
 
@@ -19,11 +19,11 @@ class SelectAccountContainer extends Component {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.currentAccountId });
   }
   deselectAccount() {
-    this.props.dispatch(Actions.setCurrentAccountId(''));
+    this.context.router.push(`/compilations/${this.props.compilation._id}/build/add-emails`);
   }
   selectAccount(account) {
     if (account._id !== this.props.currentAccountId) {
-      this.props.dispatch(Actions.setCurrentAccountId(account._id));
+      this.context.router.push(`/compilations/${this.props.compilation._id}/build/add-emails/${account._id}`);
     }
   }
   handleDeleteClick(account) {
@@ -75,7 +75,6 @@ function mapStateToProps(store) {
   return {
     config: store.config,
     accounts: store.accounts,
-    currentAccountId: store.currentAccountId,
   };
 }
 
@@ -86,6 +85,7 @@ SelectAccountContainer.contextTypes = {
 SelectAccountContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   config: PropTypes.object.isRequired,
+  compilation: PropTypes.object.isRequired,
   currentAccountId: PropTypes.string,
   accounts: PropTypes.array,
 };

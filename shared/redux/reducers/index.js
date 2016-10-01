@@ -14,7 +14,6 @@ import compilations from './compilations';
 import allCompilations from './allCompilations';
 import compilationEmails from './compilationEmails';
 import compilationPages from './compilationPages';
-import currentAccountId from './currentAccountId';
 import filteredAccountEmails from './filteredAccountEmails';
 import filteredAccountEmailsResults from './filteredAccountEmailsResults';
 import selectedFilteredEmailIds from './selectedFilteredEmailIds';
@@ -56,7 +55,6 @@ const appReducer = combineReducers({
   allCompilations,
   compilationEmails,
   compilationPages,
-  currentAccountId,
   filteredAccountEmails,
   filteredAccountEmailsResults,
   selectedFilteredEmailIds,

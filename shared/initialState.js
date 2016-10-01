@@ -10,7 +10,6 @@ export default {
   allCompilations: [],
   compilationEmails: [],
   compilationPages: [],
-  currentAccountId: '',
   filteredAccountEmails: [],
   filteredAccountEmailsResults: {},
   selectedFilteredEmailIds: [],
