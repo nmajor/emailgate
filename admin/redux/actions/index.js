@@ -1,7 +1,8 @@
 
-import * as ActionTypes from '../constants';
+// import * as ActionTypes from '../constants';
 // import baseURL from '../../baseURL';
 
 // import socket from '../../../client/socket';
 
 export * from './compilationsActions';
+export * from '../../../shared/redux/actions/userActions';

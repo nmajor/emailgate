@@ -18,7 +18,8 @@ import connectMongo from 'connect-mongo';
 const ConnectMongo = connectMongo(session);
 
 
-import initialState from '../shared/initialState';
+import appInitialState from '../shared/initialState';
+import adminInitialState from '../admin/initialState';
 import socketEvents from './events/index';
 
 // Initialize the Express App
@@ -36,7 +37,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // React And Redux Setup
-import { configureStore } from '../shared/redux/configureStore';
+import * as appConfigureStore from '../shared/redux/configureStore';
+import * as adminConfigureStore from '../admin/redux/configureStore';
 import { Provider } from 'react-redux';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -203,11 +205,14 @@ const renderAdminPage = (html, renderedState) => {
 app.use((req, res) => {
   let routes = appRoutes;
   let renderPage = renderFullPage;
+  let initialState = appInitialState;
+  let configureStore = appConfigureStore;
 
-  console.log(req.headers.host.substring(0, 5));
   if (req.headers.host.substring(0, 6) === 'admin.') {
     routes = adminRoutes;
     renderPage = renderAdminPage;
+    initialState = adminInitialState;
+    configureStore = adminConfigureStore;
   }
 
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => { // eslint-disable-line consistent-return
@@ -220,7 +225,7 @@ app.use((req, res) => {
     }
 
     initialState.user = req.user || {};
-    const store = configureStore(initialState);
+    const store = configureStore.configureStore(initialState);
 
     fetchComponentData(store.dispatch, renderProps.components, renderProps.params, req.headers.cookie)
       .then(() => {
