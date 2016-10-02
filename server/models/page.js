@@ -12,7 +12,6 @@ const PageSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _compilation: { type: String, ref: 'Compilation' },
   type: String,
-  content: {},
   html: String,
   pdf: {},
 }, {

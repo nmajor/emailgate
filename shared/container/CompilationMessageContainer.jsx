@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Modal from '../components/Modal';
 import CompilationBuildContainer from './CompilationBuildContainer';
-import CompilationPageForm from '../components/CompilationPageForm';
+import CompilationMessageForm from '../components/CompilationMessageForm';
 import MessagePageTemplate from '../templates/messagePage';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
@@ -15,6 +15,7 @@ class CompilationMessageContainer extends Component {
     this.back = this.back.bind(this);
 
     this.messagePage = _.find(this.props.compilationPages, { type: 'message-page' });
+    this.messagePage.content = this.messagePage.content || {};
   }
   template() {
     return new MessagePageTemplate(this.messagePage);
@@ -27,13 +28,18 @@ class CompilationMessageContainer extends Component {
   back() {
     this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
+  renderForm() {
+    if (this.messagePage) {
+      return <CompilationMessageForm page={this.messagePage} submitForm={this.update} fetching={this.messagePage.saving} back={this.back} />;
+    }
+  }
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
       <Modal close={this.back}>
         <div>
           <h1 className="text-center">Edit Message</h1>
-          <CompilationPageForm page={this.messagePage} template={this.template()} submitForm={this.update} />
+          {this.renderForm()}
         </div>
       </Modal>
     </div>);

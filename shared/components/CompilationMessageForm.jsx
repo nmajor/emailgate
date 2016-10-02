@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Loading from './Loading';
 
-class CompilationTitleForm extends Component {
+class CompilationMessageForm extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = { savable: false };
@@ -18,12 +18,12 @@ class CompilationTitleForm extends Component {
     }
   }
   formChanged() {
-    const titleRef = this.refs.title || {};
-    const subtitleRef = this.refs.subtitle || {};
+    const messageRef = this.refs.message || {};
+    const fromRef = this.refs.from || {};
 
-    if (titleRef.value !== this.props.compilation.title) {
+    if (messageRef.value !== this.props.page.content.message) {
       return true;
-    } else if (subtitleRef.value !== this.props.compilation.subtitle) {
+    } else if (fromRef.value !== this.props.page.content.signature) {
       return true;
     }
     return false;
@@ -32,12 +32,12 @@ class CompilationTitleForm extends Component {
     e.preventDefault();
     if (!this.state.savable) { return; }
 
-    const titleRef = this.refs.title || {};
-    const subtitleRef = this.refs.subtitle || {};
+    const messageRef = this.refs.message || {};
+    const fromRef = this.refs.from || {};
 
     this.props.submitForm({
-      title: titleRef.value,
-      subtitle: subtitleRef.value,
+      message: messageRef.value,
+      from: fromRef.value,
     });
   }
   back(e) {
@@ -49,37 +49,31 @@ class CompilationTitleForm extends Component {
       return <span className="button-loading"><Loading /></span>;
     }
   }
-  renderTitleFormGroup() {
-    return (
-      <div className="form-group">
-        <label htmlFor="compilation-title">Title</label>
-        <input
-          ref="title"
-          className="form-control"
-          type="text"
-          id="compilation-title"
-          defaultValue={this.props.compilation.title}
-          placeholder="My Email Book"
-          onChange={this.setSaveAbility}
-        />
-      </div>
-    );
+  renderMessageFormGroup() {
+    return (<div className="form-group">
+      <label htmlFor="compilation-message">Message</label>
+      <textarea
+        ref="message"
+        className="form-control"
+        type="text"
+        id="compilation-message"
+        defaultValue={this.props.page.content.message}
+        onChange={this.setSaveAbility}
+      ></textarea>
+    </div>);
   }
-  renderSubtitleFormGroup() {
-    return (
-      <div className="form-group">
-        <label htmlFor="compilation-subtitle">Subtitle</label>
-        <input
-          ref="subtitle"
-          className="form-control"
-          type="text"
-          id="compilation-subtitle"
-          defaultValue={this.props.compilation.subtitle}
-          placeholder="Optional"
-          onChange={this.setSaveAbility}
-        />
-      </div>
-    );
+  renderFromFormGroup() {
+    return (<div className="form-group">
+      <label htmlFor="compilation-from">From</label>
+      <input
+        ref="from"
+        className="form-control"
+        type="text"
+        id="compilation-from"
+        defaultValue={this.props.page.content.signature}
+        onChange={this.setSaveAbility}
+      />
+    </div>);
   }
   renderErrors(type) {
     if (this.props.errors) {
@@ -95,8 +89,8 @@ class CompilationTitleForm extends Component {
   }
   render() {
     return (<form onSubmit={this.handleSubmit}>
-      {this.renderTitleFormGroup()}
-      {this.renderSubtitleFormGroup()}
+      {this.renderMessageFormGroup()}
+      {this.renderFromFormGroup()}
       {this.renderErrors('base')}
       <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
         Save
@@ -107,12 +101,12 @@ class CompilationTitleForm extends Component {
   }
 }
 
-CompilationTitleForm.propTypes = {
-  compilation: PropTypes.object,
+CompilationMessageForm.propTypes = {
+  page: PropTypes.object,
   submitForm: PropTypes.func.isRequired,
   back: PropTypes.func.isRequired,
   errors: PropTypes.object,
   fetching: PropTypes.bool,
 };
 
-export default CompilationTitleForm;
+export default CompilationMessageForm;
