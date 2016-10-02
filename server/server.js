@@ -43,7 +43,8 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 
 // Import required modules
-import routes from '../shared/routes';
+import appRoutes from '../shared/routes';
+import adminRoutes from '../admin/routes';
 import { fetchComponentData } from './util/fetchData';
 import index from './routes/index.routes';
 import api from './routes/api.routes';
@@ -136,7 +137,7 @@ const renderFullPage = (html, renderedState) => {
           window.__INITIAL_STATE__ = ${JSON.stringify(renderedState)};
         </script>
 
-        <script src="/js/bundle.js"></script>
+        <script src="/js/app.bundle.js"></script>
 
         <!-- Theme Javascript Files -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>        <script src="/js/bootstrap.min.js"></script>
@@ -154,8 +155,61 @@ const renderFullPage = (html, renderedState) => {
   `;
 };
 
+const renderAdminPage = (html, renderedState) => {
+  const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
+  const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
+  return `
+    <!doctype html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>myemailbook.com</title>
+
+        <link rel="stylesheet" href="/css/bootstrap.min.css" />
+        <link href="/css/font-awesome.min.css" rel="stylesheet">
+        ${cssInclude}
+        <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+      </head>
+      <body>
+        <div id="root">${html}</div>
+
+        <script>
+          window.__INITIAL_STATE__ = ${JSON.stringify(renderedState)};
+        </script>
+
+        <script src="/js/admin.bundle.js"></script>
+
+        <!-- Theme Javascript Files -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="/js/ie10-viewport-bug-workaround.js"></script>
+
+      </body>
+    </html>
+  `;
+};
+
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
+  let routes = appRoutes;
+  let renderPage = renderFullPage;
+
+  console.log(req.headers.host.substring(0, 5));
+  if (req.headers.host.substring(0, 6) === 'admin.') {
+    routes = adminRoutes;
+    renderPage = renderAdminPage;
+  }
+
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => { // eslint-disable-line consistent-return
     if (err) {
       return res.status(500).end('Internal server error');
@@ -177,7 +231,7 @@ app.use((req, res) => {
         );
         const finalState = store.getState();
 
-        res.status(200).end(renderFullPage(initialView, finalState));
+        res.status(200).end(renderPage(initialView, finalState));
       })
       .catch(() => { // eslint-disable-line no-shadow
         res.end(renderFullPage('Error', {}));

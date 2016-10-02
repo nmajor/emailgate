@@ -1,0 +1,1 @@
+export const SET_COMPILATIONS = 'SET_COMPILATIONS';

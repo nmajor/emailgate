@@ -11,14 +11,14 @@ var webpack = require('webpack');
 module.exports = {
   devtool: 'cheap-source-map',
 
-  entry: [
-    'webpack-hot-middleware/client',
-    __dirname + '/client/index.js',
-  ],
+  entry: {
+    app: [__dirname + '/client/index', 'webpack-hot-middleware/client'],
+    admin: [__dirname + '/client/admin', 'webpack-hot-middleware/client'],
+  },
 
   output: {
     path: __dirname + '/public/js/',
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     publicPath: '/js/',
   },
 

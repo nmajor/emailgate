@@ -11,11 +11,6 @@ class App extends Component {
       this.props.dispatch(Actions.getConfig());
     }
   }
-  componentWillMount() {
-    if (window.location.search) {
-      window.history.pushState('', '', window.location.pathname);
-    }
-  }
   componentWillReceiveProps() {
     window.previousLocation = this.props.location;
 
