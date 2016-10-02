@@ -77,7 +77,7 @@ const routes = (
     <Route component={CompilationContainer}>
       <Route path="/compilations/:compilationId/build" component={CompilationBuildContainer} />
       // <Route path="/compilations/:compilationId/preview" component={CompilationPreviewContainer} />
-      // <Route path="/compilations/:compilationId/checkout" component={CompilationCheckoutContainer} />
+      <Route path="/compilations/:compilationId/build/checkout" component={CompilationCheckoutContainer} />
       <Route path="/compilations/:compilationId/build/emails/:emailId" component={ViewCompilationEmailContainer} />
       <Route path="/compilations/:compilationId/build/emails/:emailId/edit" component={EditCompilationEmailContainer} />
       <Route path="/compilations/:compilationId/build/pages/:pageId" component={ViewCompilationPageContainer} />

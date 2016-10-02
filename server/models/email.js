@@ -21,6 +21,7 @@ const EmailSchema = new Schema({
   bodyPreview: String,
   template: String,
   attachments: [],
+  estimatedPageCount: { type: Number, default: 3 },
   pdf: {},
 }, {
   timestamps: true,

@@ -13,6 +13,7 @@ const PageSchema = new Schema({
   _compilation: { type: String, ref: 'Compilation' },
   type: String,
   html: String,
+  estimatedPageCount: { type: Number, default: 1 },
   pdf: {},
 }, {
   timestamps: true,

@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import ReactModal from 'react-modal';
+import { colWrapperClass } from '../helpers';
 
 class Modal extends Component {
   constructor(props, context) {
@@ -28,26 +29,11 @@ class Modal extends Component {
         bottom: 0,
         backgroundColor: 'rgba(20, 20, 20, 0.75)',
       },
-      content: {
-        position: 'absolute',
-        top: '40px',
-        left: '40px',
-        right: '40px',
-        bottom: '40px',
-        border: '1px solid #ccc',
-        background: '#fff',
-        overflow: 'auto',
-        WebkitOverflowScrolling: 'touch',
-        borderRadius: '4px',
-        outline: 'none',
-        padding: '20px',
-        zIndex: '2',
-      },
     };
     return (<ReactModal
       onRequestClose={this.props.close}
       isOpen
-      className="col-md-6 col-md-offset-3"
+      className={`modal-content ${colWrapperClass()}`}
       style={styles}
     >
       {this.props.children}

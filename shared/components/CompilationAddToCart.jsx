@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { prettyPrice, compilationPageCount } from '../helpers';
+import { prettyPrice } from '../helpers';
 
 class CompilationAddToCart extends Component {
   constructor(props, context) {
@@ -22,7 +22,7 @@ class CompilationAddToCart extends Component {
   }
   renderAddToCartForm() {
     return (<form>
-      <label htmlFor="quantity">How many copies would you like to orpder?</label>
+      <label htmlFor="quantity">How many copies would you like to order?</label>
       <div className="form-group">
         <input type="number" name="quantity" className="form-control" id="quantity" value={this.state.quantity} onChange={this.setFormState} />
       </div>
@@ -32,24 +32,24 @@ class CompilationAddToCart extends Component {
   renderEmailCount() {
     return <div>Emails: {this.props.compilationEmailsCount}</div>;
   }
-  renderPdfPageCount() {
-    return <div>Pages: {this.props.compilationTotalPageCount}</div>;
+  renderPageCountEstimate() {
+    return <div>Estimated Pages: {this.props.compilationTotalPageCountEstimate}</div>;
   }
   renderProductDesc() {
     return <h5>{this.props.products[0].desc}</h5>;
   }
   renderProductInfo() {
-    return (<div>Price: ${prettyPrice(this.props.products[0].price)}</div>);
+    return (<div>Price: ${prettyPrice(this.props.products[0].price)}/each</div>);
   }
   render() {
     return (<div>
       <div className="row">
         <div className="col-sm-6">
           <div className="padded-box">
-            <h3 className="margin-topless">{this.props.compilation.name}</h3>
+            <h3 className="margin-topless text-center">{this.props.compilation.title}</h3>
             {this.renderProductDesc()}
             {this.renderEmailCount()}
-            {this.renderPdfPageCount()}
+            {this.renderPageCountEstimate()}
             {this.renderProductInfo()}
           </div>
         </div>
@@ -64,7 +64,7 @@ class CompilationAddToCart extends Component {
 CompilationAddToCart.propTypes = {
   compilation: PropTypes.object.isRequired,
   compilationEmailsCount: PropTypes.number.isRequired,
-  compilationTotalPageCount: PropTypes.number.isRequired,
+  compilationTotalPageCountEstimate: PropTypes.number.isRequired,
   products: PropTypes.array.isRequired,
   submitForm: PropTypes.func.isRequired,
 };

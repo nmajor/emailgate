@@ -1,21 +1,24 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import CompilationAddToCart from '../components/CompilationAddToCart';
+import Modal from '../components/Modal';
+import CompilationBuildContainer from './CompilationBuildContainer';
 import CartViewContainer from './CartViewContainer';
 import * as Actions from '../redux/actions/index';
-import { compilationTotalPageCount } from '../helpers';
+import { compilationTotalPageCountEstimate } from '../helpers';
 import _ from 'lodash';
 
 class CompilationCheckoutContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.back = this.back.bind(this);
     this.addToCart = this.addToCart.bind(this);
   }
   addToCart(props) {
     this.props.dispatch(Actions.addCartItem(1, props.quantity, {
       compilationId: this.props.compilation._id,
-      compilationName: this.props.compilation.name,
+      compilationName: this.props.compilation.title,
     }));
   }
   compilationProducts() {
@@ -24,40 +27,27 @@ class CompilationCheckoutContainer extends Component {
     });
     return products;
   }
-  compilationTotalPageCount() {
-    return compilationTotalPageCount(this.props.compilationEmails, this.props.compilationPages);
+  compilationTotalPageCountEstimate() {
+    return compilationTotalPageCountEstimate(this.props.compilationEmails, this.props.compilationPages);
   }
-  renderCartView() {
-    if (_.get(this.props.cart, 'items.length') > 0) {
-      return (<div className="row">
-        <div className="col-md-12">
-          <div className="padded-box">
-            <CartViewContainer />
-          </div>
-        </div>
-      </div>);
-    }
+  back() {
+    this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
-  renderAddToCart() {
-    return (<div className="row">
-      <div className="col-md-12">
-        <div className="padded-box bottom-bumper">
+  render() {
+    return (<div>
+      <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
+      <Modal close={this.back}>
+        <div>
+          <h1 className="text-center">Add To Cart</h1>
           <CompilationAddToCart
             compilation={this.props.compilation}
             compilationEmailsCount={this.props.compilationEmails.length}
-            compilationTotalPageCount={this.compilationTotalPageCount()}
+            compilationTotalPageCountEstimate={this.compilationTotalPageCountEstimate()}
             submitForm={this.addToCart}
             products={this.compilationProducts()}
           />
         </div>
-      </div>
-    </div>);
-  }
-
-  render() {
-    return (<div>
-      {this.renderAddToCart()}
-      {this.renderCartView()}
+      </Modal>
     </div>);
   }
 }
@@ -70,6 +60,10 @@ function mapStateToProps(store) {
     cart: store.cart,
   };
 }
+
+CompilationCheckoutContainer.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 CompilationCheckoutContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
