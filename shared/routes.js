@@ -19,18 +19,13 @@ import CheckoutConfirmContainer from './container/CheckoutConfirmContainer';
 import NewAddressContainer from './container/NewAddressContainer';
 import EditAddressContainer from './container/EditAddressContainer';
 import CompilationBuildContainer from './container/CompilationBuildContainer';
-import CompilationEmailsContainer from './container/CompilationEmailsContainer';
 import AddCompilationEmailsContainer from './container/AddCompilationEmailsContainer';
 import CompilationTitleContainer from './container/CompilationTitleContainer';
 import CompilationMessageContainer from './container/CompilationMessageContainer';
 import ViewCompilationEmailContainer from './container/ViewCompilationEmailContainer';
 import EditCompilationEmailContainer from './container/EditCompilationEmailContainer';
-import PreviewCompilationEmailContainer from './container/PreviewCompilationEmailContainer';
-import CompilationPagesContainer from './container/CompilationPagesContainer';
 import ViewCompilationPageContainer from './container/ViewCompilationPageContainer';
 import EditCompilationPageContainer from './container/EditCompilationPageContainer';
-import PreviewCompilationPageContainer from './container/PreviewCompilationPageContainer';
-import CompilationPreviewContainer from './container/CompilationPreviewContainer';
 import ViewOrderContainer from './container/ViewOrderContainer';
 import CompilationCheckoutContainer from './container/CompilationCheckoutContainer';
 import AdminContainer from './container/AdminContainer';
@@ -76,7 +71,6 @@ const routes = (
 
     <Route component={CompilationContainer}>
       <Route path="/compilations/:compilationId/build" component={CompilationBuildContainer} />
-      // <Route path="/compilations/:compilationId/preview" component={CompilationPreviewContainer} />
       <Route path="/compilations/:compilationId/build/checkout" component={CompilationCheckoutContainer} />
       <Route path="/compilations/:compilationId/build/emails/:emailId" component={ViewCompilationEmailContainer} />
       <Route path="/compilations/:compilationId/build/emails/:emailId/edit" component={EditCompilationEmailContainer} />
@@ -86,12 +80,6 @@ const routes = (
       <Route path="/compilations/:compilationId/build/add-emails" component={AddCompilationEmailsContainer} />
       <Route path="/compilations/:compilationId/build/title" component={CompilationTitleContainer} />
       <Route path="/compilations/:compilationId/build/message" component={CompilationMessageContainer} />
-      // <Route component={CompilationEmailsContainer}>
-        // <Route path="/compilations/:compilationId/build/emails/:emailId/preview" component={PreviewCompilationEmailContainer} />
-      // </Route>
-      // <Route component={CompilationPagesContainer}>
-        // <Route path="/compilations/:compilationId/build/pages/:pageId/preview" component={PreviewCompilationPageContainer} />
-      // </Route>
     </Route>
 
     <Route component={AdminContainer}>

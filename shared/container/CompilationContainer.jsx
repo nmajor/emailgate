@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-// import CompilationNav from '../components/CompilationNav';
 import CompilationHeader from '../components/CompilationHeader';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';

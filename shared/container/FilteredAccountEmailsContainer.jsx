@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import FilteredEmailsListContainer from './FilteredEmailsListContainer';
-// import FilteredEmailMainContainer from './FilteredEmailMainContainer';
 import _ from 'lodash';
 
 class FilteredAccountEmailsContainer extends Component {
