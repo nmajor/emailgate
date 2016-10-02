@@ -1,25 +1,21 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
-import NewCompilationForm from '../components/NewCompilationForm';
+import CompilationTitleForm from '../components/CompilationTitleForm';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
+import { colWrapperClass } from '../helpers';
 
 class NewCompilationContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.create = this.create.bind(this);
     this.back = this.back.bind(this);
-    this.redirectToEdit = this.redirectToEdit.bind(this);
   }
 
   create(props) {
-    this.props.dispatch(Actions.createCompilation({
-      name: props.name,
-    }, this.redirectToEdit));
-  }
-
-  redirectToEdit(compilation) {
-    this.context.router.push(`/compilations/${compilation._id}/add-emails`);
+    this.props.dispatch(Actions.createCompilation(props, (compilation) => {
+      this.context.router.push(`/compilations/${compilation._id}/build`);
+    }));
   }
 
   back() {
@@ -31,8 +27,12 @@ class NewCompilationContainer extends Component {
       <div className="new-compilation-container">
         <Header />
         <div className="container">
-          <h1>New Email Book</h1>
-          <NewCompilationForm compilation={{}} submitForm={this.create} back={this.back} fetching={this.props.fetching} />
+          <div className="row">
+            <div className={colWrapperClass()}>
+              <h1>New Email Book</h1>
+              <CompilationTitleForm compilation={{}} submitForm={this.create} back={this.back} fetching={this.props.fetching.newCompilation} />
+            </div>
+          </div>
         </div>
       </div>
     );

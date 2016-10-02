@@ -112,6 +112,9 @@ router.post('/compilations', ensureAuthenticated, CompilationController.createCo
 router.put('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
 router.patch('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
 
+router.patch('/compilations/:id/page', ensureAuthenticated, CompilationController.patchCompilationPage);
+router.put('/compilations/:id/page', ensureAuthenticated, CompilationController.patchCompilationPage);
+
 router.get('/compilations/:id/emails', ensureAuthenticated, EmailController.getCompilationEmails);
 router.get('/compilations/:id/email-page-map', ensureAuthenticated, getCompilationEmailPageMap);
 router.get('/compilations/:id/pages', ensureAuthenticated, PageController.getCompilationPages);

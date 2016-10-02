@@ -11,7 +11,8 @@ import { findJobs, getJob, getJobPosition } from '../util/jobs';
 const CompilationSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _user: { type: String, ref: 'User' },
-  name: String,
+  title: String,
+  subtitle: String,
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
   pdf: {},
@@ -47,19 +48,15 @@ CompilationSchema.post('init', (doc, next) => {
   });
 });
 
-CompilationSchema.post('save', (doc) => {
-  doc.seedPages();
-});
-
 CompilationSchema.methods.seedPages = function seedPages() {
-  Page.count({ _compilation: this._id })
+  return Page.count({ _compilation: this._id })
   .then((count) => {
     if (count === 0) {
-      _.forEach(Page.defaultPages(), (pageData) => {
+      return Promise.all(Page.defaultPages().map((pageData) => {
         const newPage = new Page(pageData);
         newPage._compilation = this._id;
         return newPage.save();
-      });
+      }));
     }
   });
 };

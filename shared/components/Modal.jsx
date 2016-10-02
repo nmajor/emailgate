@@ -6,12 +6,17 @@ class Modal extends Component {
     super(props, context);
 
     this.bodyClass = 'unscrollable';
+    this.hiddenClass = 'hidden';
   }
   componentDidMount() {
     document.body.className = `${document.body.className} ${this.bodyClass}`;
+    document.querySelector('footer').className = `${document.querySelector('footer').className} ${this.hiddenClass}`;
+    document.querySelector('.header').className = `${document.querySelector('.header').className} ${this.hiddenClass}`;
   }
   componentWillUnmount() {
     document.body.className = document.body.className.replace(` ${this.bodyClass}`, '');
+    document.querySelector('footer').className = document.querySelector('footer').className.replace(` ${this.hiddenClass}`, '');
+    document.querySelector('.header').className = document.querySelector('.header').className.replace(` ${this.hiddenClass}`, '');
   }
   render() {
     const styles = {

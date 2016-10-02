@@ -4,6 +4,7 @@ import CompilationComponentsListContainer from './CompilationComponentsListConta
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import FixedFooter from '../components/FixedFooter';
+import { colWrapperClass } from '../helpers';
 
 class CompilationBuildContainer extends Component { // eslint-disable-line react/prefer-stateless-function
   renderFixedFooter() {
@@ -16,7 +17,7 @@ class CompilationBuildContainer extends Component { // eslint-disable-line react
   }
   render() {
     return (<div className="row">
-      <div className="col-md-6 col-md-offset-3">
+      <div className={colWrapperClass()}>
         <CompilationComponentsListContainer
           currentEmailId={_.get(this.props.currentEmail, '_id')}
           currentPageId={_.get(this.props.currentPage, '_id')}

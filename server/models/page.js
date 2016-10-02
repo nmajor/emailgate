@@ -21,7 +21,7 @@ const PageSchema = new Schema({
 
 PageSchema.statics.defaultPages = function defaultPages() {
   return [
-    // { type: 'cover' },
+    { type: 'cover' },
     { type: 'title-page' },
     { type: 'message-page' },
     { type: 'table-of-contents' },

@@ -58,7 +58,7 @@ class CompilationContainer extends Component {
       return (<div>
         <Header />
         <CompilationHeader compilation={this.compilation} />
-        <div className="container-fluid top-bumper bottom-bumper">
+        <div className="container-fluid compilation-container">
           {this.renderChildren()}
         </div>
         <Footer />

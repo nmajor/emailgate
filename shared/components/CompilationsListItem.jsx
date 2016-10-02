@@ -25,7 +25,7 @@ class CompilationsListItem extends Component { // eslint-disable-line
   }
   render() {
     return (<div className="compilations-list-item">
-      <h3>{this.props.compilation.name}</h3>
+      <h3>{this.props.compilation.title}</h3>
       <div className="actions">
         {this.renderEmailsCount()}
         {this.renderButton()}

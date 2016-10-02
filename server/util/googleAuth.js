@@ -118,8 +118,6 @@ function queryResults(client, q) {
       }
 
       const totalResultsIds = response.messages.map((message) => { return message.id; });
-      console.log(totalResultsIds);
-
       resolve({ totalResults: response.resultSizeEstimate, totalResultsIds });
     });
   });
@@ -146,7 +144,6 @@ export function searchMessages(account, searchOptions) {
 
         getMessagesById(client, response.messages.map((m) => { return m.id; }))
         .then((messages) => {
-          console.log(response);
           resolve({
             nextPageToken: response.nextPageToken,
             messages,

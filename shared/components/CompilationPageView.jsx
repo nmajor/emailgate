@@ -11,8 +11,13 @@ class CompilationPageView extends Component {
       return template.render();
     }
   }
+  renderClassName() {
+    if (this.props.page.type === 'cover') { return null; }
+
+    return 'compilation-page';
+  }
   render() {
-    return (<div ref="view" className="compilation-page">
+    return (<div ref="view" className={this.renderClassName()}>
       {this.renderTemplate()}
     </div>);
   }

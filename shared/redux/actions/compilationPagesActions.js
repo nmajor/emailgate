@@ -92,3 +92,36 @@ export function refreshPagePdfs(compilationId, pageIds) {
     socket.emit('REFRESH_PAGE_PDFS', { compilationId, pageIds });
   };
 }
+
+export function updateCompilationPageFetch(compilationId, page, content, cb) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilationPage(page, 'saving', true));
+
+    return fetch(`${baseURL}/api/compilations/${compilationId}/page`, {
+      credentials: 'include',
+      method: 'put',
+      body: JSON.stringify({ page, content }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(updatePageInCompilationPages(res));
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}

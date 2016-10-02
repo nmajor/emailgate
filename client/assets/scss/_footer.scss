@@ -5,6 +5,10 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 178px;
+
+  &.with-fixed {
+    margin-bottom: 198px;
+  }
 }
 
 footer {
@@ -14,9 +18,13 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  z-index: 2;
   /* Set the fixed height of the footer here */
   height: 128px;
+
+  &.with-fixed {
+    padding-bottom: 70px;
+    height: 198px;
+  }
 
   .links {
     text-align: center;

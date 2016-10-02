@@ -7,6 +7,7 @@ class TitlePageTemplate {
     this.startDate = props.startDate;
     this.endDate = props.endDate;
     this.page = page;
+    this.compilation = props.compilation;
 
     this.defaultContent = {
       title: 'Demo Title',
@@ -55,8 +56,8 @@ class TitlePageTemplate {
 
   render() {
     return (<div style={{ fontSize: '20px' }}>
-      {this.renderTitle(this.content.title)}
-      {this.renderSubtitle(this.content.subtitle)}
+      {this.renderTitle(this.compilation.title)}
+      {this.renderSubtitle(this.compilation.subtitle)}
       {this.renderDates()}
     </div>);
   }

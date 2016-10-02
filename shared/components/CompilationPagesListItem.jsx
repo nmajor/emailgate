@@ -11,7 +11,16 @@ class CompilationPagesListItem extends Component {
     </Link>);
   }
   renderEditAction() {
-    return (<Link className="btn btn-warning" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}/edit`}>
+    if (this.props.page.type === 'table-of-contents') { return null; }
+
+    let linkTo = `/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}/edit`;
+
+    if (this.props.page.type === 'title-page'
+    || this.props.page.type === 'cover') {
+      linkTo = `/compilations/${this.props.page._compilation}/build/title`;
+    }
+
+    return (<Link className="btn btn-warning" to={linkTo}>
       <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
     </Link>);
   }

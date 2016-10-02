@@ -1,4 +1,5 @@
 import Compilation from '../models/compilation';
+import Page from '../models/page';
 
 export function findOneCompilation(req, res) {
   Compilation.findOne({ _user: req.user._id, _id: req.params.id })
@@ -29,7 +30,8 @@ export function createCompilation(req, res) {
 export function patchCompilation(req, res) {
   Compilation.findOne({ _user: req.user._id, _id: req.params.id })
   .then((compilation) => {
-    compilation.name = req.body.email; // eslint-disable-line no-param-reassign
+    compilation.title = req.body.title; // eslint-disable-line no-param-reassign
+    compilation.subtitle = req.body.subtitle; // eslint-disable-line no-param-reassign
 
     return compilation.save();
   })
@@ -42,5 +44,17 @@ export function removeCompilation(req, res) {
   Compilation.remove({ _user: req.user._id, _id: req.params.id })
   .then((compilation) => {
     res.json(compilation);
+  });
+}
+
+export function patchCompilationPage(req, res) {
+  Compilation.findOne({ _user: req.user._id, _id: req.params.id })
+  .then(compilation => Page.findOne({ _compilation: compilation._id, _id: res.body.page._id }))
+  .then((page) => {
+    page.content = res.body.content; // eslint-disable-line no-param-reassign
+    return page.save();
+  })
+  .then((page) => {
+    res.json(page);
   });
 }

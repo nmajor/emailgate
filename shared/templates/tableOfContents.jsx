@@ -57,6 +57,10 @@ class TableOfContentsTemplate {
     );
   }
   renderEntries() {
+    if (this.emails.length === 0) {
+      return <div>Nothing to show here. You need to add some emails first.</div>;
+    }
+
     return this.emails.map(this.renderEntry);
   }
   renderPageHeader() {

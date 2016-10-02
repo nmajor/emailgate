@@ -2,14 +2,9 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 
 class CoverTemplate {
-  constructor(page) {
+  constructor(page, props) {
     this.page = page;
-
-    this.defaultContent = {
-      title: 'Demo Title',
-      subtitle: 'Demo Subtitle',
-    };
-
+    this.compilation = props.compilation;
     this.content = this.page.content || this.defaultContent;
   }
   initialFormState() {
@@ -44,8 +39,8 @@ class CoverTemplate {
     };
 
     return (<div style={mainStyles}>
-      {this.renderTitle(this.content.title)}
-      {this.renderSubtitle(this.content.subtitle)}
+      {this.renderTitle(this.compilation.title)}
+      {this.renderSubtitle(this.compilation.subtitle)}
     </div>);
   }
 

@@ -1,6 +1,7 @@
 import stream from 'stream';
 import moment from 'moment';
 import Email from '../models/email';
+import Compilation from '../models/compilation';
 import * as sharedHelpers from '../../shared/helpers';
 import _ from 'lodash';
 import sanitizeHtml from 'sanitize-html';
@@ -153,34 +154,37 @@ export function getProductById(id) {
 }
 
 export function pageTemplateFactory(page) {
-  return new Promise((resolve) => {
-    switch (page.type) {
-      case 'cover' :
-        return resolve(new CoverTemplate(page));
-      case 'title-page' :
-        return Email.find({ _compilation: page._compilation })
-        .then((emails) => {
-          const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
-          const firstEmail = sortedEmails[0] || {};
-          const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
-          const startDate = firstEmail.date;
-          const endDate = lastEmail.date;
-          return resolve(new TitlePageTemplate(page, { startDate, endDate }));
-        });
-      case 'message-page' :
-        return resolve(new MessagePageTemplate(page));
-      case 'table-of-contents' :
-        return Email.find({ _compilation: page._compilation })
-        .then((emails) => {
-          const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
-          emailPageMap(page._compilation)
-          .then((pageMap) => {
-            return resolve(new TableOfContentsTemplate(page, { emails: sortedEmails, pageMap }));
+  return Compilation.findOne({ _id: page._compilation })
+  .then((compilation) => {
+    return new Promise((resolve) => {
+      switch (page.type) {
+        case 'cover' :
+          return resolve(new CoverTemplate(page, { compilation }));
+        case 'title-page' :
+          return Email.find({ _compilation: page._compilation })
+          .then((emails) => {
+            const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+            const firstEmail = sortedEmails[0] || {};
+            const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
+            const startDate = firstEmail.date;
+            const endDate = lastEmail.date;
+            return resolve(new TitlePageTemplate(page, { startDate, endDate, compilation }));
           });
-        });
-      default :
-        return resolve(null);
-    }
+        case 'message-page' :
+          return resolve(new MessagePageTemplate(page));
+        case 'table-of-contents' :
+          return Email.find({ _compilation: page._compilation })
+          .then((emails) => {
+            const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+            emailPageMap(page._compilation)
+            .then((pageMap) => {
+              return resolve(new TableOfContentsTemplate(page, { emails: sortedEmails, pageMap }));
+            });
+          });
+        default :
+          return resolve(null);
+      }
+    });
   });
 }
 

@@ -1,16 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 
-class CompilationHeader extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
-
+class CompilationHeader extends Component { // eslint-disable-line
   render() {
-    return (
-      <div className="container centerize bottom-bumper">
-        <h1>{this.props.compilation.name}</h1>
-      </div>
-    );
+    return (<div className="container centerize bottom-bumper">
+      <h1>{this.props.compilation.title}</h1>
+      <h3>{this.props.compilation.subtitle}</h3>
+    </div>);
   }
 }
 

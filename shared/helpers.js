@@ -196,3 +196,7 @@ export function actionStatusMap(compilation, emails, pages) {
     checkout: checkoutStatus(),
   };
 }
+
+export function colWrapperClass() {
+  return 'col-md-6 col-md-offset-3';
+}
