@@ -6,12 +6,10 @@ import { reducer as formReducer } from 'redux-form';
 
 import user from './user';
 import fetching from './fetching';
-import allUsers from './allUsers';
 import accounts from './accounts';
 import addresses from './addresses';
 import accountPasswordMap from './accountPasswordMap';
 import compilations from './compilations';
-import allCompilations from './allCompilations';
 import compilationEmails from './compilationEmails';
 import compilationPages from './compilationPages';
 import filteredAccountEmails from './filteredAccountEmails';
@@ -20,7 +18,6 @@ import selectedFilteredEmailIds from './selectedFilteredEmailIds';
 import cart from './cart';
 import checkout from './checkout';
 import orders from './orders';
-import queueJobMap from './queueJobMap';
 
 const currentFilteredEmailMid = (state = initialState.currentFilteredEmailMid, action) => {
   switch (action.type) {
@@ -47,12 +44,10 @@ const appReducer = combineReducers({
   config,
   fetching,
   user,
-  allUsers,
   accounts,
   addresses,
   accountPasswordMap,
   compilations,
-  allCompilations,
   compilationEmails,
   compilationPages,
   filteredAccountEmails,
@@ -62,7 +57,6 @@ const appReducer = combineReducers({
   cart,
   checkout,
   orders,
-  queueJobMap,
 });
 
 const rootReducer = (state = initialState, action) => {

@@ -2,12 +2,10 @@ export default {
   config: {},
   fetching: {},
   user: {},
-  allUsers: [],
   accounts: [],
   addresses: [],
   accountPasswordMap: {},
   compilations: [],
-  allCompilations: [],
   compilationEmails: [],
   compilationPages: [],
   filteredAccountEmails: [],
@@ -17,5 +15,4 @@ export default {
   cart: {},
   checkout: {},
   orders: [],
-  queueJobMap: {},
 };

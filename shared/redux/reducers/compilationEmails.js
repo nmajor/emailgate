@@ -50,18 +50,6 @@ const compilationEmails = (state = initialState.compilationEmails, action) => {
       return state;
     }
 
-    case ActionTypes.UPDATE_EMAIL_PDFS : {
-      return _.map(state, (email) => {
-        const updatedEmail = _.find(action.emails, ['_id', email._id]);
-        if (updatedEmail) {
-          const emailCopy = Object.assign({}, email);
-          emailCopy.pdf = updatedEmail.pdf;
-          return emailCopy;
-        }
-        return email;
-      });
-    }
-
     default:
       return state;
   }

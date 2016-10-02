@@ -28,8 +28,6 @@ import ViewCompilationPageContainer from './container/ViewCompilationPageContain
 import EditCompilationPageContainer from './container/EditCompilationPageContainer';
 import ViewOrderContainer from './container/ViewOrderContainer';
 import CompilationCheckoutContainer from './container/CompilationCheckoutContainer';
-import AdminContainer from './container/AdminContainer';
-import AdminDashboardContainer from './container/AdminDashboardContainer';
 import DashboardContainer from './container/DashboardContainer';
 import DashboardNavWrapper from './container/DashboardNavWrapper';
 import CompilationsDashboardContainer from './container/CompilationsDashboardContainer';
@@ -80,10 +78,6 @@ const routes = (
       <Route path="/compilations/:compilationId/build/add-emails" component={AddCompilationEmailsContainer} />
       <Route path="/compilations/:compilationId/build/title" component={CompilationTitleContainer} />
       <Route path="/compilations/:compilationId/build/message" component={CompilationMessageContainer} />
-    </Route>
-
-    <Route component={AdminContainer}>
-      <Route path="/admin/dashboard" component={AdminDashboardContainer} />
     </Route>
   </Route>
 );

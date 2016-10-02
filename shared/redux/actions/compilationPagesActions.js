@@ -19,13 +19,6 @@ export function updatePageInCompilationPages(page) {
   };
 }
 
-export function updatePagePdfs(pages) {
-  return {
-    type: ActionTypes.UPDATE_PAGE_PDFS,
-    pages,
-  };
-}
-
 export function getCompilationPages(compilationId, cookie) {
   return (dispatch) => {
     dispatch(setPropertyForFetching('compilationPages', true));
@@ -78,18 +71,6 @@ export function updateCompilationPage(compilationId, page, newData) {
       pageId: page._id,
       newData,
     });
-  };
-}
-
-export function getCompilationPagePdf(compilationId, page) {
-  return () => {
-    socket.emit('GET_COMPILATION_PAGE_PDF', { compilationId, pageId: page._id });
-  };
-}
-
-export function refreshPagePdfs(compilationId, pageIds) {
-  return () => {
-    socket.emit('REFRESH_PAGE_PDFS', { compilationId, pageIds });
   };
 }
 

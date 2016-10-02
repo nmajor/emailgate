@@ -9,7 +9,6 @@ import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
 import { processEmailStream } from '../util/helpers';
-import { watchJob, slimJob } from '../util/jobs';
 
 export default (io) => {
   io.on('connection', (socket) => {
@@ -171,43 +170,6 @@ export default (io) => {
       });
     });
 
-    socket.on('GET_COMPILATION_EMAIL_PDF', (data) => {
-      console.log('GET_COMPILATION_EMAIL_PDF');
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
-      .then((email) => {
-        return email.needsNewPdf()
-        .then((pdfNeeded) => {
-          if (pdfNeeded) {
-            return email.findOrSchedulePdfJob()
-            .then((job) => {
-              socket.emit('QUEUE_JOB', slimJob(job));
-
-              const unwatchJob = watchJob(job, (updatedJob) => {
-                socket.emit('QUEUE_JOB', slimJob(updatedJob));
-              });
-
-              socket.on('disconnect', () => {
-                unwatchJob();
-              });
-
-              job.on('complete', () => {
-                Email.findOne({ _id: email._id })
-                .then((email) => { // eslint-disable-line no-shadow
-                  socket.emit('UPDATED_COMPILATION_EMAIL', email);
-                  socket.emit('QUEUE_JOB_COMPLETE', job);
-                  return Promise.resolve(email);
-                });
-              });
-            });
-          }
-
-          socket.emit('UPDATED_COMPILATION_EMAIL', email);
-        });
-      });
-    });
-
     socket.on('UPDATE_COMPILATION_PAGE', (data) => {
       console.log('UPDATE_COMPILATION_PAGE');
       User.findOne({ email: socket.request.session.passport.user })
@@ -219,82 +181,6 @@ export default (io) => {
       })
       .then((page) => {
         socket.emit('UPDATED_COMPILATION_PAGE', page);
-      });
-    });
-
-    socket.on('GET_COMPILATION_PAGE_PDF', (data) => {
-      console.log('GET_COMPILATION_PAGE_PDF');
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Page.findOne({ _compilation: compilation._id, _id: data.pageId }))
-      .then((page) => {
-        return page.needsNewPdf()
-        .then((pdfNeeded) => {
-          if (pdfNeeded) {
-            return page.findOrSchedulePdfJob()
-            .then((job) => {
-              socket.emit('QUEUE_JOB', slimJob(job));
-
-              const unwatchJob = watchJob(job, (updatedJob) => {
-                socket.emit('QUEUE_JOB', slimJob(updatedJob));
-              });
-
-              socket.on('disconnect', () => {
-                unwatchJob();
-              });
-
-              job.on('complete', () => {
-                Page.findOne({ _id: page._id })
-                .then((page) => { // eslint-disable-line no-shadow
-                  socket.emit('UPDATED_COMPILATION_PAGE', page);
-                  socket.emit('QUEUE_JOB_COMPLETE', job);
-                  return Promise.resolve(page);
-                });
-              });
-            });
-          }
-
-          socket.emit('UPDATED_COMPILATION_PAGE', page);
-        });
-      });
-    });
-
-    socket.on('GET_COMPILATION_PDF', (data) => {
-      console.log('GET_COMPILATION_PDF');
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then((compilation) => {
-        return compilation.needsNewPdf()
-        .then((pdfNeeded) => {
-          if (pdfNeeded) {
-            return compilation.findOrSchedulePdfJob()
-            .then((job) => {
-              socket.emit('QUEUE_JOB', slimJob(job));
-
-              const unwatchJob = watchJob(job, (updatedJob) => {
-                socket.emit('QUEUE_JOB', slimJob(updatedJob));
-              });
-
-              socket.on('disconnect', () => {
-                unwatchJob();
-              });
-
-              job.on('complete', () => {
-                Compilation.findOne({ _user: compilation._user, _id: compilation._id })
-                .then((compilation) => { // eslint-disable-line no-shadow
-                  unwatchJob();
-                  socket.emit('UPDATED_COMPILATION', compilation);
-                  socket.emit('QUEUE_JOB_COMPLETE', job);
-                });
-              });
-            });
-          }
-
-          socket.emit('UPDATED_COMPILATION', compilation);
-        })
-        .catch((err) => {
-          console.log(err.stack);
-        });
       });
     });
 
@@ -350,26 +236,6 @@ export default (io) => {
       }).
       then((cart) => {
         socket.emit('UPDATED_CART', cart);
-      });
-    });
-
-    socket.on('REFRESH_PAGE_PDFS', (data) => {
-      console.log('REFRESH_PAGE_PDFS');
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Page.find({ _compilation: compilation._id, _id: { $in: data.pageIds } }).select('pdf'))
-      .then((pages) => {
-        socket.emit('REFRESHED_PAGE_PDFS', pages);
-      });
-    });
-
-    socket.on('REFRESH_EMAIL_PDFS', (data) => {
-      console.log('REFRESH_EMAIL_PDFS');
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Email.find({ _compilation: compilation._id, _id: { $in: data.emailIds } }).select('pdf'))
-      .then((emails) => {
-        socket.emit('REFRESHED_EMAIL_PDFS', emails);
       });
     });
 
