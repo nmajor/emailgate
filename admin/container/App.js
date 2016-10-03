@@ -29,11 +29,6 @@ App.contextTypes = {
 };
 
 App.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  children: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  config: PropTypes.object.isRequired,
-  cart: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
 };
 

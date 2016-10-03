@@ -29,21 +29,6 @@ class Header extends Component {
   toggleCollapsed() {
     this.setState({ collapsed: !this.state.collapsed });
   }
-  renderCartBadge() {
-    if (_.get(this.props.cart, 'items.length') > 0) {
-      return <span className="badge">{this.props.cart.items.length}</span>;
-    }
-  }
-  renderCartAction() {
-    if (!this.props.hideCart && _.get(this.props.cart, 'items.length') > 0) {
-      return (<Link to="/cart" onClick={this.forceCollapse}>
-        <span className="hidden-xs">
-          <span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> {this.renderCartBadge()}
-        </span>
-        <span className="visible-xs">Cart {this.renderCartBadge()}</span>
-      </Link>);
-    }
-  }
   renderNavbarHeader() {
     return (<div className="navbar-header">
       <Link className="navbar-brand" to="/">MYEMAILBOOK.COM</Link>
@@ -122,7 +107,6 @@ class Header extends Component {
 function mapStateToProps(store) {
   return {
     user: store.user,
-    cart: store.cart,
   };
 }
 
@@ -133,8 +117,6 @@ Header.contextTypes = {
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  cart: PropTypes.object.isRequired,
-  hideCart: PropTypes.bool,
   currentPath: PropTypes.string,
 };
 

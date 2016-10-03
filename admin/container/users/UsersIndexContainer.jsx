@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/index';
 import UsersList from '../../components/users/UsersList';
 
-class UsersIndex extends Component { // eslint-disable-line
+class UsersIndexContainer extends Component { // eslint-disable-line
   componentDidMount() {
     if (this.props.users.length < 1) {
       this.props.dispatch(Actions.getUsers());
@@ -17,7 +17,7 @@ class UsersIndex extends Component { // eslint-disable-line
   }
 }
 
-UsersIndex.need = [
+UsersIndexContainer.need = [
   (params, cookie) => {
     return Actions.getUsers.bind(null, cookie)();
   },
@@ -29,9 +29,9 @@ function mapStateToProps(store) {
   };
 }
 
-UsersIndex.propTypes = {
+UsersIndexContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   users: PropTypes.array.isRequired,
 };
 
-export default connect(mapStateToProps)(UsersIndex);
+export default connect(mapStateToProps)(UsersIndexContainer);

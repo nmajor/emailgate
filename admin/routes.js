@@ -11,7 +11,7 @@ import UsersIndexContainer from './container/users/UsersIndexContainer';
 const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={Home} />
-    <Route path="/login" component={LoginContainer} />
+    <Route path="/logins" component={LoginContainer} />
     <Route component={DashboardWrapper}>
       <Route path="/users" component={UsersIndexContainer} />
     </Route>
