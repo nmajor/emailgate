@@ -227,7 +227,6 @@ export default (io) => {
 
     socket.on('UPDATE_CART_ITEM', (data) => {
       console.log('UPDATE_CART_ITEM');
-      console.log(data);
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Cart.findOne({ _user: user._id, _order: null }))
       .then((cart) => {
@@ -236,6 +235,18 @@ export default (io) => {
       }).
       then((cart) => {
         socket.emit('UPDATED_CART', cart);
+      });
+    });
+
+    socket.on('BUILD_COMPILATION_PDF', (data) => {
+      console.log('BUILD_COMPILATION_PDF');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, id: data.compilationId }))
+      .then((compilation) => {
+        return compilation.buildPdf();
+      }).
+      then((compilation) => {
+        socket.emit('UPDATED_COMPILATION', compilation);
       });
     });
 

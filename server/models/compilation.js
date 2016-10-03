@@ -56,4 +56,8 @@ CompilationSchema.methods.seedPages = function seedPages() {
   });
 };
 
+CompilationSchema.methods.buildPdf = function buildPdf() {
+  console.log('blah buildPdf');
+};
+
 export default Mongoose.model('Compilation', CompilationSchema);

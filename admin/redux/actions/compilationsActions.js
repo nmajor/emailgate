@@ -1,7 +1,7 @@
 import * as ActionTypes from '../constants';
 // import fetch from 'isomorphic-fetch';
 import baseURL from '../../../shared/baseURL';
-// import socket from '../../../client/socket';
+import socket from '../../../client/socket';
 
 export function setCompilations(compilations) {
   return {
@@ -42,5 +42,11 @@ export function getCompilations(cookie) {
       // dispatch(setPropertyForFetching('compilations', false));
       console.log(err);
     });
+  };
+}
+
+export function buildCompilationPdf(compilationId) {
+  return () => {
+    socket.emit('BUILD_COMPILATION_PDF', { compilationId });
   };
 }
