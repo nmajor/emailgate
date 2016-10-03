@@ -30,8 +30,8 @@ export default (io) => {
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
-        if (data.newData.approvedAt) { compilation.approvedAt = data.newData.approvedAt; } // eslint-disable-line no-param-reassign
-        if (data.newData.name) { compilation.name = data.newData.name; } // eslint-disable-line no-param-reassign
+        if (data.newData.title) { compilation.title = data.newData.title; } // eslint-disable-line no-param-reassign
+        if (data.newData.subtitle) { compilation.subtitle = data.newData.subtitle; } // eslint-disable-line no-param-reassign
         return compilation.save();
       })
       .then((compilation) => {
@@ -239,14 +239,22 @@ export default (io) => {
     });
 
     socket.on('BUILD_COMPILATION_PDF', (data) => {
-      console.log('BUILD_COMPILATION_PDF');
+      console.log('BUILD_COMPILATION_PDF', data);
       User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, id: data.compilationId }))
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
       .then((compilation) => {
-        return compilation.buildPdf();
-      }).
-      then((compilation) => {
+        return compilation.buildPdf((info) => {
+          socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: info });
+        });
+      })
+      .then(() => {
+        return Compilation.findOne({ _id: data.compilationId });
+      })
+      .then((compilation) => {
         socket.emit('UPDATED_COMPILATION', compilation);
+      })
+      .catch((err) => {
+        socket.emit('COMPILATION_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
       });
     });
 

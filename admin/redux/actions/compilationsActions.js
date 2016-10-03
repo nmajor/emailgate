@@ -10,6 +10,21 @@ export function setCompilations(compilations) {
   };
 }
 
+export function appendToCompilationLog(compilationId, entry) {
+  return {
+    type: ActionTypes.APPEND_TO_COMPILATION_LOG,
+    compilationId,
+    entry,
+  };
+}
+
+export function updateCompilationInCompilations(compilation) {
+  return {
+    type: ActionTypes.UPDATE_COMPILATION_IN_COMPILATIONS,
+    compilation,
+  };
+}
+
 export function getCompilations(cookie) {
   return (dispatch) => {
     // dispatch(setPropertyForFetching('compilations', true));

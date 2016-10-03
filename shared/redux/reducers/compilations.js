@@ -13,7 +13,7 @@ const compilations = (state = initialState.compilations, action) => {
         action.compilation,
       ];
 
-    case ActionTypes.SET_PROPERTY_FOR_COMPILATION :
+    case ActionTypes.SET_PROPERTY_FOR_COMPILATION : {
       const propCompilationIndex = _.findIndex(state, { _id: action.compilationId });
       if (propCompilationIndex > -1) {
         const compilation = Object.assign({}, state[propCompilationIndex]);
@@ -25,8 +25,9 @@ const compilations = (state = initialState.compilations, action) => {
         ];
       }
       return state;
+    }
 
-    case ActionTypes.UPDATE_COMPILATION_IN_COMPILATIONS :
+    case ActionTypes.UPDATE_COMPILATION_IN_COMPILATIONS : {
       const updatedCompilationIndex = _.findIndex(state, { _id: action.compilation._id });
       if (updatedCompilationIndex > -1) {
         return [
@@ -36,6 +37,7 @@ const compilations = (state = initialState.compilations, action) => {
         ];
       }
       return state;
+    }
 
     default:
       return state;

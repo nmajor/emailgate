@@ -1,9 +1,15 @@
 import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
 import CompilationView from '../../components/compilations/CompilationView';
+import * as Actions from '../../redux/actions/index';
 
 class CompilationShowContainer extends Component { // eslint-disable-line
+  constructor(props, context) {
+    super(props, context);
+    this.buildPdf = this.buildPdf.bind(this);
+  }
   buildPdf() {
-    
+    this.props.dispatch(Actions.buildCompilationPdf(this.props.compilation._id));
   }
   render() {
     return (<div>
@@ -13,7 +19,8 @@ class CompilationShowContainer extends Component { // eslint-disable-line
 }
 
 CompilationShowContainer.propTypes = {
-  compilation: PropTypes.object.isRequired,
+  dispatch: PropTypes.func,
+  compilation: PropTypes.object,
 };
 
-export default CompilationShowContainer;
+export default connect()(CompilationShowContainer);

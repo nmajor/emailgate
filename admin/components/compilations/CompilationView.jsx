@@ -1,11 +1,33 @@
 import React, { PropTypes, Component } from 'react';
 
 class CompilationView extends Component { // eslint-disable-line
+  renderCompilationLogs() {
+    if (this.props.compilation.logs) {
+      return this.props.compilation.logs.map((entry) => {
+        return <div>{JSON.stringify(entry)}</div>;
+      });
+    }
+  }
+  renderTopLog() {
+    if (this.props.compilation.logs) {
+      return this.props.compilation.logs[this.props.compilation.logs.length - 1].message;
+    }
+  }
+  renderPdfLink() {
+    if (this.props.compilation.pdf && this.props.compilation.pdf.url) {
+      return <a href={this.props.compilation.pdf.url}>Pdf</a>;
+    }
+  }
   render() {
     return (<div>
       <h1>{this.props.compilation.title}</h1>
       <h3>{this.props.compilation.subtitle}</h3>
-      <button className="btn btn-success" onClick={this.props.buildPdf}>Build PDF</button>
+      <div>
+        <button className="btn btn-success" onClick={this.props.buildPdf}>Build PDF</button>
+        {this.renderPdfLink()}
+      </div>
+      <div className="bottom-bumper top-bumper">{this.renderTopLog()}</div>
+      {this.renderCompilationLogs()}
     </div>);
   }
 }

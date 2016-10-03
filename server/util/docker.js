@@ -1,11 +1,5 @@
 require('dotenv').config({ silent: true });
 import _ from 'lodash';
-import assert from 'assert';
-// import Email from '../models/email';
-// import Page from '../models/page';
-//
-// import * as sharedHelpers from '../../shared/helpers';
-// import * as serverHelpers from './helpers';
 import Docker from 'dockerode';
 
 function getDockerObject() {
@@ -25,10 +19,11 @@ function getDockerObject() {
 const docker = getDockerObject();
 
 function pullImage(image) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (image.indexOf('/') > -1) {
       docker.pull(`${image}:latest`, (err, stream) => {
-        assert.equal(err, null);
+        if (err) { return reject(err); }
+
         stream.on('error', (err) => { // eslint-disable-line no-shadow
           console.log(`An error happened ${err.message}`);
         });
@@ -69,35 +64,42 @@ function parseStreamChunk(chunk, cb) {
   }
 }
 
-function attachToContainer(container, updateCb, resolve) {
-  container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
-    assert.equal(err, null);
+function attachToContainer(container, statusCb) {
+  return new Promise((resolve, reject) => {
+    container.attach({ stream: true, stdout: true }, (err, stream) => { // eslint-disable-line no-shadow
+      if (err) { return reject(err); }
 
-    const streamCleanser = require('docker-stream-cleanser')(); // eslint-disable-line global-require
+      statusCb({
+        type: 'status',
+        message: 'Attaching to container',
+      });
 
-    const cleanStream = stream.pipe(streamCleanser);
-    cleanStream.on('data', (chunk) => {
-      parseStreamChunk(chunk, updateCb);
-    });
+      const streamCleanser = require('docker-stream-cleanser')(); // eslint-disable-line global-require
 
-    cleanStream.on('error', (chunk) => {
-      console.log(`An error happened in the stream ${chunk.toString()}`);
-    });
+      const cleanStream = stream.pipe(streamCleanser);
+      cleanStream.on('data', (chunk) => {
+        parseStreamChunk(chunk, statusCb);
+      });
 
-    cleanStream.on('end', () => {
-      container.stop(() => {
-        container.remove(() => {
-          updateCb({
-            type: 'status',
-            message: 'Container stopped and removed.',
+      cleanStream.on('error', (chunk) => {
+        console.log(`An error happened in the stream ${chunk.toString()}`);
+      });
+
+      cleanStream.on('end', () => {
+        container.stop(() => {
+          container.remove(() => {
+            statusCb({
+              type: 'status',
+              message: 'Container stopped and removed.',
+            });
+            resolve();
           });
-          resolve();
         });
       });
-    });
 
-    container.start((err) => { // eslint-disable-line no-shadow
-      assert.equal(err, null);
+      container.start((err) => { // eslint-disable-line no-shadow
+        if (err) { return reject(err); }
+      });
     });
   });
 }
@@ -107,57 +109,85 @@ function encodeTask(task) {
 }
 
 function getDockerConfig(env, task) {
-  if (process.env.DOCKER_CONFIG) {
-    const dockerConfig = JSON.parse(process.env.DOCKER_CONFIG);
-    const config = {
-      Image: dockerConfig.Image,
-      name: `${dockerConfig.ImageNamePrefix}-${task.id}-${Date.now()}`,
-      Env: env,
-      HostConfig: dockerConfig.HostConfig,
-      AttachStdout: true,
-      AttachStderr: true,
-      Labels: { taskId: task.id, compilationId: task.props.compilationId },
-    };
-
-    return config;
-  }
-
-  return {
-    Image: 'emailgate-worker',
-    name: `emailgate-worker-${task.id}-${Date.now()}`,
+  const containerName = `emailgate-worker-${task.compilationId}`;
+  const dockerConfig = JSON.parse(process.env.DOCKER_CONFIG);
+  const config = {
+    Image: dockerConfig.image,
+    name: containerName,
     Env: env,
+    HostConfig: { mem_limit: dockerConfig.mem_limit },
     AttachStdout: true,
     AttachStderr: true,
-    Labels: { taskId: task.id, compilationId: task.props.compilationId },
+    Labels: { taskKind: task.kind, compilationId: task.compilationId },
   };
+
+  return config;
 }
 
-function createContainer(env, task, updateCb) {
-  return new Promise((resolve) => {
-    env.push(`TASK=${encodeTask(task)}`);
+function createContainer(config, task, statusCb) {
+  return new Promise((resolve, reject) => {
+    config.Env.push(`TASK=${encodeTask(task)}`);
 
-    updateCb({
+    statusCb({
       type: 'status',
       message: 'Creating worker container.',
     });
 
-    docker.createContainer(getDockerConfig(env, task), (err, container) => {
-      assert.equal(err, null);
+    docker.createContainer(config, (err, container) => {
+      if (err) { return reject(err); }
 
-      attachToContainer(container, updateCb, resolve);
+      resolve(container);
     });
   });
 }
 
-function startWorker(env, task, updateCb) {
-  if (undefined === 1) {
-    const containerConfig = getDockerConfig(env, task);
+function getEnv() {
+  return new Promise((resolve) => {
+    const publicPath = process.env.NODE_ENV !== 'production' ? `${process.env.MANTA_APP_PUBLIC_PATH}/dev` : process.env.MANTA_APP_PUBLIC_PATH;
+    const Env = [
+      `NODE_ENV=${process.env.NODE_ENV}`,
+      `MANTA_APP_KEY=${process.env.MANTA_APP_KEY}`,
+      `MANTA_APP_KEY_ID=${process.env.MANTA_APP_KEY_ID}`,
+      `MANTA_APP_USER=${process.env.MANTA_APP_USER}`,
+      `MANTA_APP_USER_ID=${process.env.MANTA_APP_USER_ID}`,
+      `MANTA_APP_URL=${process.env.MANTA_APP_URL}`,
+      `MANTA_APP_PUBLIC_PATH=${publicPath}`,
+    ];
 
-    pullImage(containerConfig.Image)
-    .then(() => {
-      return createContainer(env, task, updateCb);
-    });
-  }
+    if (process.env.MONGO_URL.indexOf('localhost') > -1) {
+      const mongoUrl = process.env.MONGO_URL;
+
+      require('dns').lookup(require('os').hostname(), (err, add) => { // eslint-disable-line global-require
+        if (add) {
+          Env.push(`MONGO_URL=${mongoUrl.replace('localhost', add)}`);
+        } else {
+          Env.push(`MONGO_URL=${mongoUrl}`);
+        }
+        resolve(Env);
+      });
+    } else {
+      Env.push(`MONGO_URL=${process.env.MONGO_URL}`);
+      resolve(Env);
+    }
+  });
 }
 
-startWorker();
+export function startWorker(task, statusCb) {
+  function kindStatusCb(entry) {
+    entry.message = `${task.kind} - ${entry.message}`; // eslint-disable-line no-param-reassign
+    statusCb(entry);
+  }
+
+  return getEnv()
+  .then((env) => {
+    const containerConfig = getDockerConfig(env, task);
+
+    return pullImage(containerConfig.Image)
+    .then(() => {
+      return createContainer(containerConfig, task, kindStatusCb);
+    })
+    .then((container) => {
+      return attachToContainer(container, kindStatusCb);
+    });
+  });
+}
