@@ -50,6 +50,7 @@ import adminRoutes from '../admin/routes';
 import { fetchComponentData } from './util/fetchData';
 import index from './routes/index.routes';
 import api from './routes/api.routes';
+import webhook from './routes/webhook.routes';
 import oath2 from './routes/oath2.routes';
 
 // MongoDB Connection
@@ -91,6 +92,7 @@ app.use(cookieParser());
 app.use(Express.static(path.resolve(__dirname, '../public')));
 app.use('/', index);
 app.use('/api', api);
+app.use('/webhook', webhook);
 app.use('/oath2', oath2);
 
 
