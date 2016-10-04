@@ -98,7 +98,7 @@ function attachToContainer(container, statusCb) {
       });
 
       container.start((err) => { // eslint-disable-line no-shadow
-        if (err) { return reject(err); }
+        if (err && err.statusCode !== 304) { return reject(err); }
       });
     });
   });
@@ -124,19 +124,53 @@ function getDockerConfig(env, task) {
   return config;
 }
 
-function createContainer(config, task, statusCb) {
+function findContainer(name) {
+  console.log(name);
+  return new Promise((resolve, reject) => {
+    docker.listContainers({ all: true }, (err, containers) => {
+      if (err) { return reject(err); }
+      const containerInfo = _.find(containers, (info) => { console.log(info.Names); return info.Names.indexOf(`/${name}`) > -1; });
+      console.log('blah containerInfo', containerInfo);
+
+      if (!containerInfo) { return resolve(undefined); }
+      const container = docker.getContainer(containerInfo.Id);
+      resolve(container);
+    });
+  });
+}
+
+function createContainer(config) {
+  return new Promise((resolve, reject) => {
+    docker.createContainer(config, (err, container) => { // eslint-disable-line no-shadow
+      if (err) { return reject(err); }
+      return resolve(container);
+    });
+  });
+}
+
+function findOrCreateContainer(config, task) {
   return new Promise((resolve, reject) => {
     config.Env.push(`TASK=${encodeTask(task)}`);
 
-    statusCb({
-      type: 'status',
-      message: 'Creating worker container.',
-    });
+    findContainer(config.name)
+    .then((container) => {
+      if (!container) { return resolve(createContainer(config)); }
 
-    docker.createContainer(config, (err, container) => {
-      if (err) { return reject(err); }
+      if (container) {
+        container.inspect((err, info) => {
+          if (err) { return reject(err); }
 
-      resolve(container);
+          if (info.State.Running) {
+            return resolve(container);
+          }
+
+          container.stop(() => {
+            container.remove(() => {
+              resolve(createContainer(config));
+            });
+          });
+        });
+      }
     });
   });
 }
@@ -173,21 +207,16 @@ function getEnv() {
 }
 
 export function startWorker(task, statusCb) {
-  function kindStatusCb(entry) {
-    entry.message = `${task.kind} - ${entry.message}`; // eslint-disable-line no-param-reassign
-    statusCb(entry);
-  }
-
   return getEnv()
   .then((env) => {
     const containerConfig = getDockerConfig(env, task);
 
     return pullImage(containerConfig.Image)
     .then(() => {
-      return createContainer(containerConfig, task, kindStatusCb);
+      return findOrCreateContainer(containerConfig, task, statusCb);
     })
     .then((container) => {
-      return attachToContainer(container, kindStatusCb);
+      return attachToContainer(container, statusCb);
     });
   });
 }
