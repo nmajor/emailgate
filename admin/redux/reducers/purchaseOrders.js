@@ -6,6 +6,12 @@ const purchaseOrders = (state = initialState.purchaseOrders, action) => {
     case ActionTypes.SET_PURCHASE_ORDERS :
       return action.purchaseOrders;
 
+    case ActionTypes.ADD_PURCHASE_ORDER :
+      return [
+        ...state,
+        action.purchaseOrder,
+      ];
+
     default:
       return state;
   }

@@ -42,7 +42,7 @@ const routes = (
       </Route>
       <Route component={PurchaseOrdersWrapper}>
         <Route path="/purchase-orders" component={PurchaseOrdersIndexContainer} />
-        <Route path="/purchase-orders/:orderId" component={PurchaseOrderShowContainer} />
+        <Route path="/purchase-orders/:purchaseOrderId" component={PurchaseOrderShowContainer} />
       </Route>
     </Route>
   </Route>

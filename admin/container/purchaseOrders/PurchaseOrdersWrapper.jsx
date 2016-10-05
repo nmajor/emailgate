@@ -7,15 +7,15 @@ class PurchaseOrdersWrapper extends Component { // eslint-disable-line
   constructor(props, context) {
     super(props, context);
 
-    this.order = _.find(this.props.purchaseOrders, { _id: this.props.params.purchaseOrderId });
+    this.purchaseOrder = _.find(this.props.purchaseOrders, { _id: this.props.params.purchaseOrderId });
   }
   componentDidMount() {
     if (this.props.purchaseOrders.length === 0) {
-      this.props.dispatch(Actions.getOrders());
+      this.props.dispatch(Actions.getPurchaseOrders());
     }
   }
   componentWillReceiveProps(nextProps) {
-    this.order = _.find(nextProps.orders, { _id: nextProps.params.orderId });
+    this.purchaseOrder = _.find(nextProps.purchaseOrders, { _id: nextProps.params.purchaseOrderId });
   }
   renderChildren() {
     if (this.props.children) {

@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
 import PurchaseOrdersList from '../../components/purchaseOrders/PurchaseOrdersList';
 import * as Actions from '../../redux/actions/index';
 
@@ -30,4 +31,4 @@ PurchaseOrdersIndexContainer.propTypes = {
   purchaseOrders: PropTypes.array,
 };
 
-export default PurchaseOrdersIndexContainer;
+export default connect()(PurchaseOrdersIndexContainer);

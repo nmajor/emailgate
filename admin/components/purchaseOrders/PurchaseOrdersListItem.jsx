@@ -5,7 +5,7 @@ class PurchaseOrdersListItem extends Component { // eslint-disable-line
   render() {
     return (<div>
       <Link to={`/purchase-orders/${this.props.purchaseOrder._id}`}>
-        {this.props.purchaseOrder.amount}
+        {this.props.purchaseOrder._id}
       </Link>
     </div>);
   }
