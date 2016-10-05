@@ -11,8 +11,8 @@ class CompilationsIndexContainer extends Component { // eslint-disable-line
 }
 
 CompilationsIndexContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  compilations: PropTypes.array.isRequired,
+  dispatch: PropTypes.func,
+  compilations: PropTypes.array,
 };
 
 export default CompilationsIndexContainer;

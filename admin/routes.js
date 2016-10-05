@@ -19,6 +19,10 @@ import OrdersWrapper from './container/orders/OrdersWrapper';
 import OrdersIndexContainer from './container/orders/OrdersIndexContainer';
 import OrderShowContainer from './container/orders/OrderShowContainer';
 
+import PurchaseOrdersWrapper from './container/purchaseOrders/PurchaseOrdersWrapper';
+import PurchaseOrdersIndexContainer from './container/purchaseOrders/PurchaseOrdersIndexContainer';
+import PurchaseOrderShowContainer from './container/purchaseOrders/PurchaseOrderShowContainer';
+
 const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={Home} />
@@ -35,6 +39,10 @@ const routes = (
       <Route component={OrdersWrapper}>
         <Route path="/orders" component={OrdersIndexContainer} />
         <Route path="/orders/:orderId" component={OrderShowContainer} />
+      </Route>
+      <Route component={PurchaseOrdersWrapper}>
+        <Route path="/purchase-orders" component={PurchaseOrdersIndexContainer} />
+        <Route path="/purchase-orders/:orderId" component={PurchaseOrderShowContainer} />
       </Route>
     </Route>
   </Route>

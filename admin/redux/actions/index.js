@@ -7,4 +7,5 @@
 export * from './compilationsActions';
 export * from './usersActions';
 export * from './ordersActions';
+export * from './purchaseOrdersActions';
 export * from './userActions';

@@ -11,8 +11,8 @@ class OrdersIndexContainer extends Component { // eslint-disable-line
 }
 
 OrdersIndexContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  orders: PropTypes.array.isRequired,
+  dispatch: PropTypes.func,
+  orders: PropTypes.array,
 };
 
 export default OrdersIndexContainer;

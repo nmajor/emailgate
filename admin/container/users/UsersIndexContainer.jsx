@@ -30,8 +30,8 @@ function mapStateToProps(store) {
 }
 
 UsersIndexContainer.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  users: PropTypes.array.isRequired,
+  dispatch: PropTypes.func,
+  users: PropTypes.array,
 };
 
 export default connect(mapStateToProps)(UsersIndexContainer);

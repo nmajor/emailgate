@@ -3,4 +3,5 @@ export default {
   users: [],
   compilations: [],
   orders: [],
+  purchaseOrders: [],
 };

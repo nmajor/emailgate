@@ -5,10 +5,11 @@ import * as AccountController from '../controllers/account.controller';
 import * as AddressController from '../controllers/address.controller';
 import * as CompilationController from '../controllers/compilation.controller';
 import * as EmailController from '../controllers/email.controller';
-import * as PageController from '../controllers/page.controller';
 import * as OrderController from '../controllers/order.controller';
+import * as PageController from '../controllers/page.controller';
 import * as AdminController from '../controllers/admin.controller';
 import * as AppController from '../controllers/app.controller';
+import * as PurchaseOrderController from '../controllers/purchaseOrder.controller';
 
 import User from '../models/user';
 
@@ -122,5 +123,12 @@ router.get('/compilations/:id/pages', ensureAuthenticated, PageController.getCom
 router.get('/admin/users', ensureAuthenticated, ensureAdmin, AdminController.getUsers);
 router.get('/admin/compilations', ensureAuthenticated, ensureAdmin, AdminController.getCompilations);
 router.get('/admin/orders', ensureAuthenticated, ensureAdmin, AdminController.getOrders);
+
+router.get('/admin/purchase-orders', ensureAuthenticated, ensureAdmin, PurchaseOrderController.get);
+router.get('/admin/purchase-orders/:id', ensureAuthenticated, ensureAdmin, PurchaseOrderController.findOne);
+router.post('/admin/purchase-orders', ensureAuthenticated, ensureAdmin, PurchaseOrderController.create);
+router.put('/admin/purchase-orders/:id', ensureAuthenticated, ensureAdmin, PurchaseOrderController.patch);
+router.patch('/admin/purchase-orders/:id', ensureAuthenticated, ensureAdmin, PurchaseOrderController.patch);
+router.delete('/admin/purchase-orders/:id', ensureAuthenticated, ensureAdmin, PurchaseOrderController.remove);
 
 module.exports = router;

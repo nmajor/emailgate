@@ -1,6 +1,7 @@
 export const SET_COMPILATIONS = 'SET_COMPILATIONS';
 export const SET_USERS = 'SET_USERS';
 export const SET_ORDERS = 'SET_ORDERS';
+export const SET_PURCHASE_ORDERS = 'SET_PURCHASE_ORDERS';
 
 export const SET_USER = 'SET_USER';
 export const SET_USER_ERRORS = 'SET_USER_ERRORS';
