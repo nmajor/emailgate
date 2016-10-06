@@ -34,7 +34,7 @@ export function getPurchaseOrders(cookie) {
       fetchOptions.credentials = 'include';
     }
 
-    return fetch(`${baseURL}/api/admin/purchase-orders/add-order`, fetchOptions)
+    return fetch(`${baseURL}/api/admin/purchase-orders`, fetchOptions)
     .then((res) => {
       if (res.status >= 400) {
         throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
@@ -92,10 +92,10 @@ export function addOrderToPurchaseOrder(purchaseOrderId, orderId, cb) {
   cb = cb || function() {}; // eslint-disable-line
 
   return (dispatch) => {
-    return fetch(`${baseURL}/api/accounts`, {
+    return fetch(`${baseURL}/api/admin/purchase-orders/${purchaseOrderId}/add-order`, {
       credentials: 'include',
       method: 'post',
-      body: JSON.stringify({ purchaseOrderId, orderId }),
+      body: JSON.stringify({ orderId }),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),

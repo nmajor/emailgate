@@ -20,7 +20,7 @@ class PurchaseOrderShowContainer extends Component { // eslint-disable-line
     }
   }
   addOrder(orderId) {
-    this.props.dispatch(Actions.addOrderToPurchaseOrder(orderId));
+    this.props.dispatch(Actions.addOrderToPurchaseOrder(this.props.purchaseOrder._id, orderId));
   }
   render() {
     if (!this.props.purchaseOrder) { return <div></div>; }

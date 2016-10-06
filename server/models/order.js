@@ -1,8 +1,20 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import Cart from './cart';
+import Compilation from './compilation';
 import { getProductById, calculateShipping } from '../util/helpers';
 import _ from 'lodash';
+
+function buildItemProps(item) {
+  console.log('blah buildItemProps 1');
+  return Compilation.findOne({ _id: item.props.compilationId })
+  .then((compilation) => {
+    console.log('blah buildItemProps 2');
+    item.props.compilation = compilation; // eslint-disable-line no-param-reassign
+    console.log('blah buildItemProps 3', item);
+    return Promise.resolve(item);
+  });
+}
 
 const OrderItemSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -20,6 +32,14 @@ const OrderItemSchema = new Schema({
   quantity: { type: Number, required: true },
   props: {},
 });
+
+// OrderItemSchema.methods.buildProps = function buildProps() {
+//   return Compilation.find({ _id: this.props.compilationId })
+//   .then((compilation) => {
+//     this.props.compilation = compilation;
+//     return Promise.resolve(this);
+//   });
+// };
 
 const OrderSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -53,6 +73,27 @@ OrderSchema.pre('save', function (next) { // eslint-disable-line func-names
     next();
   });
 });
+
+OrderSchema.statics.findAndBuildItemProps = function findAndBuildItemProps(query) {
+  console.log('blah finding orders', query);
+  return this.find(query)
+  .then((orders) => {
+    console.log('blah found orders', orders);
+    return Promise.all(orders.map((order) => {
+      order = order.toJSON(); // eslint-disable-line no-param-reassign
+      console.log('blah hey order', order);
+      console.log('blah hey order items', order.items);
+      return Promise.all(order.items.map((item) => {
+        console.log('blah item in map', item);
+        return buildItemProps(item);
+      }))
+      .then((items) => {
+        order.items = items; // eslint-disable-line no-param-reassign
+        return Promise.resolve(order);
+      });
+    }));
+  });
+};
 
 OrderSchema.methods.build = function build() {
   return this.getItems()

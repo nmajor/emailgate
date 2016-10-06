@@ -8,7 +8,6 @@ export function findOne(req, res) {
 }
 
 export function get(req, res) {
-  console.log(req.query);
   PurchaseOrder.find({})
   .then((purchaseOrders) => {
     res.json(purchaseOrders);
@@ -46,11 +45,24 @@ export function remove(req, res) {
 }
 
 export function addOrder(req, res) {
-  PurchaseOrder.findOne({ _id: req.params.purchaseOrderId })
+  PurchaseOrder.findOne({ _id: req.params.id })
   .then((purchaseOrder) => {
-    purchaseOrder.addOrder(req.params.orderId);
+    return purchaseOrder.addOrder(req.body.orderId);
   })
-  .then(PurchaseOrder.findOne({ _id: req.params.purchaseOrderId }))
+  .then((purchaseOrder) => {
+    return purchaseOrder.updateRequest();
+  })
+  .then((purchaseOrder) => {
+    res.json(purchaseOrder);
+  })
+  .catch((err) => { console.log('An error happened', err); });
+}
+
+export function updateRequest(req, res) {
+  PurchaseOrder.findOne({ _id: req.params.id })
+  .then((purchaseOrder) => {
+    return purchaseOrder.updateRequest();
+  })
   .then((purchaseOrder) => {
     res.json(purchaseOrder);
   });

@@ -1,6 +1,7 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import Order from './order';
+import { buildRequest } from '../util/requestHelpers';
 
 const PurchaseOrderResponseSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -10,7 +11,6 @@ const PurchaseOrderResponseSchema = new Schema({
 
 const PurchaseOrderSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
-  orders: [{ type: String, ref: 'Order' }],
   request: {},
   responses: [PurchaseOrderResponseSchema],
   sentAt: Date,
@@ -18,29 +18,20 @@ const PurchaseOrderSchema = new Schema({
   timestamps: true,
 });
 
-PurchaseOrderSchema.post('init', (doc, next) => {
-  if (this.sentAt && this.request) { return next(); }
-
-  return this.buildRequest()
-  .then(() => {
-    next();
-  });
-});
-
-PurchaseOrderSchema.methods.buildRequest = function buildRequest() {
-  Order.find({ _purchaseOrder: this._id })
-  .then(() => {
-    this.request = {
-
-    };
+PurchaseOrderSchema.methods.updateRequest = function updateRequest() {
+  console.log('blah updateRequest');
+  return Order.findAndBuildItemProps({ _purchaseOrder: this._id })
+  .then((orders) => {
+    this.request = buildRequest(this, orders);
+    return this.save();
   });
 };
 
 PurchaseOrderSchema.methods.addOrder = function addOrder(orderId) {
-  return Order.findOne({ _id: orderId })
-  .then((order) => {
-    order._purchaseOrder = this._id; // eslint-disable-line no-param-reassign
-    return order.save();
+  console.log('blah addOrder', orderId);
+  return Order.update({ _id: orderId }, { $set: { _purchaseOrder: this._id } })
+  .then(() => {
+    return Promise.resolve(this);
   });
 };
 
