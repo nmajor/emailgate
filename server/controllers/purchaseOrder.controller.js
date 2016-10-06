@@ -9,6 +9,7 @@ export function findOne(req, res) {
 
 export function get(req, res) {
   PurchaseOrder.find({})
+  .populate('orders')
   .then((purchaseOrders) => {
     res.json(purchaseOrders);
   });
@@ -28,8 +29,6 @@ export function create(req, res) {
 export function patch(req, res) {
   PurchaseOrder.findOne({ _id: req.params.id })
   .then((purchaseOrder) => {
-    purchaseOrder.authProps = req.body.authProps; // eslint-disable-line no-param-reassign
-
     return purchaseOrder.save();
   })
   .then((purchaseOrder) => {
@@ -53,6 +52,27 @@ export function addOrder(req, res) {
     return purchaseOrder.updateRequest();
   })
   .then((purchaseOrder) => {
+    return purchaseOrder.populate('orders');
+  })
+  .then((purchaseOrder) => {
+    res.json(purchaseOrder);
+  })
+  .catch((err) => { console.log('An error happened', err); });
+}
+
+export function removeOrder(req, res) {
+  PurchaseOrder.findOne({ _id: req.params.id })
+  .then((purchaseOrder) => {
+    return purchaseOrder.removeOrder(req.body.orderId);
+  })
+  .then((purchaseOrder) => {
+    console.log('blah hey ', purchaseOrder);
+    return purchaseOrder.updateRequest();
+  })
+  .then((purchaseOrder) => {
+    return purchaseOrder.populate('orders');
+  })
+  .then((purchaseOrder) => {
     res.json(purchaseOrder);
   })
   .catch((err) => { console.log('An error happened', err); });
@@ -62,6 +82,9 @@ export function updateRequest(req, res) {
   PurchaseOrder.findOne({ _id: req.params.id })
   .then((purchaseOrder) => {
     return purchaseOrder.updateRequest();
+  })
+  .then((purchaseOrder) => {
+    return purchaseOrder.populate('orders');
   })
   .then((purchaseOrder) => {
     res.json(purchaseOrder);

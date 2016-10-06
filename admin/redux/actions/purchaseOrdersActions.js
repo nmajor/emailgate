@@ -120,3 +120,36 @@ export function addOrderToPurchaseOrder(purchaseOrderId, orderId, cb) {
     });
   };
 }
+
+export function removeOrderFromPurchaseOrder(purchaseOrderId, orderId, cb) {
+  cb = cb || function() {}; // eslint-disable-line
+
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/admin/purchase-orders/${purchaseOrderId}/remove-order`, {
+      credentials: 'include',
+      method: 'post',
+      body: JSON.stringify({ orderId }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(updatePurchaseOrderInPurchaseOrders(res));
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}

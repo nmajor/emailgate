@@ -8,7 +8,7 @@ class App extends Component { // eslint-disable-line
   //   super(props, context);
   // }
   render() {
-    return (<div>
+    return (<div className="admin">
       {this.props.children}
     </div>);
   }
@@ -29,6 +29,7 @@ App.contextTypes = {
 };
 
 App.propTypes = {
+  children: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
 };
 

@@ -33,16 +33,16 @@ const routes = (
         <Route path="/users/:userId" component={UserShowContainer} />
       </Route>
       <Route component={CompilationsWrapper}>
-        <Route path="/compilations" component={CompilationsIndexContainer} />
         <Route path="/compilations/:compilationId" component={CompilationShowContainer} />
+        <Route path="/compilations" component={CompilationsIndexContainer} />
       </Route>
       <Route component={OrdersWrapper}>
-        <Route path="/orders" component={OrdersIndexContainer} />
         <Route path="/orders/:orderId" component={OrderShowContainer} />
+        <Route path="/orders" component={OrdersIndexContainer} />
       </Route>
       <Route component={PurchaseOrdersWrapper}>
-        <Route path="/purchase-orders" component={PurchaseOrdersIndexContainer} />
         <Route path="/purchase-orders/:purchaseOrderId" component={PurchaseOrderShowContainer} />
+        <Route path="/purchase-orders" component={PurchaseOrdersIndexContainer} />
       </Route>
     </Route>
   </Route>

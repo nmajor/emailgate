@@ -17,7 +17,11 @@ export function getCompilations(req, res) {
 }
 
 export function getOrders(req, res) {
-  Order.find({})
+  const query = {};
+
+  if (req.query.nullPurchaseOrder) { query._purchaseOrder = { $eq: null }; }
+
+  Order.find(query)
   .then((orders) => {
     res.json(orders);
   });
