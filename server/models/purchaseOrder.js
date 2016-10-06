@@ -19,7 +19,7 @@ const PurchaseOrderSchema = new Schema({
   timestamps: true,
 });
 
-PurchaseOrderSchema.methods.updateRequest = function updateRequest() {
+PurchaseOrderSchema.methods.rebuildRequest = function rebuildRequest() {
   return Order.findAndBuildItemProps({ _purchaseOrder: this._id })
   .then((orders) => {
     this.request = buildRequest(this, orders);
@@ -30,8 +30,6 @@ PurchaseOrderSchema.methods.updateRequest = function updateRequest() {
 PurchaseOrderSchema.methods.updateOrders = function updateOrders() {
   return Order.find({ _purchaseOrder: this._id })
   .then((orders) => {
-    console.log('blah updateOrders 1', orders);
-    console.log('blah updateOrders 2', this);
     this.orders = orders;
     return this.save();
   });
@@ -45,7 +43,7 @@ PurchaseOrderSchema.methods.addOrder = function addOrder(orderId) {
 };
 
 PurchaseOrderSchema.methods.removeOrder = function removeOrder(orderId) {
-  Order.findOne({ _id: orderId, _purchaseOrder: this._id })
+  return Order.findOne({ _id: orderId, _purchaseOrder: this._id })
   .then((order) => {
     if (order) {
       return Order.update({ _id: orderId }, { $set: { _purchaseOrder: null } });

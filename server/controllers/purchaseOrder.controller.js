@@ -49,7 +49,7 @@ export function addOrder(req, res) {
     return purchaseOrder.addOrder(req.body.orderId);
   })
   .then((purchaseOrder) => {
-    return purchaseOrder.updateRequest();
+    return purchaseOrder.rebuildRequest();
   })
   .then((purchaseOrder) => {
     return purchaseOrder.populate('orders');
@@ -66,8 +66,7 @@ export function removeOrder(req, res) {
     return purchaseOrder.removeOrder(req.body.orderId);
   })
   .then((purchaseOrder) => {
-    console.log('blah hey ', purchaseOrder);
-    return purchaseOrder.updateRequest();
+    return purchaseOrder.rebuildRequest();
   })
   .then((purchaseOrder) => {
     return purchaseOrder.populate('orders');
@@ -78,10 +77,10 @@ export function removeOrder(req, res) {
   .catch((err) => { console.log('An error happened', err); });
 }
 
-export function updateRequest(req, res) {
+export function rebuildRequest(req, res) {
   PurchaseOrder.findOne({ _id: req.params.id })
   .then((purchaseOrder) => {
-    return purchaseOrder.updateRequest();
+    return purchaseOrder.rebuildRequest();
   })
   .then((purchaseOrder) => {
     return purchaseOrder.populate('orders');

@@ -1,14 +1,13 @@
 import React, { PropTypes, Component } from 'react';
-import AddedOrdersListItem from './AddedOrdersListItem';
+import OrderThumb from './OrderThumb';
 
 class AddedOrdersList extends Component { // eslint-disable-line
+  renderActionIcon() {
+    return <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>;
+  }
   renderList() {
-    if (this.props.orders.length === 0) {
-      return 'No orders added...';
-    }
-
     return this.props.orders.map((order) => {
-      return <AddedOrdersListItem key={order._id} order={order} removeOrder={this.props.removeOrder} />;
+      return <OrderThumb className="order-thumb" key={order._id} order={order} action={this.props.removeOrder} renderActionIcon={this.renderActionIcon} />;
     });
   }
   render() {

@@ -1,10 +1,8 @@
 function getAddressId(address) {
-  console.log('blah getAddressId');
   return `addr-${address._id}`;
 }
 
 function getItemId(compilation) {
-  console.log('blah getItemId');
   return `comp-${compilation._id}`;
 }
 
@@ -18,7 +16,6 @@ function requestShipToItems(order) {
 }
 
 function requestShipTo(order) {
-  console.log('blah requestShipTo', order.shippingAddress);
   return {
     AddressId: getAddressId(order.shippingAddress),
     CarrierAccountNumber: '',
@@ -55,9 +52,7 @@ export function requestAddress(address) {
 }
 
 export function requestItem(item) {
-  console.log('blah requestItem 1', item);
   const compilation = item.props.compilation;
-  console.log('blah requestItem 2', compilation);
   return {
     Id: getItemId(item.props.compilation),
     BookBlock: {
@@ -75,7 +70,6 @@ export function requestItem(item) {
 
 export function requestAddresses(orders) {
   return orders.map((order) => {
-    console.log('blah requestAddresses', order.shippingAddress);
     return requestAddress(order.shippingAddress);
   });
 }
@@ -100,7 +94,6 @@ export function requestOrder(purchaseOrder, orders) {
 }
 
 export function buildRequest(purchaseOrder, orders) {
-  console.log('blah buildRequest', orders);
   return {
     Auth: '',
     CustomerId: '',

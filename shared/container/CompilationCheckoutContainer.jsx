@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import CompilationAddToCart from '../components/CompilationAddToCart';
 import Modal from '../components/Modal';
 import CompilationBuildContainer from './CompilationBuildContainer';
-import CartViewContainer from './CartViewContainer';
+// import CartViewContainer from './CartViewContainer';
 import * as Actions from '../redux/actions/index';
 import { compilationTotalPageCountEstimate } from '../helpers';
 import _ from 'lodash';
@@ -18,7 +18,8 @@ class CompilationCheckoutContainer extends Component {
   addToCart(props) {
     this.props.dispatch(Actions.addCartItem(1, props.quantity, {
       compilationId: this.props.compilation._id,
-      compilationName: this.props.compilation.title,
+      compilationTitle: this.props.compilation.title,
+      compilationSubtitle: this.props.compilation.subtitle,
     }));
   }
   compilationProducts() {

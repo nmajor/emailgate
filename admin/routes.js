@@ -26,7 +26,7 @@ import PurchaseOrderShowContainer from './container/purchaseOrders/PurchaseOrder
 const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={Home} />
-    <Route path="/logins" component={LoginContainer} />
+    <Route path="/login" component={LoginContainer} />
     <Route component={DashboardWrapper}>
       <Route component={UsersWrapper}>
         <Route path="/users" component={UsersIndexContainer} />

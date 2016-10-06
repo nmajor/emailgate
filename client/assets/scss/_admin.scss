@@ -1,3 +1,23 @@
 .admin {
-  
+    .purchase-order-order-summary-thumb {
+      padding: 10px;
+      border: 1px solid #ccc;
+
+      .order {
+        font-size: 16px;
+      }
+      .item {
+        font-size: 14px;
+      }
+    }
+    .order-thumb {
+      padding: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+
+      .btn.btn-xs-true {
+        padding-bottom: 0px;
+        margin-right: 10px;
+      }
+    }
 }
