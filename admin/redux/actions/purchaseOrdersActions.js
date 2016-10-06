@@ -17,6 +17,13 @@ export function addPurchaseOrder(purchaseOrder) {
   };
 }
 
+export function updatePurchaseOrderInPurchaseOrders(purchaseOrder) {
+  return {
+    type: ActionTypes.UPDATE_PURCHASE_ORDER_IN_PURCHASE_ORDERS,
+    purchaseOrder,
+  };
+}
+
 export function getPurchaseOrders(cookie) {
   return (dispatch) => {
     const fetchOptions = {};
@@ -27,7 +34,7 @@ export function getPurchaseOrders(cookie) {
       fetchOptions.credentials = 'include';
     }
 
-    return fetch(`${baseURL}/api/admin/purchase-orders`, fetchOptions)
+    return fetch(`${baseURL}/api/admin/purchase-orders/add-order`, fetchOptions)
     .then((res) => {
       if (res.status >= 400) {
         throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
@@ -73,6 +80,39 @@ export function createPurchaseOrder(props, cb) {
       }
 
       dispatch(addPurchaseOrder(res));
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
+export function addOrderToPurchaseOrder(purchaseOrderId, orderId, cb) {
+  cb = cb || function() {}; // eslint-disable-line
+
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/accounts`, {
+      credentials: 'include',
+      method: 'post',
+      body: JSON.stringify({ purchaseOrderId, orderId }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(updatePurchaseOrderInPurchaseOrders(res));
       cb(res);
     })
     .catch((err) => {

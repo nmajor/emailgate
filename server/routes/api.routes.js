@@ -130,5 +130,6 @@ router.post('/admin/purchase-orders', ensureAuthenticated, ensureAdmin, Purchase
 router.put('/admin/purchase-orders/:id', ensureAuthenticated, ensureAdmin, PurchaseOrderController.patch);
 router.patch('/admin/purchase-orders/:id', ensureAuthenticated, ensureAdmin, PurchaseOrderController.patch);
 router.delete('/admin/purchase-orders/:id', ensureAuthenticated, ensureAdmin, PurchaseOrderController.remove);
+router.get('/admin/purchase-orders/add-order', ensureAuthenticated, ensureAdmin, PurchaseOrderController.addOrder);
 
 module.exports = router;

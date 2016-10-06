@@ -2,6 +2,7 @@ import * as ActionTypes from '../constants';
 // import fetch from 'isomorphic-fetch';
 import baseURL from '../../../shared/baseURL';
 // import socket from '../../../client/socket';
+import { serializeQuery } from '../../../shared/helpers';
 
 export function setOrders(orders) {
   return {
@@ -34,6 +35,33 @@ export function getOrders(cookie) {
       }
 
       dispatch(setOrders(res));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
+export function queryOrders(query, cb) {
+  return () => {
+    const fetchOptions = {
+      credentials: 'include',
+    };
+
+    return fetch(`${baseURL}/api/admin/orders?${serializeQuery(query)}`, fetchOptions)
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      cb(res);
     })
     .catch((err) => {
       console.log(err);

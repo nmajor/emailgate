@@ -200,3 +200,11 @@ export function actionStatusMap(compilation, emails, pages) {
 export function colWrapperClass() {
   return 'col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3';
 }
+
+export function serializeQuery(obj) {
+  const str = [];
+  _.forEach(obj, (v, k) => {
+    str.push(`${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
+  });
+  return str.join('&');
+}

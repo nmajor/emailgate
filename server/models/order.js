@@ -24,6 +24,7 @@ const OrderItemSchema = new Schema({
 const OrderSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _user: { type: String, ref: 'User' },
+  _purchaseOrder: { type: String, ref: 'PurchaseOrder' },
   shipping: Number,
   tax: Number,
   amount: Number,
