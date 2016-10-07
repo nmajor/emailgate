@@ -11,6 +11,7 @@ const PurchaseOrderResponseSchema = new Schema({
 
 const PurchaseOrderSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
+  status: { type: String, default: 'New' },
   request: {},
   orders: [{ type: String, ref: 'Order' }],
   responses: [PurchaseOrderResponseSchema],

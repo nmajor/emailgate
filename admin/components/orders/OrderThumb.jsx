@@ -22,7 +22,7 @@ class OrderThumb extends Component { // eslint-disable-line
   render() {
     return (<div className={this.props.className}>
       {this.renderAcion()}
-      <Link to={`/order/${this.props.order._id}`}>{this.props.order._id}</Link>
+      <Link to={`/orders/${this.props.order._id}`}>{this.props.order._id}</Link>
       <span className="left-bumper">{this.props.order.shippingAddress.firstName} {this.props.order.shippingAddress.lastName}</span>
       <span className="left-bumper">{moment(this.props.order.createdAt).format('LL')}</span>
       <span className="left-bumper">${prettyPrice(this.props.order.amount)}</span>

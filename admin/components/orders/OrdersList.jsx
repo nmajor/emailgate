@@ -1,20 +1,14 @@
 import React, { PropTypes, Component } from 'react';
-import OrdersListItem from './OrdersListItem';
+import OrderThumb from './OrderThumb';
 
 class OrdersList extends Component {
   renderOrdersList() {
     return this.props.orders.map((order) => {
-      return <OrdersListItem key={order._id} order={order} />;
+      return <OrderThumb className="order-thumb" key={order._id} order={order} />;
     });
   }
   render() {
-    return (
-      <div className="row">
-        <div className="col-md-6">
-          {this.renderOrdersList()}
-        </div>
-      </div>
-    );
+    return <div>{this.renderOrdersList()}</div>;
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
-import OrderThumb from './OrderThumb';
+import OrderThumb from '../orders/OrderThumb';
 import { prettyPrice } from '../../../shared/helpers';
 
 class PurchaseOrderSummary extends Component { // eslint-disable-line

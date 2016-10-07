@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import OrderThumb from './OrderThumb';
+import OrderThumb from '../orders/OrderThumb';
 
 class AddedOrdersList extends Component { // eslint-disable-line
   renderActionIcon() {

@@ -7,6 +7,7 @@ class PurchaseOrdersListItem extends Component { // eslint-disable-line
       <Link to={`/purchase-orders/${this.props.purchaseOrder._id}`}>
         {this.props.purchaseOrder._id}
       </Link>
+      <span className="label">{this.props.purchaseOrder.status}</span>
     </div>);
   }
 }
