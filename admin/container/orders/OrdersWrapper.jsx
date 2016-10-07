@@ -18,7 +18,7 @@ class OrdersWrapper extends Component { // eslint-disable-line
     this.order = _.find(nextProps.orders, { _id: nextProps.params.orderId });
   }
   renderChildren() {
-    if (this.props.children) {
+    if (this.props.children && this.props.orders) {
       return React.Children.map(this.props.children, (child) => {
         return React.cloneElement(child, { order: this.order, orders: this.props.orders });
       });

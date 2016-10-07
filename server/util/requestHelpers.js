@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 function getAddressId(address) {
   return `addr-${address._id}`;
 }
@@ -75,11 +77,11 @@ export function requestAddresses(orders) {
 }
 
 export function requestItems(orders) {
-  return orders.map((order) => {
+  return _.flatten(orders.map((order) => {
     return order.items.map((item) => {
       return requestItem(item);
     });
-  });
+  }));
 }
 
 export function requestOrder(purchaseOrder, orders) {

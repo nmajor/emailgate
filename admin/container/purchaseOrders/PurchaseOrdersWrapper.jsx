@@ -18,7 +18,7 @@ class PurchaseOrdersWrapper extends Component { // eslint-disable-line
     this.purchaseOrder = _.find(nextProps.purchaseOrders, { _id: nextProps.params.purchaseOrderId });
   }
   renderChildren() {
-    if (this.props.children) {
+    if (this.props.children && this.props.purchaseOrders ) {
       return React.Children.map(this.props.children, (child) => {
         return React.cloneElement(child, { purchaseOrder: this.purchaseOrder, purchaseOrders: this.props.purchaseOrders });
       });

@@ -125,11 +125,10 @@ function getDockerConfig(env, task) {
 }
 
 function findContainer(name) {
-  console.log(name);
   return new Promise((resolve, reject) => {
     docker.listContainers({ all: true }, (err, containers) => {
       if (err) { return reject(err); }
-      const containerInfo = _.find(containers, (info) => { console.log(info.Names); return info.Names.indexOf(`/${name}`) > -1; });
+      const containerInfo = _.find(containers, (info) => { return info.Names.indexOf(`/${name}`) > -1; });
 
       if (!containerInfo) { return resolve(undefined); }
       const container = docker.getContainer(containerInfo.Id);

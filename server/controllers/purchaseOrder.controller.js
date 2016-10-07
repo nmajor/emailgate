@@ -86,6 +86,7 @@ export function removeOrder(req, res) {
 
 export function rebuildRequest(req, res) {
   PurchaseOrder.findOne({ _id: req.params.id })
+  .populate('orders')
   .then((purchaseOrder) => {
     return purchaseOrder.rebuildRequest();
   })

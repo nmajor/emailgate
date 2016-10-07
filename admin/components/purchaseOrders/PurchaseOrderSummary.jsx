@@ -17,7 +17,7 @@ class PurchaseOrderSummary extends Component { // eslint-disable-line
         </div>);
       });
 
-      return (<div className="purchase-order-order-summary-thumb">
+      return (<div key={order._id} className="purchase-order-order-summary-thumb">
         <OrderThumb className="order" order={order} />
         {items}
       </div>);

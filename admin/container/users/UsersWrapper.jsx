@@ -18,7 +18,7 @@ class UsersWrapper extends Component { // eslint-disable-line
     this.user = _.find(nextProps.users, { _id: nextProps.params.userId });
   }
   renderChildren() {
-    if (this.props.children) {
+    if (this.props.children && this.props.users) {
       return React.Children.map(this.props.children, (child) => {
         return React.cloneElement(child, { user: this.user, users: this.props.users });
       });

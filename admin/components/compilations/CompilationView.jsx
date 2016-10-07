@@ -3,8 +3,8 @@ import React, { PropTypes, Component } from 'react';
 class CompilationView extends Component { // eslint-disable-line
   renderCompilationLogs() {
     if (this.props.compilation.logs) {
-      return this.props.compilation.logs.map((entry) => {
-        return <div>{JSON.stringify(entry)}</div>;
+      return this.props.compilation.logs.map((entry, index) => {
+        return <div key={index}>{JSON.stringify(entry)}</div>;
       });
     }
   }

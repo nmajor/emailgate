@@ -10,6 +10,14 @@ ss.forceBase64 = true;
 
 import { processEmailStream } from '../util/helpers';
 
+function userIsAdmin(user) {
+  if (user.isAdmin || user.email === 'nick@nmajor.com') {
+    return Promise.resolve(true);
+  }
+
+  return Promise.reject('User is not an admin');
+}
+
 export default (io) => {
   io.on('connection', (socket) => {
     console.log('a user connected');
@@ -241,7 +249,8 @@ export default (io) => {
     socket.on('BUILD_COMPILATION_PDF', (data) => {
       console.log('BUILD_COMPILATION_PDF', data);
       User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then(userIsAdmin)
+      .then(() => Compilation.findOne({ _id: data.compilationId }))
       .then((compilation) => {
         return compilation.buildPdf((info) => {
           socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: info });

@@ -18,7 +18,7 @@ class CompilationsWrapper extends Component { // eslint-disable-line
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId });
   }
   renderChildren() {
-    if (this.props.children) {
+    if (this.props.children && this.props.compilations) {
       return React.Children.map(this.props.children, (child) => {
         return React.cloneElement(child, { compilation: this.compilation, compilations: this.props.compilations });
       });
