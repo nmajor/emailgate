@@ -33,8 +33,8 @@ class OrderThumb extends Component { // eslint-disable-line
 OrderThumb.propTypes = {
   className: PropTypes.string,
   order: PropTypes.object.isRequired,
-  action: PropTypes.func.isRequired,
-  renderActionIcon: PropTypes.func.isRequired,
+  action: PropTypes.func,
+  renderActionIcon: PropTypes.func,
 };
 
 export default OrderThumb;

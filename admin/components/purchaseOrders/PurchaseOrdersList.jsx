@@ -4,7 +4,7 @@ import PurchaseOrdersListItem from './PurchaseOrdersListItem';
 class PurchaseOrdersList extends Component {
   renderOrdersList() {
     return this.props.purchaseOrders.map((purchaseOrder) => {
-      return <PurchaseOrdersListItem key={purchaseOrder._id} purchaseOrder={purchaseOrder} />;
+      return <PurchaseOrdersListItem key={purchaseOrder._id} purchaseOrder={purchaseOrder} delete={this.props.deletePurchaseOrder} />;
     });
   }
   render() {
@@ -20,6 +20,7 @@ class PurchaseOrdersList extends Component {
 
 PurchaseOrdersList.propTypes = {
   purchaseOrders: PropTypes.array.isRequired,
+  deletePurchaseOrder: PropTypes.func.isRequired,
 };
 
 export default PurchaseOrdersList;

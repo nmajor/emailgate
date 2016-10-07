@@ -13,6 +13,17 @@ const purchaseOrders = (state = initialState.purchaseOrders, action) => {
         action.purchaseOrder,
       ];
 
+    case ActionTypes.REMOVE_PURCHASE_ORDER : {
+      const removePurchaseOrderIndex = _.findIndex(state, { _id: action.purchaseOrder._id });
+      if (removePurchaseOrderIndex > -1) {
+        return [
+          ...state.slice(0, removePurchaseOrderIndex),
+          ...state.slice(removePurchaseOrderIndex + 1),
+        ];
+      }
+      return state;
+    }
+
     case ActionTypes.UPDATE_PURCHASE_ORDER_IN_PURCHASE_ORDERS : {
       const purchaseOrderIndex = _.findIndex(state, { _id: action.purchaseOrder._id });
       if (purchaseOrderIndex > -1) {

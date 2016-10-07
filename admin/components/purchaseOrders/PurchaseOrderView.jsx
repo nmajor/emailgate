@@ -66,7 +66,7 @@ class PurchaseOrderView extends Component { // eslint-disable-line
           {this.renderOrders()}
         </div>
         <div>
-          <h3>Request <span className="btn btn-default btn-xs-true"><span className="glyphicon glyphicon-refresh" aria-hidden="true"></span></span></h3>
+          <h3>Request <span className="btn btn-default btn-xs-true" onClick={this.props.rebuildRequest}><span className="glyphicon glyphicon-refresh" aria-hidden="true"></span></span></h3>
           <PurchaseOrderRequest purchaseOrder={this.props.purchaseOrder} />
         </div>
       </div>

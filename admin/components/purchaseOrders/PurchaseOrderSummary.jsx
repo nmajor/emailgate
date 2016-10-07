@@ -12,7 +12,7 @@ class PurchaseOrderSummary extends Component { // eslint-disable-line
 
     return _.flatten(_.map(this.props.purchaseOrder.orders, (order) => {
       const items = _.map(order.items, (item) => {
-        return (<div className="item">
+        return (<div key={item._id} className="item">
           {item.quantity} x <Link to={`/compilations/${item.props.compilationId}`}>{item.props.compilationName || item.props.compilationTitle}</Link> - {item.product.desc}
         </div>);
       });
@@ -42,6 +42,7 @@ class PurchaseOrderSummary extends Component { // eslint-disable-line
   }
   render() {
     return (<div>
+      <div>Status: {this.props.purchaseOrder.status}</div>
       {this.renderOrderCount()}
       {this.renderOrdersTotal()}
       {this.renderOrderItems()}

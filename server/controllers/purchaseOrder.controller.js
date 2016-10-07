@@ -37,7 +37,14 @@ export function patch(req, res) {
 }
 
 export function remove(req, res) {
-  PurchaseOrder.remove({ _id: req.params.id })
+  PurchaseOrder.findOne({ _id: req.params.id })
+  .then((purchaseOrder) => {
+    if (!purchaseOrder.orders || purchaseOrder.orders.length === 0) {
+      return purchaseOrder.remove();
+    }
+
+    return Promise.resolve();
+  })
   .then((purchaseOrder) => {
     res.json(purchaseOrder);
   });
@@ -87,5 +94,6 @@ export function rebuildRequest(req, res) {
   })
   .then((purchaseOrder) => {
     res.json(purchaseOrder);
-  });
+  })
+  .catch((err) => { console.log('An error happened', err); });
 }

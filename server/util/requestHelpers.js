@@ -95,7 +95,7 @@ export function requestOrder(purchaseOrder, orders) {
 
 export function buildRequest(purchaseOrder, orders) {
   return {
-    Auth: 'yoda',
+    Auth: 'yoda2',
     CustomerId: '',
     PayloadId: '',
     Addresses: requestAddresses(orders),

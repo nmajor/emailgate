@@ -17,6 +17,13 @@ export function addPurchaseOrder(purchaseOrder) {
   };
 }
 
+export function removePurchaseOrder(purchaseOrder) {
+  return {
+    type: ActionTypes.REMOVE_PURCHASE_ORDER,
+    purchaseOrder,
+  };
+}
+
 export function updatePurchaseOrderInPurchaseOrders(purchaseOrder) {
   return {
     type: ActionTypes.UPDATE_PURCHASE_ORDER_IN_PURCHASE_ORDERS,
@@ -80,6 +87,38 @@ export function createPurchaseOrder(props, cb) {
       }
 
       dispatch(addPurchaseOrder(res));
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
+export function deletePurchaseOrder(purchaseOrderId, cb) {
+  cb = cb || function() {} // eslint-disable-line
+
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/admin/purchase-orders/${purchaseOrderId}`, {
+      credentials: 'include',
+      method: 'delete',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(removePurchaseOrder(res));
       cb(res);
     })
     .catch((err) => {
