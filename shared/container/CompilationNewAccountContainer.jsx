@@ -10,7 +10,7 @@ class CompilationNewAccountContainer extends Component {
     this.back = this.back.bind(this);
   }
   back() {
-    this.context.router.push(`/compilations/${this.props.compilation._id}/next`);
+    this.context.router.push(`/compilations/${this.props.compilation._id}/post-next`);
   }
   userReturnTo() {
     this.context.router.push(`/compilations/${this.props.compilation._id}/add-emails`);

@@ -14,7 +14,7 @@ class NewCompilationContainer extends Component {
 
   create(props) {
     this.props.dispatch(Actions.createCompilation(props, (compilation) => {
-      this.context.router.push(`/compilations/${compilation._id}/next`);
+      this.context.router.push(`/compilations/${compilation._id}/pre-next`);
     }));
   }
 

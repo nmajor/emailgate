@@ -15,6 +15,16 @@ class CompilationCheckoutContainer extends Component {
     this.back = this.back.bind(this);
     this.addToCart = this.addToCart.bind(this);
   }
+  componentWillReceiveProps(nextProps) {
+    const items = nextProps.cart.items || [];
+    const cartHasCompilation = _.some(items, (item) => { return item.props.compilationId === this.props.compilation._id; });
+    console.log('blah hey ', items.map((item) => { return item.props.compilationId; }));
+    console.log('blah hey ', cartHasCompilation);
+
+    if (cartHasCompilation) {
+      this.context.router.push(`/compilations/${this.props.compilation._id}/post-next`);
+    }
+  }
   addToCart(props) {
     this.props.dispatch(Actions.addCartItem(1, props.quantity, {
       compilationId: this.props.compilation._id,

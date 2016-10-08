@@ -1,18 +1,28 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 
-class CompilationNextContainer extends Component {
+class CompilationPreNextContainer extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.compilationHasTitle = this.compilationHasTitle.bind(this);
+    this.compilationHasEmails = this.compilationHasEmails.bind(this);
+  }
   componentWillMount() {
-    console.log('blah');
-    if (!this.props.compilation.title) {
+    if (!this.compilationHasTitle()) {
       this.context.router.push(`/compilations/${this.props.compilation._id}/build/title`);
     // } else if (_.find(this.props.compilationPages, { type: 'message-page' })) {
     //   this.context.router.push(`/compilations/${this.props.compilation._id}/build/message`);
-    } else if (this.props.compilationEmails.length === 0) {
+    } else if (!this.compilationHasEmails()) {
       this.context.router.push(`/compilations/${this.props.compilation._id}/build/add-emails`);
     } else {
       this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
     }
+  }
+  compilationHasTitle() {
+    return !!(this.props.compilation.title);
+  }
+  compilationHasEmails() {
+    return this.props.compilationEmails.length > 0;
   }
   render() {
     return (<div></div>);
@@ -26,14 +36,14 @@ function mapStateToProps(store) {
   };
 }
 
-CompilationNextContainer.contextTypes = {
+CompilationPreNextContainer.contextTypes = {
   router: PropTypes.object.isRequired,
 };
 
-CompilationNextContainer.propTypes = {
+CompilationPreNextContainer.propTypes = {
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array.isRequired,
-  compilationPages: PropTypes.object.isRequired,
+  compilationPages: PropTypes.array.isRequired,
 };
 
-export default connect(mapStateToProps)(CompilationNextContainer);
+export default connect(mapStateToProps)(CompilationPreNextContainer);

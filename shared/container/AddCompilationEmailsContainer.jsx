@@ -23,7 +23,7 @@ class AddCompilationEmailsContainer extends Component {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.params.accountId });
   }
   back() {
-    this.context.router.push(`/compilations/${this.props.compilation._id}/next`);
+    this.context.router.push(`/compilations/${this.props.compilation._id}/pre-next`);
   }
   renderFilterContainer() {
     if (this.currentAccount) {
