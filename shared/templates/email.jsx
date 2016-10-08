@@ -16,13 +16,14 @@ class EmailTemplate {
   }
 
   mapEmailUser(user, index, array) {
-    let text = `${user.name} - ${user.address}`;
+    let text = user.name || user.address;
 
-    if (!user.name && user.address) {
-      text = user.address;
-    } else if (user.name && !user.address) {
-      text = user.name;
-    }
+    // let text = `${user.name} - ${user.address}`;
+    // if (!user.name && user.address) {
+    //   text = user.address;
+    // } else if (user.name && !user.address) {
+    //   text = user.name;
+    // }
 
     if (index !== (array.length - 1)) {
       text += ',';
@@ -119,7 +120,6 @@ class EmailTemplate {
       {this.renderSubject(email.subject)}
       {this.renderDate(email.date)}
       {this.renderFrom(email.from)}
-      {this.renderTo(email.to)}
       {this.renderBodyDangerously(email.body)}
       {this.renderAttachments(email.attachments)}
     </div>);
@@ -133,7 +133,6 @@ class EmailTemplate {
       {this.renderSubject(subjectInput)}
       {this.renderDate(this.email.date)}
       {this.renderFrom(this.email.from)}
-      {this.renderTo(this.email.to)}
       {this.renderBody(bodyInput)}
     </div>);
   }

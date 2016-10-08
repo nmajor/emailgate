@@ -3,11 +3,7 @@ import { Link } from 'react-router';
 
 class CompilationsListItem extends Component { // eslint-disable-line
   renderCompilationLink() {
-    if (this.props.compilation.emailsCount === 0) {
-      return `/compilations/${this.props.compilation._id}/add-emails`;
-    }
-
-    return `/compilations/${this.props.compilation._id}/build`;
+    return `/compilations/${this.props.compilation._id}/next`;
   }
   renderEmailsCount() {
     if (this.props.compilation.emailsCount > 0) {

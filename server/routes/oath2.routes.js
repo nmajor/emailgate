@@ -11,7 +11,6 @@ router.get('/google', (req, res) => {
   const userId = req.user._id;
   const statePropJsonString = base64.decode(req.query.state) || '{}';
   const stateProp = JSON.parse(statePropJsonString);
-  let newAccount = false;
 
   getGoogleAuthToken(authCode)
   .then((token) => {
@@ -23,18 +22,12 @@ router.get('/google', (req, res) => {
         email: profile.emailAddress,
       })
       .then((account) => {
-        if (!account._id) { newAccount = true; }
         account.authProps = { token }; // eslint-disable-line no-param-reassign
         return account.save();
       })
       .then((account) => {
         if (!stateProp.userReturnTo) { return Promise.resolve('/dashboard'); }
-
-        if (newAccount) {
-          return Promise.resolve(`${stateProp.userReturnTo}/${account._id}`);
-        }
-
-        return Promise.resolve(stateProp.userReturnTo);
+        return Promise.resolve(`${stateProp.userReturnTo}/${account._id}`);
       });
     });
   })

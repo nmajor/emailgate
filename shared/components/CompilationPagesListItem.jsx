@@ -7,7 +7,7 @@ import CompilationPageForm from './CompilationPageForm';
 class CompilationPagesListItem extends Component {
   renderHideAction() {
     return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build`}>
-      <span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+      <span className="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
     </Link>);
   }
   renderEditAction() {

@@ -24,7 +24,7 @@ class TitlePageTemplate {
       fontFamily: '\'Montserrat\', sans-serif',
       fontSize: '2em',
       textAlign: 'center',
-      padding: '150px 0 0 0',
+      padding: '250px 0 0 0',
       fontWeight: 'bold',
     };
 

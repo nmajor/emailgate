@@ -21,6 +21,7 @@ import EditAddressContainer from './container/EditAddressContainer';
 import CompilationNextContainer from './container/CompilationNextContainer';
 import CompilationBuildContainer from './container/CompilationBuildContainer';
 import AddCompilationEmailsContainer from './container/AddCompilationEmailsContainer';
+import CompilationNewAccountContainer from './container/CompilationNewAccountContainer';
 import CompilationTitleContainer from './container/CompilationTitleContainer';
 import CompilationMessageContainer from './container/CompilationMessageContainer';
 import ViewCompilationEmailContainer from './container/ViewCompilationEmailContainer';
@@ -76,6 +77,7 @@ const routes = (
       <Route path="/compilations/:compilationId/build/emails/:emailId/edit" component={EditCompilationEmailContainer} />
       <Route path="/compilations/:compilationId/build/pages/:pageId" component={ViewCompilationPageContainer} />
       <Route path="/compilations/:compilationId/build/pages/:pageId/edit" component={EditCompilationPageContainer} />
+      <Route path="/compilations/:compilationId/build/add-emails/new-account" component={CompilationNewAccountContainer} />
       <Route path="/compilations/:compilationId/build/add-emails/:accountId" component={AddCompilationEmailsContainer} />
       <Route path="/compilations/:compilationId/build/add-emails" component={AddCompilationEmailsContainer} />
       <Route path="/compilations/:compilationId/build/title" component={CompilationTitleContainer} />

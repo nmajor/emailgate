@@ -30,9 +30,7 @@ class SelectAccountContainer extends Component {
     this.props.dispatch(Actions.removeAccount(account));
   }
   renderNewAccountAction() {
-    return (<Link to="/accounts/new" className="btn btn-success btn-xs-true new-account" >
-      add a new one
-    </Link>);
+    return (<Link to={`/compilations/${this.props.compilation._id}/build/add-emails/new-account`} className="btn btn-success btn-xs-true new-account" >add a new one</Link>);
   }
   renderFooter() {
     if (this.currentAccount) { return null; }

@@ -23,7 +23,7 @@ class AccountFormContainer extends Component {
   }
 
   authUrls() {
-    const userReturnTo = window.previousLocation ? window.previousLocation.pathname : '/dashboard';
+    const userReturnTo = this.props.userReturnTo || window.previousLocation ? window.previousLocation.pathname : '/dashboard';
 
     const stateParam = JSON.stringify({ userReturnTo });
 
@@ -85,6 +85,7 @@ AccountFormContainer.propTypes = {
   back: PropTypes.func.isRequired,
   checkConnection: PropTypes.func,
   new: PropTypes.bool,
+  userReturnTo: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(AccountFormContainer);
