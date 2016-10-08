@@ -23,7 +23,7 @@ class AddCompilationEmailsContainer extends Component {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.params.accountId });
   }
   back() {
-    this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
+    this.context.router.push(`/compilations/${this.props.compilation._id}/next`);
   }
   renderFilterContainer() {
     if (this.currentAccount) {
@@ -32,7 +32,7 @@ class AddCompilationEmailsContainer extends Component {
       } else if (this.currentAccount.kind === 'google' && (new Date).getTime() > _.get(this.currentAccount, 'authProps.token.expiry_date')) {
         return <ReconnectGoogleAccount account={this.currentAccount} googleAuthUrl={this.props.config.googleAuthUrl} />;
       }
-      return <FilterContainer compilation={this.props.compilation} currentAccount={this.currentAccount} />;
+      return <FilterContainer compilation={this.props.compilation} currentAccount={this.currentAccount} done={this.back} />;
     }
   }
   renderFilteredAccountEmailsContainer() {
@@ -59,12 +59,19 @@ class AddCompilationEmailsContainer extends Component {
 
     return <div className="row col-md-6">{this.renderHelp()}</div>;
   }
+  renderHeader() {
+    if (this.props.compilationEmails.length === 0) {
+      return <h3 className="text-center">Next add some emails to your Email Book.</h3>;
+    }
+
+    return <h1 className="text-center">Next add some emails to your Email Book.</h1>;
+  }
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
       <Modal close={this.back}>
         <div>
-          <h1 className="text-center">Add Emails</h1>
+          {this.renderHeader()}
           {this.renderSelectAccount()}
           {this.renderFilterContainer()}
           {this.renderFilteredAccountEmailsContainer()}
@@ -78,6 +85,7 @@ function mapStateToProps(store) {
   return {
     config: store.config,
     accounts: store.accounts,
+    compilationEmails: store.compilationEmails,
     filteredAccountEmails: store.filteredAccountEmails,
   };
 }
@@ -92,6 +100,7 @@ AddCompilationEmailsContainer.propTypes = {
   config: PropTypes.object.isRequired,
   compilation: PropTypes.object.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
+  compilationEmails: PropTypes.array.isRequired,
   params: PropTypes.object,
 };
 

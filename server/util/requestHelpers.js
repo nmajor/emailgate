@@ -1,5 +1,13 @@
 import _ from 'lodash';
 
+// function decPrice(price) {
+//   return price / 100;
+// }
+
+function getPurchaseOrderId(purchaseOrder) {
+  return `purc-${purchaseOrder._id}`;
+}
+
 function getAddressId(address) {
   return `addr-${address._id}`;
 }
@@ -27,9 +35,9 @@ function requestShipTo(order) {
     Method: '',
     OrgId: '',
     PackingSlip: {
-      Currency: '',
+      Currency: 'USD',
       MessageLine1: 'Thank you for your order',
-      Terms: '',
+      MessageLine2: 'Please tell your friends about myemailbook.com',
     },
   };
 }
@@ -44,12 +52,14 @@ export function requestAddress(address) {
   return {
     Id: getAddressId(address),
     City: address.city,
-    Company: '',
-    Country: '',
-    Line1: '',
-    Line2: '',
-    PostalCode: '',
-    Province: '',
+    Company: `${address.firstName} ${address.lastName}`,
+    Country: 'USA',
+    Line1: address.address1,
+    Line2: address.address2,
+    PostalCode: address.postalCode,
+    Province: address.region,
+    ContactLastName: address.lastName,
+    PhoneNumber: address.phone,
   };
 }
 
@@ -57,6 +67,8 @@ export function requestItem(item) {
   const compilation = item.props.compilation;
   return {
     Id: getItemId(item.props.compilation),
+    BindingType: 'Hardcover',
+    BookTypeId: 999999,
     BookBlock: {
       FileVersion: '2007-05-30 11:47:15',
       Url: compilation.pdf.url,
@@ -87,7 +99,7 @@ export function requestItems(orders) {
 export function requestOrder(purchaseOrder, orders) {
   return {
     BillToAddressId: '',
-    Id: '',
+    Id: getPurchaseOrderId(purchaseOrder),
     OrderReference1: '',
     ReturnToAddressId: '',
     ServiceLevel: '',

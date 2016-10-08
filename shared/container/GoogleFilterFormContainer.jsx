@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import FilterForm from '../components/GoogleFilterForm';
 import FilteredEmailsActions from './FilteredEmailsActions';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 class GoogleFilterFormContainer extends Component {
   constructor(props, context) {
@@ -41,6 +41,7 @@ class GoogleFilterFormContainer extends Component {
         deselectAll={this.props.deselectAll}
         allSelected={this.props.allSelected}
         addSelected={this.props.addSelected}
+        done={this.props.done}
       />
     </div>);
   }
@@ -64,6 +65,7 @@ GoogleFilterFormContainer.propTypes = {
   deselectAll: PropTypes.func.isRequired,
   allSelected: PropTypes.bool.isRequired,
   addSelected: PropTypes.func.isRequired,
+  done: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(GoogleFilterFormContainer);

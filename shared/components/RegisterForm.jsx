@@ -42,13 +42,12 @@ class RegisterForm extends Component {
     return (
       <div className="form-group">
         <label htmlFor="register-name">Name</label>
-          <input
-            ref="name"
-            id="register-name"
-            className="form-control"
-            type="text"
-            placeholder="John Doe"
-          />
+        <input
+          ref="name"
+          id="register-name"
+          className="form-control"
+          type="text"
+        />
       </div>
     );
   }
@@ -56,16 +55,12 @@ class RegisterForm extends Component {
     return (
       <div className="form-group">
         <label htmlFor="register-email">Email</label>
-          <div className="input-group">
-            <span className="input-group-addon">@</span>
-            <input
-              ref="email"
-              id="register-email"
-              className="form-control"
-              type="text"
-              placeholder="john@example.com"
-            />
-          </div>
+        <input
+          ref="email"
+          id="register-email"
+          className="form-control"
+          type="text"
+        />
       </div>
     );
   }

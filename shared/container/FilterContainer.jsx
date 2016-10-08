@@ -54,6 +54,7 @@ class FilterContainer extends Component {
         deselectAll={this.deselectAll}
         allSelected={this.allSelected()}
         addSelected={this.addSelected}
+        done={this.props.done}
       />);
     }
   }
@@ -80,6 +81,7 @@ FilterContainer.propTypes = {
   currentAccount: PropTypes.object.isRequired,
   selectedFilteredEmailIds: PropTypes.array.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
+  done: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(FilterContainer);

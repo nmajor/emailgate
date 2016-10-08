@@ -354,6 +354,14 @@ input {
 .compilation-container {
   padding: 10px 0 30px 0;
 }
+.modal-fixed-footer {
+  display: block;
+  position: fixed;
+  left: 0px;
+  bottom: 40px;
+  background: #ccc;
+  padding: 11px;
+}
 
 .fixed-footer {
   border-top: 1px solid #ccc;

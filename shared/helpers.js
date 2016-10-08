@@ -101,7 +101,7 @@ export function emailPageMap(emails) {
   let page = 1;
   _.forEach(mySortedEmails, (email) => {
     email.pdf = email.pdf || {}; // eslint-disable-line no-param-reassign
-    const pageCount = email.pdf.pageCount || 1;
+    const pageCount = email.pdf.pageCount || email.estimatedPageCount;
     pageMap[email._id] = page;
     page += pageCount;
   });

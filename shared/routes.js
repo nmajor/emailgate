@@ -18,6 +18,7 @@ import CheckoutContainer from './container/CheckoutContainer';
 import CheckoutConfirmContainer from './container/CheckoutConfirmContainer';
 import NewAddressContainer from './container/NewAddressContainer';
 import EditAddressContainer from './container/EditAddressContainer';
+import CompilationNextContainer from './container/CompilationNextContainer';
 import CompilationBuildContainer from './container/CompilationBuildContainer';
 import AddCompilationEmailsContainer from './container/AddCompilationEmailsContainer';
 import CompilationTitleContainer from './container/CompilationTitleContainer';
@@ -68,6 +69,7 @@ const routes = (
     </Route>
 
     <Route component={CompilationContainer}>
+      <Route path="/compilations/:compilationId/next" component={CompilationNextContainer} />
       <Route path="/compilations/:compilationId/build" component={CompilationBuildContainer} />
       <Route path="/compilations/:compilationId/build/checkout" component={CompilationCheckoutContainer} />
       <Route path="/compilations/:compilationId/build/emails/:emailId" component={ViewCompilationEmailContainer} />

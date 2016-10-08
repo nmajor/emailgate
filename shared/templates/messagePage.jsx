@@ -7,8 +7,8 @@ class MessagePageTemplate {
     this.page = page;
 
     this.defaultContent = {
-      message: 'Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod.',
-      signature: 'John Doe',
+      message: 'Your custom message goes here',
+      signature: 'Your name goes here',
     };
 
     this.content = this.page.content || this.defaultContent;

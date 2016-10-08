@@ -22,7 +22,6 @@ socket.on('FILTERED_ACCOUNT_EMAILS_ERROR', (errs) => {
 
 socket.on('FILTERED_ACCOUNT_EMAILS', (data) => {
   console.log('event FILTERED_ACCOUNT_EMAILS');
-  console.log(data);
   store.dispatch(Actions.setFilteredAccountEmailsCount(data.totalResults));
   store.dispatch(Actions.setFilteredAccountEmails(data.messages));
   store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('resultsPerPage', data.resultsPerPage));

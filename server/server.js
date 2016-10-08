@@ -205,6 +205,10 @@ const renderAdminPage = (html, renderedState) => {
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
+  console.log('blah request session', req.session.id);
+  console.log('blah request session', req.session._id);
+
+
   let routes = appRoutes;
   let renderPage = renderFullPage;
   let initialState = appInitialState;

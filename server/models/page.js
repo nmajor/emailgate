@@ -8,8 +8,9 @@ const PageSchema = new Schema({
   _compilation: { type: String, ref: 'Compilation' },
   type: String,
   html: String,
-  estimatedPageCount: { type: Number, default: 1 },
+  content: {},
   pdf: {},
+  estimatedPageCount: { type: Number, default: 1 },
 }, {
   timestamps: true,
 });
@@ -18,7 +19,7 @@ PageSchema.statics.defaultPages = function defaultPages() {
   return [
     { type: 'cover' },
     { type: 'title-page' },
-    { type: 'message-page' },
+    // { type: 'message-page' },
     { type: 'table-of-contents' },
   ];
 };

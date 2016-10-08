@@ -14,7 +14,7 @@ class NewCompilationContainer extends Component {
 
   create(props) {
     this.props.dispatch(Actions.createCompilation(props, (compilation) => {
-      this.context.router.push(`/compilations/${compilation._id}/build`);
+      this.context.router.push(`/compilations/${compilation._id}/next`);
     }));
   }
 
@@ -29,7 +29,7 @@ class NewCompilationContainer extends Component {
         <div className="container">
           <div className="row">
             <div className={colWrapperClass()}>
-              <h1>New Email Book</h1>
+              <h3>Add a title to get started</h3>
               <CompilationTitleForm compilation={{}} submitForm={this.create} back={this.back} fetching={this.props.fetching.newCompilation} />
             </div>
           </div>

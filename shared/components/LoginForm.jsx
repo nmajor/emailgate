@@ -42,16 +42,12 @@ class LoginForm extends Component {
     return (
       <div className="form-group">
         <label htmlFor="login-email">Email</label>
-          <div className="input-group">
-            <span className="input-group-addon">@</span>
-            <input
-              ref="email"
-              id="login-email"
-              className="form-control"
-              type="text"
-              placeholder="john@example.com"
-            />
-          </div>
+        <input
+          ref="email"
+          id="login-email"
+          className="form-control"
+          type="text"
+        />
       </div>
     );
   }
