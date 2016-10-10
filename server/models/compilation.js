@@ -19,32 +19,23 @@ const CompilationSchema = new Schema({
   timestamps: true,
 });
 
-CompilationSchema.virtual('emailsCount').get(function getConnectionValid() {
-  return this._emailsCount;
-});
-
-CompilationSchema.virtual('emailsCount').set(function setConnectionValid(val) {
-  this._emailsCount = val;
-  return;
-});
-
-CompilationSchema.set('toObject', {
-  getters: true,
-  virtuals: true,
-});
-
-CompilationSchema.set('toJSON', {
-  getters: true,
-  virtuals: true,
-});
-
-CompilationSchema.post('init', (doc, next) => {
-  Email.count({ _compilation: doc._id })
-  .then((emailsCount) => {
-    doc.set('emailsCount', emailsCount);
-    next();
+CompilationSchema.methods.updateEmails = function updateEmails() {
+  return Email.find({ _compilation: this._id })
+  .select('_id')
+  .then((emails) => {
+    this.emails = emails;
+    return this.save();
   });
-});
+};
+
+CompilationSchema.methods.updatePages = function updatePages() {
+  return Page.find({ _compilation: this._id })
+  .select('_id')
+  .then((pages) => {
+    this.pages = pages;
+    return this.save();
+  });
+};
 
 CompilationSchema.methods.seedPages = function seedPages() {
   return Page.count({ _compilation: this._id })
@@ -54,7 +45,8 @@ CompilationSchema.methods.seedPages = function seedPages() {
         const newPage = new Page(pageData);
         newPage._compilation = this._id;
         return newPage.save();
-      }));
+      }))
+      .then(this.updatePages);
     }
   });
 };

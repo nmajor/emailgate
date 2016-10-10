@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import base64 from 'base64url';
 
-class AccountExpiryLabel extends Component {
+class ReconnectGoogleAccount extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -13,8 +13,11 @@ class AccountExpiryLabel extends Component {
     window.location = googleAuthUrl;
   }
   googleAuthUrl() {
-    const userReturnTo = window.location.pathname ? window.location.pathname : '/dashboard';
+    let userReturnTo = window.previousLocation ? window.previousLocation.pathname : '/dashboard';
+    userReturnTo = this.props.userReturnTo ? this.props.userReturnTo : userReturnTo;
+
     const stateParam = JSON.stringify({ userReturnTo });
+
     const stateString = base64.encode(stateParam);
 
     return `${this.props.googleAuthUrl}&login_hint=${this.props.account.email}&state=${stateString}`;
@@ -29,9 +32,10 @@ class AccountExpiryLabel extends Component {
   }
 }
 
-AccountExpiryLabel.propTypes = {
+ReconnectGoogleAccount.propTypes = {
   account: PropTypes.object.isRequired,
   googleAuthUrl: PropTypes.string.isRequired,
+  userReturnTo: PropTypes.string,
 };
 
-export default AccountExpiryLabel;
+export default ReconnectGoogleAccount;

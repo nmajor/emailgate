@@ -95,6 +95,7 @@ export function processEmail(email) {
   return {
     date: email.date,
     id: email.id,
+    remote_id: email.id,
     mid,
     // headers: email.headers,
     to: email.to,

@@ -19,7 +19,9 @@ class Home extends Component { // eslint-disable-line
     }));
   }
   renderProductPrice() {
-    return prettyIntegerPrice(_.find(this.props.config.products, { _id: 1 }).price);
+    if (this.props.config.products) {
+      return prettyIntegerPrice(_.find(this.props.config.products, { _id: 1 }).price);
+    }
   }
 
   renderUserActions() {
@@ -62,7 +64,7 @@ class Home extends Component { // eslint-disable-line
             <h1>myemailbook.com</h1>
             <h2>There's a story in your emails. Find it. Publish it. Keep it forever.</h2>
             <br /><br />
-            <Link to="/register" className="btn btn-transparent">CREATE AN ACCOUNT TO GET STARTED</Link>
+            <Link to="/compilations/new" className="btn btn-transparent">DEMO FOR FREE</Link>
           </div>
         </div>
       </div>
@@ -97,7 +99,7 @@ class Home extends Component { // eslint-disable-line
               <p>Search and filter your emails, then export them into our custom email book builder.</p>
               <p>Edit, tweak, and preview your email book.</p>
               <p>We will print and publish your book on demand and ship as many as your want to your door.</p>
-              <p><Link to="/register" className="btn btn-success">CREATE AN ACCOUNT TO GET STARTED</Link></p>
+              <p><Link to="/compilations/new" className="btn btn-success">DEMO FOR FREE</Link></p>
             </div>
           </div>
         </div>

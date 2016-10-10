@@ -128,6 +128,36 @@ export function registerUser(userData, cb) {
   };
 }
 
+export function registerTmpUser(cb) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/register/tmp`, {
+      credentials: 'include',
+      method: 'post',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+      dispatch(setUser(res));
+      socket.connect(baseURL, { forceNew: true });
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
 export function loginUser(userData, cb) {
   return (dispatch) => {
     dispatch(setPropertyUser('loggingIn', true));

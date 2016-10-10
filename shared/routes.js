@@ -21,6 +21,8 @@ import EditAddressContainer from './container/EditAddressContainer';
 import CompilationPreNextContainer from './container/CompilationPreNextContainer';
 import CompilationPostNextContainer from './container/CompilationPostNextContainer';
 import CompilationBuildContainer from './container/CompilationBuildContainer';
+import CompilationLoginContainer from './container/CompilationLoginContainer';
+import CompilationRegisterContainer from './container/CompilationRegisterContainer';
 import AddCompilationEmailsContainer from './container/AddCompilationEmailsContainer';
 import CompilationNewAccountContainer from './container/CompilationNewAccountContainer';
 import CompilationTitleContainer from './container/CompilationTitleContainer';
@@ -74,6 +76,10 @@ const routes = (
       <Route path="/compilations/:compilationId/pre-next" component={CompilationPreNextContainer} />
       <Route path="/compilations/:compilationId/post-next" component={CompilationPostNextContainer} />
       <Route path="/compilations/:compilationId/build" component={CompilationBuildContainer} />
+      <Route path="/compilations/:compilationId/build/login" component={CompilationLoginContainer} />
+      <Route path="/compilations/:compilationId/build/login/:next" component={CompilationLoginContainer} />
+      <Route path="/compilations/:compilationId/build/register" component={CompilationRegisterContainer} />
+      <Route path="/compilations/:compilationId/build/register/:next" component={CompilationRegisterContainer} />
       <Route path="/compilations/:compilationId/build/checkout" component={CompilationCheckoutContainer} />
       <Route path="/compilations/:compilationId/build/emails/:emailId" component={ViewCompilationEmailContainer} />
       <Route path="/compilations/:compilationId/build/emails/:emailId/edit" component={EditCompilationEmailContainer} />

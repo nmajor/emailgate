@@ -128,6 +128,12 @@ export default (io) => {
               console.log(`Error happened when adding compilation email ${err}`);
             });
           }));
+        })
+        .then(() => {
+          return compilation.updateEmails();
+        })
+        .then((compilation) => { // eslint-disable-line no-shadow
+          socket.emit('UPDATED_COMPILATION', compilation);
         });
       });
     });
@@ -148,7 +154,13 @@ export default (io) => {
           .catch((err) => {
             console.log(`Error happened when adding compilation email ${err}`);
           });
-        }));
+        }))
+        .then(() => {
+          return compilation.updateEmails();
+        })
+        .then((compilation) => { // eslint-disable-line no-shadow
+          socket.emit('UPDATED_COMPILATION', compilation);
+        });
       });
     });
 
@@ -156,9 +168,17 @@ export default (io) => {
       console.log('REMOVE_COMPILATION_EMAIL');
       User.findOne({ email: socket.request.session.passport.user })
       .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Email.findOneAndRemove({ _compilation: compilation._id, _id: data.emailId }))
-      .then((email) => {
-        socket.emit('REMOVED_COMPILATION_EMAIL', email);
+      .then((compilation) => {
+        return Email.findOneAndRemove({ _compilation: compilation._id, _id: data.emailId })
+        .then((email) => {
+          socket.emit('REMOVED_COMPILATION_EMAIL', email);
+        })
+        .then(() => {
+          return compilation.updateEmails();
+        })
+        .then((compilation) => { // eslint-disable-line no-shadow
+          socket.emit('UPDATED_COMPILATION', compilation);
+        });
       });
     });
 

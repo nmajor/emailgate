@@ -18,8 +18,6 @@ class CompilationCheckoutContainer extends Component {
   componentWillReceiveProps(nextProps) {
     const items = nextProps.cart.items || [];
     const cartHasCompilation = _.some(items, (item) => { return item.props.compilationId === this.props.compilation._id; });
-    console.log('blah hey ', items.map((item) => { return item.props.compilationId; }));
-    console.log('blah hey ', cartHasCompilation);
 
     if (cartHasCompilation) {
       this.context.router.push(`/compilations/${this.props.compilation._id}/post-next`);

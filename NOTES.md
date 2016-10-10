@@ -2,9 +2,13 @@
 
 
 TODO:
-Move selected account id to a URL param
-Add an add-title page/modal
-Add an add-message page/modal
+
+Login/register compilation build modal
+Save button that logs you in or registers you and connects things to your user
+Add login/register in post-next before checkout
+Attach things to session and then user
+No-login required compilation demo
+
 
 
 

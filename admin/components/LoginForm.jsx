@@ -24,9 +24,7 @@ class LoginForm extends Component {
       {this.renderEmailFormGroup()}
       {this.renderPasswordFormGroup()}
       {this.renderErrors('base')}
-      <button className="btn btn-success btn-block" onClick={this.loginUser}>
-        Login
-      </button>
+      <button className="btn btn-success btn-block" onClick={this.loginUser}>Submit</button>
       <div className="top-bumper">
         <Link to="/forgot">Forgot password?</Link>
       </div>

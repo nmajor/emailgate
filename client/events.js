@@ -49,7 +49,7 @@ socket.on('ADDED_COMPILATION_EMAIL', (email) => {
 
   store.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'selected', false));
   store.dispatch(Actions.setPropertyForFilteredAccountEmail(email, 'saving', false));
-  store.dispatch(Actions.removeIdFromSelectedFilteredEmailIds(email._id));
+  store.dispatch(Actions.removeIdFromSelectedFilteredEmailIds(email.remote_id));
   store.dispatch(Actions.addCompilationEmail(email));
 });
 

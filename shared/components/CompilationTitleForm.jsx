@@ -99,7 +99,7 @@ class CompilationTitleForm extends Component {
       {this.renderSubtitleFormGroup()}
       {this.renderErrors('base')}
       <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
-        Save
+        Submit
         {this.renderLoading()}
       </button>
       {this.renderBackAction()}
@@ -110,7 +110,7 @@ class CompilationTitleForm extends Component {
 CompilationTitleForm.propTypes = {
   compilation: PropTypes.object,
   submitForm: PropTypes.func.isRequired,
-  back: PropTypes.func.isRequired,
+  back: PropTypes.func,
   errors: PropTypes.object,
   fetching: PropTypes.bool,
 };

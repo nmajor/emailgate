@@ -54,14 +54,6 @@ class CompilationComponentsList extends Component {
       />);
     });
   }
-  renderAddEmailLink() {
-    return (<Link
-      className="btn btn-success btn-block bottom-bumper"
-      to={`/compilations/${this.props.compilation._id}/add-emails`}
-    >
-      Add Emails
-    </Link>);
-  }
   render() {
     return (<div className="component-list">
       <div className="pages-list">

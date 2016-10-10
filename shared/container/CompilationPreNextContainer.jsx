@@ -22,19 +22,20 @@ class CompilationPreNextContainer extends Component {
     return !!(this.props.compilation.title);
   }
   compilationHasEmails() {
-    return this.props.compilationEmails.length > 0;
+    const emailIds = this.props.compilation.emails || [];
+    return emailIds.length > 0;
   }
   render() {
     return (<div></div>);
   }
 }
 
-function mapStateToProps(store) {
-  return {
-    compilationEmails: store.compilationEmails,
-    compilationPages: store.compilationPages,
-  };
-}
+// function mapStateToProps(store) {
+//   return {
+//     compilationEmails: store.compilationEmails,
+//     compilationPages: store.compilationPages,
+//   };
+// }
 
 CompilationPreNextContainer.contextTypes = {
   router: PropTypes.object.isRequired,
@@ -42,8 +43,8 @@ CompilationPreNextContainer.contextTypes = {
 
 CompilationPreNextContainer.propTypes = {
   compilation: PropTypes.object.isRequired,
-  compilationEmails: PropTypes.array.isRequired,
-  compilationPages: PropTypes.array.isRequired,
+  // compilationEmails: PropTypes.array.isRequired,
+  // compilationPages: PropTypes.array.isRequired,
 };
 
-export default connect(mapStateToProps)(CompilationPreNextContainer);
+export default connect()(CompilationPreNextContainer);

@@ -1,6 +1,7 @@
 import passport from 'passport';
 import express from 'express';
 const router = express.Router(); // eslint-disable-line new-cap
+
 import * as AccountController from '../controllers/account.controller';
 import * as AddressController from '../controllers/address.controller';
 import * as CompilationController from '../controllers/compilation.controller';
@@ -35,19 +36,59 @@ router.get('/user', (req, res) => {
   }
 });
 
-router.post('/register', (req, res) => {
-  User.register(new User({ email: req.body.email, name: req.body.name }), req.body.password, (err, user) => {
+router.post('/register/tmp', (req, res) => {
+  if (req.user) { return res.json(req.user); }
+
+  const tmpUser = new User({});
+  const password = Math.random().toString(36).substr(2, 8);
+  tmpUser.name = `Temp User ${tmpUser._id}`;
+  tmpUser.email = `tmp-${tmpUser._id}@myemailbook.com`;
+
+  User.register(tmpUser, password, (err, user) => {
     if (err) {
       return res.json({ error: {
         message: err.message,
         error: err,
       } });
     }
-
+    req.user = user; // eslint-disable-line no-param-reassign
+    req.body.password = password; // eslint-disable-line no-param-reassign
+    req.body.email = user.email; // eslint-disable-line no-param-reassign
     passport.authenticate('local')(req, res, () => {
       res.json(user);
     });
   });
+});
+
+router.post('/register', (req, res) => {
+  if (req.user && req.user.isTmp === false) { return res.json(req.user); }
+  if (req.user && req.user.isTmp === true) {
+    User.findOne({ _id: req.user._id })
+    .then((user) => {
+      user.name = req.body.name; // eslint-disable-line no-param-reassign
+      user.email = req.body.email; // eslint-disable-line no-param-reassign
+      return user.save();
+    })
+    .then((user) => {
+      return user.resetPassword(req.body.password, req.body.password);
+    })
+    .then((user) => {
+      res.json(user);
+    });
+  } else {
+    User.register(new User({ email: req.body.email, name: req.body.name, isTmp: false }), req.body.password, (err, user) => {
+      if (err) {
+        return res.json({ error: {
+          message: err.message,
+          error: err,
+        } });
+      }
+
+      passport.authenticate('local')(req, res, () => {
+        res.json(user);
+      });
+    });
+  }
 });
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
@@ -109,7 +150,7 @@ router.delete('/addresses/:id', ensureAuthenticated, AddressController.removeAdd
 
 router.get('/compilations', ensureAuthenticated, CompilationController.getCompilations);
 router.get('/compilations/:id', ensureAuthenticated, CompilationController.findOneCompilation);
-router.post('/compilations', ensureAuthenticated, CompilationController.createCompilation);
+router.post('/compilations', CompilationController.createCompilation);
 router.put('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
 router.patch('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
 

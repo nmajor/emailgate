@@ -33,7 +33,7 @@ class RegisterForm extends Component {
         {this.renderPasswordFormGroup()}
         {this.renderErrors('base')}
         <button className="btn btn-success btn-block" onClick={this.registerUser}>
-          Register {this.renderLoading()}
+          Submit {this.renderLoading()}
         </button>
       </form>
     );
@@ -85,12 +85,7 @@ class RegisterForm extends Component {
     }
   }
   render() {
-    return (
-      <div className="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <h1>Register</h1>
-        {this.renderForm()}
-      </div>
-    );
+    return this.renderForm();
   }
 }
 

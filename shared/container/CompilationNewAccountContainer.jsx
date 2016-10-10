@@ -13,7 +13,7 @@ class CompilationNewAccountContainer extends Component {
     this.context.router.push(`/compilations/${this.props.compilation._id}/post-next`);
   }
   userReturnTo() {
-    this.context.router.push(`/compilations/${this.props.compilation._id}/add-emails`);
+    return `/compilations/${this.props.compilation._id}/build/add-emails`;
   }
   render() {
     return (<div>

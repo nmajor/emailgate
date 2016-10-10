@@ -23,7 +23,8 @@ class AccountFormContainer extends Component {
   }
 
   authUrls() {
-    const userReturnTo = this.props.userReturnTo || window.previousLocation ? window.previousLocation.pathname : '/dashboard';
+    let userReturnTo = window.previousLocation ? window.previousLocation.pathname : '/dashboard';
+    userReturnTo = this.props.userReturnTo ? this.props.userReturnTo : userReturnTo;
 
     const stateParam = JSON.stringify({ userReturnTo });
 

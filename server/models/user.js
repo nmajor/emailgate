@@ -8,6 +8,7 @@ const UserSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   name: String,
   email: String,
+  isTmp: { type: Boolean, default: true },
   isAdmin: { type: Boolean, default: false },
   password: String,
   resetPasswordToken: String,

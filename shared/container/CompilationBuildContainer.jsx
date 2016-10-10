@@ -7,10 +7,16 @@ import FixedFooter from '../components/FixedFooter';
 import { colWrapperClass } from '../helpers';
 
 class CompilationBuildContainer extends Component { // eslint-disable-line react/prefer-stateless-function
+  renderSaveAction() {
+    if (this.props.user.isTmp) {
+      return <Link to={`/compilations/${this.props.compilation._id}/build/register`} className="btn btn-success">Save</Link>;
+    }
+  }
   renderFixedFooter() {
     if (!this.props.edit && this.props.ffooter !== false) {
       return (<FixedFooter>
-        <Link to={`/compilations/${this.props.compilation._id}/build/add-emails`} className="btn btn-success">Add Emails</Link>
+        <Link to={`/compilations/${this.props.compilation._id}/build/add-emails`} className="btn btn-success">Add More Emails</Link>
+        {this.renderSaveAction()}
         <Link to={`/compilations/${this.props.compilation._id}/build/checkout`} className="btn btn-success">Checkout</Link>
       </FixedFooter>);
     }
@@ -31,6 +37,12 @@ class CompilationBuildContainer extends Component { // eslint-disable-line react
   }
 }
 
+function mapStateToProps(store) {
+  return {
+    user: store.user,
+  };
+}
+
 CompilationBuildContainer.propTypes = {
   compilation: PropTypes.object.isRequired,
   currentEmail: PropTypes.object,
@@ -39,6 +51,7 @@ CompilationBuildContainer.propTypes = {
   componentProps: PropTypes.object,
   ffooter: PropTypes.bool,
   params: PropTypes.object,
+  user: PropTypes.object,
 };
 
-export default connect()(CompilationBuildContainer);
+export default connect(mapStateToProps)(CompilationBuildContainer);

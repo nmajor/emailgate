@@ -8,6 +8,7 @@ import _ from 'lodash';
 const EmailSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _compilation: { type: String, ref: 'Compilation' },
+  remote_id: String,
   date: Date,
   mid: String,
   to: [],

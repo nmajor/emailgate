@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import Modal from '../components/Modal';
 import CompilationBuildContainer from './CompilationBuildContainer';
 import SelectAccountContainer from './SelectAccountContainer';
@@ -7,6 +7,7 @@ import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
 import ImapAccountPasswordFormContainer from './ImapAccountPasswordFormContainer';
 import ReconnectGoogleAccount from '../components/ReconnectGoogleAccount';
+import AccountFormContainer from './AccountFormContainer';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -18,6 +19,7 @@ class AddCompilationEmailsContainer extends Component {
 
     this.compilation = this.props.compilation;
     this.currentAccount = _.find(this.props.accounts, { _id: this.props.params.accountId });
+    this.userReturnTo = this.userReturnTo.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.params.accountId });
@@ -25,12 +27,15 @@ class AddCompilationEmailsContainer extends Component {
   back() {
     this.context.router.push(`/compilations/${this.props.compilation._id}/pre-next`);
   }
+  userReturnTo() {
+    return `/compilations/${this.props.compilation._id}/build/add-emails`;
+  }
   renderFilterContainer() {
     if (this.currentAccount) {
       if (this.currentAccount.kind === 'imap' && !this.currentAccount.connectionValid) {
         return <ImapAccountPasswordFormContainer currentAccount={this.currentAccount} />;
       } else if (this.currentAccount.kind === 'google' && (new Date).getTime() > _.get(this.currentAccount, 'authProps.token.expiry_date')) {
-        return <ReconnectGoogleAccount userReturnTo={`/compilations/${this.props.compilation._id}/add-emails`} account={this.currentAccount} googleAuthUrl={this.props.config.googleAuthUrl} />;
+        return <ReconnectGoogleAccount userReturnTo={this.userReturnTo()} account={this.currentAccount} googleAuthUrl={this.props.config.googleAuthUrl} />;
       }
       return <FilterContainer compilation={this.props.compilation} currentAccount={this.currentAccount} done={this.back} />;
     }
@@ -47,9 +52,7 @@ class AddCompilationEmailsContainer extends Component {
     return (<div className="help">
       <h4>Connect an Email Account</h4>
       <p>First step is to securely connect an email account so can search an add emails to your compilation.</p>
-      <Link to="/accounts/new" className="btn btn-lg btn-success new-account" >
-        New Account
-      </Link>
+      <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} userReturnTo={this.userReturnTo()} />
     </div>);
   }
   renderSelectAccount() {
