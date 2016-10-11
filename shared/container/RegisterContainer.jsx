@@ -11,7 +11,7 @@ class RegisterContainer extends Component {
     this.redirectToDashboard = this.redirectToDashboard.bind(this);
   }
   componentWillMount() {
-    if (this.props.user.email) {
+    if (this.props.user.email && this.props.user.isTmp === false) {
       this.context.router.push('/dashboard');
     }
   }

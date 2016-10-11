@@ -2,6 +2,7 @@ import * as ActionTypes from '../constants';
 import socket from '../../../client/socket';
 import fetch from 'isomorphic-fetch';
 import baseURL from '../../baseURL';
+import { setPropertyForFetching } from './fetchingActions';
 
 export function setCart(val) {
   return {
@@ -52,6 +53,8 @@ export function updateCartItem(cartItemId, newData) {
 
 export function getCart(cookie) {
   return (dispatch) => {
+    dispatch(setPropertyForFetching('cart', true));
+
     const fetchOptions = {};
 
     if (cookie) {
@@ -74,8 +77,10 @@ export function getCart(cookie) {
       }
 
       dispatch(setCart(res));
+      dispatch(setPropertyForFetching('cart', false));
     })
     .catch((err) => {
+      dispatch(setPropertyForFetching('cart', false));
       console.log(err);
     });
   };

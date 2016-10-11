@@ -24,14 +24,7 @@ class LoginContainer extends Component {
 
   render() {
     return (<div className="login-container">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-            <h1>Login</h1>
-            <LoginForm loginUser={this.login} errors={this.props.user.errors} user={this.props.user} />
-          </div>
-        </div>
-      </div>
+      <LoginForm loginUser={this.login} errors={this.props.user.errors} user={this.props.user} />
     </div>);
   }
 }

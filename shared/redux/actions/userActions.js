@@ -81,6 +81,10 @@ export function logoutUser(cb) {
         throw new Error(res.error.message);
       }
       dispatch(clearUser());
+      socket.once('disconnect', () => {
+        socket.connect(baseURL, { forceNew: true });
+      });
+      socket.disconnect();
       cb();
     })
     .catch((err) => {
@@ -117,7 +121,10 @@ export function registerUser(userData, cb) {
         throw new Error(res.error.message);
       }
       dispatch(setUser(res));
-      socket.connect(baseURL, { forceNew: true });
+      socket.once('disconnect', () => {
+        socket.connect(baseURL, { forceNew: true });
+      });
+      socket.disconnect();
       cb(res);
     })
     .catch((err) => {
@@ -149,7 +156,10 @@ export function registerTmpUser(cb) {
         throw new Error(res.error.message);
       }
       dispatch(setUser(res));
-      socket.connect(baseURL, { forceNew: true });
+      socket.once('disconnect', () => {
+        socket.connect(baseURL, { forceNew: true });
+      });
+      socket.disconnect();
       cb(res);
     })
     .catch((err) => {
@@ -187,7 +197,10 @@ export function loginUser(userData, cb) {
         throw new Error(res.error.message);
       }
       dispatch(setUser(res));
-      socket.connect(baseURL, { forceNew: true });
+      socket.once('disconnect', () => {
+        socket.connect(baseURL, { forceNew: true });
+      });
+      socket.disconnect();
       cb(res);
     })
     .catch((err) => {

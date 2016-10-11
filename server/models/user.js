@@ -3,6 +3,11 @@ import passportLocalMongoose from 'passport-local-mongoose';
 import shortid from 'shortid';
 import { sendMail } from '../util/mail';
 import crypto from 'crypto';
+import Compilation from './compilation';
+import Account from './account';
+import Address from './address';
+import Cart from './cart';
+import Order from './order';
 
 const UserSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -13,8 +18,6 @@ const UserSchema = new Schema({
   password: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  accounts: [{ type: String, ref: 'Account' }],
-  compilations: [{ type: String, ref: 'Compilation' }],
 }, {
   timestamps: true,
 });
@@ -35,10 +38,48 @@ function passwordValidator(password, cb) {
   return cb(null);
 }
 
+UserSchema.methods.absorbTmpUser = function unTmp(tmpUser) {
+  return Promise.all([
+    Compilation.find({ _user: tmpUser._id }),
+    Account.find({ _user: tmpUser._id }),
+    Address.find({ _user: tmpUser._id }),
+    Cart.find({ _user: tmpUser._id }),
+    Order.find({ _user: tmpUser._id }),
+  ])
+  .then((results) => {
+    const [compilations, accounts, addresses, carts, oders] = results;
+
+    return Promise.all([
+      compilations.map((compilation) => { compilation._user = this._id; return compilation.save(); }), // eslint-disable-line no-param-reassign
+      accounts.map((account) => { account._user = this._id; return account.save(); }), // eslint-disable-line no-param-reassign
+      oders.map((order) => { order._user = this._id; return order.save(); }), // eslint-disable-line no-param-reassign
+      addresses.map((address) => { return address.remove(); }),
+      carts.map((cart) => { return cart.remove(); }),
+    ]);
+  })
+  .then(() => {
+    return tmpUser.remove();
+  })
+  .then(() => {
+    return this;
+  });
+};
+
+
+UserSchema.methods.unTmp = function unTmp(name, email, password) {
+  this.name = name;
+  this.email = email;
+  this.isTmp = false;
+  return this.save()
+  .then((user) => {
+    return user.resetPassword(password, password);
+  });
+};
+
 UserSchema.methods.updatePassword = function updatePassword(currentPassword, newPassword, newPasswordConfirm) {
   return new Promise((resolve, reject) => {
-    this.checkPassword(currentPassword, (err, passwordValid) => {
-      if (passwordValid) {
+    this.checkPassword(currentPassword, (err, result) => {
+      if (result) {
         resolve(this.resetPassword(newPassword, newPasswordConfirm));
       } else {
         reject(formattedError('currentPassword', 'Current password is not correct.'));
@@ -86,6 +127,6 @@ UserSchema.methods.sendForgotPassword = function sendForgotPassword() {
   });
 };
 
-UserSchema.plugin(passportLocalMongoose, { usernameField: 'email', passwordValidator });
+UserSchema.plugin(passportLocalMongoose, { usernameField: 'email', passwordValidator, usernameLowerCase: true });
 
 export default Mongoose.model('User', UserSchema);

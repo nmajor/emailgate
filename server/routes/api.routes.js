@@ -61,38 +61,59 @@ router.post('/register/tmp', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  if (req.user && req.user.isTmp === false) { return res.json(req.user); }
-  if (req.user && req.user.isTmp === true) {
-    User.findOne({ _id: req.user._id })
+  if (req.user && !req.user.isTmp) { return res.json(req.user); }
+  if (req.user && req.user.isTmp) {
+    return req.user.unTmp(req.body.name, req.body.email, req.body.password)
     .then((user) => {
-      user.name = req.body.name; // eslint-disable-line no-param-reassign
-      user.email = req.body.email; // eslint-disable-line no-param-reassign
-      return user.save();
-    })
-    .then((user) => {
-      return user.resetPassword(req.body.password, req.body.password);
-    })
-    .then((user) => {
-      res.json(user);
-    });
-  } else {
-    User.register(new User({ email: req.body.email, name: req.body.name, isTmp: false }), req.body.password, (err, user) => {
-      if (err) {
-        return res.json({ error: {
-          message: err.message,
-          error: err,
-        } });
-      }
-
       passport.authenticate('local')(req, res, () => {
         res.json(user);
       });
     });
   }
+
+  return User.register(new User({ email: req.body.email, name: req.body.name, isTmp: false }), req.body.password, (err, user) => {
+    if (err) {
+      return res.json({ error: {
+        message: err.message,
+        error: err,
+      } });
+    }
+
+    passport.authenticate('local')(req, res, () => {
+      res.json(user);
+    });
+  });
 });
 
-router.post('/login', passport.authenticate('local'), (req, res) => {
-  res.json(req.user);
+router.post('/login', (req, res) => {
+  if (req.user && !req.user.isTmp) { return res.json(req.user); }
+
+  const email = req.body.email.trim().toLowerCase();
+  User.findOne({ email })
+  .then((user) => {
+    if (user && req.user && req.user.isTmp) {
+      return user.absorbTmpUser(req.user)
+      .then(() => {
+        return passport.authenticate('local')(req, res, () => {
+          res.json(user);
+        });
+      });
+    } else if (user) {
+      return user.authenticate(req.body.password, (err, result) => {
+        if (result) {
+          return passport.authenticate('local')(req, res, () => {
+            return res.json(user);
+          });
+        }
+
+        res.status(401);
+        return res.send('Unauthorized');
+      });
+    }
+
+    res.status(401);
+    return res.send('Unauthorized');
+  });
 });
 
 router.get('/logout', (req, res) => {

@@ -22,7 +22,11 @@ class FilterContainer extends Component {
     this.props.dispatch(Actions.setFilteredAccountEmailsErrors(undefined));
   }
   selectAll() {
-    const filteredEmailIds = this.props.filteredAccountEmails.map((email) => { return email.id; });
+    const nonCompilationEmails = _.filter(this.props.filteredAccountEmails, (email) => {
+      return !_.some(this.props.compilationEmails, (cEmail) => { return cEmail.remote_id === email.id; });
+    });
+
+    const filteredEmailIds = nonCompilationEmails.map((email) => { return email.id; });
     const selectedEmailIds = this.props.selectedFilteredEmailIds;
     const emailIds = _.union(filteredEmailIds, selectedEmailIds);
     this.props.dispatch(Actions.setSelectedFilteredEmailIds(emailIds));
@@ -34,11 +38,22 @@ class FilterContainer extends Component {
     this.props.dispatch(Actions.setSelectedFilteredEmailIds(emailIds));
   }
   allSelected() {
-    const selectedEmailIds = this.props.selectedFilteredEmailIds;
-    return !_.some(this.props.filteredAccountEmails, (email) => { return selectedEmailIds.indexOf(email.id) < 0; });
+    const nonCompilationSelectedEmailIds = _.filter(this.props.selectedFilteredEmailIds, (id) => {
+      return !_.some(this.props.compilationEmails, (cEmail) => { return cEmail.remote_id === id; });
+    });
+
+    const nonCompilationFilteredAccountEmails = _.filter(this.props.filteredAccountEmails, (email) => {
+      return !_.some(this.props.compilationEmails, (cEmail) => { return cEmail.remote_id === email.id; });
+    });
+
+    return !_.some(nonCompilationFilteredAccountEmails, (email) => { return nonCompilationSelectedEmailIds.indexOf(email.id) < 0; });
   }
   addSelected() {
-    this.props.dispatch(Actions.addEmailsToCompilationEmailsById(this.props.compilation._id, this.props.currentAccount._id, this.props.selectedFilteredEmailIds));
+    const nonCompilationSelectedEmailIds = _.filter(this.props.selectedFilteredEmailIds, (id) => {
+      return !_.some(this.props.compilationEmails, (cEmail) => { return cEmail.remote_id === id; });
+    });
+
+    this.props.dispatch(Actions.addEmailsToCompilationEmailsById(this.props.compilation._id, this.props.currentAccount._id, nonCompilationSelectedEmailIds));
   }
   renderFilterForm() {
     if (this.props.currentAccount.kind === 'imap') {
@@ -70,8 +85,9 @@ class FilterContainer extends Component {
 function mapStateToProps(store) {
   return {
     fetching: store.fetching,
-    selectedFilteredEmailIds: store.selectedFilteredEmailIds,
+    compilationEmails: store.compilationEmails,
     filteredAccountEmails: store.filteredAccountEmails,
+    selectedFilteredEmailIds: store.selectedFilteredEmailIds,
   };
 }
 
@@ -79,8 +95,9 @@ FilterContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   currentAccount: PropTypes.object.isRequired,
-  selectedFilteredEmailIds: PropTypes.array.isRequired,
+  compilationEmails: PropTypes.array.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
+  selectedFilteredEmailIds: PropTypes.array.isRequired,
   done: PropTypes.func.isRequired,
 };
 

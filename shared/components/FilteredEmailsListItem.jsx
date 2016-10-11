@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import EmailView from './EmailView';
+import Loading from './Loading';
 
 class FilteredEmailsListItem extends Component {
   constructor(props, context) {
@@ -41,10 +42,10 @@ class FilteredEmailsListItem extends Component {
   }
   renderCheckbox() {
     if (this.props.email.saving) {
-      return <span>s</span>;
+      return <span className="icon-loading"><Loading /></span>;
     } else if (this.props.disabled) {
-      return (<span className="my-checkbox checked disabled">
-        <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+      return (<span className="my-checkbox disabled">
+        <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
       </span>);
     } else if (this.props.selected) {
       return (<span className="my-checkbox checked" onClick={this.deselect}>
@@ -56,7 +57,7 @@ class FilteredEmailsListItem extends Component {
   }
   renderDate() {
     return (<div className="type">
-      <span className="glyphicon glyphicon-envelope" aria-hidden="true"></span> <span className="date">{moment(this.props.email.date).format('LL')}</span>
+      <span className="glyphicon glyphicon-envelope" aria-hidden="true"></span> <span className="date">{moment(this.props.email.date).format('LL')}</span> {this.props.disabled ? <span> - Already added to Email Book</span> : ''}
     </div>);
   }
   renderSubject() {

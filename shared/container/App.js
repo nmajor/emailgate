@@ -18,7 +18,7 @@ class App extends Component {
       this.props.dispatch(Actions.getConfig());
     }
 
-    if (!_.isEmpty(this.props.user) && this.props.cart._user !== this.props.user._id) {
+    if (!_.isEmpty(this.props.user) && this.props.cart._user !== this.props.user._id && !this.props.fetching.cart) {
       this.props.dispatch(Actions.getCart());
     }
   }
@@ -41,6 +41,7 @@ App.need = [
 
 function mapStateToProps(store) {
   return {
+    fetching: store.fetching,
     config: store.config,
     user: store.user,
     cart: store.cart,
@@ -55,6 +56,7 @@ App.propTypes = {
   dispatch: PropTypes.func.isRequired,
   children: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  fetching: PropTypes.object.isRequired,
   config: PropTypes.object.isRequired,
   cart: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,

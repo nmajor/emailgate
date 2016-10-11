@@ -66,11 +66,18 @@ class Header extends Component {
       </ul>);
     }
   }
+  renderWhoLink() {
+    if (this.props.user.email && this.props.user.isTmp) {
+      return <Link to="/register" onClick={this.forceCollapse}>Temp User</Link>;
+    }
+
+    return <Link to="/dashboard/account" onClick={this.forceCollapse}>{this.props.user.email}</Link>;
+  }
   renderUserActions() {
     if (this.props.user.email) {
       return (<ul className="nav navbar-nav navbar-right">
         <li>{this.renderCartAction()}</li>
-        <li className="hidden-xs"><Link to="/dashboard/account" onClick={this.forceCollapse}>{this.props.user.email}</Link></li>
+        <li className="hidden-xs">{this.renderWhoLink()}</li>
         <li><a href="#" onClick={this.logout}>Log Out</a></li>
       </ul>);
     }

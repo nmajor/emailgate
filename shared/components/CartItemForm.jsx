@@ -21,18 +21,17 @@ class CartItemForm extends Component {
     this.props.remove(this.props.cartItem);
   }
   addQuantity() {
-    console.log('addQuantity', (this.props.cartItem.quantity + 1));
     this.props.update(this.props.cartItem, { quantity: (this.props.cartItem.quantity + 1) });
   }
   removeQuantity() {
     if (this.props.cartItem.quantity > 0) {
-      console.log('removeQuantity', (this.props.cartItem.quantity + 1));
       this.props.update(this.props.cartItem, { quantity: (this.props.cartItem.quantity - 1) });
     }
   }
   renderProductDesc() {
     return (<td>
-      <h4>{this.props.cartItem.props.compilationName}</h4>
+      <h4>{this.props.cartItem.props.compilationTitle}</h4>
+      <h5>{this.props.cartItem.props.compilationSubtitle}</h5>
       <h6>{this.props.product.desc}</h6>
     </td>);
   }
@@ -73,13 +72,6 @@ class CartItemForm extends Component {
         {this.renderRemoveAction()}
       </td>);
     }
-  }
-  renderItemForm() {
-    return (<div>
-      <div>{this.props.product.desc}</div>
-      <div>Price: ${prettyPrice(this.props.product.price || 0)}</div>
-      <div>Quantity: {this.props.cartItem.quantity}</div>
-    </div>);
   }
   render() {
     return (<tr>

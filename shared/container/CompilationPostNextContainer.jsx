@@ -5,20 +5,20 @@ import _ from 'lodash';
 class CompilationPostNextContainer extends Component {
   constructor(props, context) {
     super(props, context);
-    this.compilationHasUser = this.compilationHasUser.bind(this);
+    this.userNeedsAuth = this.userNeedsAuth.bind(this);
     this.cartHasCompilation = this.cartHasCompilation.bind(this);
   }
   componentWillMount() {
-    if (!this.compilationHasUser()) {
-      this.context.router.push(`/compilations/${this.props.compilation._id}/build/save`);
+    if (this.userNeedsAuth()) {
+      this.context.router.push(`/compilations/${this.props.compilation._id}/build/register/post`);
     } else if (!this.cartHasCompilation()) {
       this.context.router.push(`/compilations/${this.props.compilation._id}/build/checkout`);
     } else {
       this.context.router.push('/cart');
     }
   }
-  compilationHasUser() {
-    return !!(this.props.compilation._user);
+  userNeedsAuth() {
+    return this.props.user.isTmp;
   }
   cartHasCompilation() {
     const items = this.props.cart.items || [];
@@ -32,6 +32,7 @@ class CompilationPostNextContainer extends Component {
 function mapStateToProps(store) {
   return {
     cart: store.cart,
+    user: store.user,
   };
 }
 
@@ -42,6 +43,7 @@ CompilationPostNextContainer.contextTypes = {
 CompilationPostNextContainer.propTypes = {
   compilation: PropTypes.object.isRequired,
   cart: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(CompilationPostNextContainer);

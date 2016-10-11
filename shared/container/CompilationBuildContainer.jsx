@@ -9,7 +9,7 @@ import { colWrapperClass } from '../helpers';
 class CompilationBuildContainer extends Component { // eslint-disable-line react/prefer-stateless-function
   renderSaveAction() {
     if (this.props.user.isTmp) {
-      return <Link to={`/compilations/${this.props.compilation._id}/build/register`} className="btn btn-success">Save</Link>;
+      return <Link to={`/compilations/${this.props.compilation._id}/build/register`} className="btn btn-success">Finish Later</Link>;
     }
   }
   renderFixedFooter() {
@@ -17,7 +17,7 @@ class CompilationBuildContainer extends Component { // eslint-disable-line react
       return (<FixedFooter>
         <Link to={`/compilations/${this.props.compilation._id}/build/add-emails`} className="btn btn-success">Add More Emails</Link>
         {this.renderSaveAction()}
-        <Link to={`/compilations/${this.props.compilation._id}/build/checkout`} className="btn btn-success">Checkout</Link>
+        <Link to={`/compilations/${this.props.compilation._id}/post-next`} className="btn btn-success">Checkout</Link>
       </FixedFooter>);
     }
   }

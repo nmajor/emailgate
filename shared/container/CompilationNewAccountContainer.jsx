@@ -8,9 +8,13 @@ class CompilationNewAccountContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.back = this.back.bind(this);
+    this.create = this.create.bind(this);
   }
   back() {
-    this.context.router.push(`/compilations/${this.props.compilation._id}/post-next`);
+    this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
+  }
+  create() {
+    console.log('create function goes here');
   }
   userReturnTo() {
     return `/compilations/${this.props.compilation._id}/build/add-emails`;

@@ -10,21 +10,25 @@ class CompilationRegisterContainer extends Component {
   constructor(props, context) {
     super(props, context);
     this.login = this.login.bind(this);
+    this.next = this.next.bind(this);
     this.back = this.back.bind(this);
   }
   componentWillUnmount() {
     this.props.dispatch(Actions.setPropertyUser('loggingIn', undefined));
     this.props.dispatch(Actions.setPropertyUser('errors', undefined));
   }
-  back() {
+  next() {
     if (this.props.params.next === 'post') {
       return this.context.router.push(`/compilations/${this.props.compilation._id}/post-next`);
     }
 
     return this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
+  back() {
+    return this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
+  }
   login(email, password) {
-    this.props.dispatch(Actions.loginUser({ email, password }, this.back));
+    this.props.dispatch(Actions.loginUser({ email, password }, this.next));
   }
   renderRegisterLink() {
     let link = `/compilations/${this.props.compilation._id}/build/register`;
@@ -33,12 +37,19 @@ class CompilationRegisterContainer extends Component {
     }
     return <Link to={link}>Dont have an account? Click here to make one.</Link>;
   }
+  renderHeaderText() {
+    if (this.props.params.next === 'post') {
+      return 'Please login first so we know who this Email Book belongs to.';
+    }
+
+    return 'Login here and we will connect this Email Book to your account.';
+  }
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
       <Modal close={this.back}>
         <div>
-          <h3>Login here and we will connect this Email Book to your account.</h3>
+          <h3>{this.renderHeaderText()}</h3>
           <LoginForm loginUser={this.login} errors={this.props.user.errors} user={this.props.user} />
           {this.renderRegisterLink()}
         </div>
