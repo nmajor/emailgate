@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 // import { Link } from 'react-router';
+import * as Actions from '../redux/actions/index';
 import Modal from '../components/Modal';
 import CompilationBuildContainer from './CompilationBuildContainer';
 import SelectAccountContainer from './SelectAccountContainer';
@@ -19,6 +20,8 @@ class AddCompilationEmailsContainer extends Component {
     this.compilation = this.props.compilation;
     this.currentAccount = _.find(this.props.accounts, { _id: this.props.params.accountId });
     this.userReturnTo = this.userReturnTo.bind(this);
+    this.renderModalFixedFooter = this.renderModalFixedFooter.bind(this);
+    this.addSelectedToCompilation = this.addSelectedToCompilation.bind(this);
   }
   componentWillMount() {
     if (this.props.accounts.length === 0) {
@@ -28,6 +31,13 @@ class AddCompilationEmailsContainer extends Component {
   componentWillReceiveProps(nextProps) {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.params.accountId });
   }
+  addSelectedToCompilation() {
+    const compilationEmailMids = _.map(this.props.compilationEmails, (email) => { return email.mid; });
+    this.props.dispatch(Actions.addEmailsToCompilationEmails(this.props.compilation._id,
+    _.filter(this.props.filteredAccountEmails, (email) => {
+      return email.selected === true && !compilationEmailMids.indexOf(email.mid) > -1;
+    })));
+  }
   back() {
     this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
@@ -36,6 +46,24 @@ class AddCompilationEmailsContainer extends Component {
   }
   firstTimer() {
     return this.props.compilationEmails.length === 0;
+  }
+  showResults() {
+    return this.currentAccount
+      && this.currentAccount.connectionValid
+      && this.props.filteredAccountEmails.length > 0;
+  }
+  renderModalFixedFooter() {
+    if (this.showResults()) {
+      return (<div className="row">
+        <div className="col-xs-6">
+          <button className="btn btn-default">Add <span className="glyphicon glyphicon-check" aria-hidden="true"></span> Emails to Email Book</button>
+        </div>
+        <div className="col-xs-6 text-right">
+          <span className="right-bumper" onClick={this.addSelectedToCompilation}>Email Book has <strong>{this.props.compilationEmails.length}</strong> email{this.props.compilationEmails.length > 1 ? 's' : ''}</span>
+          <button className="marginless-right btn btn-success">Done</button>
+        </div>
+      </div>);
+    }
   }
   renderFilterContainer() {
     if (this.currentAccount) {
@@ -48,10 +76,7 @@ class AddCompilationEmailsContainer extends Component {
     }
   }
   renderFilteredAccountEmailsContainer() {
-    if (this.currentAccount
-      && this.currentAccount.connectionValid
-      && this.props.filteredAccountEmails.length > 0
-    ) {
+    if (this.showResults()) {
       return <FilteredAccountEmailsContainer compilation={this.compilation} />;
     }
   }
@@ -68,7 +93,7 @@ class AddCompilationEmailsContainer extends Component {
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
-      <Modal close={this.back}>
+      <Modal close={this.back} renderFixedFooter={this.renderModalFixedFooter} showFixedFooter={this.showResults()}>
         <div>
           {this.renderHeader()}
           {this.renderSelectAccount()}

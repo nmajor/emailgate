@@ -19,6 +19,18 @@ class Modal extends Component {
     document.querySelector('footer').className = document.querySelector('footer').className.replace(` ${this.hiddenClass}`, '');
     document.querySelector('.header').className = document.querySelector('.header').className.replace(` ${this.hiddenClass}`, '');
   }
+  renderFixedFooter() {
+    if (this.props.showFixedFooter) {
+      return (<div className="modal-fixed-footer">
+        {this.props.renderFixedFooter()}
+      </div>);
+    }
+  }
+  renderFixedFooterClass() {
+    if (this.props.showFixedFooter) {
+      return 'with-fixed-footer';
+    }
+  }
   render() {
     const styles = {
       overlay: {
@@ -33,16 +45,21 @@ class Modal extends Component {
     return (<ReactModal
       onRequestClose={this.props.close}
       isOpen
-      className={`modal-content ${colWrapperClass()}`}
+      className={`modal-content ${colWrapperClass()} ${this.renderFixedFooterClass()}`}
       style={styles}
     >
-      {this.props.children}
+      <div className="modal-content-inner">
+        {this.props.children}
+      </div>
+      {this.renderFixedFooter()}
     </ReactModal>);
   }
 }
 
 Modal.propTypes = {
   children: PropTypes.object,
+  renderFixedFooter: PropTypes.func,
+  showFixedFooter: PropTypes.bool,
   close: PropTypes.func.isRequired,
 };
 

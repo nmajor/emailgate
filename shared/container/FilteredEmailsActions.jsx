@@ -99,18 +99,19 @@ class FilteredEmailsActions extends Component {
     return (<span className="right-bumper">{selectedCount} <span className="glyphicon glyphicon-ok" aria-hidden="true"></span></span>);
   }
   renderAddAction() {
-    return (<span className="btn btn-success btn-xs-true" onClick={this.props.addSelected}>Add Checked to Email Book</span>);
+    return (<span className="btn btn-default btn-xs-true" onClick={this.props.addSelected}>Add <span className="glyphicon glyphicon-check" aria-hidden="true"></span> to Email Book</span>);
   }
-  renderDoneAction() {
-    return (<span className="left-bumper btn btn-success btn-xs-true" onClick={this.props.done}>Done</span>);
+  renderSelectAllAction() {
+    if (this.props.filteredAccountEmailsResults.count && this.props.filteredAccountEmailsResults.count > 0) {
+      return (<span className="btn btn-default btn-xs-true" onClick={this.props.selectEverything}><span className="glyphicon glyphicon-ok" aria-hidden="true"></span> all {this.props.filteredAccountEmailsResults.count} results</span>);
+    }
   }
   renderActions() {
     if (this.props.filteredAccountEmailsResults.count) {
       return (<div className="filter-email-actions">
         {this.renderCheckAll()}
         {this.renderSelectedCount()}
-        {this.renderAddAction()}
-        {this.renderDoneAction()}
+        {this.renderSelectAllAction()}
       </div>);
     }
   }
@@ -140,6 +141,7 @@ FilteredEmailsActions.propTypes = {
   selectedFilteredEmailIds: PropTypes.array.isRequired,
   selectAll: PropTypes.func.isRequired,
   deselectAll: PropTypes.func.isRequired,
+  selectEverything: PropTypes.func.isRequired,
   allSelected: PropTypes.bool.isRequired,
   addSelected: PropTypes.func.isRequired,
   done: PropTypes.func.isRequired,

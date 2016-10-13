@@ -6,12 +6,26 @@
   bottom: 40px;
   border: 1px solid rgb(204, 204, 204);
   background: rgb(255, 255, 255);
-  overflow: auto;
-  -webkit-overflow-scrolling: 'touch';
   border-radius: 4px;
   outline: none;
-  padding: 20px;
   z-index: 2;
+
+  &.with-fixed-footer {
+    padding-bottom: 64px;
+  }
+
+  .modal-content-inner {
+    height: 100%;
+    padding: 20px;
+    position: relative;
+    overflow: auto;
+    -webkit-overflow-scrolling: 'touch';
+  }
+
+  .modal-fixed-footer {
+    padding: 10px 0;
+    border-top: 1px solid #ccc;
+  }
 }
 
 @media (min-width: 768px) {
