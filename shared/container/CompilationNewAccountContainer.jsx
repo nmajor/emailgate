@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import Modal from '../components/Modal';
 import CompilationBuildContainer from './CompilationBuildContainer';
 import AccountFormContainer from './AccountFormContainer';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import HelperBox from '../components/HelperBox';
 
 class CompilationNewAccountContainer extends Component {
@@ -25,12 +25,19 @@ class CompilationNewAccountContainer extends Component {
     const body = (<span><strong>Important!</strong> Because we value your privacy, connecting your gmail account will only give us access 1 hour. We also never store your email passwords on our servers. For more info you can read our site <Link to="/terms">terms of use</Link>.</span>);
     return <HelperBox type="warning" body={body} />;
   }
+  renderHeader() {
+    if (this.props.accounts.length > 0) {
+      return <h3 className="text-center">Can connect an email account</h3>;
+    }
+
+    return <h3 className="text-center">Connect an email account so you can start adding emails</h3>;
+  }
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
       <Modal close={this.back}>
         <div>
-          <h3>Now you can connect an email account.</h3>
+          {this.renderHeader()}
           {this.renderHelperBox()}
           <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} userReturnTo={this.userReturnTo()} />
         </div>
@@ -39,12 +46,19 @@ class CompilationNewAccountContainer extends Component {
   }
 }
 
+function mapStateToProps(store) {
+  return {
+    accounts: store.accounts,
+  };
+}
+
 CompilationNewAccountContainer.contextTypes = {
   router: PropTypes.object.isRequired,
 };
 
 CompilationNewAccountContainer.propTypes = {
   compilation: PropTypes.array.isRequired,
+  accounts: PropTypes.array.isRequired,
 };
 
-export default CompilationNewAccountContainer;
+export default connect(mapStateToProps)(CompilationNewAccountContainer);

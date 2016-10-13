@@ -34,6 +34,9 @@ class AddCompilationEmailsContainer extends Component {
   userReturnTo() {
     return `/compilations/${this.props.compilation._id}/build/add-emails`;
   }
+  firstTimer() {
+    return this.props.compilationEmails.length === 0;
+  }
   renderFilterContainer() {
     if (this.currentAccount) {
       if (this.currentAccount.kind === 'imap' && !this.currentAccount.connectionValid) {
@@ -56,11 +59,11 @@ class AddCompilationEmailsContainer extends Component {
     return <SelectAccountContainer compilation={this.props.compilation} currentAccountId={this.props.params.accountId} />;
   }
   renderHeader() {
-    if (this.props.compilationEmails.length === 0) {
-      return <h3 className="text-center">Next add some emails to your Email Book.</h3>;
+    if (this.currentAccount) {
+      return <h3 className="text-center">Find some emails to add to your Email Book</h3>;
     }
 
-    return <h3 className="text-center">Add more emails to your Email Book</h3>;
+    return <h3 className="text-center">Pick an email account to search</h3>;
   }
   render() {
     return (<div>

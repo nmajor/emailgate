@@ -30,13 +30,15 @@ class SelectAccountContainer extends Component {
     this.props.dispatch(Actions.removeAccount(account));
   }
   renderNewAccountAction() {
-    return (<Link to={`/compilations/${this.props.compilation._id}/build/add-emails/new-account`} className="btn btn-success btn-xs-true new-account" >add a new one</Link>);
+    return (<div className="account-list">
+      <Link to={`/compilations/${this.props.compilation._id}/build/add-emails/new-account`} className="selected-account-list-item new-account-list-item" ><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new email account</Link>
+    </div>);
   }
   renderFooter() {
     if (this.currentAccount) { return null; }
 
     if (this.props.accounts.length > 0) {
-      return <div>Select an existing email account or {this.renderNewAccountAction()}</div>;
+      return this.renderNewAccountAction();
     }
 
     return <NewAccountContainer />;
