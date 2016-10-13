@@ -27,6 +27,8 @@ class FilteredEmailsActions extends Component {
     return this.pageTokens().length;
   }
   nextPage() {
+    if (!this.showNext()) { return; }
+
     const pageTokens = this.pageTokens();
     pageTokens.push(this.props.filteredAccountEmailsResults.nextPageToken);
 
@@ -37,6 +39,8 @@ class FilteredEmailsActions extends Component {
     });
   }
   prevPage() {
+    if (!this.showPrev()) { return; }
+
     const pageTokens = this.pageTokens();
     pageTokens.pop(); // The last token is the current page token
     const prevPageToken = pageTokens.length > 0 ? pageTokens[pageTokens.length - 1] : undefined;
@@ -47,22 +51,36 @@ class FilteredEmailsActions extends Component {
       pageToken: prevPageToken,
     });
   }
+  showNext() {
+    return !!(this.props.filteredAccountEmailsResults.nextPageToken);
+  }
+  showPrev() {
+    return this.pageTokens().length > 0;
+  }
   renderNavResults() {
     if (this.props.filteredAccountEmailsResults.count) {
-      const showNext = !!(this.props.filteredAccountEmailsResults.nextPageToken);
-
-      const showPrev = this.pageTokens().length > 0;
-
       const resultInfo = <div className="filter-result-info">{this.getResultRange()} of {this.props.filteredAccountEmailsResults.count}</div>;
 
-      const prevLink = <span className="prev btn btn-default btn-xs-true" aria-hidden="true" onClick={this.prevPage}><span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></span>;
+      const prevLink = (<span
+        className={`prev btn btn-default btn-xs-true ${!this.showPrev() ? 'disabled' : ''}`}
+        aria-hidden="true"
+        onClick={this.prevPage}
+      >
+        <span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      </span>);
 
-      const nextLink = <span className="next btn btn-default btn-xs-true" aria-hidden="true" onClick={this.nextPage}><span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></span>;
+      const nextLink = (<span
+        className={`next btn btn-default btn-xs-true ${!this.showNext() ? 'disabled' : ''}`}
+        aria-hidden="true"
+        onClick={this.nextPage}
+      >
+        <span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      </span>);
 
       return (<div className="navresults text-right">
-          {showPrev ? prevLink : null}
+          {prevLink}
           {resultInfo}
-          {showNext ? nextLink : null}
+          {nextLink}
       </div>);
     }
   }

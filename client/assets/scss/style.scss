@@ -50,7 +50,7 @@
   height: 21px;
   margin-left: 5px;
   position: relative;
-  top: 6px;
+  top: 5px;
 }
 .alone-loading > .loading {
   height: 30px;
@@ -353,6 +353,7 @@ input {
   margin-top: 3px;
   text-align: right;
   color: #337ab7;
+  float: right;
 
   &.hide-advanced {
     float: right;

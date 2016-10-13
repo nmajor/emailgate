@@ -9,15 +9,21 @@ import { colWrapperClass } from '../helpers';
 class CompilationBuildContainer extends Component { // eslint-disable-line react/prefer-stateless-function
   renderSaveAction() {
     if (this.props.user.isTmp) {
-      return <Link to={`/compilations/${this.props.compilation._id}/build/register`} className="btn btn-success">Finish Later</Link>;
+      return <Link to={`/compilations/${this.props.compilation._id}/build/register`} className="btn btn-default"><span className="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Finish Later</Link>;
     }
   }
   renderFixedFooter() {
     if (!this.props.edit && this.props.ffooter !== false) {
       return (<FixedFooter>
-        <Link to={`/compilations/${this.props.compilation._id}/build/add-emails`} className="btn btn-success">Add More Emails</Link>
-        {this.renderSaveAction()}
-        <Link to={`/compilations/${this.props.compilation._id}/post-next`} className="btn btn-success">Checkout</Link>
+        <div className="row">
+          <div className="col-xs-6">
+            <Link to={`/compilations/${this.props.compilation._id}/build/add-emails`} className="btn btn-default"><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Emails</Link>
+            {this.renderSaveAction()}
+          </div>
+          <div className="col-xs-6 text-right">
+            <Link to={`/compilations/${this.props.compilation._id}/post-next`} className="btn btn-success marginless-right"><span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Checkout</Link>
+          </div>
+        </div>
       </FixedFooter>);
     }
   }

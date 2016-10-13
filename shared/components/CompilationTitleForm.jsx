@@ -98,11 +98,13 @@ class CompilationTitleForm extends Component {
       {this.renderTitleFormGroup()}
       {this.renderSubtitleFormGroup()}
       {this.renderErrors('base')}
-      <button className={`btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
-        Submit
-        {this.renderLoading()}
-      </button>
-      {this.renderBackAction()}
+      <div className="text-right">
+        {this.renderBackAction()}
+        <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
+          Submit
+          {this.renderLoading()}
+        </button>
+      </div>
     </form>);
   }
 }

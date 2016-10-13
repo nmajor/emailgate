@@ -6,16 +6,24 @@ import CompilationEmailForm from './CompilationEmailForm';
 import Loading from './Loading';
 
 class CompilationEmailsListItem extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.submitForm = this.submitForm.bind(this);
+  }
+  submitForm() {
+    console.log(this.refs.form);
+    console.log(this.refs.form.state);
+    this.refs.form.submitForm();
+  }
   renderHideAction() {
     return (<Link className="btn btn-default" to={`/compilations/${this.props.email._compilation}/build`}>
       <span className="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
     </Link>);
   }
   renderRemoveAction() {
-    const icon = <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>;
-    const loading = <span className="alone-button-loading"><Loading /></span>;
     return (<span className="btn btn-danger" onClick={this.props.componentProps.remove}>
-      {this.props.email.saving ? loading : icon}
+      <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
     </span>);
   }
   renderEditAction() {
@@ -27,6 +35,14 @@ class CompilationEmailsListItem extends Component {
     return (<Link className="btn btn-primary" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}>
       <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
     </Link>);
+  }
+  renderSaveAction() {
+    const loading = <span className="alone-button-loading"><Loading /></span>;
+    const icon = <span className="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>;
+
+    return (<button className="btn btn-success" onClick={this.submitForm}>
+      {this.props.email.saving ? loading : icon}
+    </button>);
   }
   renderDate() {
     return (<div className="type">
@@ -61,11 +77,12 @@ class CompilationEmailsListItem extends Component {
     } else if (this.props.show === 'edit') {
       return (<div>
         <div className="list-item-actions">
+          {this.renderSaveAction()}
           {this.renderViewAction()}
           {this.renderRemoveAction()}
           {this.renderHideAction()}
         </div>
-        <CompilationEmailForm email={this.props.email} submitForm={this.props.edit} />
+        <CompilationEmailForm ref="form" email={this.props.email} submitForm={this.props.edit} />
       </div>);
     }
 

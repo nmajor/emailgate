@@ -60,7 +60,7 @@ class GoogleFilterForm extends Component {
   submitAdvanced(props) {
     const filterString = buildFilterOperators(props);
     this.refs.q.value = filterString;
-    this.setState({ showAdvanced: !false });
+    this.setState({ showAdvanced: false });
     this.submitForm();
   }
   advancedValuesFromQuery() {
@@ -123,14 +123,12 @@ class GoogleFilterForm extends Component {
             </div>
           </div>
         </div>
-        {this.renderErrors('base')}
-        {this.renderFetching()}
       </form>
     );
   }
   renderFetching() {
     if (this.props.fetching) {
-      return <span className="outside-button-loading"><Loading /></span>;
+      return <div className="text-left"><span className="outside-button-loading"><Loading /></span> loading...</div>;
     }
   }
   renderErrors(type) {
@@ -155,6 +153,8 @@ class GoogleFilterForm extends Component {
         <div className="col-md-12">
           {this.renderForm()}
           {this.renderAdvancedForm()}
+          {this.renderFetching()}
+          {this.renderErrors('base')}
         </div>
       </div>
     );

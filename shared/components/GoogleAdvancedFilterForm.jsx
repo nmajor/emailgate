@@ -19,7 +19,7 @@ class GoogleAdvancedFilterForm extends Component { // eslint-disable-line
     } = this.props;
 
     return (<div>
-      <div className="toggle-search-help hide-advanced"><span onClick={this.props.toggleAdvanced}>hide advanced</span></div>
+      <div className="toggle-search-help hide-advanced"><span onClick={this.props.toggleAdvanced}>hide advanced search</span></div>
       <div className="padded-box top-bumper">
         <form onSubmit={handleSubmit}>
           <div className="row">
@@ -68,7 +68,17 @@ class GoogleAdvancedFilterForm extends Component { // eslint-disable-line
             <div className="col-sm-6">
               <div className="form-group">
                 <label className="control-label">End date</label>
-                <input type="text" className="form-control" {...end} />
+                <DatePicker
+                  className="form-control"
+                  {...end}
+                  name="End Date"
+                  showYearDropdown
+                  fixedHeight
+                  dateFormat="YYYY/M/D"
+                  maxDate={moment(new Date, 'YYYY/M/D')}
+                  selected={end.value ? moment(end.value, 'YYYY/M/D') : null}
+                  onChange={(params) => { end.onChange(params); }}
+                />
               </div>
             </div>
           </div>

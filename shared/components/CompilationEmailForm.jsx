@@ -27,7 +27,8 @@ class CompilationEmailForm extends Component {
     this.setState(newState);
   }
   submitForm(e) {
-    e.preventDefault();
+    if (e) { e.preventDefault(); }
+    console.log('blah hey submitted');
 
     this.props.submitForm(this.state);
   }
@@ -48,14 +49,6 @@ class CompilationEmailForm extends Component {
       return <span className="button-loading"><Loading /></span>;
     }
   }
-  renderAction() {
-    if (this.props.submitForm) {
-      return (<FixedFooter>
-        <button className="btn btn-success" onClick={this.submitForm}>Save Email {this.renderSaving()}</button>
-        <Link to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`} className="btn btn-danger">Back</Link>
-      </FixedFooter>);
-    }
-  }
   render() {
     return (<div>
       <form className="email-form" onSubmit={this.handleSubmit}>
@@ -64,7 +57,6 @@ class CompilationEmailForm extends Component {
         </div>
 
         {this.renderErrors('base')}
-        {this.renderAction()}
       </form>
     </div>);
   }
