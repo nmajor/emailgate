@@ -7,7 +7,6 @@ import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
 import ImapAccountPasswordFormContainer from './ImapAccountPasswordFormContainer';
 import ReconnectGoogleAccount from '../components/ReconnectGoogleAccount';
-import AccountFormContainer from './AccountFormContainer';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -20,6 +19,11 @@ class AddCompilationEmailsContainer extends Component {
     this.compilation = this.props.compilation;
     this.currentAccount = _.find(this.props.accounts, { _id: this.props.params.accountId });
     this.userReturnTo = this.userReturnTo.bind(this);
+  }
+  componentWillMount() {
+    if (this.props.accounts.length === 0) {
+      this.context.router.push(`/compilations/${this.props.compilation._id}/build/add-emails/new-account`);
+    }
   }
   componentWillReceiveProps(nextProps) {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.params.accountId });
@@ -48,26 +52,15 @@ class AddCompilationEmailsContainer extends Component {
       return <FilteredAccountEmailsContainer compilation={this.compilation} />;
     }
   }
-  renderHelp() {
-    return (<div className="help">
-      <h4>Connect an Email Account</h4>
-      <p>First step is to securely connect an email account so can search an add emails to your compilation.</p>
-      <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} userReturnTo={this.userReturnTo()} />
-    </div>);
-  }
   renderSelectAccount() {
-    if (this.props.accounts.length > 0) {
-      return <SelectAccountContainer compilation={this.props.compilation} currentAccountId={this.props.params.accountId} />;
-    }
-
-    return <div className="row col-md-6">{this.renderHelp()}</div>;
+    return <SelectAccountContainer compilation={this.props.compilation} currentAccountId={this.props.params.accountId} />;
   }
   renderHeader() {
     if (this.props.compilationEmails.length === 0) {
       return <h3 className="text-center">Next add some emails to your Email Book.</h3>;
     }
 
-    return <h1 className="text-center">Add emails to your Email Book</h1>;
+    return <h3 className="text-center">Add more emails to your Email Book</h3>;
   }
   render() {
     return (<div>

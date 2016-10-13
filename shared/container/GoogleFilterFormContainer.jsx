@@ -52,7 +52,6 @@ function mapStateToProps(store) {
     fetching: store.fetching,
     filteredAccountEmailsResults: store.filteredAccountEmailsResults,
     filteredAccountEmails: store.filteredAccountEmails,
-    selectedFilteredEmailIds: store.selectedFilteredEmailIds,
   };
 }
 
@@ -61,6 +60,7 @@ GoogleFilterFormContainer.propTypes = {
   currentAccount: PropTypes.object,
   fetching: PropTypes.object.isRequired,
   filteredAccountEmailsResults: PropTypes.object.isRequired,
+  filteredAccountEmails: PropTypes.array.isRequired,
   selectAll: PropTypes.func.isRequired,
   deselectAll: PropTypes.func.isRequired,
   allSelected: PropTypes.bool.isRequired,

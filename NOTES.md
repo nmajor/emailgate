@@ -1,15 +1,30 @@
-
-
-
 TODO:
 
-Login/register compilation build modal
-Save button that logs you in or registers you and connects things to your user
-Add login/register in post-next before checkout
-Attach things to session and then user
-No-login required compilation demo
 
 
+
+
+
+UX Notes:
+- Next step buttons always in the right of the footer
+- Extra actions on the left
+- Add the save email button into the header icons and remove it from the fixed footer
+- Add a fixed footer to the modal
+  - Show how many emails have already been added
+  - Put the add checked emails button there and the done button there
+- Add a close button to the modal
+- Add an edit link in the Cart page inline with the cart items
+- Add a new book button to the left side of the action section
+- Prompt before removing a cart item
+- Make 1 the minimum quantity for cart items
+- If you have no addresses show an address form automatically
+- Tell how long it will take to ship in the checkout process
+
+
+Home page
+Up to 1000 pages full color
+only $59
+Thats X cents per page!
 
 
 

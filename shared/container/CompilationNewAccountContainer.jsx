@@ -1,8 +1,10 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import Modal from '../components/Modal';
 import CompilationBuildContainer from './CompilationBuildContainer';
 import AccountFormContainer from './AccountFormContainer';
 // import { connect } from 'react-redux';
+import HelperBox from '../components/HelperBox';
 
 class CompilationNewAccountContainer extends Component {
   constructor(props, context) {
@@ -19,11 +21,19 @@ class CompilationNewAccountContainer extends Component {
   userReturnTo() {
     return `/compilations/${this.props.compilation._id}/build/add-emails`;
   }
+  renderHelperBox() {
+    const body = (<span><strong>Important!</strong> Because we value your privacy, connecting your gmail account will only give us access 1 hour. We also never store your email passwords on our servers. For more info you can read our site <Link to="/terms">terms of use</Link>.</span>);
+    return <HelperBox type="warning" body={body} />;
+  }
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
       <Modal close={this.back}>
-        <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} userReturnTo={this.userReturnTo()} />
+        <div>
+          <h3>Now you can connect an email account.</h3>
+          {this.renderHelperBox()}
+          <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} userReturnTo={this.userReturnTo()} />
+        </div>
       </Modal>
     </div>);
   }

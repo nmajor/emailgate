@@ -17,6 +17,7 @@
 .left-bumper { margin-left: 10px; }
 .top-bumper { margin-top: 10px; }
 .bottom-bumper { margin-bottom: 10px; }
+.marginless-right { margin-right: 0; }
 .text-bold { font-weight: bold; }
 .no-margin { margin: 0; }
 .padded-box {
@@ -119,9 +120,6 @@ h1 > .loading {
   &.latest {
     font-weight: bold;
   }
-}
-.account-kind-options {
-  margin: 40px 0 30px 0;
 }
 .account-kind-option {
   color: #000;
@@ -350,7 +348,21 @@ input {
     margin: 0 10px;
   }
 }
+.toggle-search-help {
+  text-align: right;
+  color: #337ab7;
 
+  &.hide-advanced {
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: #31708f;
+  }
+}
 .compilation-container {
   padding: 10px 0 30px 0;
 }

@@ -7,6 +7,10 @@ class FilteredAccountEmailsContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.state = {
+      showSearchHelp: this.props.filteredAccountEmails.length === 0,
+    };
+
     if (this.props.currentFilteredEmailMid) {
       this.currentFilteredEmail = _.find(this.props.compilationEmails, { mid: this.props.currentFilteredEmailMid }) || {};
     } else { this.currentFilteredEmail = {}; }
