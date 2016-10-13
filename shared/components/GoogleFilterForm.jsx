@@ -12,6 +12,10 @@ function buildFilterOperators(params) {
     filterString += `to:(${params.to}) `;
   }
 
+  if (params.subject) {
+    filterString += `subject:(${params.subject}) `;
+  }
+
   if (params.contains) {
     filterString += `${params.contains} `;
   }
@@ -20,8 +24,15 @@ function buildFilterOperators(params) {
     filterString += `-{${params.doesntContain}}`;
   }
 
+  if (params.start) {
+    filterString += `start:${params.start}`;
+  }
+
+  if (params.end) {
+    filterString += `end:${params.end}`;
+  }
+
   return filterString;
-  // after:2015/10/19 before:2016/10/20
 }
 
 class GoogleFilterForm extends Component {
@@ -40,30 +51,53 @@ class GoogleFilterForm extends Component {
     this.setState({ showAdvanced: !this.state.showAdvanced });
   }
   submitForm(e) {
-    e.preventDefault();
+    if (e) { e.preventDefault(); }
 
-    const q = (this.refs.q || {}).value;
+    let q = (this.refs.q || {}).value || '';
+    q = q.replace('end:', 'before:').replace('start:', 'after:');
     this.props.submitForm({ q });
   }
   submitAdvanced(props) {
     const filterString = buildFilterOperators(props);
     this.refs.q.value = filterString;
-
-    console.log('blah submitAdvanced', props);
+    this.setState({ showAdvanced: !false });
+    this.submitForm();
   }
   advancedValuesFromQuery() {
-    const values = {};
     const q = (this.refs.q || {}).value;
 
-    const to = q.match(/to:\((.*)\)/);
-    const from = q.match(/from:\((.*)\)/);
-    const contains = q.match(/^.*(?:\)|\s)?(?:)?$/);
+    const toReg = /to:\((.*?)\)/;
+    const fromReg = /from:\((.*?)\)/;
+    const subjectReg = /subject:\((.*?)\)/;
+    const doesntContainResp = /-{(.*?)}/;
+    const startReg = /start:(.*?) /;
+    const endReg = /end:(.*?) /;
 
-    values.to = to ? to[1] : undefined;
-    values.from = from ? from[1] : undefined;
-    values.contains = contains ? contains[1] : undefined;
+    const to = (q.match(toReg) || [])[1];
+    const from = (q.match(fromReg) || [])[1];
+    const subject = (q.match(subjectReg) || [])[1];
+    const doesntContain = (q.match(doesntContainResp) || [])[1];
+    const start = (q.match(startReg) || [])[1];
+    const end = (q.match(endReg) || [])[1];
 
-    console.log('blah hey', values);
+    const contains = q.replace(toReg, '')
+    .replace(fromReg, '')
+    .replace(subjectReg, '')
+    .replace(doesntContainResp, '')
+    .replace(startReg, '')
+    .replace(endReg, '')
+    .trim();
+
+    const values = {
+      to,
+      from,
+      subject,
+      contains,
+      doesntContain,
+      start,
+      end,
+    };
+
     return values;
   }
   renderForm() {

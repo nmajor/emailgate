@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 class GoogleAdvancedFilterForm extends Component { // eslint-disable-line
   render() {
@@ -7,10 +9,11 @@ class GoogleAdvancedFilterForm extends Component { // eslint-disable-line
       fields: {
         from,
         to,
+        subject,
         contains,
         doesntContain,
-        before,
-        after,
+        start,
+        end,
       },
       handleSubmit,
     } = this.props;
@@ -34,6 +37,10 @@ class GoogleAdvancedFilterForm extends Component { // eslint-disable-line
             </div>
           </div>
           <div className="form-group">
+            <label className="control-label">Subject contains</label>
+            <input type="text" className="form-control" {...subject} />
+          </div>
+          <div className="form-group">
             <label className="control-label">Has the words</label>
             <input type="text" className="form-control" {...contains} />
           </div>
@@ -45,13 +52,23 @@ class GoogleAdvancedFilterForm extends Component { // eslint-disable-line
             <div className="col-sm-6">
               <div className="form-group">
                 <label className="control-label">Start date</label>
-                <input type="text" className="form-control" {...after} />
+                <DatePicker
+                  className="form-control"
+                  {...start}
+                  name="Start Date"
+                  showYearDropdown
+                  fixedHeight
+                  dateFormat="YYYY/M/D"
+                  maxDate={moment(new Date, 'YYYY/M/D')}
+                  selected={start.value ? moment(start.value, 'YYYY/M/D') : null}
+                  onChange={(params) => { start.onChange(params); }}
+                />
               </div>
             </div>
             <div className="col-sm-6">
               <div className="form-group">
                 <label className="control-label">End date</label>
-                <input type="text" className="form-control" {...before} />
+                <input type="text" className="form-control" {...end} />
               </div>
             </div>
           </div>
@@ -76,11 +93,12 @@ GoogleAdvancedFilterForm = reduxForm({ // eslint-disable-line no-class-assign
   fields: [
     'from',
     'to',
+    'subject',
     'contains',
     'doesntContain',
     'city',
-    'before',
-    'after',
+    'start',
+    'end',
   ],
 })(GoogleAdvancedFilterForm);
 

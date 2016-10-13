@@ -12,6 +12,7 @@
 @import 'home';
 @import 'modal';
 @import 'admin';
+@import 'react-datepicker/datepicker';
 
 .right-bumper { margin-right: 10px; }
 .left-bumper { margin-left: 10px; }
@@ -349,6 +350,7 @@ input {
   }
 }
 .toggle-search-help {
+  margin-top: 3px;
   text-align: right;
   color: #337ab7;
 
