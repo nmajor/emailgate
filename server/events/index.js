@@ -121,7 +121,7 @@ export default (io) => {
             newEmail._compilation = compilation._id;
             return newEmail.save()
             .then((email) => {
-              socket.emit('ADDED_COMPILATION_EMAIL', email);
+              socket.emit('ADDED_COMPILATION_EMAIL', email.toObject());
               return Promise.resolve(email);
             })
             .catch((err) => {
