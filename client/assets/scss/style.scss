@@ -94,6 +94,10 @@ h1 > .loading {
 .email-view {
   padding: 50px;
   border: 1px solid #ccc;
+
+  &.disabled {
+    background-color: #ccc;
+  }
 }
 
 .compilation-page {
@@ -315,6 +319,12 @@ input {
   &:hover {
     border-color: #909090;
     cursor: pointer;
+  }
+
+  &.disabled {
+    &:hover {
+      cursor: inherit;
+    }
   }
 }
 

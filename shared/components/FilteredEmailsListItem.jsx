@@ -82,7 +82,7 @@ class FilteredEmailsListItem extends Component {
         <div className="list-item-actions">
           {this.renderHideAction()}
         </div>
-        <EmailView email={this.props.email} />
+        <EmailView email={this.props.email} disabled={this.props.disabled} />
       </div>);
     }
 

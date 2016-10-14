@@ -1,5 +1,6 @@
 require('dotenv').config();
 if (process.env.NODE_ENV === 'production') { require('newrelic'); } // eslint-disable-line global-require
+Error.stackTraceLimit = Infinity;
 
 import kue from 'kue';
 import kueUi from 'kue-ui';

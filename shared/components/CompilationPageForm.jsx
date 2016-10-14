@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import Loading from './Loading';
-import FixedFooter from './FixedFooter';
+// import FixedFooter from './FixedFooter';
 
 class CompilationPageForm extends Component {
   constructor(props, context) {
@@ -31,20 +31,19 @@ class CompilationPageForm extends Component {
       return <span className="button-loading"><Loading /></span>;
     }
   }
-  renderAction() {
-    if (this.props.submitForm) {
-      return (<FixedFooter>
-        <button className="btn btn-success" onClick={this.submitForm}>Save Page {this.renderSaving()}</button>
-        <Link to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`} className="btn btn-danger">Back</Link>
-      </FixedFooter>);
-    }
-  }
+  // renderAction() {
+  //   if (this.props.submitForm) {
+  //     return (<FixedFooter>
+  //       <button className="btn btn-success" onClick={this.submitForm}>Save Page {this.renderSaving()}</button>
+  //       <Link to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`} className="btn btn-danger">Back</Link>
+  //     </FixedFooter>);
+  //   }
+  // }
   render() {
     return (<div>
       <div className="compilation-page">
         {this.renderForm()}
       </div>
-      {this.renderAction()}
     </div>);
   }
 }

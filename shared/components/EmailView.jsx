@@ -15,7 +15,7 @@ class EmailView extends Component {
     this.template = new EmailTemplate(nextProps.email);
   }
   renderView() {
-    return (<div ref="view" className="email-view" id={`email-view-${this.props.email._id}`}>
+    return (<div ref="view" className={`email-view ${this.props.disabled ? 'disabled' : ''}`} id={`email-view-${this.props.email._id}`}>
       {this.template.render()}
     </div>);
   }
@@ -26,6 +26,7 @@ class EmailView extends Component {
 
 EmailView.propTypes = {
   email: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
   scroll: PropTypes.bool,
 };
 
