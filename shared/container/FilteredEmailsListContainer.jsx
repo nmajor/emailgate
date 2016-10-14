@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import FilteredEmailsList from '../components/FilteredEmailsList';
-// import FilteredEmailsListActions from '../components/FilteredEmailsListActions';
 import _ from 'lodash';
 import { sortedEmails } from '../helpers';
 
@@ -16,7 +15,6 @@ class FilteredEmailsListContainer extends Component {
 
     this.selectAll = this.selectAll.bind(this);
     this.deselectAll = this.deselectAll.bind(this);
-    this.addSelectedToCompilation = this.addSelectedToCompilation.bind(this);
   }
 
   setCurrentFilteredEmail(email) {
@@ -46,19 +44,8 @@ class FilteredEmailsListContainer extends Component {
 
     this.props.dispatch(Actions.setPropertyForSomeFilteredAccountEmails(emailMids, 'selected', false));
   }
-  addSelectedToCompilation() {
-    this.props.dispatch(Actions.addEmailsToCompilationEmails(this.props.compilation._id,
-    _.filter(this.props.filteredAccountEmails, (email) => {
-      return email.selected === true && !this.props.compilationEmailMids.indexOf(email.mid) > -1;
-    })));
-  }
   isSavingEmails() {
     return _.some(this.props.filteredAccountEmails, (email) => { return email.saving; });
-  }
-  selectedEmailsCount() {
-    return _.filter(this.props.filteredAccountEmails, (email) => {
-      return email.selected === true;
-    }).length;
   }
   render() {
     return (

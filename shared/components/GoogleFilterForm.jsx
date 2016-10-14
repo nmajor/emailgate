@@ -126,11 +126,6 @@ class GoogleFilterForm extends Component {
       </form>
     );
   }
-  renderFetching() {
-    if (this.props.fetching) {
-      return <div className="text-left"><span className="outside-button-loading"><Loading /></span> loading...</div>;
-    }
-  }
   renderErrors(type) {
     if (this.props.errors && this.props.errors[type]) {
       return this.props.errors[type].map((error, index) => {
@@ -153,7 +148,6 @@ class GoogleFilterForm extends Component {
         <div className="col-md-12">
           {this.renderForm()}
           {this.renderAdvancedForm()}
-          {this.renderFetching()}
           {this.renderErrors('base')}
         </div>
       </div>

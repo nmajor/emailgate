@@ -4,6 +4,7 @@ import ImapFilterFormContainer from './ImapFilterFormContainer';
 import GoogleFilterFormContainer from './GoogleFilterFormContainer';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
+import Loading from '../components/Loading';
 
 class FilterContainer extends Component {
   constructor(props, context) {
@@ -11,6 +12,7 @@ class FilterContainer extends Component {
 
     this.selectAll = this.selectAll.bind(this);
     this.deselectAll = this.deselectAll.bind(this);
+    this.selectEverything = this.selectEverything.bind(this);
     this.allSelected = this.allSelected.bind(this);
     this.addSelected = this.addSelected.bind(this);
   }
@@ -38,9 +40,18 @@ class FilterContainer extends Component {
     this.props.dispatch(Actions.setSelectedFilteredEmailIds(emailIds));
   }
   selectEverything() {
-    
+    console.log('blah hey');
+    const filteredEmailIds = _.filter(this.props.filteredAccountEmailsResults.totalResultsIds, (id) => {
+      return !_.some(this.props.compilationEmails, (cEmail) => { return cEmail.remote_id === id; });
+    });
+
+    const selectedEmailIds = this.props.selectedFilteredEmailIds;
+    const emailIds = _.union(filteredEmailIds, selectedEmailIds);
+    this.props.dispatch(Actions.setSelectedFilteredEmailIds(emailIds));
   }
   allSelected() {
+    if (this.props.selectedFilteredEmailIds.length === 0) { return false; }
+
     const nonCompilationSelectedEmailIds = _.filter(this.props.selectedFilteredEmailIds, (id) => {
       return !_.some(this.props.compilationEmails, (cEmail) => { return cEmail.remote_id === id; });
     });
@@ -58,6 +69,13 @@ class FilterContainer extends Component {
 
     this.props.dispatch(Actions.addEmailsToCompilationEmailsById(this.props.compilation._id, this.props.currentAccount._id, nonCompilationSelectedEmailIds));
   }
+  renderFetching() {
+    if (this.props.fetching.filteredAccountEmails) {
+      return <div className="text-center"><span className="outside-button-loading"><Loading /></span> loading...</div>;
+    } else if (this.props.filteredAccountEmailsResults.count === 0) {
+      return <div className="text-center">Oh no, 0 results! Try changing your search.</div>;
+    }
+  }
   renderFilterForm() {
     if (this.props.currentAccount.kind === 'imap') {
       return (<ImapFilterFormContainer
@@ -70,6 +88,7 @@ class FilterContainer extends Component {
         addSelected={this.addSelected}
         selectAll={this.selectAll}
         deselectAll={this.deselectAll}
+        selectEverything={this.selectEverything}
         allSelected={this.allSelected()}
         addSelected={this.addSelected}
         done={this.props.done}
@@ -80,6 +99,7 @@ class FilterContainer extends Component {
     return (
       <div className="filter-container">
         {this.renderFilterForm()}
+        {this.renderFetching()}
       </div>
     );
   }
@@ -90,16 +110,19 @@ function mapStateToProps(store) {
     fetching: store.fetching,
     compilationEmails: store.compilationEmails,
     filteredAccountEmails: store.filteredAccountEmails,
+    filteredAccountEmailsResults: store.filteredAccountEmailsResults,
     selectedFilteredEmailIds: store.selectedFilteredEmailIds,
   };
 }
 
 FilterContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  fetching: PropTypes.object.isRequired,
   compilation: PropTypes.object.isRequired,
   currentAccount: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
+  filteredAccountEmailsResults: PropTypes.object.isRequired,
   selectedFilteredEmailIds: PropTypes.array.isRequired,
   done: PropTypes.func.isRequired,
 };

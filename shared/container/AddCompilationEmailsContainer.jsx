@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-// import { Link } from 'react-router';
+import { Link } from 'react-router';
 import * as Actions from '../redux/actions/index';
 import Modal from '../components/Modal';
 import CompilationBuildContainer from './CompilationBuildContainer';
@@ -21,7 +21,7 @@ class AddCompilationEmailsContainer extends Component {
     this.currentAccount = _.find(this.props.accounts, { _id: this.props.params.accountId });
     this.userReturnTo = this.userReturnTo.bind(this);
     this.renderModalFixedFooter = this.renderModalFixedFooter.bind(this);
-    this.addSelectedToCompilation = this.addSelectedToCompilation.bind(this);
+    this.addSelected = this.addSelected.bind(this);
   }
   componentWillMount() {
     if (this.props.accounts.length === 0) {
@@ -31,12 +31,12 @@ class AddCompilationEmailsContainer extends Component {
   componentWillReceiveProps(nextProps) {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.params.accountId });
   }
-  addSelectedToCompilation() {
-    const compilationEmailMids = _.map(this.props.compilationEmails, (email) => { return email.mid; });
-    this.props.dispatch(Actions.addEmailsToCompilationEmails(this.props.compilation._id,
-    _.filter(this.props.filteredAccountEmails, (email) => {
-      return email.selected === true && !compilationEmailMids.indexOf(email.mid) > -1;
-    })));
+  addSelected() {
+    const nonCompilationSelectedEmailIds = _.filter(this.props.selectedFilteredEmailIds, (id) => {
+      return !_.some(this.props.compilationEmails, (cEmail) => { return cEmail.remote_id === id; });
+    });
+
+    this.props.dispatch(Actions.addEmailsToCompilationEmailsById(this.props.compilation._id, this.currentAccount._id, nonCompilationSelectedEmailIds));
   }
   back() {
     this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
@@ -50,17 +50,20 @@ class AddCompilationEmailsContainer extends Component {
   showResults() {
     return this.currentAccount
       && this.currentAccount.connectionValid
-      && this.props.filteredAccountEmails.length > 0;
+      && this.props.filteredAccountEmailsResults.count !== undefined;
+  }
+  showFixedFooter() {
+    return this.showResults() && this.props.filteredAccountEmailsResults.count > 0;
   }
   renderModalFixedFooter() {
     if (this.showResults()) {
       return (<div className="row">
         <div className="col-xs-6">
-          <button className="btn btn-default">Add <span className="glyphicon glyphicon-check" aria-hidden="true"></span> Emails to Email Book</button>
+          <button className="btn btn-default" onClick={this.addSelected}>Add {this.props.selectedFilteredEmailIds.length > 0 ? <strong>{this.props.selectedFilteredEmailIds.length}</strong> : <span className="glyphicon glyphicon-check" aria-hidden="true"></span>} Email{this.props.selectedFilteredEmailIds.length > 1 || this.props.selectedFilteredEmailIds.length === 0 ? 's' : ''} to Email Book</button>
         </div>
         <div className="col-xs-6 text-right">
-          <span className="right-bumper" onClick={this.addSelectedToCompilation}>Email Book has <strong>{this.props.compilationEmails.length}</strong> email{this.props.compilationEmails.length > 1 ? 's' : ''}</span>
-          <button className="marginless-right btn btn-success">Done</button>
+          <span className="right-bumper">Email Book has <strong>{this.props.compilationEmails.length}</strong> email{this.props.compilationEmails.length > 1 ? 's' : ''}</span>
+          <Link to={`/compilations/${this.props.compilation._id}/build`} className="marginless-right btn btn-success">Done</Link>
         </div>
       </div>);
     }
@@ -93,7 +96,7 @@ class AddCompilationEmailsContainer extends Component {
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
-      <Modal close={this.back} renderFixedFooter={this.renderModalFixedFooter} showFixedFooter={this.showResults()}>
+      <Modal close={this.back} renderFixedFooter={this.renderModalFixedFooter} showFixedFooter={this.showFixedFooter()}>
         <div>
           {this.renderHeader()}
           {this.renderSelectAccount()}
@@ -111,6 +114,8 @@ function mapStateToProps(store) {
     accounts: store.accounts,
     compilationEmails: store.compilationEmails,
     filteredAccountEmails: store.filteredAccountEmails,
+    filteredAccountEmailsResults: store.filteredAccountEmailsResults,
+    selectedFilteredEmailIds: store.selectedFilteredEmailIds,
   };
 }
 
@@ -124,6 +129,8 @@ AddCompilationEmailsContainer.propTypes = {
   config: PropTypes.object.isRequired,
   compilation: PropTypes.object.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
+  filteredAccountEmailsResults: PropTypes.object.isRequired,
+  selectedFilteredEmailIds: PropTypes.array.isRequired,
   compilationEmails: PropTypes.array.isRequired,
   params: PropTypes.object,
 };

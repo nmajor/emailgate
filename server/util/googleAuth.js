@@ -117,8 +117,12 @@ function queryResults(client, q) {
         return reject({ base: [`There was a problem searching for gmail messages ${err}`] });
       }
 
+      if (!response.messages) {
+        return resolve({ totalResults: 0, totalResultsIds: [] });
+      }
+
       const totalResultsIds = response.messages.map((message) => { return message.id; });
-      resolve({ totalResults: response.resultSizeEstimate, totalResultsIds });
+      return resolve({ totalResults: response.resultSizeEstimate, totalResultsIds });
     });
   });
 }
@@ -140,6 +144,15 @@ export function searchMessages(account, searchOptions) {
       }, (err, response) => {
         if (err) {
           return reject({ base: [`There was a problem searching for gmail messages ${err}`] });
+        }
+
+        if (!response.messages) {
+          return resolve({
+            messages: [],
+            totalResults: 0,
+            totalResultsIds: [],
+            resultsPerPage: config.emailsPerPage,
+          });
         }
 
         getMessagesById(client, response.messages.map((m) => { return m.id; }))

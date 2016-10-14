@@ -39,6 +39,7 @@ class GoogleFilterFormContainer extends Component {
         submitForm={this.submitForm}
         selectAll={this.props.selectAll}
         deselectAll={this.props.deselectAll}
+        selectEverything={this.props.selectEverything}
         allSelected={this.props.allSelected}
         addSelected={this.props.addSelected}
         done={this.props.done}
@@ -63,6 +64,7 @@ GoogleFilterFormContainer.propTypes = {
   filteredAccountEmails: PropTypes.array.isRequired,
   selectAll: PropTypes.func.isRequired,
   deselectAll: PropTypes.func.isRequired,
+  selectEverything: PropTypes.func.isRequired,
   allSelected: PropTypes.bool.isRequired,
   addSelected: PropTypes.func.isRequired,
   done: PropTypes.func.isRequired,

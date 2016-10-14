@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
+import FilteredEmailsSelectEverythingContainer from '../container/FilteredEmailsSelectEverythingContainer';
 
 class FilteredEmailsActions extends Component {
   constructor(props, context) {
@@ -17,7 +18,8 @@ class FilteredEmailsActions extends Component {
   getResultRange() {
     const resultsPerPage = this.props.filteredAccountEmailsResults.resultsPerPage;
     const startingPage = 1 + (this.currentPage() * resultsPerPage);
-    const endingPage = startingPage + resultsPerPage - 1;
+    let endingPage = startingPage + resultsPerPage - 1;
+    endingPage = endingPage > this.props.filteredAccountEmailsResults.count ? this.props.filteredAccountEmailsResults.count : endingPage;
     return <span>{startingPage} - {endingPage}</span>;
   }
   pageTokens() {
@@ -102,9 +104,12 @@ class FilteredEmailsActions extends Component {
     return (<span className="btn btn-default btn-xs-true" onClick={this.props.addSelected}>Add <span className="glyphicon glyphicon-check" aria-hidden="true"></span> to Email Book</span>);
   }
   renderSelectAllAction() {
-    if (this.props.filteredAccountEmailsResults.count && this.props.filteredAccountEmailsResults.count > 0) {
-      return (<span className="btn btn-default btn-xs-true" onClick={this.props.selectEverything}><span className="glyphicon glyphicon-ok" aria-hidden="true"></span> all {this.props.filteredAccountEmailsResults.count} results</span>);
-    }
+    return null;
+    // the returned totalResultsIds are not consistent with the emails returned page by page so hiding this for now.
+
+    // if (this.props.filteredAccountEmailsResults.count && this.props.filteredAccountEmailsResults.count > 0) {
+    //   return <FilteredEmailsSelectEverythingContainer />;
+    // }
   }
   renderActions() {
     if (this.props.filteredAccountEmailsResults.count) {
