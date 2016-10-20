@@ -7,6 +7,7 @@ import _ from 'lodash';
 
 function buildItemProps(item) {
   return Compilation.findOne({ _id: item.props.compilationId })
+  .populate('cover')
   .then((compilation) => {
     item.props.compilation = compilation; // eslint-disable-line no-param-reassign
     return Promise.resolve(item);

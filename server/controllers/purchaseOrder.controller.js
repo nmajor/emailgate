@@ -98,3 +98,16 @@ export function rebuildRequest(req, res) {
   })
   .catch((err) => { console.log('An error happened', err); });
 }
+
+export function sendRequest(req, res) {
+  PurchaseOrder.findOne({ _id: req.params.id })
+  .populate('orders')
+  .then((purchaseOrder) => {
+    return purchaseOrder.sendRequest();
+  })
+  .then((purchaseOrder) => {
+    console.log('po res json');
+    res.json(purchaseOrder);
+  })
+  .catch((err) => { console.log('An error happened', err); });
+}

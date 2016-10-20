@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import JsonViewer from '../JsonViewer';
 
 class CompilationView extends Component { // eslint-disable-line
   renderCompilationLogs() {
@@ -28,6 +29,9 @@ class CompilationView extends Component { // eslint-disable-line
       </div>
       <div className="bottom-bumper top-bumper">{this.renderTopLog()}</div>
       {this.renderCompilationLogs()}
+      <div>
+        <JsonViewer obj={this.props.compilation} />
+      </div>
     </div>);
   }
 }

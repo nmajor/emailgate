@@ -195,5 +195,6 @@ router.delete('/admin/purchase-orders/:id', ensureAuthenticated, ensureAdmin, Pu
 router.post('/admin/purchase-orders/:id/add-order', ensureAuthenticated, ensureAdmin, PurchaseOrderController.addOrder);
 router.post('/admin/purchase-orders/:id/remove-order', ensureAuthenticated, ensureAdmin, PurchaseOrderController.removeOrder);
 router.post('/admin/purchase-orders/:id/rebuild-request', ensureAuthenticated, ensureAdmin, PurchaseOrderController.rebuildRequest);
+router.post('/admin/purchase-orders/:id/send-request', ensureAuthenticated, ensureAdmin, PurchaseOrderController.sendRequest);
 
 module.exports = router;

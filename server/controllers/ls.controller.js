@@ -1,10 +1,18 @@
-import _ from 'lodash';
+// import _ from 'lodash';
+import PurchaseOrder from '../models/purchaseOrder';
 
 export function orderStatusResponse(req, res) {
-  _.forEach(req.body.information.ordersCreated, (info) => {
-    console.log(info.OrderNumber);
+  Promise.all(req.body.information.ordersCreated.map((info) => {
+    const poID = info.OrderNumber.replace('purc-', '');
+    return PurchaseOrder.findOne({ _id: poID })
+    .then((purchaseOrder) => {
+      console.log('blah hey tehre', req.body);
+      purchaseOrder.status = req.body.information.orderStatus; // eslint-disable-line no-param-reassign
+      purchaseOrder.responses.push({ body: req.body });
+      return purchaseOrder.save();
+    });
+  }))
+  .then(() => {
+    res.send('OK');
   });
-
-  console.log(req.body.information.orderStatus);
-  res.send('OK');
 }

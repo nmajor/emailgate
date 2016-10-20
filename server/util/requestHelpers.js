@@ -1,8 +1,33 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 // function decPrice(price) {
 //   return price / 100;
 // }
+
+const returnToAddress = {
+  Id: 'addr-return',
+  City: 'Pleasant Grove',
+  Company: 'MYEMAILBOOK.COM',
+  Country: 'USA',
+  Line1: '1195 N 850 E',
+  PostalCode: '84062',
+  Province: 'UT',
+  ContactLastName: 'Major',
+  PhoneNumber: '3852186935',
+};
+
+const billToAddress = {
+  Id: 'addr-bill',
+  City: 'Pleasant Grove',
+  Company: 'Nicholas Major',
+  Country: 'USA',
+  Line1: '1195 N 850 E',
+  PostalCode: '84062',
+  Province: 'UT',
+  ContactLastName: 'Major',
+  PhoneNumber: '3852186935',
+};
 
 function getPurchaseOrderId(purchaseOrder) {
   return `purc-${purchaseOrder._id}`;
@@ -32,8 +57,8 @@ function requestShipTo(order) {
     Currency: 'USD',
     EndCustomerId: '',
     Items: requestShipToItems(order),
-    Method: '',
-    OrgId: '',
+    Method: 'UPSGSRNA',
+    OrgId: '1',
     PackingSlip: {
       Currency: 'USD',
       MessageLine1: 'Thank you for your order',
@@ -63,29 +88,46 @@ export function requestAddress(address) {
   };
 }
 
+// BookTypeIds
+// 4314 - Standard Color 6 x 9 in or 229 x 152 mm Case Laminate on Standard 70 White w/Gloss Lam
+// 4414 - Standard Color 6 x 9 in or 229 x 152 mm Case Laminate on Standard 70 White w/Matte Lam
+
+// Thu, 20 Oct 2016 20:09:50 GMT
+
+// YYYY-MM-DD HH:mm:SS
+
 export function requestItem(item) {
   const compilation = item.props.compilation;
   return {
     Id: getItemId(item.props.compilation),
     BindingType: 'Hardcover',
-    BookTypeId: 999999,
+    BookTypeId: 4314,
     BookBlock: {
-      FileVersion: '2007-05-30 11:47:15',
+      FileVersion: moment(compilation.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
       Url: compilation.pdf.url,
     },
     Cover: {
-      FileVersion: '2007-05-30 11:47:15',
-      Url: compilation.pdf.url,
-      Color: 'Red',
+      FileVersion: moment(compilation.cover.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
+      Url: compilation.cover.pdf.url,
+      Color: 'Black',
+    },
+    EndSheet: {
+      Color: 'White',
+      Side: 'Front',
+      ThreadColor: 'White',
+      Type: 'Single',
     },
     PageCount: compilation.pdf.pageCount,
   };
 }
 
 export function requestAddresses(orders) {
-  return orders.map((order) => {
+  const addresses = orders.map((order) => {
     return requestAddress(order.shippingAddress);
   });
+  addresses.push(returnToAddress);
+  addresses.push(billToAddress);
+  return addresses;
 }
 
 export function requestItems(orders) {
@@ -98,20 +140,19 @@ export function requestItems(orders) {
 
 export function requestOrder(purchaseOrder, orders) {
   return {
-    BillToAddressId: '',
+    BillToAddressId: 'addr-bill',
     Id: getPurchaseOrderId(purchaseOrder),
-    OrderReference1: '',
-    ReturnToAddressId: '',
-    ServiceLevel: '',
+    ReturnToAddressId: 'addr-return',
+    ServiceLevel: 'SL10',
     ShipTos: requestShipTos(orders),
   };
 }
 
 export function buildRequest(purchaseOrder, orders) {
   return {
-    Auth: 'yoda2',
-    CustomerId: '',
-    PayloadId: '',
+    Auth: 'WHATEVER_LSI_GIVES_ME_AUTH',
+    CustomerId: 'WHATEVER_LSI_GIVES_ME_CUSTOMER_ID',
+    PayloadId: getPurchaseOrderId(purchaseOrder),
     Addresses: requestAddresses(orders),
     Items: requestItems(orders),
     Order: requestOrder(purchaseOrder, orders),
