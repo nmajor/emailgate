@@ -52,7 +52,7 @@ class OrderForm extends Component {
     return (<div>
       <form>
         {this.renderTerms()}
-        <div>
+        <div className="text-right">
           {this.renderError()}
           {this.renderSubmitAction()}
           {this.renderBackAction()}
