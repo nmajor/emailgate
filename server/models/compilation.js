@@ -12,7 +12,7 @@ const CompilationSchema = new Schema({
   _user: { type: String, ref: 'User' },
   title: String,
   subtitle: String,
-  _cover: { type: String, ref: 'Page' },
+  cover: {},
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
   pdf: {},
@@ -38,15 +38,6 @@ CompilationSchema.methods.updatePages = function updatePages() {
   });
 };
 
-CompilationSchema.methods.updateCover = function updateCover() {
-  return Page.findOne({ _compilation: this._id, type: 'cover' })
-  .select('_id')
-  .then((result) => {
-    this._cover = result._id;
-    return this.save();
-  });
-};
-
 CompilationSchema.methods.seedPages = function seedPages() {
   return Page.count({ _compilation: this._id })
   .then((count) => {
@@ -58,11 +49,43 @@ CompilationSchema.methods.seedPages = function seedPages() {
       }))
       .then(() => {
         return this.updatePages();
-      })
-      .then(() => {
-        return this.updateCover();
       });
     }
+  });
+};
+
+CompilationSchema.methods.buildCover = function buildCover(statusCb) {
+  statusCb = statusCb || function() {}; // eslint-disable-line
+
+  return startWorker({ compilationId: this.id, kind: 'compilation-emails-pdf' }, statusCb)
+  .then(() => {
+    return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
+    .then((pages) => {
+      return Promise.all(pages.map((page) => {
+        return page.save();
+      }));
+    });
+  })
+  .then(() => {
+    return startWorker({ compilationId: this.id, kind: 'compilation-pages-pdf' }, statusCb);
+  })
+  .then(() => {
+    return Promise.all([
+      this.getEmailPositionMap(),
+      this.getEmailPageMap(),
+      this.getPagePositionMap(),
+    ]);
+  })
+  .then((results) => {
+    const [emailPositionMap, emailPageMap, pagePositionMap] = results;
+
+    return startWorker({
+      compilationId: this.id,
+      kind: 'compilation-pdf',
+      emailPositionMap,
+      emailPageMap,
+      pagePositionMap,
+    }, statusCb);
   });
 };
 

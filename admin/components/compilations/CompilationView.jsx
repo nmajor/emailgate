@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import JsonViewer from '../JsonViewer';
+import DustJacketCover from '../../../shared/templates/dustJacketCover';
 
 class CompilationView extends Component { // eslint-disable-line
   renderCompilationLogs() {
@@ -36,7 +37,12 @@ class CompilationView extends Component { // eslint-disable-line
   }
   renderPdfLink() {
     if (this.props.compilation.pdf && this.props.compilation.pdf.url) {
-      return <a href={this.props.compilation.pdf.url}>Pdf</a>;
+      return <a className="btn btn-default" href={this.props.compilation.pdf.url}>Compilation Pdf</a>;
+    }
+  }
+  renderCoverPdfLink() {
+    if (this.props.compilation.pdf && this.props.compilation.pdf.url) {
+      return <a className="btn btn-default" href={this.props.compilation.pdf.url}>Cover PDF</a>;
     }
   }
   renderBuildLogs() {
@@ -51,18 +57,28 @@ class CompilationView extends Component { // eslint-disable-line
       </div>);
     }
   }
+  renderCoverFile() {
+    const template = new DustJacketCover({ compilation: this.props.compilation });
+    return template.render();
+  }
   render() {
     return (<div>
       <h1>{this.props.compilation.title}</h1>
       <h3>{this.props.compilation.subtitle}</h3>
       {this.renderBuildLogs()}
       <div>
-        <button className="btn btn-success right-bumper" onClick={this.props.buildPdf}>Build PDF</button>
         {this.renderPdfLink()}
+        {this.renderCoverPdfLink()}
       </div>
-
+      <div>
+        <button className="btn btn-success right-bumper" onClick={this.props.buildPdf}>Build PDF</button>
+        <button className="btn btn-success right-bumper" onClick={this.props.buildPdf}>Build Cover</button>
+      </div>
       <div>
         <JsonViewer obj={this.props.compilation} />
+      </div>
+      <div>
+        {this.renderCoverFile()}
       </div>
     </div>);
   }
