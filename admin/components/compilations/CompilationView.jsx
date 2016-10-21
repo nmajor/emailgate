@@ -19,16 +19,27 @@ class CompilationView extends Component { // eslint-disable-line
       return <a href={this.props.compilation.pdf.url}>Pdf</a>;
     }
   }
+  renderBuildLogs() {
+    if (this.props.compilation.logs) {
+      return (<div className="bottom-bumper">
+        <h3>Build Logs</h3>
+        <div className="bottom-bumper top-bumper">{this.renderTopLog()}</div>
+        <div className="compilation-logs">
+          {this.renderCompilationLogs()}
+        </div>
+      </div>);
+    }
+  }
   render() {
     return (<div>
       <h1>{this.props.compilation.title}</h1>
       <h3>{this.props.compilation.subtitle}</h3>
+      {this.renderBuildLogs()}
       <div>
         <button className="btn btn-success" onClick={this.props.buildPdf}>Build PDF</button>
         {this.renderPdfLink()}
       </div>
-      <div className="bottom-bumper top-bumper">{this.renderTopLog()}</div>
-      {this.renderCompilationLogs()}
+
       <div>
         <JsonViewer obj={this.props.compilation} />
       </div>

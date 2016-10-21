@@ -27,6 +27,7 @@ class JsonViewer extends Component { // eslint-disable-line
   renderTree() {
     if (this.props.obj) {
       return (<JSONTree
+        hideRoot
         theme={this.theme}
         data={this.props.obj}
       />);

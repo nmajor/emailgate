@@ -40,7 +40,6 @@ class FilterContainer extends Component {
     this.props.dispatch(Actions.setSelectedFilteredEmailIds(emailIds));
   }
   selectEverything() {
-    console.log('blah hey');
     const filteredEmailIds = _.filter(this.props.filteredAccountEmailsResults.totalResultsIds, (id) => {
       return !_.some(this.props.compilationEmails, (cEmail) => { return cEmail.remote_id === id; });
     });

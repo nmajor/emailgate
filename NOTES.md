@@ -195,3 +195,8 @@ https://stripe.com/docs/testing
 ### PDF SIMULTAION NOTES
 
 - http://stackoverflow.com/questions/16977142/html5-js-preprocess-of-uploaded-html-page-and-simulate-pagebreaks
+
+### Subdocument duplicate key error:
+ - http://stackoverflow.com/questions/13439102/duplicate-key-error-index-on-embedded-document-in-mongoose
+> db.purchaseorders.getIndexes()
+> db.purchaseorders.dropIndex('responses._id_1')

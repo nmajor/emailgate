@@ -6,7 +6,6 @@ export function orderStatusResponse(req, res) {
     const poID = info.OrderNumber.replace('purc-', '');
     return PurchaseOrder.findOne({ _id: poID })
     .then((purchaseOrder) => {
-      console.log('blah hey tehre', req.body);
       purchaseOrder.status = req.body.information.orderStatus; // eslint-disable-line no-param-reassign
       purchaseOrder.responses.push({ body: req.body });
       return purchaseOrder.save();

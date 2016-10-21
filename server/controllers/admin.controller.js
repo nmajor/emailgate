@@ -21,7 +21,10 @@ export function getOrders(req, res) {
 
   if (req.query.nullPurchaseOrder) { query._purchaseOrder = { $eq: null }; }
 
-  Order.find(query)
+  new Promise((resolve) => {
+    if (req.query.includeItemProps) { return resolve(Order.findAndBuildItemProps(query)); }
+    return resolve(Order.find(query));
+  })
   .then((orders) => {
     res.json(orders);
   });

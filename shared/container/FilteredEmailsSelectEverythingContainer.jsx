@@ -33,7 +33,6 @@ class FilteredEmailsSelectEverythingContainer extends Component {
   render() {
     return (<span>
       {this.renderAction()}
-      blah {this.props.filteredAccountEmailsResults.totalResultsIds.length}
       {_.filter(this.props.filteredAccountEmailsResults.totalResultsIds, (id) => { return id.indexOf('13') > -1; }).join(' ')}
     </span>);
   }

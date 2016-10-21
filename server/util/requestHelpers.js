@@ -53,9 +53,7 @@ function requestShipToItems(order) {
 function requestShipTo(order) {
   return {
     AddressId: getAddressId(order.shippingAddress),
-    CarrierAccountNumber: '',
     Currency: 'USD',
-    EndCustomerId: '',
     Items: requestShipToItems(order),
     Method: 'UPSGSRNA',
     OrgId: '1',
@@ -80,7 +78,7 @@ export function requestAddress(address) {
     Company: `${address.firstName} ${address.lastName}`,
     Country: 'USA',
     Line1: address.address1,
-    Line2: address.address2,
+    Line2: address.address2 || undefined,
     PostalCode: address.postalCode,
     Province: address.region,
     ContactLastName: address.lastName,

@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import EmailTemplate from '../templates/email';
 import Loading from './Loading';
-import FixedFooter from './FixedFooter';
+// import FixedFooter from './FixedFooter';
 
 class CompilationEmailForm extends Component {
   constructor(props, context) {
@@ -28,7 +28,6 @@ class CompilationEmailForm extends Component {
   }
   submitForm(e) {
     if (e) { e.preventDefault(); }
-    console.log('blah hey submitted');
 
     this.props.submitForm(this.state);
   }

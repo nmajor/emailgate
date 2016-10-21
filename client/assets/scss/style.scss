@@ -288,6 +288,11 @@ h1 > .loading {
   font-weight: 300;
   font-size: 12px;
 }
+
+.label-xs-true {
+  padding: 3px 5px;
+}
+
 input {
   &.basic {
     min-height: inherit;

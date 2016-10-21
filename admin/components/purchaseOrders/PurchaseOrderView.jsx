@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
+import _ from 'lodash';
 import AddedOrdersList from './AddedOrdersList';
 import AddOrderOptionsList from './AddOrderOptionsList';
 import PurchaseOrderSummary from './PurchaseOrderSummary';
@@ -48,9 +49,15 @@ class PurchaseOrderView extends Component { // eslint-disable-line
   }
   renderResponses() {
     if (this.props.purchaseOrder.sentAt) {
+      const sortedResponses = _.orderBy(this.props.purchaseOrder.responses, ['createdAt'], ['desc']);
+
+      const responses = sortedResponses.map((response, index) => {
+        return <PurchaseOrderResponse key={index} response={response} />;
+      });
+
       return (<div>
         <h3>Responses</h3>
-        <PurchaseOrderResponse purchaseOrder={this.props.purchaseOrder} />
+        {responses}
       </div>);
     }
   }

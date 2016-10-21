@@ -6,7 +6,7 @@ import { buildRequest } from '../util/requestHelpers';
 
 
 const PurchaseOrderResponseSchema = new Schema({
-  _id: false,
+  _id: { type: String, unique: true, default: shortid.generate },
   body: {},
 }, {
   timestamps: true,
@@ -53,18 +53,14 @@ PurchaseOrderSchema.methods.sendRequest = function sendRequest() {
     method: 'POST',
   };
 
-  console.log('blah', options);
-
   return new Promise((resolve) => {
-    console.log('blah sending request');
     const req = http.request(options, (res) => {
-      console.log('blah hey', res.body);
       this.sentAt = new Date();
       if (req.body) {
         this.status = res.body.information.orderStatus || 'SENT';
         this.responses.push(res.body);
       } else {
-        this.status = 'BAD_RESPONSE';
+        this.status = 'BADRESPONSE';
       }
 
       resolve(this.save());

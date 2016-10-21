@@ -4,28 +4,42 @@ import { prettyPrice } from '../../../shared/helpers';
 import moment from 'moment';
 import _ from 'lodash';
 
-class OrderThumb extends Component { // eslint-disable-line
+class AddOrderOptionsListItem extends Component { // eslint-disable-line
   constructor(props, context) {
     super(props, context);
+
+    this.canAdd = this.canAdd.bind(this);
     this.action = this.action.bind(this);
   }
+  canAdd() {
+    return _.every(this.props.order.items, (item) => { return item.props.compilation.pdf; });
+  }
   action() {
-    this.props.action(this.props.order._id);
+    if (this.canAdd()) {
+      this.props.action(this.props.order._id);
+    }
   }
   renderAcion() {
-    if (this.props.action) {
+    if (this.canAdd()) {
       return (<button
         className="btn btn-xs-true btn-default"
         onClick={this.action}
       >{this.props.renderActionIcon()}</button>);
     }
+
+    return (<button
+      className="btn btn-xs-true btn-danger disabled"
+      onClick={this.action}
+    >{this.props.renderActionIcon()}</button>);
   }
   renderCartItemProps() {
     if (this.props.order.items.length > 0 && _.some(this.props.order.items, (item) => { return item.props.compilation; })) {
       const itemProps = this.props.order.items.map((item) => {
+        const pdfIcon = (<span className={`label label-${item.props.compilation.pdf ? 'success' : 'danger'} label-xs-true`}>
+          <span className="glyphicon glyphicon-file" aria-hidden="true"></span>
+        </span>);
         return (<div key={item._id}>
-          <Link to={`/compilations/${item.props.compilationId}`}>{item.props.compilation._id}</Link>
-          {item.props.compilation.pdf ? <span>Has PDF</span> : <span>No PDF</span>}
+          Compilation <Link to={`/compilations/${item.props.compilationId}`}>{item.props.compilation._id}</Link> {pdfIcon}
         </div>);
       });
 
@@ -48,11 +62,11 @@ class OrderThumb extends Component { // eslint-disable-line
   }
 }
 
-OrderThumb.propTypes = {
+AddOrderOptionsListItem.propTypes = {
   className: PropTypes.string,
   order: PropTypes.object.isRequired,
   action: PropTypes.func,
   renderActionIcon: PropTypes.func,
 };
 
-export default OrderThumb;
+export default AddOrderOptionsListItem;

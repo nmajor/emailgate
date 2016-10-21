@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import OrderThumb from '../orders/OrderThumb';
+import AddOrderOptionsListItem from './AddOrderOptionsListItem';
 
 class AddOrderOptionsList extends Component { // eslint-disable-line
   renderActionIcon() {
@@ -7,7 +7,7 @@ class AddOrderOptionsList extends Component { // eslint-disable-line
   }
   renderList() {
     return this.props.addableOrders.map((order) => {
-      return <OrderThumb className="order-thumb" key={order._id} order={order} action={this.props.addOrder} renderActionIcon={this.renderActionIcon} />;
+      return <AddOrderOptionsListItem className="order-thumb" key={order._id} order={order} action={this.props.addOrder} renderActionIcon={this.renderActionIcon} />;
     });
   }
   render() {
