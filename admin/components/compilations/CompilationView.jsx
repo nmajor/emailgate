@@ -20,7 +20,7 @@ class CompilationView extends Component { // eslint-disable-line
   }
   renderUpdateLog() {
     if (this.props.compilation.logs) {
-      const logs = _.filter(this.props.compilation.logs, { type: 'update' });
+      const logs = _.filter(this.props.compilation.logs, (log) => { return ['update', 'status'].indexOf(log.type) > -1; });
       if (logs.length > 0) {
         return logs[logs.length - 1].message;
       }
@@ -57,7 +57,7 @@ class CompilationView extends Component { // eslint-disable-line
       <h3>{this.props.compilation.subtitle}</h3>
       {this.renderBuildLogs()}
       <div>
-        <button className="btn btn-success" onClick={this.props.buildPdf}>Build PDF</button>
+        <button className="btn btn-success right-bumper" onClick={this.props.buildPdf}>Build PDF</button>
         {this.renderPdfLink()}
       </div>
 
