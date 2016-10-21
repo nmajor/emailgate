@@ -12,7 +12,7 @@ const CompilationSchema = new Schema({
   _user: { type: String, ref: 'User' },
   title: String,
   subtitle: String,
-  cover: { type: String, ref: 'Page' },
+  _cover: { type: String, ref: 'Page' },
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
   pdf: {},
@@ -41,8 +41,8 @@ CompilationSchema.methods.updatePages = function updatePages() {
 CompilationSchema.methods.updateCover = function updateCover() {
   return Page.findOne({ _compilation: this._id, type: 'cover' })
   .select('_id')
-  .then((coverId) => {
-    this.cover = coverId;
+  .then((result) => {
+    this._cover = result._id;
     return this.save();
   });
 };
@@ -56,14 +56,13 @@ CompilationSchema.methods.seedPages = function seedPages() {
         newPage._compilation = this._id;
         return newPage.save();
       }))
-      .then(this.updatePages);
+      .then(() => {
+        return this.updatePages();
+      })
+      .then(() => {
+        return this.updateCover();
+      });
     }
-  })
-  .then(() => {
-    return this.updatePages();
-  })
-  .then(() => {
-    return this.updateCover();
   });
 };
 

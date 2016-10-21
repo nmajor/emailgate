@@ -96,7 +96,7 @@ export function rebuildRequest(req, res) {
   .then((purchaseOrder) => {
     res.json(purchaseOrder);
   })
-  .catch((err) => { console.log('An error happened', err); });
+  .catch((err) => { console.log('An error happened', err, err.stack); });
 }
 
 export function sendRequest(req, res) {
