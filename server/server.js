@@ -1,9 +1,5 @@
 require('dotenv').config();
 if (process.env.NODE_ENV === 'production') { require('newrelic'); } // eslint-disable-line global-require
-Error.stackTraceLimit = Infinity;
-
-import kue from 'kue';
-import kueUi from 'kue-ui';
 
 import Express from 'express';
 import mongoose from 'mongoose';
@@ -96,17 +92,6 @@ app.use('/api', api);
 app.use('/webhook', webhook);
 app.use('/oath2', oath2);
 
-
-kueUi.setup({
-  apiURL: '/kue/api', // IMPORTANT: specify the api url
-  baseURL: '/kue', // IMPORTANT: specify the base url
-  updateInterval: 1000, // Optional: Fetches new data every 5000 ms
-});
-
-// Mount kue JSON api
-app.use('/kue/api', kue.app);
-// Mount UI
-app.use('/kue', kueUi.app);
 
 // Render Initial HTML
 const renderFullPage = (html, renderedState) => {
