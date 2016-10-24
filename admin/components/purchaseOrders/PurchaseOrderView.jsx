@@ -37,11 +37,11 @@ class PurchaseOrderView extends Component { // eslint-disable-line
   renderSendAction() {
     if (this.props.purchaseOrder.orders.length === 0) { return null; }
 
-    if (this.props.purchaseOrder.sentAt) {
-      return (<div className="top-bumper">
-        <button className="btn btn-success btn-block disabled" onClick={this.props.sendRequest}>Sent at {moment(this.props.purchaseOrder.sentAt).format('LL')}</button>
-      </div>);
-    }
+    // if (this.props.purchaseOrder.sentAt) {
+    //   return (<div className="top-bumper">
+    //     <button className="btn btn-success btn-block disabled" onClick={this.props.sendRequest}>Sent at {moment(this.props.purchaseOrder.sentAt).format('LL')}</button>
+    //   </div>);
+    // }
 
     return (<div className="top-bumper">
       <button className="btn btn-success btn-block" onClick={this.props.sendRequest}>Send Request</button>

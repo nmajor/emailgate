@@ -148,8 +148,8 @@ export function requestOrder(purchaseOrder, orders) {
 
 export function buildRequest(purchaseOrder, orders) {
   return {
-    Auth: 'WHATEVER_LSI_GIVES_ME_AUTH',
-    CustomerId: 'WHATEVER_LSI_GIVES_ME_CUSTOMER_ID',
+    Auth: 'AUTH_HERE',
+    CustomerId: 'CUSTOMER_ID_HERE',
     PayloadId: getPurchaseOrderId(purchaseOrder),
     Addresses: requestAddresses(orders),
     Items: requestItems(orders),

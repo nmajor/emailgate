@@ -46,6 +46,9 @@ PurchaseOrderSchema.methods.sendRequest = function sendRequest() {
   request.Auth = config.auth;
   request.CustomerId = config.customerId;
 
+  console.log('blah hey Auth', request.Auth);
+  console.log('blah hey CustomerId', request.CustomerId);
+
   const options = {
     hostname: lsUrl.hostname,
     path: lsUrl.pathname,
