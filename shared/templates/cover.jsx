@@ -15,7 +15,7 @@ class CoverTemplate {
       fontFamily: '\'Montserrat\', sans-serif',
       fontSize: '3em',
       textAlign: 'center',
-      padding: '350px 0 0 0',
+      padding: '100px 0 0 0',
       fontWeight: 'bold',
     };
 
@@ -26,7 +26,7 @@ class CoverTemplate {
       fontFamily: '\'Libre Baskerville\', serif',
       fontSize: '1.5em',
       textAlign: 'center',
-      padding: '15px 0 350px 0',
+      padding: '15px 0 100px 0',
     };
 
     return <div style={divStyle}>{subtitle}</div>;

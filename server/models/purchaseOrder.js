@@ -1,12 +1,24 @@
 import Mongoose, { Schema } from 'mongoose';
-import http from 'http';
+// import http from 'http';
+import _ from 'lodash';
 import shortid from 'shortid';
 import Order from './order';
 import { buildRequest } from '../util/requestHelpers';
 
 
+function requestLogger(httpModule) {
+  const original = httpModule.request;
+  httpModule.request = (options, callback) => { // eslint-disable-line
+    console.log(options.href || `${options.protocol}://${options.hostname}${options.path}`, options.method);
+    return original(options, callback);
+  };
+  return httpModule;
+}
+
+
 const PurchaseOrderResponseSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
+  status: String,
   body: {},
 }, {
   timestamps: true,
@@ -42,31 +54,59 @@ PurchaseOrderSchema.methods.sendRequest = function sendRequest() {
 
   const config = JSON.parse(process.env.LS_CONFIG);
   const lsUrl = url.parse(config.url);
-  const request = this.request;
+  const request = Object.assign({}, this.request);
   request.Auth = config.auth;
   request.CustomerId = config.customerId;
-
-  console.log('blah hey Auth', request.Auth);
-  console.log('blah hey CustomerId', request.CustomerId);
 
   const options = {
     hostname: lsUrl.hostname,
     path: lsUrl.pathname,
-    port: 80,
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   };
 
-  return new Promise((resolve) => {
-    const req = http.request(options, (res) => {
-      this.sentAt = new Date();
-      if (req.body) {
-        this.status = res.body.information.orderStatus || 'SENT';
-        this.responses.push(res.body);
-      } else {
-        this.status = 'BADRESPONSE';
-      }
+  const https = requestLogger(require('https')); // eslint-disable-line
 
-      resolve(this.save());
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      this.sentAt = new Date();
+
+      let body = '';
+
+      res.on('data', (chunk) => {
+        body += chunk;
+      });
+
+      req.on('error', (e) => {
+        reject(`problem with response: ${e.message}`);
+      });
+
+      res.on('end', () => {
+        if (body) {
+          let status = 'SENT';
+          body = JSON.parse(body);
+
+          if (body.errors === 'yes') {
+            status = 'ERROR';
+          } else if (_.get(body, 'information.orderStatus')) {
+            status = _.get(body, 'information.orderStatus');
+          }
+
+          const response = {
+            status,
+            body,
+          };
+
+          this.status = status;
+          this.responses.push(response);
+        } else {
+          this.status = 'NORESPONSEBODY';
+        }
+
+        resolve(this.save());
+      });
     });
 
     req.on('error', (e) => {

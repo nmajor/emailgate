@@ -279,9 +279,9 @@ export default (io) => {
       .then(() => {
         return Compilation.findOne({ _id: data.compilationId });
       })
-      .then((compilation) => {
-        socket.emit('UPDATED_COMPILATION', compilation);
-      })
+      // .then((compilation) => {
+      //   socket.emit('UPDATED_COMPILATION', compilation);
+      // })
       .catch((err) => {
         socket.emit('COMPILATION_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
       });
