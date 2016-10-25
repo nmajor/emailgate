@@ -7,13 +7,17 @@ class CompilationShowContainer extends Component { // eslint-disable-line
   constructor(props, context) {
     super(props, context);
     this.buildPdf = this.buildPdf.bind(this);
+    this.buildCoverPdf = this.buildCoverPdf.bind(this);
   }
   buildPdf() {
     this.props.dispatch(Actions.buildCompilationPdf(this.props.compilation._id));
   }
+  buildCoverPdf() {
+    this.props.dispatch(Actions.buildCompilationCoverPdf(this.props.compilation._id));
+  }
   render() {
     return (<div>
-      <CompilationView compilation={this.props.compilation} buildPdf={this.buildPdf} />
+      <CompilationView compilation={this.props.compilation} buildPdf={this.buildPdf} buildCoverPdf={this.buildCoverPdf} />
     </div>);
   }
 }

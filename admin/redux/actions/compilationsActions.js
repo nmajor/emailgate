@@ -18,6 +18,14 @@ export function appendToCompilationLog(compilationId, entry) {
   };
 }
 
+export function appendToCompilationCoverLog(compilationId, entry) {
+  return {
+    type: ActionTypes.APPEND_TO_COMPILATION_COVER_LOG,
+    compilationId,
+    entry,
+  };
+}
+
 export function updateCompilationInCompilations(compilation) {
   return {
     type: ActionTypes.UPDATE_COMPILATION_IN_COMPILATIONS,
@@ -63,5 +71,11 @@ export function getCompilations(cookie) {
 export function buildCompilationPdf(compilationId) {
   return () => {
     socket.emit('BUILD_COMPILATION_PDF', { compilationId });
+  };
+}
+
+export function buildCompilationCoverPdf(compilationId) {
+  return () => {
+    socket.emit('BUILD_COMPILATION_COVER_PDF', { compilationId });
   };
 }

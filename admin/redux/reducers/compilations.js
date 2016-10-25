@@ -34,6 +34,21 @@ const compilations = (state = initialState.compilations, action) => {
       return state;
     }
 
+    case ActionTypes.APPEND_TO_COMPILATION_COVER_LOG : {
+      const loggedCompilationCoverIndex = _.findIndex(state, { _id: action.compilationId });
+      if (loggedCompilationCoverIndex > -1) {
+        const compilation = Object.assign({}, state[loggedCompilationCoverIndex]);
+        compilation.coverLogs = compilation.coverLogs || [];
+        compilation.coverLogs.push(action.entry);
+        return [
+          ...state.slice(0, loggedCompilationCoverIndex),
+          compilation,
+          ...state.slice(loggedCompilationCoverIndex + 1),
+        ];
+      }
+      return state;
+    }
+
     default:
       return state;
   }

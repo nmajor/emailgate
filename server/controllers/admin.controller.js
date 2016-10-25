@@ -11,7 +11,6 @@ export function getUsers(req, res) {
 
 export function getCompilations(req, res) {
   Compilation.find({})
-  .populate('_cover')
   .then((compilations) => {
     res.json(compilations);
   });

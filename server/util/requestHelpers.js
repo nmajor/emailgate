@@ -108,8 +108,8 @@ export function requestItem(item) {
       Url: compilation.pdf.url,
     },
     Cover: {
-      FileVersion: moment(compilation._cover.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
-      Url: compilation._cover.pdf.url,
+      FileVersion: moment(compilation.cover.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
+      Url: compilation.cover.pdf.url,
     },
     EndSheet: {
       Color: 'White',

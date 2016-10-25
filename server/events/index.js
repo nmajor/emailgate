@@ -279,11 +279,34 @@ export default (io) => {
       .then(() => {
         return Compilation.findOne({ _id: data.compilationId });
       })
+      .then((compilation) => {
+        socket.emit('UPDATED_COMPILATION', compilation);
+      })
+      .catch((err) => {
+        socket.emit('COMPILATION_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
+      });
+    });
+
+    socket.on('BUILD_COMPILATION_COVER_PDF', (data) => {
+      console.log('BUILD_COMPILATION_COVER_PDF', data);
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(userIsAdmin)
+      .then(() => Compilation.findOne({ _id: data.compilationId }))
+      .then((compilation) => {
+        return compilation.buildCoverPdf((info) => {
+          console.log('blah bey', info);
+          socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: compilation._id, entry: info });
+        });
+      })
+      .then(() => {
+        return Compilation.findOne({ _id: data.compilationId });
+      })
       // .then((compilation) => {
       //   socket.emit('UPDATED_COMPILATION', compilation);
       // })
       .catch((err) => {
-        socket.emit('COMPILATION_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
+        console.log('blah err', err.stack);
+        socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
       });
     });
 

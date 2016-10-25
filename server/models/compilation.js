@@ -6,13 +6,24 @@ import Page from './page';
 import * as sharedHelpers from '../../shared/helpers';
 import * as serverHelpers from '../util/helpers';
 import { startWorker } from '../util/docker';
+import CaseboundCover from '../../shared/templates/caseboundCover';
+
+const CompilationCoverSchema = new Schema({
+  _id: { type: String, unique: true, default: shortid.generate },
+  style: { type: String, default: 'casebound' },
+  spineWidth: Number,
+  html: String,
+  pdf: {},
+}, {
+  timestamps: true,
+});
 
 const CompilationSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _user: { type: String, ref: 'User' },
   title: String,
   subtitle: String,
-  cover: {},
+  cover: CompilationCoverSchema,
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
   pdf: {},
@@ -38,6 +49,19 @@ CompilationSchema.methods.updatePages = function updatePages() {
   });
 };
 
+CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
+  const template = new CaseboundCover({ compilation: this });
+  console.log('blah hey 1');
+
+  this.cover = { html: template.toString() };
+  return this.save()
+  .then(() => {
+    console.log('blah hey 2');
+
+    return startWorker({ compilationId: this.id, kind: 'compilation-cover-pdf' }, statusCb);
+  });
+};
+
 CompilationSchema.methods.seedPages = function seedPages() {
   return Page.count({ _compilation: this._id })
   .then((count) => {
@@ -54,7 +78,7 @@ CompilationSchema.methods.seedPages = function seedPages() {
   });
 };
 
-CompilationSchema.methods.buildCover = function buildCover(statusCb) {
+CompilationSchema.methods.buildPdf = function buildPdf(statusCb) {
   statusCb = statusCb || function() {}; // eslint-disable-line
 
   return startWorker({ compilationId: this.id, kind: 'compilation-emails-pdf' }, statusCb)
@@ -87,51 +111,6 @@ CompilationSchema.methods.buildCover = function buildCover(statusCb) {
       pagePositionMap,
     }, statusCb);
   });
-};
-
-CompilationSchema.methods.buildPdf = function buildPdf(statusCb) {
-  statusCb = statusCb || function() {}; // eslint-disable-line
-
-  return Page.find({ _compilation: this._id })
-  .then((pages) => {
-    return Promise.all(pages.map((page) => {
-      return page.save();
-    }));
-  })
-  .then(() => {
-    return startWorker({ compilationId: this.id, kind: 'compilation-pages-pdf' }, statusCb);
-  });
-
-  // return startWorker({ compilationId: this.id, kind: 'compilation-emails-pdf' }, statusCb)
-  // .then(() => {
-  //   return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
-  //   .then((pages) => {
-  //     return Promise.all(pages.map((page) => {
-  //       return page.save();
-  //     }));
-  //   });
-  // })
-  // .then(() => {
-  //   return startWorker({ compilationId: this.id, kind: 'compilation-pages-pdf' }, statusCb);
-  // })
-  // .then(() => {
-  //   return Promise.all([
-  //     this.getEmailPositionMap(),
-  //     this.getEmailPageMap(),
-  //     this.getPagePositionMap(),
-  //   ]);
-  // })
-  // .then((results) => {
-  //   const [emailPositionMap, emailPageMap, pagePositionMap] = results;
-  //
-  //   return startWorker({
-  //     compilationId: this.id,
-  //     kind: 'compilation-pdf',
-  //     emailPositionMap,
-  //     emailPageMap,
-  //     pagePositionMap,
-  //   }, statusCb);
-  // });
 };
 
 CompilationSchema.methods.getEmailPositionMap = function getEmailPositionMap() {
