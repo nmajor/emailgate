@@ -106,7 +106,6 @@ export function sendRequest(req, res) {
     return purchaseOrder.sendRequest();
   })
   .then((purchaseOrder) => {
-    console.log('po res json');
     res.json(purchaseOrder);
   })
   .catch((err) => { console.log('An error happened', err); });

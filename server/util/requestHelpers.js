@@ -46,6 +46,9 @@ function requestShipToItems(order) {
     return {
       ItemId: getItemId(item.props.compilation),
       Qty: item.quantity,
+      PackingSlip: {
+        ActualSellingPrice: item.product.price,
+      },
     };
   });
 }
@@ -107,7 +110,6 @@ export function requestItem(item) {
     Cover: {
       FileVersion: moment(compilation._cover.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
       Url: compilation._cover.pdf.url,
-      Color: 'Black',
     },
     EndSheet: {
       Color: 'White',
@@ -125,7 +127,7 @@ export function requestAddresses(orders) {
   });
   addresses.push(returnToAddress);
   addresses.push(billToAddress);
-  return addresses;
+  return _.uniqBy(addresses, 'Id');
 }
 
 export function requestItems(orders) {
@@ -148,8 +150,8 @@ export function requestOrder(purchaseOrder, orders) {
 
 export function buildRequest(purchaseOrder, orders) {
   return {
-    Auth: 'WHATEVER_LSI_GIVES_ME_AUTH',
-    CustomerId: 'WHATEVER_LSI_GIVES_ME_CUSTOMER_ID',
+    Auth: 'AUTH_HERE',
+    CustomerId: 'CUSTOMER_ID_HERE',
     PayloadId: getPurchaseOrderId(purchaseOrder),
     Addresses: requestAddresses(orders),
     Items: requestItems(orders),

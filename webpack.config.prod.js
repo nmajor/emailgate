@@ -4,7 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   entry: {
     app: __dirname + "/client/index.js",
-    amdin: __dirname + "/client/admin.js",
+    admin: __dirname + "/client/admin.js",
   },
 
   output: {
