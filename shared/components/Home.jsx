@@ -170,7 +170,7 @@ class Home extends Component { // eslint-disable-line
               <h2>PRICING</h2>
               <span className="fa fa-book price-book"></span>
               <div className="big-price">${this.renderProductPrice()}</div>
-              <p><Link to="/register" className="btn btn-success">CREATE AN ACCOUNT TO GET STARTED</Link></p>
+              <p><Link to="/register" className="btn btn-success">DEMO FOR FREE</Link></p>
             </div>
           </div>
         </div>
@@ -193,7 +193,7 @@ class Home extends Component { // eslint-disable-line
   //           <h1>Publish your story</h1>
   //           <p>Filter and search your emails.
   // Then publish them into a custom hardback book. Find the story hidden in your emails. Make something you can hold, touch, and keep forever.</p>
-  //           <Link to="/register" className="btn btn-success btn-lg btn-block">Register Now and Demo for Free!</Link>
+  //           <Link to="/compilations/new" className="btn btn-success btn-lg btn-block">Register Now and Demo for Free!</Link>
   //         </div>
   //       </div>
   //       <div className="container details">
