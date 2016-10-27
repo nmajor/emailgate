@@ -1,5 +1,5 @@
 import React from 'react';
-// import { renderToString } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 
 class CaseboundCoverTemplate {
   constructor(props) {
@@ -13,13 +13,16 @@ class CaseboundCoverTemplate {
     this.boardWidth = 148;
     this.boardHeight = 235;
 
-    this.spineWidth = this.compilation.spineWidth || 38;
+    this.spineWidth = this.compilation.cover.spineWidth || 38;
 
     this.backCoverWidth = this.bleedWidth + this.boardWidth + this.gutterWidth;
     this.frontCoverWidth = this.gutterWidth + this.boardWidth + this.bleedWidth;
 
     this.fullWidth = this.frontCoverWidth + this.spineWidth + this.frontCoverWidth;
     this.fullHeight = this.bleedWidth + this.boardHeight + this.bleedWidth;
+  }
+  getCoverDimentions() {
+    return { width: this.fullWidth, height: this.fullHeight };
   }
   renderBackCover() {
     const styles = {
@@ -112,15 +115,15 @@ class CaseboundCoverTemplate {
       {this.renderFrontCover()}
     </div>);
   }
-//   toString() {
-//     return `
-// <div>
-// <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
-// <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-// ${renderToString(this.render())}
-// </div>
-//     `;
-//   }
+  toString() {
+    return `
+<div>
+<link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+${renderToString(this.render())}
+</div>
+    `;
+  }
 }
 
 export default CaseboundCoverTemplate;

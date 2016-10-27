@@ -294,18 +294,16 @@ export default (io) => {
       .then(() => Compilation.findOne({ _id: data.compilationId }))
       .then((compilation) => {
         return compilation.buildCoverPdf((info) => {
-          console.log('blah bey', info);
           socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: compilation._id, entry: info });
         });
       })
       .then(() => {
         return Compilation.findOne({ _id: data.compilationId });
       })
-      // .then((compilation) => {
-      //   socket.emit('UPDATED_COMPILATION', compilation);
-      // })
+      .then((compilation) => {
+        socket.emit('UPDATED_COMPILATION', compilation);
+      })
       .catch((err) => {
-        console.log('blah err', err.stack);
         socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
       });
     });

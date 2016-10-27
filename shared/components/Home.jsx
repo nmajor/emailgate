@@ -70,7 +70,7 @@ class Home extends Component { // eslint-disable-line
             <h1>myemailbook.com</h1>
             <h2>There's a story in your emails. Find it. Publish it. Keep it forever.</h2>
             <br /><br />
-            <Link to="/compilations/new" className="btn btn-transparent">DEMO FOR FREE</Link>
+            <Link to="/compilations/new" className="btn btn-transparent">FREE INSTANT DEMO</Link>
           </div>
         </div>
       </div>
@@ -105,7 +105,7 @@ class Home extends Component { // eslint-disable-line
               <p>Search and filter your emails, then export them into our custom email book builder.</p>
               <p>Edit, tweak, and preview your email book.</p>
               <p>We will print and publish your book on demand and ship as many as your want to your door.</p>
-              <p><Link to="/compilations/new" className="btn btn-success">DEMO FOR FREE</Link></p>
+              <p><Link to="/compilations/new" className="btn btn-success">FREE INSTANT DEMO</Link></p>
             </div>
           </div>
         </div>
@@ -170,7 +170,7 @@ class Home extends Component { // eslint-disable-line
               <h2>PRICING</h2>
               <span className="fa fa-book price-book"></span>
               <div className="big-price">${this.renderProductPrice()}</div>
-              <p><Link to="/register" className="btn btn-success">DEMO FOR FREE</Link></p>
+              <p><Link to="/register" className="btn btn-success">FREE INSTANT DEMO</Link></p>
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import User from '../models/user';
 import Compilation from '../models/compilation';
 import Order from '../models/order';
@@ -13,6 +14,20 @@ export function getCompilations(req, res) {
   Compilation.find({})
   .then((compilations) => {
     res.json(compilations);
+  });
+}
+
+export function patchCompilation(req, res) {
+  Compilation.findOne({ _user: req.user._id, _id: req.params.id })
+  .then((compilation) => {
+    compilation.title = req.body.title; // eslint-disable-line no-param-reassign
+    compilation.subtitle = req.body.subtitle; // eslint-disable-line no-param-reassign
+    compilation.cover.spineWidth = _.get(req.body, 'cover.spineWidth'); // eslint-disable-line no-param-reassign
+
+    return compilation.save();
+  })
+  .then((compilation) => {
+    res.json(compilation);
   });
 }
 

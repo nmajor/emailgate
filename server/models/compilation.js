@@ -12,6 +12,8 @@ const CompilationCoverSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   style: { type: String, default: 'casebound' },
   spineWidth: Number,
+  height: Number,
+  width: Number,
   html: String,
   pdf: {},
 }, {
@@ -51,15 +53,20 @@ CompilationSchema.methods.updatePages = function updatePages() {
 
 CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
   const template = new CaseboundCover({ compilation: this });
-  console.log('blah hey 1');
 
   this.cover = { html: template.toString() };
   return this.save()
   .then(() => {
-    console.log('blah hey 2');
-
     return startWorker({ compilationId: this.id, kind: 'compilation-cover-pdf' }, statusCb);
   });
+};
+
+CompilationSchema.methods.getCoverDimentions = function getCoverDimentions() {
+  const template = new CaseboundCover({ compilation: this });
+  const dimentions = template.getCoverDimentions();
+
+  this.cover.height = dimentions.height;
+  this.cover.width = dimentions.width;
 };
 
 CompilationSchema.methods.seedPages = function seedPages() {
