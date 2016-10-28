@@ -1,3 +1,10 @@
+Pixels to MM:
+  pixels = (mm * dpi) / 25.4
+MM to Pixels:
+  mm = (pixels * 25.4) / dpi
+Source: http://www.dallinjones.com/2008/07/how-to-convert-from-pixels-to-millimeters/
+
+
 subject:isaac after:2013/5/1 before:2013/6/1
 
 TODO:

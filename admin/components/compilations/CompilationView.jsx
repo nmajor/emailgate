@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import JsonViewer from '../JsonViewer';
 import CaseboundCover from '../../../shared/templates/caseboundCover';
+import CompilationSpineWidthForm from './CompilationSpineWidthForm';
 import BuildLogs from './BuildLogs';
 
 class CompilationView extends Component { // eslint-disable-line
@@ -15,41 +16,73 @@ class CompilationView extends Component { // eslint-disable-line
   }
   renderPdfLink() {
     if (this.props.compilation.pdf && this.props.compilation.pdf.url) {
-      return <a className="btn btn-default" href={this.props.compilation.pdf.url}>Compilation Pdf</a>;
+      return <a className="btn btn-default right-bumper" target="_blank" href={this.props.compilation.pdf.url}>Compilation Pdf</a>;
     }
   }
   renderCoverPdfLink() {
     if (this.props.compilation.cover && this.props.compilation.cover.pdf && this.props.compilation.cover.pdf.url) {
-      return <a className="btn btn-default" href={this.props.compilation.cover.pdf.url}>Cover PDF</a>;
-    }
-  }
-  renderBuildLogs() {
-    if (this.props.compilation.logs) {
-      return <BuildLogs logs={this.props.compilation.logs} />;
-    }
-  }
-  renderCoverBuildLogs() {
-    if (this.props.compilation.coverLogs) {
-      return <BuildLogs logs={this.props.compilation.coverLogs} />;
+      return <a className="btn btn-default right-bumper" target="_blank" href={this.props.compilation.cover.pdf.url}>Cover PDF</a>;
     }
   }
   renderCoverFile() {
     const template = new CaseboundCover({ compilation: this.props.compilation });
     return template.render();
   }
+  renderPdfActions() {
+    if (this.props.compilation.logs) {
+      return <BuildLogs logs={this.props.compilation.logs} />;
+    }
+
+    return (<div>
+      {this.renderPdfLink()}
+      <button className="btn btn-success right-bumper" onClick={this.props.buildPdf}>Build PDF</button>
+    </div>);
+  }
+  renderBuildCoverAction() {
+    if (!this.props.compilation.cover.spineWidth) {
+      return (<div>
+        <hr className="bottom-bumper top-bumper" />
+        You must submit the spine width before you can build the cover
+      </div>);
+    }
+
+    return (<div>
+      <hr className="bottom-bumper top-bumper" />
+      {this.renderCoverPdfLink()}
+      <button className="btn btn-success right-bumper" onClick={this.props.buildCoverPdf}>Build Cover</button>
+    </div>);
+  }
+  renderCoverActions() {
+    if (!this.props.compilation.pdf || !this.props.compilation.pdf.pageCount) {
+      return 'You must build the compilation pdf before you can build the cover';
+    }
+
+    if (this.props.compilation.coverLogs) {
+      return <BuildLogs logs={this.props.compilation.coverLogs} />;
+    }
+
+    return (<div>
+      <CompilationSpineWidthForm compilation={this.props.compilation} submit={this.props.submitSpineWidth} />
+      {this.renderBuildCoverAction()}
+    </div>);
+  }
   render() {
     return (<div>
       <h1>{this.props.compilation.title}</h1>
       <h3>{this.props.compilation.subtitle}</h3>
-      {this.renderBuildLogs()}
-      {this.renderCoverBuildLogs()}
-      <div>
-        {this.renderPdfLink()}
-        {this.renderCoverPdfLink()}
+      <div className="row">
+        <div className="col-sm-6">
+          <div className="padded-box bottom-bumper">
+            {this.renderPdfActions()}
+          </div>
+        </div>
       </div>
-      <div>
-        <button className="btn btn-success right-bumper" onClick={this.props.buildPdf}>Build PDF</button>
-        <button className="btn btn-success right-bumper" onClick={this.props.buildCoverPdf}>Build Cover</button>
+      <div className="row">
+        <div className="col-sm-6">
+          <div className="padded-box bottom-bumper">
+            {this.renderCoverActions()}
+          </div>
+        </div>
       </div>
       <div>
         <JsonViewer obj={this.props.compilation} />
@@ -65,6 +98,7 @@ CompilationView.propTypes = {
   compilation: PropTypes.object.isRequired,
   buildPdf: PropTypes.func.isRequired,
   buildCoverPdf: PropTypes.func.isRequired,
+  submitSpineWidth: PropTypes.func.isRequired,
 };
 
 export default CompilationView;

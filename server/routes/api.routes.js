@@ -184,6 +184,7 @@ router.get('/compilations/:id/pages', ensureAuthenticated, PageController.getCom
 
 router.get('/admin/users', ensureAuthenticated, ensureAdmin, AdminController.getUsers);
 router.get('/admin/compilations', ensureAuthenticated, ensureAdmin, AdminController.getCompilations);
+router.put('/admin/compilations/:id', ensureAuthenticated, ensureAdmin, AdminController.patchCompilation);
 router.patch('/admin/compilations/:id', ensureAuthenticated, ensureAdmin, AdminController.patchCompilation);
 router.get('/admin/orders', ensureAuthenticated, ensureAdmin, AdminController.getOrders);
 

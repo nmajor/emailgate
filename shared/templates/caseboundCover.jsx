@@ -117,11 +117,26 @@ class CaseboundCoverTemplate {
   }
   toString() {
     return `
-<div>
-<link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-${renderToString(this.render())}
-</div>
+<html>
+  <head>
+    <meta charset="utf8">
+    <title>SuitArt Business Card</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Sackers Gothic Std';
+        -webkit-print-color-adjust: exact;
+        box-sizing: border-box;
+      }
+    </style>
+    <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+  ${renderToString(this.render())}
+  </body>
+</html>
     `;
   }
 }

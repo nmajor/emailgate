@@ -8,6 +8,7 @@ class CompilationShowContainer extends Component { // eslint-disable-line
     super(props, context);
     this.buildPdf = this.buildPdf.bind(this);
     this.buildCoverPdf = this.buildCoverPdf.bind(this);
+    this.submitSpineWidth = this.submitSpineWidth.bind(this);
   }
   buildPdf() {
     this.props.dispatch(Actions.buildCompilationPdf(this.props.compilation._id));
@@ -15,9 +16,12 @@ class CompilationShowContainer extends Component { // eslint-disable-line
   buildCoverPdf() {
     this.props.dispatch(Actions.buildCompilationCoverPdf(this.props.compilation._id));
   }
+  submitSpineWidth(spineWidth) {
+    this.props.dispatch(Actions.updateCompilation(this.props.compilation._id, { cover: { spineWidth } }));
+  }
   render() {
     return (<div>
-      <CompilationView compilation={this.props.compilation} buildPdf={this.buildPdf} buildCoverPdf={this.buildCoverPdf} />
+      <CompilationView compilation={this.props.compilation} buildPdf={this.buildPdf} buildCoverPdf={this.buildCoverPdf} submitSpineWidth={this.submitSpineWidth} />
     </div>);
   }
 }

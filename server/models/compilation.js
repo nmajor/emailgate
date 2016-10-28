@@ -52,21 +52,25 @@ CompilationSchema.methods.updatePages = function updatePages() {
 };
 
 CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
-  const template = new CaseboundCover({ compilation: this });
-
-  this.cover = { html: template.toString() };
-  return this.save()
+  return this.updateCoverDimentions()
   .then(() => {
-    return startWorker({ compilationId: this.id, kind: 'compilation-cover-pdf' }, statusCb);
+    const template = new CaseboundCover({ compilation: this });
+
+    this.cover.html = template.toString();
+    return this.save()
+    .then(() => {
+      return startWorker({ compilationId: this.id, kind: 'compilation-cover-pdf' }, statusCb);
+    });
   });
 };
 
-CompilationSchema.methods.getCoverDimentions = function getCoverDimentions() {
+CompilationSchema.methods.updateCoverDimentions = function getCoverDimentions() {
   const template = new CaseboundCover({ compilation: this });
   const dimentions = template.getCoverDimentions();
 
   this.cover.height = dimentions.height;
   this.cover.width = dimentions.width;
+  return this.save();
 };
 
 CompilationSchema.methods.seedPages = function seedPages() {

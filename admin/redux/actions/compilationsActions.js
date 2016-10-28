@@ -68,6 +68,36 @@ export function getCompilations(cookie) {
   };
 }
 
+export function updateCompilation(compilationId, props) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/admin/compilations/${compilationId}`, {
+      credentials: 'include',
+      method: 'put',
+      body: JSON.stringify(props),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(updateCompilationInCompilations(res));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
 export function buildCompilationPdf(compilationId) {
   return () => {
     socket.emit('BUILD_COMPILATION_PDF', { compilationId });

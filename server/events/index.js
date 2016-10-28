@@ -294,6 +294,7 @@ export default (io) => {
       .then(() => Compilation.findOne({ _id: data.compilationId }))
       .then((compilation) => {
         return compilation.buildCoverPdf((info) => {
+          console.log('blah hey', info);
           socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: compilation._id, entry: info });
         });
       })

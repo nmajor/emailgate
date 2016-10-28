@@ -18,17 +18,18 @@ export function getCompilations(req, res) {
 }
 
 export function patchCompilation(req, res) {
-  Compilation.findOne({ _user: req.user._id, _id: req.params.id })
+  Compilation.findOne({ _id: req.params.id })
   .then((compilation) => {
-    compilation.title = req.body.title; // eslint-disable-line no-param-reassign
-    compilation.subtitle = req.body.subtitle; // eslint-disable-line no-param-reassign
-    compilation.cover.spineWidth = _.get(req.body, 'cover.spineWidth'); // eslint-disable-line no-param-reassign
+    compilation.title = req.body.title || compilation.title; // eslint-disable-line no-param-reassign
+    compilation.subtitle = req.body.subtitle || compilation.subtitle; // eslint-disable-line no-param-reassign
+    compilation.cover.spineWidth = _.get(req.body, 'cover.spineWidth') || compilation.cover.spineWidth; // eslint-disable-line no-param-reassign
 
     return compilation.save();
   })
   .then((compilation) => {
     res.json(compilation);
-  });
+  })
+  .catch((err) => { console.log('blah an error happened', err); });
 }
 
 export function getOrders(req, res) {
