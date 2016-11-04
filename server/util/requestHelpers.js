@@ -132,11 +132,12 @@ export function requestAddresses(orders) {
 }
 
 export function requestItems(orders) {
-  return _.flatten(orders.map((order) => {
+  const items = _.flatten(orders.map((order) => {
     return order.items.map((item) => {
       return requestItem(item);
     });
   }));
+  return _.uniqBy(items, 'Id');
 }
 
 export function requestOrder(purchaseOrder, orders) {
