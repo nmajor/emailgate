@@ -38,7 +38,8 @@ function getAddressId(address) {
 }
 
 function getItemId(compilation) {
-  return `comp-${compilation._id}`;
+  const timestamp = moment(compilation.pdf.updatedAt).unix();
+  return `comp-${compilation._id}-${timestamp}`;
 }
 
 function requestShipToItems(order) {

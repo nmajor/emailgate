@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import moment from 'moment';
 import _ from 'lodash';
 import JsonViewer from '../JsonViewer';
 import CaseboundCover from '../../../shared/templates/caseboundCover';
@@ -70,6 +71,7 @@ class CompilationView extends Component { // eslint-disable-line
   }
   render() {
     return (<div>
+      {moment(this.props.compilation.pdf.lastModified).unix()}
       <h1>{this.props.compilation.title}</h1>
       <h3>{this.props.compilation.subtitle}</h3>
       <div className="row">
