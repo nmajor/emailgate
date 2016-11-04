@@ -9,7 +9,6 @@ import { buildRequest } from '../util/requestHelpers';
 function requestLogger(httpModule) {
   const original = httpModule.request;
   httpModule.request = (options, callback) => { // eslint-disable-line
-    console.log(options.href || `${options.protocol}://${options.hostname}${options.path}`, options.method);
     return original(options, callback);
   };
   return httpModule;
@@ -87,6 +86,7 @@ PurchaseOrderSchema.methods.sendRequest = function sendRequest() {
         if (body) {
           let status = 'SENT';
           body = JSON.parse(body);
+          console.log('response body:', body);
 
           if (body.errors === 'yes') {
             status = 'ERROR';
@@ -103,6 +103,7 @@ PurchaseOrderSchema.methods.sendRequest = function sendRequest() {
           this.responses.push(response);
         } else {
           this.status = 'NORESPONSEBODY';
+          console.log('no response body');
         }
 
         resolve(this.save());

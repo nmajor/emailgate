@@ -25,8 +25,10 @@ class CompilationView extends Component { // eslint-disable-line
     }
   }
   renderCoverFile() {
-    const template = new CaseboundCover({ compilation: this.props.compilation });
-    return template.render();
+    if (this.props.compilation.cover) {
+      const template = new CaseboundCover({ compilation: this.props.compilation });
+      return template.render();
+    }
   }
   renderPdfActions() {
     if (this.props.compilation.logs) {
@@ -39,7 +41,7 @@ class CompilationView extends Component { // eslint-disable-line
     </div>);
   }
   renderBuildCoverAction() {
-    if (!this.props.compilation.cover.spineWidth) {
+    if (!_.get(this.props.compilation, 'cover.spineWidth')) {
       return (<div>
         <hr className="bottom-bumper top-bumper" />
         You must submit the spine width before you can build the cover

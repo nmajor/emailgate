@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import _ from 'lodash';
 
 class CompilationSpineWidthForm extends Component {
   constructor(props, context) {
@@ -28,7 +29,7 @@ class CompilationSpineWidthForm extends Component {
       <div className="form-group">
         <label className="right-bumper" htmlFor="login-password">SpineWidth:</label>
         <input
-          defaultValue={this.props.compilation.cover.spineWidth}
+          defaultValue={_.get(this.props.compilation, 'cover.spineWidth')}
           ref="spineWidth"
           className="form-control"
           type="text"

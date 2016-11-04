@@ -12,7 +12,7 @@ class AddOrderOptionsListItem extends Component { // eslint-disable-line
     this.action = this.action.bind(this);
   }
   canAdd() {
-    return _.every(this.props.order.items, (item) => { return item.props.compilation.pdf; });
+    return _.every(this.props.order.items, (item) => { return _.get(item.props, 'compilation.pdf') && _.get(item.props, 'compilation.cover.pdf'); });
   }
   action() {
     if (this.canAdd()) {
@@ -35,11 +35,15 @@ class AddOrderOptionsListItem extends Component { // eslint-disable-line
   renderCartItemProps() {
     if (this.props.order.items.length > 0 && _.some(this.props.order.items, (item) => { return item.props.compilation; })) {
       const itemProps = this.props.order.items.map((item) => {
-        const pdfIcon = (<span className={`label label-${item.props.compilation.pdf ? 'success' : 'danger'} label-xs-true`}>
+        const pdfIcon = (<span className={`right-bumper label label-${_.get(item.props, 'compilation.pdf') ? 'success' : 'danger'} label-xs-true`}>
+          <span className="glyphicon glyphicon-file" aria-hidden="true"></span>
+        </span>);
+        const coverPdfIcon = (<span className={`right-bumper label label-${_.get(item.props, 'compilation.cover.pdf') ? 'success' : 'danger'} label-xs-true`}>
           <span className="glyphicon glyphicon-file" aria-hidden="true"></span>
         </span>);
         return (<div key={item._id}>
-          Compilation <Link to={`/compilations/${item.props.compilationId}`}>{item.props.compilation._id}</Link> {pdfIcon}
+          Compilation <Link className="right-bumper" to={`/compilations/${item.props.compilationId}`}>{item.props.compilation._id}</Link> {pdfIcon}
+          {coverPdfIcon}
         </div>);
       });
 

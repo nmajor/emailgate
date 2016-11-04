@@ -25,7 +25,7 @@ const CompilationSchema = new Schema({
   _user: { type: String, ref: 'User' },
   title: String,
   subtitle: String,
-  cover: CompilationCoverSchema,
+  cover: { type: CompilationCoverSchema, default: {} },
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
   pdf: {},
