@@ -39,7 +39,7 @@ function getAddressId(address) {
 
 function getItemId(compilation) {
   const timestamp = moment(compilation.pdf.updatedAt).unix();
-  return `comp-${compilation._id}-${timestamp}`;
+  return `comp-${compilation._id}-${timestamp}1`;
 }
 
 function requestShipToItems(order) {
@@ -70,9 +70,18 @@ function requestShipTo(order) {
 }
 
 function requestShipTos(orders) {
-  return orders.map((order) => {
-    return requestShipTo(order);
+  const shipTos = [];
+  _.each(orders, (order) => {
+    const existingIndex = _.findIndex(shipTos, { AddressId: getAddressId(order.shippingAddress) });
+
+    if (existingIndex > -1) {
+      const shipToItems = requestShipToItems(order);
+      shipTos[existingIndex].Items = [...shipTos[existingIndex].Items, ...shipToItems];
+    } else {
+      shipTos.push(requestShipTo(order));
+    }
   });
+  return shipTos;
 }
 
 export function requestAddress(address) {
