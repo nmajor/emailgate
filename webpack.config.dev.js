@@ -23,7 +23,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx', '.json'],
   },
 
   module: {
@@ -41,10 +41,10 @@ module.exports = {
           presets: ['react-hmre'],
         },
       },
-      // {
-      //   test: /\.json$/,
-      //   loader: 'json',
-      // },
+      {
+        test: /\.json$/,
+        loader: 'json',
+      },
     ],
 
     noParse: [

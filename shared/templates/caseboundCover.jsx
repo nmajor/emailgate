@@ -1,9 +1,19 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import patterns from './patterns';
+import moment from 'moment';
 
 class CaseboundCoverTemplate {
   constructor(props) {
     this.compilation = props.compilation;
+    this.templatePreview = false;
+    this.startDate = props.startDate;
+    this.endDate = props.endDate;
+
+    this.patterns = patterns;
+    this.pattern = this.patterns.arabesque;
+    this.backgroundColor = '#222';
+    this.textColor = '#fff';
 
     // http://www.ingramcontent.com/Documents/CoverBleedDimensions.pdf
 
@@ -30,12 +40,33 @@ class CaseboundCoverTemplate {
       verticalAlign: 'top',
       width: `${this.backCoverWidth}mm`,
       height: `${this.fullHeight}mm`,
-      background: '#aaa',
-      color: '#000',
       fontSize: '20px',
     };
 
+    const innerStyles = {
+      position: 'relative',
+      margin: `${this.bleedWidth}mm ${this.gutterWidth}mm ${this.bleedWidth}mm ${this.bleedWidth}mm`,
+      height: `${this.fullHeight - (this.bleedWidth * 2)}mm`,
+      width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}mm`,
+    };
+
+    const footerStyles = {
+      position: 'absolute',
+      textAlign: 'center',
+      bottom: 0,
+      marginBottom: `${this.boardHeight / 6}mm`,
+      width: '100%',
+    };
+
+    if (this.templatePreview) {
+      styles.background = '#aaa';
+      innerStyles.backgroundColor = this.backgroundColor;
+    }
+
     return (<div style={styles}>
+      <div style={innerStyles}>
+        <div style={footerStyles}>myemailbook.com</div>
+      </div>
     </div>);
   }
   renderSpine() {
@@ -44,12 +75,25 @@ class CaseboundCoverTemplate {
       verticalAlign: 'top',
       width: `${this.spineWidth}mm`,
       height: `${this.fullHeight}mm`,
-      background: '#666',
-      color: '#fff',
       fontSize: '20px',
     };
 
-    return (<div style={styles}></div>);
+    const textWrapper = {
+      transform: 'rotate(90deg)',
+      WebkitTransform: 'rotate(90deg)',
+      transformOrigin: 'left top 0',
+      WebkitTransformOrigin: 'left top 0',
+      width: `${this.fullHeight}mm`,
+      height: `${this.spineWidth}mm`,
+      lineHeight: `${this.spineWidth}mm`,
+      position: 'relative',
+      left: `${this.spineWidth}mm`,
+      textAlign: 'center',
+    };
+
+    return (<div style={styles}>
+      <div style={textWrapper}>{this.compilation.title}</div>
+    </div>);
   }
   renderFrontCover() {
     const styles = {
@@ -57,59 +101,83 @@ class CaseboundCoverTemplate {
       verticalAlign: 'top',
       width: `${this.frontCoverWidth}mm`,
       height: `${this.fullHeight}mm`,
-      background: '#aaa',
-      color: '#000',
+      color: '#fff',
       fontSize: '20px',
+      lineHeight: '55px',
     };
 
     const titlesWrapperStypes = {
-      background: '#fff',
-      flexGrow: '1',
-      padding: '0 15mm',
+      padding: `${this.boardHeight / 4}mm 10mm 0 10mm`,
       textAlign: 'center',
     };
 
     const titleStyles = {
-      fontSize: '30px',
+      fontSize: '50px',
+      fontWeight: '300',
     };
 
     const subtitleStyles = {
-      fontSize: '20px',
+      fontSize: '25px',
+      fontWeight: '100',
+    };
+
+    const footerStyles = {
+      position: 'absolute',
+      textAlign: 'center',
+      bottom: 0,
+      marginBottom: `${this.boardHeight / 6}mm`,
+      width: '100%',
+      lineHeight: 'initial',
     };
 
     const containerStyles = {
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      padding: `${this.bleedWidth}mm ${this.bleedWidth}mm ${this.bleedWidth}mm ${this.gutterWidth}mm`,
+      position: 'relative',
+      margin: `${this.bleedWidth}mm ${this.bleedWidth}mm ${this.bleedWidth}mm ${this.gutterWidth}mm`,
+      height: `${this.fullHeight - (this.bleedWidth * 2)}mm`,
+      width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}mm`,
     };
 
-    const bumperStyles = {
-      background: '#fff',
-      flexGrow: '1',
-    };
+    if (this.templatePreview) {
+      styles.background = '#aaa';
+      containerStyles.backgroundColor = this.backgroundColor;
+    }
+
+    const prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
+    const prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
 
     return (<div style={styles}>
       <div style={containerStyles}>
-        <div style={bumperStyles}></div>
         <div style={titlesWrapperStypes}>
           <div style={titleStyles}>{this.compilation.title}</div>
           <div style={subtitleStyles}>{this.compilation.subtitle}</div>
         </div>
-        <div style={bumperStyles}></div>
+        <div style={footerStyles}>{prettyStartDate} - {prettyEndDate}</div>
       </div>
     </div>);
   }
   render() {
     const mainStyles = {
-      width: `${this.fullWidth}mm`,
-      height: `${this.fullHeight}mm`,
-      background: '#eee',
-      color: '#000',
+      // width: `${this.fullWidth}mm`,
+      // height: `${this.fullHeight}mm`,
+      backgroundColor: this.backgroundColor,
+      color: this.textColor,
       fontSize: '20px',
+      letterSpacing: '0.5px',
+      // backgroundImage: `url("${this.pattern}")`,
+      fontFamily: '\'Montserrat\', sans-serif',
     };
 
-    return (<div style={mainStyles}>
+    const classes = `
+.casebound {
+  width: ${this.fullWidth}mm;
+  height: ${this.fullHeight}mm;
+  background-color: #222222;
+  background-image: url(${this.pattern});
+}
+`;
+
+    return (<div className="casebound" style={mainStyles}>
+      <style>{classes}</style>
       {this.renderBackCover()}
       {this.renderSpine()}
       {this.renderFrontCover()}
@@ -125,7 +193,6 @@ class CaseboundCoverTemplate {
       html, body {
         margin: 0;
         padding: 0;
-        font-family: 'Sackers Gothic Std';
         -webkit-print-color-adjust: exact;
         box-sizing: border-box;
       }

@@ -53,12 +53,21 @@ CompilationSchema.methods.updatePages = function updatePages() {
 
 CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
   return this.updateCoverDimentions()
-  .then(() => {
-    const template = new CaseboundCover({ compilation: this });
+  .then(() => { return Email.find({ _compilation: this._id }); })
+  .then((emails) => {
+    console.log('blah hey 0');
+    const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+    const firstEmail = sortedEmails[0] || {};
+    const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
+    const startDate = firstEmail.date;
+    const endDate = lastEmail.date;
+
+    const template = new CaseboundCover({ compilation: this, startDate, endDate });
 
     this.cover.html = template.toString();
     return this.save()
     .then(() => {
+      console.log('blah hey 1');
       return startWorker({ compilationId: this.id, kind: 'compilation-cover-pdf' }, statusCb);
     });
   });
