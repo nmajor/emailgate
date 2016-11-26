@@ -23,11 +23,16 @@ import PurchaseOrdersWrapper from './container/purchaseOrders/PurchaseOrdersWrap
 import PurchaseOrdersIndexContainer from './container/purchaseOrders/PurchaseOrdersIndexContainer';
 import PurchaseOrderShowContainer from './container/purchaseOrders/PurchaseOrderShowContainer';
 
+import EmailShowContainer from './container/emails/EmailShowContainer';
+import PageShowContainer from './container/pages/PageShowContainer';
+
 const routes = (
   <Route path="/" component={App} >
     <IndexRoute component={Home} />
     <Route path="/login" component={LoginContainer} />
     <Route component={DashboardWrapper}>
+      <Route path="emails/:emailId" component={EmailShowContainer} />
+      <Route path="pages/:pageId" component={PageShowContainer} />
       <Route component={UsersWrapper}>
         <Route path="/users" component={UsersIndexContainer} />
         <Route path="/users/:userId" component={UserShowContainer} />

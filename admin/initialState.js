@@ -4,4 +4,6 @@ export default {
   compilations: [],
   orders: [],
   purchaseOrders: [],
+  email: {},
+  page: {},
 };

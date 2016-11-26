@@ -187,6 +187,8 @@ router.get('/admin/compilations', ensureAuthenticated, ensureAdmin, AdminControl
 router.put('/admin/compilations/:id', ensureAuthenticated, ensureAdmin, AdminController.patchCompilation);
 router.patch('/admin/compilations/:id', ensureAuthenticated, ensureAdmin, AdminController.patchCompilation);
 router.get('/admin/orders', ensureAuthenticated, ensureAdmin, AdminController.getOrders);
+router.get('/admin/emails/:id', ensureAuthenticated, ensureAdmin, AdminController.findEmail);
+router.get('/admin/pages/:id', ensureAuthenticated, ensureAdmin, AdminController.findPage);
 
 router.get('/admin/purchase-orders', ensureAuthenticated, ensureAdmin, PurchaseOrderController.get);
 router.get('/admin/purchase-orders/:id', ensureAuthenticated, ensureAdmin, PurchaseOrderController.findOne);

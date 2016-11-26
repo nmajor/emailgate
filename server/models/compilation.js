@@ -55,7 +55,6 @@ CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
   return this.updateCoverDimentions()
   .then(() => { return Email.find({ _compilation: this._id }); })
   .then((emails) => {
-    console.log('blah hey 0');
     const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
     const firstEmail = sortedEmails[0] || {};
     const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
@@ -67,7 +66,6 @@ CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
     this.cover.html = template.toString();
     return this.save()
     .then(() => {
-      console.log('blah hey 1');
       return startWorker({ compilationId: this.id, kind: 'compilation-cover-pdf' }, statusCb);
     });
   });

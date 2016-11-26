@@ -2,6 +2,8 @@ import _ from 'lodash';
 import User from '../models/user';
 import Compilation from '../models/compilation';
 import Order from '../models/order';
+import Email from '../models/email';
+import Page from '../models/page';
 
 export function getUsers(req, res) {
   User.find({})
@@ -43,5 +45,19 @@ export function getOrders(req, res) {
   })
   .then((orders) => {
     res.json(orders);
+  });
+}
+
+export function findEmail(req, res) {
+  Email.findOne({ _id: req.params.id })
+  .then((email) => {
+    res.json(email);
+  });
+}
+
+export function findPage(req, res) {
+  Page.findOne({ _id: req.params.id })
+  .then((page) => {
+    res.json(page);
   });
 }
