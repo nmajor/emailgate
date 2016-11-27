@@ -188,7 +188,6 @@ class CaseboundCoverTemplate {
 <html>
   <head>
     <meta charset="utf8">
-    <title>SuitArt Business Card</title>
     <style>
       html, body {
         margin: 0;
