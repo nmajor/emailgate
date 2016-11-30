@@ -27,7 +27,7 @@ class CompilationSpineWidthForm extends Component {
   renderSpineWidthFormGroup() {
     return (
       <div className="form-group">
-        <label className="right-bumper" htmlFor="login-password">SpineWidth:</label>
+        <label className="right-bumper" htmlFor="login-password">Spine Width in mm:</label>
         <input
           defaultValue={_.get(this.props.compilation, 'cover.spineWidth')}
           ref="spineWidth"

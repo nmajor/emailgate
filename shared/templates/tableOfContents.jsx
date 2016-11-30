@@ -22,18 +22,20 @@ class TableOfContentsTemplate {
 
     const subjectStyle = {
       fontFamily: '\'Montserrat\', sans-serif',
-      fontSize: '16px',
+      fontSize: '14px',
       textAlign: 'left',
       fontWeight: 'bold',
+      marginBottom: '0',
       maxWidth: '80%',
     };
 
     const dateStyle = {
       fontSize: '9px',
-      fontFamily: '\'Libre Baskerville\', serif',
+      fontFamily: '\'Montserrat\', sans-serif',
       display: 'inline-block',
       width: '50%',
       textAlign: 'left',
+      color: '#666',
     };
 
     const pageStyle = {
@@ -49,7 +51,7 @@ class TableOfContentsTemplate {
     return (
       <div key={index} style={entryStyle}>
         <div style={subjectStyle}>{email.subject}</div>
-        <div style={{ lineHeight: '16px' }}>
+        <div style={{ lineHeight: '8px', marginBottom: '4px' }}>
           <div style={dateStyle}>{prettyDate}</div>
           <div style={pageStyle}>{pageNum}</div>
         </div>

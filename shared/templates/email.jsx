@@ -66,7 +66,7 @@ class EmailTemplate {
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
       fontSize: '11px',
-      margin: '0',
+      marginBottom: '2px',
       color: '#666',
     };
 
@@ -98,7 +98,7 @@ class EmailTemplate {
   bodyStyles() {
     return {
       fontFamily: '\'Libre Baskerville\', serif !important',
-      lineHeight: '15px',
+      lineHeight: '20px',
       fontSize: '13px',
       marginTop: '20px',
     };

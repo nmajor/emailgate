@@ -23,7 +23,7 @@ class CaseboundCoverTemplate {
     this.boardWidth = 148;
     this.boardHeight = 235;
 
-    this.spineWidth = this.compilation.cover.spineWidth || 38;
+    this.spineWidth = this.compilation.cover.spineWidth;
 
     this.backCoverWidth = this.bleedWidth + this.boardWidth + this.gutterWidth;
     this.frontCoverWidth = this.gutterWidth + this.boardWidth + this.bleedWidth;
