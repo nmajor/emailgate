@@ -7,9 +7,15 @@ class EmailView extends Component { // eslint-disable-line
 
     this.template = new EmailTemplate(this.props.email);
   }
+  renderPdfLink() {
+    if (this.props.email.pdf && this.props.email.pdf.url) {
+      return <a target="_blank" href={this.props.email.pdf.url} className="btn btn-default">PDF</a>;
+    }
+  }
   render() {
     return (<div>
       {this.template.render()}
+      <div>{this.renderPdfLink()}</div>
     </div>);
   }
 }

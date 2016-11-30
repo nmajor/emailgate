@@ -55,8 +55,8 @@ class EmailTemplate {
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
       fontWeight: 'bold',
-      fontSize: '1.4em',
-      marginBottom: '.3em',
+      fontSize: '18px',
+      marginBottom: '3px',
     };
 
     return <div style={divStyle}>{subject}</div>;
@@ -65,8 +65,9 @@ class EmailTemplate {
   renderDate(date) {
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
-      fontSize: '0.9em',
-      margin: '.3em 0',
+      fontSize: '11px',
+      margin: '0',
+      color: '#666',
     };
 
     return <div style={divStyle}>{moment(date).format('LL')}</div>;
@@ -76,8 +77,8 @@ class EmailTemplate {
     if (!from) { return null; }
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
-      fontSize: '0.8em',
-      margin: '.3em 0',
+      fontSize: '12px',
+      margin: '0',
     };
 
     return <div style={divStyle}>From: {from.map(this.mapEmailUser)}</div>;
@@ -87,8 +88,8 @@ class EmailTemplate {
     if (!to) { return null; }
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
-      fontSize: '0.8em',
-      margin: '.3em 0',
+      fontSize: '12px',
+      margin: '6px 0',
     };
 
     return <div style={divStyle}>To: {to.map(this.mapEmailUser)}</div>;
@@ -97,9 +98,9 @@ class EmailTemplate {
   bodyStyles() {
     return {
       fontFamily: '\'Libre Baskerville\', serif !important',
-      lineHeight: '1.2em',
-      fontSize: '0.95em',
-      marginTop: '1.5em',
+      lineHeight: '15px',
+      fontSize: '13px',
+      marginTop: '20px',
     };
   }
   renderBodyDangerously(body) {
@@ -117,8 +118,8 @@ class EmailTemplate {
     const email = this.email;
 
     return (<div style={{ fontSize: '20px' }}>
-      {this.renderSubject(email.subject)}
       {this.renderDate(email.date)}
+      {this.renderSubject(email.subject)}
       {this.renderFrom(email.from)}
       {this.renderBodyDangerously(email.body)}
       {this.renderAttachments(email.attachments)}
@@ -130,8 +131,8 @@ class EmailTemplate {
     const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;
 
     return (<div style={{ fontSize: '20px' }}>
-      {this.renderSubject(subjectInput)}
       {this.renderDate(this.email.date)}
+      {this.renderSubject(subjectInput)}
       {this.renderFrom(this.email.from)}
       {this.renderBody(bodyInput)}
     </div>);

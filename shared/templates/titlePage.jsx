@@ -22,9 +22,9 @@ class TitlePageTemplate {
   renderTitle(title) {
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif',
-      fontSize: '2em',
+      fontSize: '24px',
       textAlign: 'center',
-      padding: '250px 0 0 0',
+      padding: '200px 0 0 0',
       fontWeight: 'bold',
     };
 
@@ -33,9 +33,9 @@ class TitlePageTemplate {
   renderSubtitle(subtitle) {
     const divStyle = {
       fontFamily: '\'Libre Baskerville\', serif',
-      fontSize: '1.1em',
+      fontSize: '17px',
       textAlign: 'center',
-      padding: '15px 0 250px 0',
+      padding: '15px 0 150px 0',
     };
 
     return <div style={divStyle}>{subtitle}</div>;
@@ -46,7 +46,7 @@ class TitlePageTemplate {
 
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif',
-      fontSize: '0.8em',
+      fontSize: '13px',
       textAlign: 'center',
       padding: '80px 0 20px 0',
     };

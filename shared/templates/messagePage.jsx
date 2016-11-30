@@ -19,7 +19,7 @@ class MessagePageTemplate {
   renderMessage(message) {
     const divStyle = {
       fontFamily: '\'Libre Baskerville\', serif',
-      fontSize: '0.8em',
+      fontSize: '13px',
       textAlign: 'left',
       padding: '250px 10px 0 10px',
     };
@@ -29,7 +29,7 @@ class MessagePageTemplate {
   renderSignature(signature) {
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif',
-      fontSize: '1em',
+      fontSize: '16px',
       textAlign: 'left',
       padding: '15px 10px 250px 10px',
     };
