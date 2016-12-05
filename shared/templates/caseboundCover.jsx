@@ -17,13 +17,32 @@ class CaseboundCoverTemplate {
 
     // http://www.ingramcontent.com/Documents/CoverBleedDimensions.pdf
 
-    // In milimeters (mm)
-    this.bleedWidth = 16;
-    this.gutterWidth = 13;
-    this.boardWidth = 148;
-    this.boardHeight = 235;
+    // // In milimeters (mm)
+    // this.unitType = 'mm'
+    // this.bleedWidth = 16;
+    // this.gutterWidth = 13;
+    // this.boardWidth = 148;
+    // this.boardHeight = 235;
+    // this.spineWidth = this.compilation.cover.spineWidth;
 
-    this.spineWidth = this.compilation.cover.spineWidth;
+
+    // // In pixels (px)
+    // this.unitType = 'px';
+    // this.pixelsPerMm = 2.834646;
+    // this.bleedWidth = 16 * this.pixelsPerMm;
+    // this.gutterWidth = 13 * this.pixelsPerMm;
+    // this.boardWidth = 148 * this.pixelsPerMm;
+    // this.boardHeight = 235 * this.pixelsPerMm;
+    // this.spineWidth = this.compilation.cover.spineWidth * this.pixelsPerMm;
+
+    // In pixels (px)
+    this.unitType = 'px';
+    this.pixelsPerInch = 72;
+    this.bleedWidth = 0.625 * this.pixelsPerInch;
+    this.gutterWidth = 0.5 * this.pixelsPerInch;
+    this.boardWidth = 5.818 * this.pixelsPerInch;
+    this.boardHeight = 9.25 * this.pixelsPerInch;
+    this.spineWidth = this.compilation.cover.spineWidth * this.pixelsPerInch;
 
     this.backCoverWidth = this.bleedWidth + this.boardWidth + this.gutterWidth;
     this.frontCoverWidth = this.gutterWidth + this.boardWidth + this.bleedWidth;
@@ -38,28 +57,29 @@ class CaseboundCoverTemplate {
     const styles = {
       display: 'inline-block',
       verticalAlign: 'top',
-      width: `${this.backCoverWidth}mm`,
-      height: `${this.fullHeight}mm`,
+      width: `${this.backCoverWidth}${this.unitType}`,
+      height: `${this.fullHeight}${this.unitType}`,
       fontSize: '20px',
     };
 
     const innerStyles = {
       position: 'relative',
-      margin: `${this.bleedWidth}mm ${this.gutterWidth}mm ${this.bleedWidth}mm ${this.bleedWidth}mm`,
-      height: `${this.fullHeight - (this.bleedWidth * 2)}mm`,
-      width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}mm`,
+      margin: `${this.bleedWidth}${this.unitType} ${this.gutterWidth}${this.unitType} ${this.bleedWidth}${this.unitType} ${this.bleedWidth}${this.unitType}`,
+      height: `${this.fullHeight - (this.bleedWidth * 2)}${this.unitType}`,
+      width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}${this.unitType}`,
     };
 
     const footerStyles = {
       position: 'absolute',
       textAlign: 'center',
       bottom: 0,
-      marginBottom: `${this.boardHeight / 6}mm`,
+      marginBottom: `${this.boardHeight / 6}${this.unitType}`,
       width: '100%',
     };
 
     if (this.templatePreview) {
       styles.background = '#aaa';
+      innerStyles.backgroundImage = `url(${this.pattern})`;
       innerStyles.backgroundColor = this.backgroundColor;
     }
 
@@ -73,8 +93,8 @@ class CaseboundCoverTemplate {
     const styles = {
       display: 'inline-block',
       verticalAlign: 'top',
-      width: `${this.spineWidth}mm`,
-      height: `${this.fullHeight}mm`,
+      width: `${this.spineWidth}${this.unitType}`,
+      height: `${this.fullHeight}${this.unitType}`,
       fontSize: '20px',
     };
 
@@ -83,11 +103,11 @@ class CaseboundCoverTemplate {
       WebkitTransform: 'rotate(90deg)',
       transformOrigin: 'left top 0',
       WebkitTransformOrigin: 'left top 0',
-      width: `${this.fullHeight}mm`,
-      height: `${this.spineWidth}mm`,
-      lineHeight: `${this.spineWidth}mm`,
+      width: `${this.fullHeight}${this.unitType}`,
+      height: `${this.spineWidth}${this.unitType}`,
+      lineHeight: `${this.spineWidth}${this.unitType}`,
       position: 'relative',
-      left: `${this.spineWidth}mm`,
+      left: `${this.spineWidth}${this.unitType}`,
       textAlign: 'center',
     };
 
@@ -99,15 +119,15 @@ class CaseboundCoverTemplate {
     const styles = {
       display: 'inline-block',
       verticalAlign: 'top',
-      width: `${this.frontCoverWidth}mm`,
-      height: `${this.fullHeight}mm`,
+      width: `${this.frontCoverWidth}${this.unitType}`,
+      height: `${this.fullHeight}${this.unitType}`,
       color: '#fff',
       fontSize: '20px',
       lineHeight: '55px',
     };
 
     const titlesWrapperStypes = {
-      padding: `${this.boardHeight / 4}mm 10mm 0 10mm`,
+      padding: `${this.boardHeight / 4}${this.unitType} 28px 0 28px`,
       textAlign: 'center',
     };
 
@@ -125,20 +145,21 @@ class CaseboundCoverTemplate {
       position: 'absolute',
       textAlign: 'center',
       bottom: 0,
-      marginBottom: `${this.boardHeight / 6}mm`,
+      marginBottom: `${this.boardHeight / 6}${this.unitType}`,
       width: '100%',
       lineHeight: 'initial',
     };
 
     const containerStyles = {
       position: 'relative',
-      margin: `${this.bleedWidth}mm ${this.bleedWidth}mm ${this.bleedWidth}mm ${this.gutterWidth}mm`,
-      height: `${this.fullHeight - (this.bleedWidth * 2)}mm`,
-      width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}mm`,
+      margin: `${this.bleedWidth}${this.unitType} ${this.bleedWidth}${this.unitType} ${this.bleedWidth}${this.unitType} ${this.gutterWidth}${this.unitType}`,
+      height: `${this.fullHeight - (this.bleedWidth * 2)}${this.unitType}`,
+      width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}${this.unitType}`,
     };
 
     if (this.templatePreview) {
       styles.background = '#aaa';
+      containerStyles.backgroundImage = `url(${this.pattern})`;
       containerStyles.backgroundColor = this.backgroundColor;
     }
 
@@ -157,8 +178,8 @@ class CaseboundCoverTemplate {
   }
   render() {
     const mainStyles = {
-      // width: `${this.fullWidth}mm`,
-      // height: `${this.fullHeight}mm`,
+      // width: `${this.fullWidth}${this.unitType}`,
+      // height: `${this.fullHeight}${this.unitType}`,
       backgroundColor: this.backgroundColor,
       color: this.textColor,
       fontSize: '20px',
@@ -169,8 +190,8 @@ class CaseboundCoverTemplate {
 
     const classes = `
 .casebound {
-  width: ${this.fullWidth}mm;
-  height: ${this.fullHeight}mm;
+  width: ${this.fullWidth}${this.unitType};
+  height: ${this.fullHeight}${this.unitType};
   background-color: #222222;
   background-image: url(${this.pattern});
 }
