@@ -46,6 +46,7 @@ class Header extends Component {
         {this.renderNavItem('/compilations', 'Compilations')}
         {this.renderNavItem('/orders', 'Orders')}
         {this.renderNavItem('/purchase-orders', 'Purchase Orders')}
+        {this.renderNavItem('/promo-codes', 'Promo Codes')}
       </ul>);
     }
   }

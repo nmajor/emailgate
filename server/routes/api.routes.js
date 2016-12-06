@@ -11,6 +11,7 @@ import * as PageController from '../controllers/page.controller';
 import * as AdminController from '../controllers/admin.controller';
 import * as AppController from '../controllers/app.controller';
 import * as PurchaseOrderController from '../controllers/purchaseOrder.controller';
+import * as PromoCodeController from '../controllers/promoCode.controller';
 
 import User from '../models/user';
 
@@ -200,5 +201,12 @@ router.post('/admin/purchase-orders/:id/add-order', ensureAuthenticated, ensureA
 router.post('/admin/purchase-orders/:id/remove-order', ensureAuthenticated, ensureAdmin, PurchaseOrderController.removeOrder);
 router.post('/admin/purchase-orders/:id/rebuild-request', ensureAuthenticated, ensureAdmin, PurchaseOrderController.rebuildRequest);
 router.post('/admin/purchase-orders/:id/send-request', ensureAuthenticated, ensureAdmin, PurchaseOrderController.sendRequest);
+
+router.get('/admin/promo-codes', ensureAuthenticated, ensureAdmin, PromoCodeController.get);
+router.get('/admin/promo-codes/:id', ensureAuthenticated, ensureAdmin, PromoCodeController.findOne);
+router.post('/admin/promo-codes', ensureAuthenticated, ensureAdmin, PromoCodeController.create);
+router.put('/admin/promo-codes/:id', ensureAuthenticated, ensureAdmin, PromoCodeController.patch);
+router.patch('/admin/promo-codes/:id', ensureAuthenticated, ensureAdmin, PromoCodeController.patch);
+router.delete('/admin/promo-codes/:id', ensureAuthenticated, ensureAdmin, PromoCodeController.remove);
 
 module.exports = router;

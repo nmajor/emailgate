@@ -23,6 +23,10 @@ import PurchaseOrdersWrapper from './container/purchaseOrders/PurchaseOrdersWrap
 import PurchaseOrdersIndexContainer from './container/purchaseOrders/PurchaseOrdersIndexContainer';
 import PurchaseOrderShowContainer from './container/purchaseOrders/PurchaseOrderShowContainer';
 
+import PromoCodesWrapper from './container/promoCodes/PromoCodesWrapper';
+import PromoCodesIndexContainer from './container/promoCodes/PromoCodesIndexContainer';
+import PromoCodesShowContainer from './container/promoCodes/PromoCodesShowContainer';
+
 import EmailShowContainer from './container/emails/EmailShowContainer';
 import PageShowContainer from './container/pages/PageShowContainer';
 
@@ -48,6 +52,10 @@ const routes = (
       <Route component={PurchaseOrdersWrapper}>
         <Route path="/purchase-orders/:purchaseOrderId" component={PurchaseOrderShowContainer} />
         <Route path="/purchase-orders" component={PurchaseOrdersIndexContainer} />
+      </Route>
+      <Route component={PromoCodesWrapper}>
+        <Route path="/promo-codes/:purchaseOrderId" component={PromoCodesShowContainer} />
+        <Route path="/promo-codes" component={PromoCodesIndexContainer} />
       </Route>
     </Route>
   </Route>

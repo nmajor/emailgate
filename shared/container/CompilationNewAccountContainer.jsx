@@ -22,7 +22,7 @@ class CompilationNewAccountContainer extends Component {
     return `/compilations/${this.props.compilation._id}/build/add-emails`;
   }
   renderHelperBox() {
-    const body = (<span><strong>Important!</strong> Because we value your privacy, connecting your gmail account will only give us access 1 hour. We also never store your email passwords on our servers. For more info you can read our site <Link to="/terms">terms of use</Link>.</span>);
+    const body = (<span><strong>Important!</strong> Because we value your privacy, connecting your gmail account will only give us access for 1 hour. We also never store your email passwords on our servers. For more info you can read our site <Link to="/terms">terms of use</Link>.</span>);
     return <HelperBox type="warning" body={body} />;
   }
   renderHeader() {

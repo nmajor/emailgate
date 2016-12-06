@@ -5,6 +5,7 @@ import compilations from './compilations';
 import users from './users';
 import orders from './orders';
 import purchaseOrders from './purchaseOrders';
+import promoCodes from './promoCodes';
 import user from './user';
 import email from './email';
 import page from './page';
@@ -15,6 +16,7 @@ const appReducer = combineReducers({
   users,
   orders,
   purchaseOrders,
+  promoCodes,
   user,
   email,
   page,
