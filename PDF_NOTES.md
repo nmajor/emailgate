@@ -1,4 +1,4 @@
-
+http://www.ingramcontent.com/Documents/CoverBleedDimensions.pdf
 
 \pagestyle{fancy} \fancyhf{} \rfoot{Page \thepage}
 
