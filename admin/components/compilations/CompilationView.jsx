@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
+import moment from 'moment';
 import JsonViewer from '../JsonViewer';
 import CaseboundCover from '../../../shared/templates/caseboundCover';
 import CompilationSpineWidthForm from './CompilationSpineWidthForm';
@@ -16,12 +17,12 @@ class CompilationView extends Component { // eslint-disable-line
   }
   renderPdfLink() {
     if (this.props.compilation.pdf && this.props.compilation.pdf.url) {
-      return <a className="btn btn-default right-bumper" target="_blank" href={this.props.compilation.pdf.url}>Compilation Pdf</a>;
+      return <a className="btn btn-default right-bumper" target="_blank" href={this.props.compilation.pdf.url}>Compilation Pdf {moment(this.props.compilation.pdf.lastModified).fromNow()}</a>;
     }
   }
   renderCoverPdfLink() {
     if (this.props.compilation.cover && this.props.compilation.cover.pdf && this.props.compilation.cover.pdf.url) {
-      return <a className="btn btn-default right-bumper" target="_blank" href={this.props.compilation.cover.pdf.url}>Cover PDF</a>;
+      return <a className="btn btn-default right-bumper" target="_blank" href={this.props.compilation.cover.pdf.url}>Cover PDF {moment(this.props.compilation.cover.pdf.lastModified).fromNow()}</a>;
     }
   }
   renderCoverFile() {

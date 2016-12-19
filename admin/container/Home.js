@@ -5,7 +5,7 @@ import DashboardWrapper from './DashboardWrapper';
 class Home extends Component { // eslint-disable-line
   render() {
     return (<DashboardWrapper>
-      Nothing here yet
+      <div>Nothing here yet</div>
     </DashboardWrapper>);
   }
 }

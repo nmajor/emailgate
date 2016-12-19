@@ -6,14 +6,13 @@ import Order from './order';
 import { buildRequest } from '../util/requestHelpers';
 
 
-function requestLogger(httpModule) {
-  const original = httpModule.request;
-  httpModule.request = (options, callback) => { // eslint-disable-line
-    return original(options, callback);
-  };
-  return httpModule;
-}
-
+// function requestLogger(httpModule) {
+//   const original = httpModule.request;
+//   httpModule.request = (options, callback) => { // eslint-disable-line
+//     return original(options, callback);
+//   };
+//   return httpModule;
+// }
 
 const PurchaseOrderResponseSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -66,7 +65,8 @@ PurchaseOrderSchema.methods.sendRequest = function sendRequest() {
     },
   };
 
-  const https = requestLogger(require('https')); // eslint-disable-line
+  const https = require('https'); // eslint-disable-line
+  // const https = requestLogger(require('https')); // eslint-disable-line
 
   return new Promise((resolve, reject) => {
     const req = https.request(options, (res) => {

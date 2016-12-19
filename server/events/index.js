@@ -287,25 +287,105 @@ export default (io) => {
       });
     });
 
-    socket.on('BUILD_COMPILATION_COVER_PDF', (data) => {
-      console.log('BUILD_COMPILATION_COVER_PDF', data);
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(userIsAdmin)
-      .then(() => Compilation.findOne({ _id: data.compilationId }))
-      .then((compilation) => {
-        return compilation.buildCoverPdf((info) => {
-          socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: compilation._id, entry: info });
-        });
-      })
-      .then(() => {
-        return Compilation.findOne({ _id: data.compilationId });
-      })
-      .then((compilation) => {
-        socket.emit('UPDATED_COMPILATION', compilation);
-      })
-      .catch((err) => {
-        socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
-      });
+    // socket.on('BUILD_COMPILATION_COVER_PDF', (data) => {
+    socket.on('BUILD_COMPILATION_COVER_PDF', () => {
+      const request = require('request'); // eslint-disable-line
+
+      const headers = {
+        'X-Requested-With': 'XMLHttpRequest',
+        Referer: 'https://myaccount.lightningsource.com/Portal/Tools/SpineCalculator',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      };
+
+      const dataString = 'ISBN=9783161484100&BookTypeSelector%3ABookTypeID=4414&TrimSize=6.000%22+x+9.000%22+(229mm+x+152mm)&BookTypeSelector%3Aprop_111=Color&BookTypeSelector%3Aprop_112=Standard+Color+70&BookTypeSelector%3Aprop_113=Hardback&BookTypeSelector%3Aprop_91=Case+Laminate&BookTypeSelector%3Aprop_93=Matte&BookTypeID=4414&PageCount=389&X-Requested-With=XMLHttpRequest';
+
+      const options = {
+        url: 'https://myaccount.lightningsource.com/Tools/SpineCalculator/Calculate',
+        method: 'POST',
+        headers,
+        body: dataString,
+      };
+
+      function callback(error, response, body) {
+        console.log('blah hey error', error);
+        console.log('blah hey error', body);
+        console.log('blah hey error', response);
+        if (!error && response.statusCode === 200) {
+          console.log(body);
+        }
+      }
+
+      request(options, callback);
+
+
+      // function requestLogger(httpModule) {
+      //   const original = httpModule.request;
+      //   httpModule.request = (options, callback) => { // eslint-disable-line
+      //     return original(options, callback);
+      //   };
+      //   return httpModule;
+      // }
+      //
+      // const https = requestLogger(require('https')); // eslint-disable-line
+      //
+      // const options = {
+      //   hostname: 'myaccount.lightningsource.com',
+      //   path: '/Tools/SpineCalculator/Calculate',
+      //   method: 'POST',
+      //   headers: {
+      //     Referer: 'https://myaccount.lightningsource.com/Portal/Tools/SpineCalculator',
+      //     Origin: 'https://myaccount.lightningsource.com',
+      //   },
+      // };
+      //
+      // const request = 'ISBN=9783161484100&BookTypeSelector%3ABookTypeID=4414&TrimSize=6.000%22+x+9.000%22+(229mm+x+152mm)&BookTypeSelector%3Aprop_111=Color&BookTypeSelector%3Aprop_112=Standard+Color+70&BookTypeSelector%3Aprop_113=Hardback&BookTypeSelector%3Aprop_91=Case+Laminate&BookTypeSelector%3Aprop_93=Matte&BookTypeID=4414&PageCount=389&X-Requested-With=XMLHttpRequest';
+      //
+      // const req = https.request(options, (res) => {
+      //   let body = '';
+      //
+      //   res.on('data', (chunk) => {
+      //     body += chunk;
+      //   });
+      //
+      //   req.on('error', (e) => {
+      //     console.log(`problem with response: ${e.message}`);
+      //   });
+      //
+      //   res.on('end', () => {
+      //     if (body) {
+      //       console.log('blah response body', body);
+      //     } else {
+      //       console.log('no response body');
+      //     }
+      //   });
+      // });
+      //
+      // req.on('error', (e) => {
+      //   console.log(`problem with request: ${e.message}`);
+      // });
+      //
+      // req.write(JSON.stringify(request));
+      // req.end();
+
+
+      // console.log('BUILD_COMPILATION_COVER_PDF', data);
+      // User.findOne({ email: socket.request.session.passport.user })
+      // .then(userIsAdmin)
+      // .then(() => Compilation.findOne({ _id: data.compilationId }))
+      // .then((compilation) => {
+      //   return compilation.buildCoverPdf((info) => {
+      //     socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: compilation._id, entry: info });
+      //   });
+      // })
+      // .then(() => {
+      //   return Compilation.findOne({ _id: data.compilationId });
+      // })
+      // .then((compilation) => {
+      //   socket.emit('UPDATED_COMPILATION', compilation);
+      // })
+      // .catch((err) => {
+      //   socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
+      // });
     });
 
     socket.on('disconnect', () => {
