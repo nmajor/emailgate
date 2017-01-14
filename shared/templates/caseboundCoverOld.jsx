@@ -6,14 +6,14 @@ import moment from 'moment';
 class CaseboundCoverTemplate {
   constructor(props) {
     this.compilation = props.compilation;
-    // this.templatePreview = true;
+    this.templatePreview = true;
     this.startDate = props.startDate;
     this.endDate = props.endDate;
 
     this.patterns = patterns;
     this.pattern = this.patterns.arabesque;
-    this.backgroundColor = '#fff';
-    this.textColor = '#222';
+    this.backgroundColor = '#222';
+    this.textColor = '#fff';
 
     // http://www.ingramcontent.com/Documents/CoverBleedDimensions.pdf
 
@@ -72,25 +72,20 @@ class CaseboundCoverTemplate {
     const footerStyles = {
       position: 'absolute',
       textAlign: 'center',
-      fontSize: '12px',
-      right: '52px',
       bottom: 0,
-      marginBottom: '60px',
+      marginBottom: `${this.boardHeight / 6}${this.unitType}`,
       width: '100%',
-      paddingLeft: `${this.gutterWidth}${this.unitType}`,
     };
 
     if (this.templatePreview) {
       styles.background = '#aaa';
-      // innerStyles.backgroundImage = `url(${this.pattern})`;
+      innerStyles.backgroundImage = `url(${this.pattern})`;
       innerStyles.backgroundColor = this.backgroundColor;
-      innerStyles.opacity = 0.5;
-      innerStyles.zIndex = 1;
     }
 
     return (<div style={styles}>
       <div style={innerStyles}>
-        <div style={footerStyles}>proudly printed by<br />myemailbook.com</div>
+        <div style={footerStyles}>myemailbook.com</div>
       </div>
     </div>);
   }
@@ -103,22 +98,17 @@ class CaseboundCoverTemplate {
       fontSize: '20px',
     };
 
-    const colorWrapOverWidth = 180;
     const textWrapper = {
-      opacity: (this.templatePreview ? 0.5 : 1),
-      backgroundColor: '#222',
-      color: '#FFF',
       transform: 'rotate(90deg)',
       WebkitTransform: 'rotate(90deg)',
       transformOrigin: 'left top 0',
       WebkitTransformOrigin: 'left top 0',
       width: `${this.fullHeight}${this.unitType}`,
-      height: `${this.spineWidth + colorWrapOverWidth}${this.unitType}`,
-      lineHeight: `${this.spineWidth + colorWrapOverWidth}${this.unitType}`,
+      height: `${this.spineWidth}${this.unitType}`,
+      lineHeight: `${this.spineWidth}${this.unitType}`,
       position: 'relative',
-      left: `${this.spineWidth + (colorWrapOverWidth / 2)}${this.unitType}`,
+      left: `${this.spineWidth}${this.unitType}`,
       textAlign: 'center',
-      fontWeight: '100',
     };
 
     return (<div style={styles}>
@@ -132,34 +122,30 @@ class CaseboundCoverTemplate {
       width: `${this.frontCoverWidth}${this.unitType}`,
       height: `${this.fullHeight}${this.unitType}`,
       color: this.textColor,
-      lineHeight: '33px',
+      fontSize: '20px',
+      lineHeight: '55px',
     };
 
     const titlesWrapperStypes = {
-      // padding: `${this.boardHeight / 4}${this.unitType} 28px 0 28px`,
-      padding: '60px 25px 0 25px',
-      textAlign: 'left',
+      padding: `${this.boardHeight / 4}${this.unitType} 28px 0 28px`,
+      textAlign: 'center',
     };
 
     const titleStyles = {
-      fontSize: '30px',
-      ght: '300',
-      marginBottom: '5px',
+      fontSize: '40px',
+      fontWeight: '300',
     };
 
     const subtitleStyles = {
-      fontSize: '18px',
+      fontSize: '20px',
       fontWeight: '100',
     };
 
     const footerStyles = {
       position: 'absolute',
-      textAlign: 'left',
-      fontSize: '16px',
-      fontWeight: '100',
-      paddingLeft: '25px',
+      textAlign: 'center',
       bottom: 0,
-      marginBottom: '60px',
+      marginBottom: `${this.boardHeight / 6}${this.unitType}`,
       width: '100%',
       lineHeight: 'initial',
     };
@@ -169,15 +155,21 @@ class CaseboundCoverTemplate {
       margin: `${this.bleedWidth}${this.unitType} ${this.bleedWidth}${this.unitType} ${this.bleedWidth}${this.unitType} ${this.gutterWidth}${this.unitType}`,
       height: `${this.fullHeight - (this.bleedWidth * 2)}${this.unitType}`,
       width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}${this.unitType}`,
-      paddingLeft: '54px',
-      paddingRight: '0',
+    };
+
+    const borderStyles = {
+      border: `1px solid ${this.textColor}`,
+      borderCornerShape: 'scoop',
+      borderRadius: '30px',
+      margin: '10px',
+      width: '100%',
+      height: '100%',
     };
 
     if (this.templatePreview) {
       styles.background = '#aaa';
-      // containerStyles.backgroundImage = `url(${this.pattern})`;
+      containerStyles.backgroundImage = `url(${this.pattern})`;
       containerStyles.backgroundColor = this.backgroundColor;
-      containerStyles.opacity = 0.5;
     }
 
     const prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
@@ -185,11 +177,13 @@ class CaseboundCoverTemplate {
 
     return (<div className="wrapper" style={styles}>
       <div className="container" style={containerStyles}>
-        <div style={titlesWrapperStypes}>
-          <div style={titleStyles}>{this.compilation.title}</div>
-          <div style={subtitleStyles}>{this.compilation.subtitle}</div>
+        <div className="border" style={borderStyles}>
+          <div style={titlesWrapperStypes}>
+            <div style={titleStyles}>{this.compilation.title}</div>
+            <div style={subtitleStyles}>{this.compilation.subtitle}</div>
+          </div>
+          <div style={footerStyles}>{prettyStartDate} - {prettyEndDate}</div>
         </div>
-        <div style={footerStyles}>{prettyStartDate} - {prettyEndDate}</div>
       </div>
     </div>);
   }
@@ -210,6 +204,7 @@ class CaseboundCoverTemplate {
   width: ${this.fullWidth}${this.unitType};
   height: ${this.fullHeight}${this.unitType};
   background-color: #222222;
+  background-image: url(${this.pattern});
 }
 `;
 

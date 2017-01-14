@@ -112,7 +112,7 @@ export function requestItem(item) {
   return {
     Id: getItemId(item.props.compilation),
     BindingType: 'Hardcover',
-    BookTypeId: 4314,
+    BookTypeId: 4414,
     BookBlock: {
       FileVersion: moment(compilation.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
       Url: compilation.pdf.url,

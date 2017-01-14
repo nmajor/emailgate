@@ -98,8 +98,8 @@ class EmailTemplate {
   bodyStyles() {
     return {
       fontFamily: '\'Libre Baskerville\', serif !important',
-      lineHeight: '20px',
-      fontSize: '13px',
+      lineHeight: '16px',
+      fontSize: '9px',
       marginTop: '20px',
     };
   }
