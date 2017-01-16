@@ -10,6 +10,9 @@ class CaseboundCoverTemplate {
     this.startDate = props.startDate;
     this.endDate = props.endDate;
 
+    this.prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
+    this.prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
+
     this.patterns = patterns;
     this.pattern = this.patterns.arabesque;
     this.backgroundColor = '#fff';
@@ -121,8 +124,13 @@ class CaseboundCoverTemplate {
       fontWeight: '100',
     };
 
+    const dateStyle = {
+      fontSize: '14px',
+      fontWeight: '100',
+    };
+
     return (<div style={styles}>
-      <div style={textWrapper}>{this.compilation.title}</div>
+      <div style={textWrapper}>{this.compilation.title} &middot; <span style={dateStyle}>{this.prettyStartDate} - {this.prettyEndDate}</span></div>
     </div>);
   }
   renderFrontCover() {
@@ -180,16 +188,13 @@ class CaseboundCoverTemplate {
       containerStyles.opacity = 0.5;
     }
 
-    const prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
-    const prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
-
     return (<div className="wrapper" style={styles}>
       <div className="container" style={containerStyles}>
         <div style={titlesWrapperStypes}>
           <div style={titleStyles}>{this.compilation.title}</div>
           <div style={subtitleStyles}>{this.compilation.subtitle}</div>
         </div>
-        <div style={footerStyles}>{prettyStartDate} - {prettyEndDate}</div>
+        <div style={footerStyles}>{this.prettyStartDate} - {this.prettyEndDate}</div>
       </div>
     </div>);
   }

@@ -85,8 +85,13 @@ PurchaseOrderSchema.methods.sendRequest = function sendRequest() {
       res.on('end', () => {
         if (body) {
           let status = 'SENT';
-          body = JSON.parse(body);
-          console.log('response body:', body);
+          try {
+            body = JSON.parse(body);
+            console.log('response body:', body);
+          } catch (err) {
+            console.log('error', err);
+            console.log('response body:', body);
+          }
 
           if (body.errors === 'yes') {
             status = 'ERROR';
