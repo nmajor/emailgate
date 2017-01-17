@@ -10,6 +10,20 @@ export function setPromoCodes(promoCodes) {
   };
 }
 
+export function addPromoCode(promoCode) {
+  return {
+    type: ActionTypes.ADD_PROMO_CODE,
+    promoCode,
+  };
+}
+
+export function removePromoCode(promoCode) {
+  return {
+    type: ActionTypes.REMOVE_PROMO_CODE,
+    promoCode,
+  };
+}
+
 export function getPromoCodes(cookie) {
   return (dispatch) => {
     const fetchOptions = {};
@@ -34,6 +48,36 @@ export function getPromoCodes(cookie) {
       }
 
       dispatch(setPromoCodes(res));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
+export function createPromoCode(props, cb) {
+  return (dispatch) => {
+    return fetch(`${baseURL}/api/admin/promo-codes`, {
+      credentials: 'include',
+      method: 'post',
+      body: JSON.stringify(props),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (!res.errors) {
+        dispatch(addPromoCode(res));
+      }
+
+      cb(res);
     })
     .catch((err) => {
       console.log(err);

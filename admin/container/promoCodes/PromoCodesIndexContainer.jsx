@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/index';
 import PromoCodesList from '../../components/promoCodes/PromoCodesList';
@@ -9,10 +10,14 @@ class PromoCodesIndexContainer extends Component { // eslint-disable-line
       this.props.dispatch(Actions.getPromoCodes());
     }
   }
+  renderCreateNewAction() {
+    return <Link to="/promo-codes/new" className="btn btn-success" onClick={this.create}>New</Link>;
+  }
   render() {
     return (<div>
       <h1>Promo Codes</h1>
       <PromoCodesList promoCodes={this.props.promoCodes} />
+      {this.renderCreateNewAction()}
     </div>);
   }
 }

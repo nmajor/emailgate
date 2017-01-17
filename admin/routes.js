@@ -26,6 +26,8 @@ import PurchaseOrderShowContainer from './container/purchaseOrders/PurchaseOrder
 import PromoCodesWrapper from './container/promoCodes/PromoCodesWrapper';
 import PromoCodesIndexContainer from './container/promoCodes/PromoCodesIndexContainer';
 import PromoCodesShowContainer from './container/promoCodes/PromoCodesShowContainer';
+import PromoCodesNewContainer from './container/promoCodes/PromoCodesNewContainer';
+import PromoCodesEditContainer from './container/promoCodes/PromoCodesEditContainer';
 
 import EmailShowContainer from './container/emails/EmailShowContainer';
 import PageShowContainer from './container/pages/PageShowContainer';
@@ -54,7 +56,9 @@ const routes = (
         <Route path="/purchase-orders" component={PurchaseOrdersIndexContainer} />
       </Route>
       <Route component={PromoCodesWrapper}>
-        <Route path="/promo-codes/:purchaseOrderId" component={PromoCodesShowContainer} />
+        <Route path="/promo-codes/new" component={PromoCodesNewContainer} />
+        <Route path="/promo-codes/:promoCodeId/edit" component={PromoCodesEditContainer} />
+        <Route path="/promo-codes/:promoCodeId" component={PromoCodesShowContainer} />
         <Route path="/promo-codes" component={PromoCodesIndexContainer} />
       </Route>
     </Route>
