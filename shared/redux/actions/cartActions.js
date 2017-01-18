@@ -85,3 +85,38 @@ export function getCart(cookie) {
     });
   };
 }
+
+export function applyPromoCodeToCart(cartId, code, cb) {
+  return (dispatch) => {
+    dispatch(setPropertyForFetching('cart', true));
+
+    return fetch(`${baseURL}/api/cart/${cartId}/promo`, {
+      credentials: 'include',
+      method: 'post',
+      body: JSON.stringify({ code }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.errors) {
+        return cb(res.errors);
+      }
+
+      dispatch(setCart(res));
+      dispatch(setPropertyForFetching('cart', false));
+      cb(res);
+    })
+    .catch((err) => {
+      dispatch(setPropertyForFetching('cart', false));
+      console.log(err);
+    });
+  };
+}

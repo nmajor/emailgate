@@ -143,6 +143,7 @@ function ensureAdmin(req, res, next) {
 
 router.get('/config', AppController.getAppConfig);
 router.get('/cart', AppController.getUserCart);
+router.post('/cart/:id/promo', AppController.applyPromoCodeToCart);
 
 router.put('/update-password', AppController.updatePassword);
 router.post('/update-password', AppController.updatePassword);

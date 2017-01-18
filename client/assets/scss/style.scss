@@ -411,6 +411,12 @@ input {
   z-index: 1;
 }
 
+.input-group-btn {
+  .btn {
+    padding: 6px 8px 7px 8px;
+  }
+}
+
 /* IE 6 */
 * html .fixed-footer {
    position:absolute;

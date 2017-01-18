@@ -4,6 +4,7 @@ import CartItemForm from './CartItemForm';
 import { cartItemsTotal, prettyPrice } from '../helpers';
 import Loading from './Loading';
 import { Link } from 'react-router';
+import PromoCodeFormContainer from '../container/PromoCodeFormContainer';
 
 class CartView extends Component {
   constructor(props, context) {
@@ -93,13 +94,11 @@ class CartView extends Component {
   }
   renderActions() {
     if (this.props.editable !== false) {
-      return (<tr>
-        <td colSpan="5" className="text-right top-bumper">
-          {this.renderLoading()}
-          {this.renderContinueShoppingAction()}
-          {this.renderCheckoutAction()}
-        </td>
-      </tr>);
+      return (<div className="text-right top-bumper">
+        {this.renderLoading()}
+        {this.renderContinueShoppingAction()}
+        {this.renderCheckoutAction()}
+      </div>);
     }
   }
   renderShipping() {
@@ -138,17 +137,24 @@ class CartView extends Component {
       {this.renderShipping()}
       {this.renderTax()}
       {this.renderTotal()}
-      {this.renderActions()}
     </tfoot>);
   }
   render() {
-    return (<table id="cart" className={`table ${this.props.editable ? 'table-hover' : ''} table-condensed`}>
-      {this.renderTableHeader()}
-      <tbody>
-        {this.renderItemForms()}
-      </tbody>
-      {this.renderTableFooter()}
-    </table>);
+    return (<div>
+      <table id="cart" className={`table ${this.props.editable ? 'table-hover' : ''} table-condensed`}>
+        {this.renderTableHeader()}
+        <tbody>
+          {this.renderItemForms()}
+        </tbody>
+        {this.renderTableFooter()}
+      </table>
+      <div className="row">
+        <div className="col-sm-4 col-sm-offset-8">
+          <PromoCodeFormContainer />
+        </div>
+      </div>
+      {this.renderActions()}
+    </div>);
   }
 }
 

@@ -1,6 +1,7 @@
 import { getGoogleAuthUrl } from '../util/googleAuth';
 import Cart from '../models/cart';
 import User from '../models/user';
+import PromoCode from '../models/promoCode';
 
 export function getAppConfig(req, res) {
   Promise.all([
@@ -83,5 +84,32 @@ export function resetPassword(req, res) {
   })
   .catch((err) => {
     console.log(err);
+  });
+}
+
+export function applyPromoCodeToCart(req, res) {
+  PromoCode.findOne({ code: req.body.code })
+  .then((promoCode) => {
+    console.log('blah hey promoCode', promoCode);
+    if (!promoCode) { console.log('blah no code'); throw Error('Invalid promo code'); }
+
+    return promoCode.isValid()
+    .then(() => {
+      Cart.findOne({ _id: req.params.id })
+      .then((cart) => {
+        console.log('blahcode', req.body.code);
+        cart._promoCode = req.body.code; // eslint-disable-line no-param-reassign
+        return cart.save();
+      })
+      .then((cart) => {
+        return cart.populate('_promoCode');
+      })
+      .then((cart) => {
+        res.json(cart);
+      });
+    })
+    .catch((err) => {
+      console.log('blah isValid error', err);
+    });
   });
 }

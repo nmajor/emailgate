@@ -24,6 +24,7 @@ const CartSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _user: { type: String, ref: 'User' },
   _order: { type: String, ref: 'Order' },
+  _promoCode: { type: String, ref: 'PromoCode' },
   shippingEst: Number,
   items: [CartItemSchema],
 }, {
