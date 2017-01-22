@@ -24,18 +24,27 @@ const PromoCodeSchema = new Schema({
   timestamps: true,
 });
 
+PromoCodeSchema.pre('save', function (next) { // eslint-disable-line func-names
+  this.code = this.code.toLowerCase();
+  next();
+});
+
+PromoCodeSchema.statics.getCode = function getCode(code) {
+  return this.findOne({ code: code.toLowerCase() });
+};
+
 PromoCodeSchema.methods.isValid = function isValid() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const now = new Date();
     if (now > this.expiresAt) {
-      return reject('This code is no longer valid.');
+      return resolve(false);
     }
 
     if (this.oneTimeUse) {
       return Order.count({ _promoCode: this._id })
       .then((count) => {
         if (count >= 0) {
-          return reject('This code is no longer valid.');
+          return resolve(false);
         }
 
         return resolve(true);

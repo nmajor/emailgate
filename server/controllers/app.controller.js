@@ -88,25 +88,29 @@ export function resetPassword(req, res) {
 }
 
 export function applyPromoCodeToCart(req, res) {
-  PromoCode.findOne({ code: req.body.code })
+  PromoCode.findOne({ code: req.body.code.toLowerCase() })
   .then((promoCode) => {
-    console.log('blah hey promoCode', promoCode);
-    if (!promoCode) { console.log('blah no code'); throw Error('Invalid promo code'); }
+    if (!promoCode) {
+      return Promise.reject('Invalid promo code');
+    }
 
     return promoCode.isValid()
-    .then(() => {
-      Cart.findOne({ _id: req.params.id })
-      .then((cart) => {
-        console.log('blahcode', req.body.code);
-        cart._promoCode = req.body.code; // eslint-disable-line no-param-reassign
-        return cart.save();
-      })
-      .then((cart) => {
-        return cart.populate('_promoCode');
-      })
-      .then((cart) => {
-        res.json(cart);
-      });
+    .then((isValid) => {
+      if (isValid) {
+        return Cart.findOne({ _id: req.params.id })
+        .then((cart) => {
+          cart._promoCode = promoCode._id; // eslint-disable-line no-param-reassign
+          return cart.save();
+        })
+        .then((cart) => {
+          return Cart.findOne({ _id: cart._id }).populate('_promoCode');
+        })
+        .then((cart) => {
+          res.json(cart);
+        });
+      }
+
+      return Promise.reject('Invalid promo code');
     })
     .catch((err) => {
       console.log('blah isValid error', err);

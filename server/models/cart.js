@@ -70,7 +70,7 @@ CartSchema.statics.findOrCreate = function findOrCreate(query) {
 CartSchema.statics.findCurrent = function findCurrent(query) {
   const newQuery = Object.assign({}, query, { _order: null });
 
-  return this.findOne(newQuery);
+  return this.findOne(newQuery).populate('_promoCode');
 };
 
 CartSchema.methods.addItem = function addItem(itemData) {

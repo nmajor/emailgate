@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
+import _ from 'lodash';
 
 class PromoCodeFormContainer extends Component {
   constructor(props, context) {
@@ -8,12 +9,16 @@ class PromoCodeFormContainer extends Component {
     this.submit = this.submit.bind(this);
   }
   submit() {
-    this.props.dispatch(Actions.applyPromoCodeToCart(this.props.cart._id, this.refs.promo.value));
+    if (this.props.submitPromoCode) {
+      this.props.submitPromoCode(this.refs.promo.value);
+    } else {
+      this.props.dispatch(Actions.applyPromoCodeToCart(this.props.cart._id, this.refs.promo.value));
+    }
   }
   render() {
     return (<div>
       <div className="input-group">
-        <input type="text" ref="promo" className="form-control" placeholder="Promo Code" />
+        <input type="text" ref="promo" className="form-control" defaultValue={_.get(this.props.cart, '_promoCode.code')} placeholder="Promo Code" />
         <span className="input-group-btn">
           <button onClick={this.submit} className="btn btn-primary marginless-right" type="button">Apply</button>
         </span>
@@ -35,6 +40,7 @@ function mapStateToProps(store) {
 PromoCodeFormContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   cart: PropTypes.object.isRequired,
+  submitPromoCode: PropTypes.func,
 };
 
 export default connect(mapStateToProps)(PromoCodeFormContainer);

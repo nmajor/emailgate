@@ -212,3 +212,15 @@ export function serializeQuery(obj) {
   });
   return str.join('&');
 }
+
+export function getDiscountedAmount(promoCode, amount) {
+  if (!promoCode) { return 0; }
+
+  return amount * (promoCode.discount / 100);
+}
+
+export function applyPromoCodeToAmount(promoCode, amount) {
+  if (!promoCode) { return amount; }
+
+  return amount - (getDiscountedAmount(promoCode, amount));
+}

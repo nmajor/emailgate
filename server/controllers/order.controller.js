@@ -19,6 +19,7 @@ export function getOrderPreview(req, res) {
 
 export function getOrders(req, res) {
   Order.find({ _user: req.user._id, transaction: { $ne: null } })
+  .populate('_promoCode')
   .then((orders) => {
     res.json(orders);
   });

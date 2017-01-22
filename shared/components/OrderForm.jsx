@@ -39,14 +39,14 @@ class OrderForm extends Component {
     }
   }
   renderTerms() {
-    return (<div className="checkbox">
-      <label>
-        <input type="checkbox" name="terms" checked={this.state.terms} onClick={this.setFormStateForCheckbox} /> I agree to the site <a href="/terms" target="_blank">terms.</a>
-      </label>
+    return (<div className="checkbox text-right">
+      <label className="right-bumper">I agree to the site <a href="/terms" target="_blank">terms.</a></label>
+      <input type="checkbox" style={{ margin: '0', position: 'static' }} name="terms" checked={this.state.terms} onClick={this.setFormStateForCheckbox} />
     </div>);
   }
   renderSubmitAction() {
-    return <div className="btn btn-success" disabled={!this.state.terms || this.props.submitting} onClick={this.handleSubmit}>Submit</div>;
+    return <div className="btn btn-success right-most" onClick={this.handleSubmit}>Submit</div>;
+    // return <div className="btn btn-success right-most" disabled={!this.state.terms || this.props.submitting} onClick={this.handleSubmit}>Submit</div>;
   }
   render() {
     return (<div>
@@ -54,9 +54,9 @@ class OrderForm extends Component {
         {this.renderTerms()}
         <div className="text-right">
           {this.renderError()}
+          {this.renderSubmitting()}
           {this.renderSubmitAction()}
           {this.renderBackAction()}
-          {this.renderSubmitting()}
         </div>
       </form>
     </div>);

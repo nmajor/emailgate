@@ -1,8 +1,10 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import Cart from './cart';
+import PromoCode from './promoCode';
 import Compilation from './compilation';
 import { getProductById, calculateShipping } from '../util/helpers';
+import { getDiscountedAmount, applyPromoCodeToAmount } from '../../shared/helpers';
 import _ from 'lodash';
 
 function buildItemProps(item) {
@@ -34,8 +36,11 @@ const OrderSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _user: { type: String, ref: 'User' },
   _purchaseOrder: { type: String, ref: 'PurchaseOrder' },
+  _promoCode: { type: String, ref: 'PromoCode' },
   shipping: Number,
   tax: Number,
+  discount: Number,
+  subtotal: Number,
   amount: Number,
   error: {},
   shippingAddress: {},
@@ -80,7 +85,7 @@ OrderSchema.statics.findAndBuildItemProps = function findAndBuildItemProps(query
 };
 
 OrderSchema.methods.build = function build() {
-  return this.getItems()
+  return this.syncCart()
   .then(() => {
     return this.getShipping();
   })
@@ -92,8 +97,8 @@ OrderSchema.methods.build = function build() {
   });
 };
 
-OrderSchema.methods.getItems = function getItems() {
-  return Cart.findOne({ _id: this.cartId, _user: this._user })
+OrderSchema.methods.syncCart = function syncCart() {
+  return Cart.findOne({ _id: this.cartId, _user: this._user }).populate('_promoCode')
   .then((cart) => {
     const orderItems = cart.items.map((item) => {
       const product = getProductById(item.productId);
@@ -106,12 +111,13 @@ OrderSchema.methods.getItems = function getItems() {
     });
 
     this.items = orderItems;
+    this._promoCode = this._promoCode || cart._promoCode;
     return Promise.resolve(this);
   });
 };
 
 OrderSchema.methods.getShipping = function getShipping() {
-  return (!this.items ? this.getItems() : Promise.resolve(true))
+  return (!this.items ? this.syncCart() : Promise.resolve(true))
   .then(() => {
     this.shipping = calculateShipping(this.items, this.shippingAddress);
     return Promise.resolve(this);
@@ -119,7 +125,9 @@ OrderSchema.methods.getShipping = function getShipping() {
 };
 
 OrderSchema.methods.getTax = function getTax() {
-  return (!this.items ? this.getItems() : Promise.resolve(this))
+  return (!this.items ? this.syncCart() : Promise.resolve(this))
+  .then(() => { return (this.discount === undefined ? this.getDiscount() : Promise.resolve(this)); })
+  .then(() => { return this.getSubtotal(); })
   .then(() => { return (!this.shipping ? this.getShipping() : Promise.resolve(this)); })
   .then(() => {
     const taxjar = require('taxjar')(process.env.TAXJAR_API_KEY); // eslint-disable-line global-require
@@ -127,7 +135,7 @@ OrderSchema.methods.getTax = function getTax() {
     const lineItems = this.items.map((item) => {
       return {
         quantity: item.quantity,
-        unit_price: (item.product.price / 100),
+        unit_price: (applyPromoCodeToAmount(this._promoCode, item.product.price) / 100),
         product_tax_code: item.product.taxCode,
       };
     });
@@ -136,7 +144,7 @@ OrderSchema.methods.getTax = function getTax() {
       to_country: 'US',
       to_zip: this.shippingAddress.postalCode,
       to_state: this.shippingAddress.region,
-      amount: (this.amount / 100),
+      amount: (this.subtotal / 100),
       shipping: (this.shipping / 100),
       line_items: lineItems,
     }).then((res) => {
@@ -153,16 +161,51 @@ OrderSchema.methods.getTax = function getTax() {
 };
 
 OrderSchema.methods.getAmount = function getAmount() {
-  return (!this.items ? this.getItems() : Promise.resolve(this))
+  return (!this.items ? this.syncCart() : Promise.resolve(this))
+  .then(() => { return this.getDiscount(); })
+  .then(() => { return this.getSubtotal(); })
   .then(() => { return (!this.shipping ? this.getShipping() : Promise.resolve(this)); })
   .then(() => { return (!this.tax ? this.getTax() : Promise.resolve(this)); })
   .then(() => {
     return new Promise((resolve) => {
-      const itemAmounts = _.map(this.items, (item) => { return (item.product.price * item.quantity); });
-
-      const subTotal = _.reduce(itemAmounts, (sum, amount) => { return sum + amount; });
-      this.amount = subTotal + this.shipping + this.tax;
+      this.amount = this.subtotal + this.shipping + this.tax;
       resolve(this);
+    });
+  });
+};
+
+OrderSchema.methods.getSubtotal = function getSubtotal() {
+  const itemTotal = this.getItemTotal();
+  this.subtotal = itemTotal - this.discount;
+  return Promise.resolve(this);
+};
+
+OrderSchema.methods.getItemTotal = function getItemTotal() {
+  const itemAmounts = _.map(this.items, (item) => { return (item.product.price * item.quantity); });
+  return _.reduce(itemAmounts, (sum, amount) => { return sum + amount; });
+};
+
+
+OrderSchema.methods.getDiscount = function getDiscount() {
+  return new Promise((resolve) => {
+    const itemTotal = this.getItemTotal();
+
+    if (!this._promoCode) { this.discount = 0; return resolve(this); }
+    const promoCodeId = typeof this._promoCode === 'string' ? this._promoCode : this._promoCode._id;
+
+    PromoCode.findOne({ _id: promoCodeId })
+    .then((promoCode) => {
+      return promoCode.isValid()
+      .then((isValid) => {
+        if (isValid) {
+          this.discount = getDiscountedAmount(this._promoCode, itemTotal);
+          this._promoCode = promoCode;
+          return resolve(this);
+        }
+
+        this.discount = 0;
+        return resolve(this);
+      });
     });
   });
 };

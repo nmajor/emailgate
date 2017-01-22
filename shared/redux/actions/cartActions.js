@@ -87,6 +87,8 @@ export function getCart(cookie) {
 }
 
 export function applyPromoCodeToCart(cartId, code, cb) {
+  cb = cb || function() {} // eslint-disable-line
+
   return (dispatch) => {
     dispatch(setPropertyForFetching('cart', true));
 

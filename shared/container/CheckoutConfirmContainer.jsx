@@ -26,6 +26,7 @@ class CheckoutConfirmContainer extends Component {
     }
 
     this.submitOrder = this.submitOrder.bind(this);
+    this.submitPromoCode = this.submitPromoCode.bind(this);
     this.back = this.back.bind(this);
     this.getOrderPreview = this.getOrderPreview.bind(this);
     this.orderProps = this.orderProps.bind(this);
@@ -40,6 +41,11 @@ class CheckoutConfirmContainer extends Component {
       if (res.error) {
         this.setState({ error: res.error });
       }
+    }));
+  }
+  submitPromoCode(code) {
+    this.props.dispatch(Actions.applyPromoCodeToCart(this.props.cart._id, code, () => {
+      this.getOrderPreview();
     }));
   }
   orderProps() {
@@ -78,6 +84,7 @@ class CheckoutConfirmContainer extends Component {
     if (this.props.checkout.orderPreview && !this.props.checkout.orderPreview.fetching) {
       return (<CartView
         cart={this.props.checkout.orderPreview}
+        submitPromoCode={this.submitPromoCode}
         editable={false}
       />);
     }

@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import CartItemForm from './CartItemForm';
-// import _ from 'lodash';
-import { cartItemsTotal, prettyPrice } from '../helpers';
+import _ from 'lodash';
+import { cartItemsTotal, prettyPrice, getDiscountedAmount } from '../helpers';
 import Loading from './Loading';
 import { Link } from 'react-router';
 import PromoCodeFormContainer from '../container/PromoCodeFormContainer';
@@ -26,6 +26,10 @@ class CartView extends Component {
 
     if (this.props.cart.tax) {
       amount += this.props.cart.tax;
+    }
+
+    if (this.props.cart._promoCode) {
+      amount -= getDiscountedAmount(this.props.cart._promoCode, cartItemsTotal(this.props.cart.items));
     }
 
     return amount;
@@ -122,6 +126,16 @@ class CartView extends Component {
       </tr>);
     }
   }
+  renderDiscount() {
+    if (this.props.cart._promoCode) {
+      return (<tr>
+        <td colSpan="3" className="text-right text-bold">Discount:</td>
+        <td className="text-right text-danger">
+          <span className="label label-danger" style={{ padding: '2px 4px' }}>%{this.props.cart._promoCode.discount}</span> -  ${prettyPrice(getDiscountedAmount(this.props.cart._promoCode, cartItemsTotal(this.props.cart.items)))}</td>
+        {this.renderActionFooter()}
+      </tr>);
+    }
+  }
   renderTotal() {
     return (<tr>
       <td></td>
@@ -134,10 +148,20 @@ class CartView extends Component {
   }
   renderTableFooter() {
     return (<tfoot>
+      {this.renderDiscount()}
       {this.renderShipping()}
       {this.renderTax()}
       {this.renderTotal()}
     </tfoot>);
+  }
+  renderPromoCodeForm() {
+    if (!_.get(this.props.cart, 'transaction.id')) {
+      return (<div className="row">
+        <div className="col-sm-4 col-sm-offset-8">
+          <PromoCodeFormContainer submitPromoCode={this.props.submitPromoCode} />
+        </div>
+      </div>);
+    }
   }
   render() {
     return (<div>
@@ -148,11 +172,7 @@ class CartView extends Component {
         </tbody>
         {this.renderTableFooter()}
       </table>
-      <div className="row">
-        <div className="col-sm-4 col-sm-offset-8">
-          <PromoCodeFormContainer />
-        </div>
-      </div>
+      {this.renderPromoCodeForm()}
       {this.renderActions()}
     </div>);
   }
@@ -163,6 +183,7 @@ CartView.propTypes = {
   products: PropTypes.array,
   removeItem: PropTypes.func,
   updateItem: PropTypes.func,
+  submitPromoCode: PropTypes.func,
   editable: PropTypes.bool,
 };
 
