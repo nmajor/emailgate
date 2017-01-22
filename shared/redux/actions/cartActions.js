@@ -86,13 +86,13 @@ export function getCart(cookie) {
   };
 }
 
-export function applyPromoCodeToCart(cartId, code, cb) {
+export function applyPromoCodeToCart(cart, code, cb) {
   cb = cb || function() {} // eslint-disable-line
 
   return (dispatch) => {
     dispatch(setPropertyForFetching('cart', true));
 
-    return fetch(`${baseURL}/api/cart/${cartId}/promo`, {
+    return fetch(`${baseURL}/api/cart/${cart._id}/promo`, {
       credentials: 'include',
       method: 'post',
       body: JSON.stringify({ code }),
@@ -108,8 +108,8 @@ export function applyPromoCodeToCart(cartId, code, cb) {
       return res.json();
     })
     .then((res) => {
-      if (res.errors) {
-        return cb(res.errors);
+      if (res.error) {
+        return cb(res.error);
       }
 
       dispatch(setCart(res));

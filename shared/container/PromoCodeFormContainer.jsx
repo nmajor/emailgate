@@ -6,13 +6,28 @@ import _ from 'lodash';
 class PromoCodeFormContainer extends Component {
   constructor(props, context) {
     super(props, context);
+    this.state = { error: undefined };
+
     this.submit = this.submit.bind(this);
+    this.handleError = this.handleError.bind(this);
+  }
+  handleError(err) {
+    this.setState({ error: err.message });
   }
   submit() {
     if (this.props.submitPromoCode) {
-      this.props.submitPromoCode(this.refs.promo.value);
+      this.props.submitPromoCode(this.props.cart, this.refs.promo.value, (res) => {
+        this.handleError(res);
+      });
     } else {
-      this.props.dispatch(Actions.applyPromoCodeToCart(this.props.cart._id, this.refs.promo.value));
+      this.props.dispatch(Actions.applyPromoCodeToCart(this.props.cart, this.refs.promo.value, (res) => {
+        this.handleError(res);
+      }));
+    }
+  }
+  renderError() {
+    if (this.state.error) {
+      return (<div className="text-danger text-right">{this.state.error}</div>);
     }
   }
   render() {
@@ -23,6 +38,7 @@ class PromoCodeFormContainer extends Component {
           <button onClick={this.submit} className="btn btn-primary marginless-right" type="button">Apply</button>
         </span>
       </div>
+      {this.renderError()}
     </div>);
   }
 }

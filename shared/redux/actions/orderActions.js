@@ -122,3 +122,45 @@ export function createOrder(orderProps, cb) {
     });
   };
 }
+
+export function applyPromoCodeToOrderPreview(order, code, cb) {
+  cb = cb || function() {} // eslint-disable-line
+
+  return (dispatch) => {
+    const body = order;
+    body.code = code;
+
+    return fetch(`${baseURL}/api/orders/preview/promo`, {
+      credentials: 'include',
+      method: 'post',
+      body: JSON.stringify({
+        shippingAddress: order.shippingAddress,
+        billingAddress: order.billingAddress,
+        data: order.data,
+        cartId: order.cartId,
+        code,
+      }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        return cb(res.error);
+      }
+
+      dispatch(setPropertyForCheckout('orderPreview', res));
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}

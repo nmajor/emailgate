@@ -43,10 +43,10 @@ class CheckoutConfirmContainer extends Component {
       }
     }));
   }
-  submitPromoCode(code) {
-    this.props.dispatch(Actions.applyPromoCodeToCart(this.props.cart._id, code, () => {
-      this.getOrderPreview();
-    }));
+  submitPromoCode(cart, code, cb) {
+    const orderPreview = this.props.checkout.orderPreview;
+    orderPreview.cartId = cart._id;
+    this.props.dispatch(Actions.applyPromoCodeToOrderPreview(orderPreview, code, cb));
   }
   orderProps() {
     return {

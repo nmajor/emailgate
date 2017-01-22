@@ -29,7 +29,7 @@ PromoCodeSchema.pre('save', function (next) { // eslint-disable-line func-names
   next();
 });
 
-PromoCodeSchema.statics.getCode = function getCode(code) {
+PromoCodeSchema.statics.findByCode = function findByCode(code) {
   return this.findOne({ code: code.toLowerCase() });
 };
 

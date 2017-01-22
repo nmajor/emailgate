@@ -88,10 +88,10 @@ export function resetPassword(req, res) {
 }
 
 export function applyPromoCodeToCart(req, res) {
-  PromoCode.findOne({ code: req.body.code.toLowerCase() })
+  PromoCode.findByCode(req.body.code)
   .then((promoCode) => {
     if (!promoCode) {
-      return Promise.reject('Invalid promo code');
+      return res.json({ error: { message: 'Invalid promo code' } });
     }
 
     return promoCode.isValid()
@@ -110,10 +110,10 @@ export function applyPromoCodeToCart(req, res) {
         });
       }
 
-      return Promise.reject('Invalid promo code');
+      return res.json({ error: { message: 'Invalid promo code' } });
     })
     .catch((err) => {
-      console.log('blah isValid error', err);
+      console.log('blah an error happened', err);
     });
   });
 }
