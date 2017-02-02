@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import SelectAddressContainer from './SelectAddressContainer';
 import * as Actions from '../redux/actions/index';
+import _ from 'lodash';
 
 class BillingAddressContainer extends Component {
   constructor(props, context) {
@@ -14,6 +15,7 @@ class BillingAddressContainer extends Component {
     this.selectAddress = this.selectAddress.bind(this);
     this.setSelecting = this.setSelecting.bind(this);
     this.unsetSelecting = this.unsetSelecting.bind(this);
+    this.createAddress = this.createAddress.bind(this);
   }
   setSelecting() {
     this.setState({ selecting: true });
@@ -24,6 +26,26 @@ class BillingAddressContainer extends Component {
   selectAddress(address) {
     this.props.dispatch(Actions.setPropertyForCheckout('billingAddressId', address._id));
     this.setState({ selecting: false });
+  }
+  createAddress(props) {
+    return new Promise((resolve, reject) => {
+      this.props.dispatch(Actions.createAddress(props, (res) => {
+        if (res.errors) {
+          const errors = {
+            _error: 'Could not create address',
+          };
+
+          _.forEach(res.errors, (val, key) => {
+            errors[key] = val.message;
+          });
+
+          reject(errors);
+        } else {
+          this.props.dispatch(Actions.setPropertyForCheckout('shippingAddressId', res._id));
+          resolve();
+        }
+      }));
+    });
   }
   renderSelectingAction() {
     if (this.state.selecting === false) {
@@ -39,6 +61,7 @@ class BillingAddressContainer extends Component {
         selectAddress={this.selectAddress}
         selectedAddressId={this.props.checkout.billingAddressId}
         selecting={this.state.selecting}
+        createAddress={this.createAddress}
       />
     </div>);
   }
