@@ -1,22 +1,45 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import Textfit from 'react-textfit';
 import patterns from './patterns';
 import moment from 'moment';
+
+const fonts = {
+  abril: {
+    link: '<link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">',
+    family: '\'Abril Fatface\', cursive',
+  },
+  montserrat: {
+    link: '<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">',
+    family: '\'Montserrat\', sans-serif',
+  },
+  kaushan: {
+    link: '<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">',
+    family: '\'Kaushan Script\', cursive',
+  },
+  raleway: {
+    link: '<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">',
+    family: '\'Raleway\', sans-serif',
+  },
+};
 
 class CaseboundCoverTemplate {
   constructor(props) {
     this.compilation = props.compilation;
-    this.templatePreview = true;
+    this.templatePreview = false;
     this.startDate = props.startDate;
     this.endDate = props.endDate;
 
+    this.prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
+    this.prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
+
     this.patterns = patterns;
     this.pattern = this.patterns.arabesque;
-    this.backgroundColor = '#222';
-    this.textColor = '#fff';
+    // this.backgroundColor = '#FDFDFD';
+    this.backgroundColor = '#faf0e6';
+    this.textColor = '#222';
 
-    // this.compilation.title = 'Isaac\'s Missionary Emails';
+    this.primaryFont = fonts.abril;
+    this.secondaryFont = fonts.raleway;
 
     // http://www.ingramcontent.com/Documents/CoverBleedDimensions.pdf
 
@@ -75,20 +98,32 @@ class CaseboundCoverTemplate {
     const footerStyles = {
       position: 'absolute',
       textAlign: 'center',
+      fontSize: '12px',
+      right: '52px',
       bottom: 0,
       marginBottom: '60px',
       width: '100%',
+      paddingLeft: `${this.gutterWidth}${this.unitType}`,
     };
 
     if (this.templatePreview) {
       styles.background = '#aaa';
       // innerStyles.backgroundImage = `url(${this.pattern})`;
       innerStyles.backgroundColor = this.backgroundColor;
+      innerStyles.opacity = 0.5;
+      innerStyles.zIndex = 1;
     }
+    const logoStyles = {
+      fontFamily: this.primaryFont.family,
+    };
+
+    const descStyles = {
+      fontFamily: this.secondaryFont.family,
+    };
 
     return (<div style={styles}>
       <div style={innerStyles}>
-        <div style={footerStyles}>myemailbook.com</div>
+        <div style={footerStyles}><div style={descStyles}>proudly printed by</div><div style={logoStyles}>myemailbook.com</div></div>
       </div>
     </div>);
   }
@@ -99,32 +134,35 @@ class CaseboundCoverTemplate {
       width: `${this.spineWidth}${this.unitType}`,
       height: `${this.fullHeight}${this.unitType}`,
       fontSize: '20px',
+      fontFamily: this.secondaryFont.family,
     };
 
+    const colorWrapOverWidth = 180;
     const textWrapper = {
+      opacity: (this.templatePreview ? 0.5 : 1),
+      backgroundColor: '#222',
+      color: '#FFF',
       transform: 'rotate(90deg)',
       WebkitTransform: 'rotate(90deg)',
       transformOrigin: 'left top 0',
       WebkitTransformOrigin: 'left top 0',
       width: `${this.fullHeight}${this.unitType}`,
-      height: `${this.spineWidth}${this.unitType}`,
-      lineHeight: `${this.spineWidth}${this.unitType}`,
+      height: `${this.spineWidth + colorWrapOverWidth}${this.unitType}`,
+      lineHeight: `${this.spineWidth + colorWrapOverWidth}${this.unitType}`,
       position: 'relative',
-      left: `${this.spineWidth}${this.unitType}`,
+      left: `${this.spineWidth + (colorWrapOverWidth / 2)}${this.unitType}`,
       textAlign: 'center',
+      fontWeight: '100',
+    };
+
+    const dateStyle = {
+      fontSize: '14px',
+      fontWeight: '100',
     };
 
     return (<div style={styles}>
-      <div style={textWrapper}>{this.compilation.title}</div>
+      <div style={textWrapper}>{this.compilation.title} &middot; <span style={dateStyle}>{this.prettyStartDate} - {this.prettyEndDate}</span></div>
     </div>);
-  }
-  renderTitleRows() {
-    const lineStyles = {
-      lineHeight: '82%',
-    };
-    return this.compilation.title.split(' ').map((word, index) => {
-      return <Textfit key={index} style={lineStyles} mode="single">{word.toUpperCase()}</Textfit>;
-    });
   }
   renderFrontCover() {
     const styles = {
@@ -133,33 +171,37 @@ class CaseboundCoverTemplate {
       width: `${this.frontCoverWidth}${this.unitType}`,
       height: `${this.fullHeight}${this.unitType}`,
       color: this.textColor,
-      fontSize: '20px',
-      // lineHeight: '55px',
+      lineHeight: '33px',
     };
 
     const titlesWrapperStypes = {
-      padding: '60px 70px 0 70px',
-      textAlign: 'center',
+      // padding: `${this.boardHeight / 4}${this.unitType} 28px 0 28px`,
+      padding: '60px 25px 0 79px',
+      textAlign: 'left',
     };
 
     const titleStyles = {
-      fontSize: '40px',
-      fontWeight: '300',
+      fontSize: '30px',
+      ght: '300',
+      marginBottom: '5px',
     };
 
     const subtitleStyles = {
-      fontSize: '20px',
+      fontSize: '14px',
       fontWeight: '100',
-      textAlign: 'center',
+      fontFamily: this.secondaryFont.family,
     };
 
     const footerStyles = {
       position: 'absolute',
-      textAlign: 'center',
+      textAlign: 'left',
+      fontSize: '12px',
+      fontWeight: '100',
+      paddingLeft: '79px',
       bottom: 0,
       marginBottom: '60px',
-      width: '100%',
       lineHeight: 'initial',
+      fontFamily: this.secondaryFont.family,
     };
 
     const containerStyles = {
@@ -167,34 +209,24 @@ class CaseboundCoverTemplate {
       margin: `${this.bleedWidth}${this.unitType} ${this.bleedWidth}${this.unitType} ${this.bleedWidth}${this.unitType} ${this.gutterWidth}${this.unitType}`,
       height: `${this.fullHeight - (this.bleedWidth * 2)}${this.unitType}`,
       width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}${this.unitType}`,
-      padding: '0',
+      paddingLeft: '0',
+      paddingRight: '0',
     };
 
     if (this.templatePreview) {
       styles.background = '#aaa';
       // containerStyles.backgroundImage = `url(${this.pattern})`;
       containerStyles.backgroundColor = this.backgroundColor;
+      containerStyles.opacity = 0.5;
     }
-
-    const titleBox = {
-      border: '3px solid #fff',
-      padding: '8px 8px 4px 4px',
-    };
-
-    const prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
-    const prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
 
     return (<div className="wrapper" style={styles}>
       <div className="container" style={containerStyles}>
-        <div className="border">
-          <div style={titlesWrapperStypes}>
-            <div style={titleBox}>
-              <div style={titleStyles}>{this.renderTitleRows()}</div>
-            </div>
-          </div>
+        <div style={titlesWrapperStypes}>
+          <div style={titleStyles}>{this.compilation.title}</div>
           <div style={subtitleStyles}>{this.compilation.subtitle}</div>
-          <div style={footerStyles}>{prettyStartDate} - {prettyEndDate}</div>
         </div>
+        <div style={footerStyles}>{this.prettyStartDate} - {this.prettyEndDate}</div>
       </div>
     </div>);
   }
@@ -207,7 +239,7 @@ class CaseboundCoverTemplate {
       fontSize: '20px',
       letterSpacing: '0.5px',
       // backgroundImage: `url("${this.pattern}")`,
-      fontFamily: '\'Montserrat\', sans-serif',
+      fontFamily: this.primaryFont.family,
     };
 
     const classes = `
@@ -215,7 +247,6 @@ class CaseboundCoverTemplate {
   width: ${this.fullWidth}${this.unitType};
   height: ${this.fullHeight}${this.unitType};
   background-color: #222222;
-  background-image: url(${this.pattern});
 }
 `;
 
@@ -239,8 +270,8 @@ class CaseboundCoverTemplate {
         box-sizing: border-box;
       }
     </style>
-    <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    ${this.primaryFont.link}
+    ${this.primaryFont.link !== this.secondaryFont.link ? this.secondaryFont.link : ''}
   </head>
   <body>
   ${renderToString(this.render())}
