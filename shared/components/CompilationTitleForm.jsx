@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Loading from './Loading';
+import covers from '../templates/covers';
 
 class CompilationTitleForm extends Component {
   constructor(props, context) {
@@ -93,6 +94,25 @@ class CompilationTitleForm extends Component {
       return <button className="btn btn-danger" onClick={this.back}>Back</button>;
     }
   }
+  renderCoverPreview() {
+    const titleRef = this.refs.title || {};
+    const subtitleRef = this.refs.subtitle || {};
+
+    const compilation = {
+      title: titleRef.value,
+      subtitle: subtitleRef.value,
+      cover: {
+        spineWidth: '',
+      },
+    };
+
+    const boxTitle = new covers.BoxTitle({ compilation, bleedType: 'bleedless' });
+    const blackSpine = new covers.BlackSpine({ compilation, bleedType: 'bleedless' });
+    return (<div>
+      {boxTitle.renderFrontCover()}
+      {blackSpine.renderFrontCover()}
+    </div>);
+  }
   render() {
     return (<form onSubmit={this.handleSubmit}>
       {this.renderTitleFormGroup()}
@@ -105,6 +125,7 @@ class CompilationTitleForm extends Component {
           {this.renderLoading()}
         </button>
       </div>
+      {this.renderCoverPreview()}
     </form>);
   }
 }

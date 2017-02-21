@@ -2,29 +2,13 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import patterns from './patterns';
 import moment from 'moment';
-
-const fonts = {
-  abril: {
-    link: '<link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">',
-    family: '\'Abril Fatface\', cursive',
-  },
-  montserrat: {
-    link: '<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">',
-    family: '\'Montserrat\', sans-serif',
-  },
-  kaushan: {
-    link: '<link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">',
-    family: '\'Kaushan Script\', cursive',
-  },
-  raleway: {
-    link: '<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">',
-    family: '\'Raleway\', sans-serif',
-  },
-};
+import fonts from './fonts';
+import bleedMap from './bleedMap';
 
 class CaseboundCoverTemplate {
   constructor(props) {
     this.compilation = props.compilation;
+    this.bleedType = props.bleedType || 'casebound';
     this.templatePreview = false;
     this.startDate = props.startDate;
     this.endDate = props.endDate;
@@ -34,7 +18,6 @@ class CaseboundCoverTemplate {
 
     this.patterns = patterns;
     this.pattern = this.patterns.arabesque;
-    // this.backgroundColor = '#FDFDFD';
     this.backgroundColor = '#faf0e6';
     this.textColor = '#222';
 
@@ -64,8 +47,8 @@ class CaseboundCoverTemplate {
     // In pixels (px)
     this.unitType = 'px';
     this.pixelsPerInch = 72;
-    this.bleedWidth = 0.625 * this.pixelsPerInch;
-    this.gutterWidth = 0.5 * this.pixelsPerInch;
+    this.bleedWidth = bleedMap[this.bleedType].bleedWidth * this.pixelsPerInch;
+    this.gutterWidth = bleedMap[this.bleedType].gutterWidth * this.pixelsPerInch;
     this.boardWidth = 5.818 * this.pixelsPerInch;
     this.boardHeight = 9.25 * this.pixelsPerInch;
     this.spineWidth = this.compilation.cover.spineWidth * this.pixelsPerInch;
@@ -75,6 +58,8 @@ class CaseboundCoverTemplate {
 
     this.fullWidth = this.frontCoverWidth + this.spineWidth + this.frontCoverWidth;
     this.fullHeight = this.bleedWidth + this.boardHeight + this.bleedWidth;
+
+    this.colorWrapOverWidth = this.gutterWidth + 55;
   }
   getCoverDimentions() {
     return { width: this.fullWidth, height: this.fullHeight };
@@ -86,6 +71,7 @@ class CaseboundCoverTemplate {
       width: `${this.backCoverWidth}${this.unitType}`,
       height: `${this.fullHeight}${this.unitType}`,
       fontSize: '20px',
+      position: 'relative',
     };
 
     const innerStyles = {
@@ -99,11 +85,9 @@ class CaseboundCoverTemplate {
       position: 'absolute',
       textAlign: 'center',
       fontSize: '12px',
-      right: '52px',
       bottom: 0,
       marginBottom: '60px',
       width: '100%',
-      paddingLeft: `${this.gutterWidth}${this.unitType}`,
     };
 
     if (this.templatePreview) {
@@ -111,19 +95,27 @@ class CaseboundCoverTemplate {
       // innerStyles.backgroundImage = `url(${this.pattern})`;
       innerStyles.backgroundColor = this.backgroundColor;
       innerStyles.opacity = 0.5;
-      innerStyles.zIndex = 1;
     }
     const logoStyles = {
       fontFamily: this.primaryFont.family,
     };
 
-    const descStyles = {
-      fontFamily: this.secondaryFont.family,
-    };
+    // const descStyles = {
+    //   fontFamily: this.secondaryFont.family,
+    // };
 
     return (<div style={styles}>
+      <div
+        style={{
+          height: `${this.fullHeight}${this.unitType}`,
+          width: `${this.colorWrapOverWidth}${this.unitType}`,
+          position: 'absolute',
+          right: 0,
+          backgroundColor: '#222',
+        }}
+      ></div>
       <div style={innerStyles}>
-        <div style={footerStyles}><div style={descStyles}>proudly printed by</div><div style={logoStyles}>myemailbook.com</div></div>
+        <div style={footerStyles}><div style={logoStyles}>myemailbook.com</div></div>
       </div>
     </div>);
   }
@@ -135,11 +127,10 @@ class CaseboundCoverTemplate {
       height: `${this.fullHeight}${this.unitType}`,
       fontSize: '20px',
       fontFamily: this.secondaryFont.family,
+      backgroundColor: '#222',
     };
 
-    const colorWrapOverWidth = 180;
     const textWrapper = {
-      opacity: (this.templatePreview ? 0.5 : 1),
       backgroundColor: '#222',
       color: '#FFF',
       transform: 'rotate(90deg)',
@@ -147,13 +138,20 @@ class CaseboundCoverTemplate {
       transformOrigin: 'left top 0',
       WebkitTransformOrigin: 'left top 0',
       width: `${this.fullHeight}${this.unitType}`,
-      height: `${this.spineWidth + colorWrapOverWidth}${this.unitType}`,
-      lineHeight: `${this.spineWidth + colorWrapOverWidth}${this.unitType}`,
+      height: `${this.spineWidth}${this.unitType}`,
+      lineHeight: `${this.spineWidth}${this.unitType}`,
       position: 'relative',
-      left: `${this.spineWidth + (colorWrapOverWidth / 2)}${this.unitType}`,
+      left: `${this.spineWidth}${this.unitType}`,
       textAlign: 'center',
       fontWeight: '100',
     };
+
+    if (this.templatePreview) {
+      styles.backgroundColor = '#aaa';
+      // innerStyles.backgroundImage = `url(${this.pattern})`;
+      textWrapper.opacity = 0.5;
+      textWrapper.zIndex = 1;
+    }
 
     const dateStyle = {
       fontSize: '14px',
@@ -172,6 +170,8 @@ class CaseboundCoverTemplate {
       height: `${this.fullHeight}${this.unitType}`,
       color: this.textColor,
       lineHeight: '33px',
+      position: 'relative',
+      backgroundColor: this.backgroundColor,
     };
 
     const titlesWrapperStypes = {
@@ -182,8 +182,8 @@ class CaseboundCoverTemplate {
 
     const titleStyles = {
       fontSize: '30px',
-      ght: '300',
       marginBottom: '5px',
+      fontFamily: this.primaryFont.family,
     };
 
     const subtitleStyles = {
@@ -221,6 +221,15 @@ class CaseboundCoverTemplate {
     }
 
     return (<div className="wrapper" style={styles}>
+      <div
+        style={{
+          height: `${this.fullHeight}${this.unitType}`,
+          width: `${this.colorWrapOverWidth}${this.unitType}`,
+          position: 'absolute',
+          left: 0,
+          backgroundColor: '#222',
+        }}
+      ></div>
       <div className="container" style={containerStyles}>
         <div style={titlesWrapperStypes}>
           <div style={titleStyles}>{this.compilation.title}</div>
@@ -240,6 +249,7 @@ class CaseboundCoverTemplate {
       letterSpacing: '0.5px',
       // backgroundImage: `url("${this.pattern}")`,
       fontFamily: this.primaryFont.family,
+      fontWeight: '100',
     };
 
     const classes = `

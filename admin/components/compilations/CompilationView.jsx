@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import JsonViewer from '../JsonViewer';
-import CaseboundCover from '../../../shared/templates/caseboundCover';
+import covers from '../../../shared/templates/covers';
 import CompilationSpineWidthForm from './CompilationSpineWidthForm';
 import BuildLogs from './BuildLogs';
 
@@ -27,8 +27,16 @@ class CompilationView extends Component { // eslint-disable-line
   }
   renderCoverFile() {
     if (this.props.compilation.cover) {
-      const template = new CaseboundCover({ compilation: this.props.compilation });
-      return template.render();
+      const boxTitle = new covers.BoxTitle({ compilation: this.props.compilation });
+      const blackSpine = new covers.BlackSpine({ compilation: this.props.compilation });
+      return (<div>
+        <div>
+          {boxTitle.render()}
+        </div>
+        <div>
+          {blackSpine.render()}
+        </div>
+      </div>);
     }
   }
   renderPdfActions() {

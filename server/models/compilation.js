@@ -6,7 +6,7 @@ import Page from './page';
 import * as sharedHelpers from '../../shared/helpers';
 import * as serverHelpers from '../util/helpers';
 import { startWorker } from '../util/docker';
-import CaseboundCover from '../../shared/templates/caseboundCover';
+import covers from '../../shared/templates/covers';
 
 const CompilationCoverSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -61,7 +61,7 @@ CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
     const startDate = firstEmail.date;
     const endDate = lastEmail.date;
 
-    const template = new CaseboundCover({ compilation: this, startDate, endDate });
+    const template = new covers.Default({ compilation: this, startDate, endDate });
 
     this.cover.html = template.toString();
     return this.save()
@@ -72,7 +72,7 @@ CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
 };
 
 CompilationSchema.methods.updateCoverDimentions = function getCoverDimentions() {
-  const template = new CaseboundCover({ compilation: this });
+  const template = new covers.Default({ compilation: this });
   const dimentions = template.getCoverDimentions();
 
   this.cover.height = dimentions.height;
