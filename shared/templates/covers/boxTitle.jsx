@@ -24,7 +24,6 @@ class CaseboundCoverTemplate {
 
     this.primaryFont = fonts.alegreya;
     this.secondaryFont = fonts.roboto;
-    console.log('blah hey this.compilation', this.compilation);
 
     this.compilation.title = this.compilation.title || '';
     this.compilation.subtitle = this.compilation.subtitle || '';

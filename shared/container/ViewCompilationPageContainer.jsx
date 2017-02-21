@@ -7,6 +7,7 @@ import TitlePageTemplate from '../templates/titlePage';
 import MessagePageTemplate from '../templates/messagePage';
 import TableOfContentsTemplate from '../templates/tableOfContents';
 import CompilationBuildContainer from './CompilationBuildContainer';
+import covers from '../templates/covers';
 
 class ViewCompilationPageContainer extends Component {
   constructor(props, context) {
@@ -32,7 +33,7 @@ class ViewCompilationPageContainer extends Component {
     if (page) {
       switch (page.type) {
         case 'cover' : {
-          return new CoverTemplate(page, { compilation: this.props.compilation });
+          return new covers[this.props.compilation.coverTemplate || 'BoxTitle']({ compilation: this.props.compilation, bleedType: 'bleedless' });
         }
         case 'title-page' : {
           const sortedEmails = _.sortBy(this.props.compilationEmails, (email) => { return email.date; });

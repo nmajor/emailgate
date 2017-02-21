@@ -5,7 +5,10 @@ import covers from '../templates/covers';
 class CompilationTitleForm extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { savable: false };
+    this.state = {
+      savable: false,
+      coverTemplate: props.compilation.coverTemplate || covers.options[0],
+    };
 
     this.submitForm = this.submitForm.bind(this);
     this.back = this.back.bind(this);
@@ -26,6 +29,8 @@ class CompilationTitleForm extends Component {
       return true;
     } else if (subtitleRef.value !== this.props.compilation.subtitle) {
       return true;
+    } else if (this.state.coverTemplate !== this.props.compilation.coverTemplate) {
+      return true;
     }
     return false;
   }
@@ -39,6 +44,7 @@ class CompilationTitleForm extends Component {
     this.props.submitForm({
       title: titleRef.value,
       subtitle: subtitleRef.value,
+      coverTemplate: this.state.coverTemplate,
     });
   }
   back(e) {
@@ -49,6 +55,21 @@ class CompilationTitleForm extends Component {
     if (this.props.fetching) {
       return <span className="button-loading"><Loading /></span>;
     }
+  }
+  renderTemplateFormGroup() {
+    return (<div className="form-group">
+      <label htmlFor="compilation-title">Cover Template</label>
+      <div>
+        <span
+          className={`btn btn-default ${this.state.coverTemplate === 'BoxTitle' ? 'active' : ''}`}
+          onClick={() => { this.setState({ coverTemplate: 'BoxTitle' }); this.setSaveAbility(); }}
+        >Template 1</span>
+        <span
+          className={`btn btn-default ${this.state.coverTemplate === 'BlackSpine' ? 'active' : ''}`}
+          onClick={() => { this.setState({ coverTemplate: 'BlackSpine' }); this.setSaveAbility(); }}
+        >Template 2</span>
+      </div>
+    </div>);
   }
   renderTitleFormGroup() {
     return (
@@ -99,24 +120,23 @@ class CompilationTitleForm extends Component {
     const subtitleRef = this.refs.subtitle || {};
 
     const compilation = {
-      title: titleRef.value,
-      subtitle: subtitleRef.value,
+      title: titleRef.value || this.props.compilation.title,
+      subtitle: subtitleRef.value || this.props.compilation.subtitle,
       cover: {
         spineWidth: '',
       },
     };
 
-    const boxTitle = new covers.BoxTitle({ compilation, bleedType: 'bleedless' });
-    const blackSpine = new covers.BlackSpine({ compilation, bleedType: 'bleedless' });
+    const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless' });
     return (<div>
-      {boxTitle.renderFrontCover()}
-      {blackSpine.renderFrontCover()}
+      {coverTemplate.renderFrontCover()}
     </div>);
   }
   render() {
     return (<form onSubmit={this.handleSubmit}>
       {this.renderTitleFormGroup()}
       {this.renderSubtitleFormGroup()}
+      {this.renderTemplateFormGroup()}
       {this.renderErrors('base')}
       <div className="text-right">
         {this.renderBackAction()}

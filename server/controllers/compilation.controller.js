@@ -32,6 +32,7 @@ export function patchCompilation(req, res) {
   .then((compilation) => {
     compilation.title = req.body.title; // eslint-disable-line no-param-reassign
     compilation.subtitle = req.body.subtitle; // eslint-disable-line no-param-reassign
+    compilation.coverTemplate = req.body.coverTemplate; // eslint-disable-line no-param-reassign
 
     return compilation.save();
   })

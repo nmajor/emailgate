@@ -7,7 +7,9 @@ class CompilationPageView extends Component {
   renderTemplate() {
     const template = this.props.componentProps.templateFactory(this.props.page);
 
-    if (template) {
+    if (template && this.props.page.type === 'cover') {
+      return template.renderFrontCover();
+    } else if (template) {
       return template.render();
     }
   }
