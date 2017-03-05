@@ -9,7 +9,7 @@ const EmailSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _compilation: { type: String, ref: 'Compilation' },
   remote_id: String,
-  date: Date,
+  date: { type: Date, default: new Date },
   mid: String,
   to: [],
   from: [],

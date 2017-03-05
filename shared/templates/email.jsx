@@ -7,6 +7,9 @@ class EmailTemplate {
   constructor(email) {
     this.email = email;
 
+    this.email.subject = this.email.subject || 'No email subject';
+    this.email.body = this.email.body || 'No email body';
+
     this.render = this.render.bind(this);
     this.renderForm = this.renderForm.bind(this);
     this.toString = this.toString.bind(this);
@@ -50,8 +53,6 @@ class EmailTemplate {
   }
 
   renderSubject(subject) {
-    subject = subject || 'No subject'; // eslint-disable-line no-param-reassign
-
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
       fontWeight: 'bold',

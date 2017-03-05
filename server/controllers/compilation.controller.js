@@ -1,5 +1,19 @@
 import Compilation from '../models/compilation';
 import Page from '../models/page';
+import Email from '../models/email';
+
+export function addBlankEmail(req, res) {
+  Compilation.findOne({ _user: req.user._id, _id: req.params.id })
+  .then((compilation) => {
+    if (!compilation) { return res.statusCode(400); }
+
+    const newEmail = new Email({ _compilation: compilation._id });
+    return newEmail.save();
+  })
+  .then((email) => {
+    res.json(email);
+  });
+}
 
 export function findOneCompilation(req, res) {
   Compilation.findOne({ _user: req.user._id, _id: req.params.id })

@@ -4,6 +4,7 @@ import baseURL from '../../baseURL';
 import socket from '../../../client/socket';
 
 import { setPropertyForFetching } from './fetchingActions';
+import { addCompilationEmail } from './compilationEmailsActions';
 
 // ACTIONS
 export function addCompilation(compilation) {
@@ -146,6 +147,38 @@ export function updateCompilation(compilation, newData) {
     socket.emit('UPDATE_COMPILATION', {
       compilationId: compilation._id,
       newData,
+    });
+  };
+}
+
+export function addBlankEmail(compilationId, cb) {
+  return (dispatch) => {
+    dispatch(setPropertyForFetching('newCompilation', true));
+
+    return fetch(`${baseURL}/api/compilations/${compilationId}/add-blank`, {
+      credentials: 'include',
+      method: 'post',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(addCompilationEmail(res));
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
     });
   };
 }

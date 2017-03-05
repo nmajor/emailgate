@@ -177,6 +177,7 @@ router.get('/compilations/:id', ensureAuthenticated, CompilationController.findO
 router.post('/compilations', CompilationController.createCompilation);
 router.put('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
 router.patch('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
+router.post('/compilations/:id/add-blank', ensureAuthenticated, CompilationController.addBlankEmail);
 
 router.patch('/compilations/:id/page', ensureAuthenticated, CompilationController.patchCompilationPage);
 router.put('/compilations/:id/page', ensureAuthenticated, CompilationController.patchCompilationPage);
