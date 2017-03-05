@@ -29,6 +29,9 @@ class BillingInfoForm extends Component {
       return <span className="outside-button-loading"><Loading /></span>;
     }
   }
+  renderRangedOptions(min, max) {
+    return _.map(_.range(min, max + 1), (num) => { return <option value={num}>{num}</option>; });
+  }
   renderCardErrors() {
     let errors = [];
 
@@ -66,7 +69,7 @@ class BillingInfoForm extends Component {
         <div className="col-md-6">
           <form onSubmit={handleSubmit}>
             <div className="row">
-              <div className="col-md-12">
+              <div className="col-sm-12">
                 <div className="form-group">
                   <label>Card Number</label>
                   <div className="input-group">
@@ -77,19 +80,23 @@ class BillingInfoForm extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-md-3">
+              <div className="col-sm-3">
                 <div className="form-group">
                   <label>Exp Month</label>
-                  <input type="text" className="form-control" {...exp_month} />
+                  <select type="text" className="form-control" {...exp_month}>
+                    {this.renderRangedOptions(1, 12)}
+                  </select>
                 </div>
               </div>
-              <div className="col-md-3">
+              <div className="col-sm-3">
                 <div className="form-group">
                   <label>Exp Year</label>
-                  <input type="text" className="form-control" {...exp_year} />
+                  <select type="text" className="form-control" {...exp_year}>
+                    {this.renderRangedOptions(new Date().getFullYear(), (new Date().getFullYear()) + 10)}
+                  </select>
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-sm-6">
                 <div className="form-group">
                   <label>CVC</label>
                   <input type="text" className="form-control" {...cvc} />
@@ -103,7 +110,7 @@ class BillingInfoForm extends Component {
             </div>
           </form>
         </div>
-        <div className="col-md-6">
+        <div className="col-sm-6 hidden-sm">
           <Card
             number={number.value}
             expiry={`${exp_month.value}${exp_year.value}`}
