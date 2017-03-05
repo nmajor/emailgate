@@ -73,6 +73,7 @@ class FilteredEmailsActions extends Component {
 
       const nextLink = (<span
         className={`next btn btn-default btn-xs-true ${!this.showNext() ? 'disabled' : ''}`}
+        id="filtered-emails-next-link"
         aria-hidden="true"
         onClick={this.nextPage}
       >

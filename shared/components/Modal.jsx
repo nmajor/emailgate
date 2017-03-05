@@ -26,8 +26,17 @@ class Modal extends Component {
       </div>);
     }
   }
+  renderFixedFooterAlert() {
+    if (this.props.showFixedFooterAlert) {
+      return (<div className="modal-fixed-footer-alert">
+        {this.props.renderFixedFooterAlert()}
+      </div>);
+    }
+  }
   renderFixedFooterClass() {
-    if (this.props.showFixedFooter) {
+    if (this.props.showFixedFooter && this.props.showFixedFooterAlert) {
+      return 'with-fixed-footer-alert';
+    } else if (this.props.showFixedFooter) {
       return 'with-fixed-footer';
     }
   }
@@ -51,6 +60,7 @@ class Modal extends Component {
       <div className="modal-content-inner">
         {this.props.children}
       </div>
+      {this.renderFixedFooterAlert()}
       {this.renderFixedFooter()}
     </ReactModal>);
   }
@@ -59,7 +69,9 @@ class Modal extends Component {
 Modal.propTypes = {
   children: PropTypes.object,
   renderFixedFooter: PropTypes.func,
+  renderFixedFooterAlert: PropTypes.func,
   showFixedFooter: PropTypes.bool,
+  showFixedFooterAlert: PropTypes.bool,
   close: PropTypes.func.isRequired,
 };
 

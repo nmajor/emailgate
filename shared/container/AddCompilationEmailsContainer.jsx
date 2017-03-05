@@ -21,6 +21,7 @@ class AddCompilationEmailsContainer extends Component {
     this.currentAccount = _.find(this.props.accounts, { _id: this.props.params.accountId });
     this.userReturnTo = this.userReturnTo.bind(this);
     this.renderModalFixedFooter = this.renderModalFixedFooter.bind(this);
+    this.renderModalFixedFooterAlert = this.renderModalFixedFooterAlert.bind(this);
     this.addSelected = this.addSelected.bind(this);
   }
   componentWillMount() {
@@ -55,15 +56,31 @@ class AddCompilationEmailsContainer extends Component {
   showFixedFooter() {
     return this.showResults() && this.props.filteredAccountEmailsResults.count > 0;
   }
+  showFixedFooterAlert() {
+    return (this.showFixedFooter() && this.props.filteredAccountEmailsResults.nextPageToken);
+  }
+  renderModalFixedFooterAlert() {
+    const clickNextPage = () => {
+      document.getElementById('filtered-emails-next-link').click();
+    };
+
+    return (<div className="row">
+      <div className="col-xs-12">
+        More un-added emails on the <span onClick={clickNextPage} className="btn-link pointer">next page</span>.
+      </div>
+    </div>);
+  }
   renderModalFixedFooter() {
     if (this.showResults()) {
-      return (<div className="row">
-        <div className="col-xs-6">
-          <button className="btn btn-default" onClick={this.addSelected}>Add {this.props.selectedFilteredEmailIds.length > 0 ? <strong>{this.props.selectedFilteredEmailIds.length}</strong> : <span className="glyphicon glyphicon-check" aria-hidden="true"></span>} Email{this.props.selectedFilteredEmailIds.length > 1 || this.props.selectedFilteredEmailIds.length === 0 ? 's' : ''} to Email Book</button>
-        </div>
-        <div className="col-xs-6 text-right">
-          <span className="right-bumper">Email Book has <strong>{this.props.compilationEmails.length}</strong> email{this.props.compilationEmails.length > 1 ? 's' : ''}</span>
-          <Link to={`/compilations/${this.props.compilation._id}/build`} className="marginless-right btn btn-success">Done</Link>
+      return (<div>
+        <div className="row">
+          <div className="col-xs-6">
+            <button className="btn btn-default" onClick={this.addSelected}>Add {this.props.selectedFilteredEmailIds.length > 0 ? <strong>{this.props.selectedFilteredEmailIds.length}</strong> : <span className="glyphicon glyphicon-check" aria-hidden="true"></span>} Email{this.props.selectedFilteredEmailIds.length > 1 || this.props.selectedFilteredEmailIds.length === 0 ? 's' : ''} to Email Book</button>
+          </div>
+          <div className="col-xs-6 text-right">
+            <span className="right-bumper">Email Book has <strong>{this.props.compilationEmails.length}</strong> email{this.props.compilationEmails.length > 1 ? 's' : ''}</span>
+            <Link to={`/compilations/${this.props.compilation._id}/build`} className="marginless-right btn btn-success">Done</Link>
+          </div>
         </div>
       </div>);
     }
@@ -96,7 +113,13 @@ class AddCompilationEmailsContainer extends Component {
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
-      <Modal close={this.back} renderFixedFooter={this.renderModalFixedFooter} showFixedFooter={this.showFixedFooter()}>
+      <Modal
+        close={this.back}
+        renderFixedFooter={this.renderModalFixedFooter}
+        renderFixedFooterAlert={this.renderModalFixedFooterAlert}
+        showFixedFooter={this.showFixedFooter()}
+        showFixedFooterAlert={this.showFixedFooterAlert()}
+      >
         <div>
           {this.renderHeader()}
           {this.renderSelectAccount()}
