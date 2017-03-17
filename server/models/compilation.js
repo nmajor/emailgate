@@ -100,6 +100,16 @@ CompilationSchema.methods.seedPages = function seedPages() {
 CompilationSchema.methods.buildPdf = function buildPdf(statusCb) {
   statusCb = statusCb || function() {}; // eslint-disable-line
 
+  // return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
+  // .then((pages) => {
+  //   return Promise.all(pages.map((page) => {
+  //     return page.save();
+  //   }));
+  // })
+  // .then(() => {
+  //   return startWorker({ compilationId: this.id, kind: 'compilation-pages-pdf' }, statusCb);
+  // });
+
   return startWorker({ compilationId: this.id, kind: 'compilation-emails-pdf' }, statusCb)
   .then(() => {
     return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })

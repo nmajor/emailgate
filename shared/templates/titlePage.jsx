@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import moment from 'moment';
+import fonts from './covers/fonts';
 
 class TitlePageTemplate {
   constructor(page, props) {
@@ -14,6 +15,13 @@ class TitlePageTemplate {
       subtitle: 'Demo Subtitle',
     };
 
+    this.primaryFont = fonts.raleway;
+    this.secondaryFont = fonts.roboto;
+
+    this.pixelsPerInch = 72;
+    this.heightIn = 7;
+    this.heightPx = this.heightIn * this.pixelsPerInch;
+
     this.content = this.page.content || this.defaultContent;
   }
   initialFormState() {
@@ -21,21 +29,22 @@ class TitlePageTemplate {
   }
   renderTitle(title) {
     const divStyle = {
-      fontFamily: '\'Montserrat\', sans-serif',
+      fontFamily: this.primaryFont.family,
       fontSize: '24px',
       textAlign: 'center',
-      padding: '200px 0 0 0',
-      fontWeight: 'bold',
+      padding: '30% 0 0 0',
+      fontWeight: '400',
     };
 
     return <div style={divStyle}>{title}</div>;
   }
   renderSubtitle(subtitle) {
     const divStyle = {
-      fontFamily: '\'Libre Baskerville\', serif',
-      fontSize: '17px',
+      fontFamily: this.secondaryFont.family,
+      fontSize: '14px',
       textAlign: 'center',
-      padding: '15px 0 150px 0',
+      fontWeight: '100',
+      padding: '5px 0 150px 0',
     };
 
     return <div style={divStyle}>{subtitle}</div>;
@@ -45,17 +54,19 @@ class TitlePageTemplate {
     const prettyEndDate = moment(this.endDate).format('LL');
 
     const divStyle = {
-      fontFamily: '\'Montserrat\', sans-serif',
-      fontSize: '13px',
+      fontFamily: this.secondaryFont.family,
+      fontSize: '10px',
       textAlign: 'center',
-      padding: '80px 0 20px 0',
+      position: 'absolute',
+      bottom: 0,
+      width: '100%',
     };
 
     return <div style={divStyle}>{prettyStartDate} - {prettyEndDate}</div>;
   }
 
   render() {
-    return (<div style={{ fontSize: '20px' }}>
+    return (<div style={{ position: 'relative', height: `${this.heightPx}px`, fontSize: '20px', overflow: 'hidden' }}>
       {this.renderTitle(this.compilation.title)}
       {this.renderSubtitle(this.compilation.subtitle)}
       {this.renderDates()}
@@ -86,8 +97,8 @@ class TitlePageTemplate {
         box-sizing: border-box;
       }
     </style>
-    <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    ${this.primary.link}
+    ${this.secondaryFont.link}
   </head>
   <body>
   ${renderToString(this.render())}
