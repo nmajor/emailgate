@@ -19,8 +19,8 @@ class CaseboundCoverTemplate {
     this.backgroundColor = '#222';
     this.textColor = '#fff';
 
-    this.prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
-    this.prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
+    this.prettyStartDate = moment(this.startDate).format('MMM, YYYY');
+    this.prettyEndDate = moment(this.endDate).format('MMM, YYYY');
 
     this.primaryFont = fonts.alegreya;
     this.secondaryFont = fonts.roboto;

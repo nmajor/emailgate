@@ -49,7 +49,7 @@ class TableOfContentsTemplate {
     const pageNum = this.pageMap[email._id] || (index + 1);
 
     return (
-      <div key={index} style={entryStyle}>
+      <div className="unbreakable" key={index} style={entryStyle}>
         <div style={subjectStyle}>{email.subject}</div>
         <div style={{ lineHeight: '8px', marginBottom: '4px' }}>
           <div style={dateStyle}>{prettyDate}</div>
@@ -94,6 +94,9 @@ class TableOfContentsTemplate {
         padding: 0;
         -webkit-print-color-adjust: exact;
         box-sizing: border-box;
+      }
+      .unbreakable {
+        page-break-inside: avoid !important;
       }
     </style>
     <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>

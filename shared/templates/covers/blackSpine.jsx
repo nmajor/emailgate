@@ -13,8 +13,8 @@ class CaseboundCoverTemplate {
     this.startDate = props.startDate;
     this.endDate = props.endDate;
 
-    this.prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
-    this.prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
+    this.prettyStartDate = moment(this.startDate).format('MMM, YYYY');
+    this.prettyEndDate = moment(this.endDate).format('MMM, YYYY');
 
     this.patterns = patterns;
     this.pattern = this.patterns.arabesque;

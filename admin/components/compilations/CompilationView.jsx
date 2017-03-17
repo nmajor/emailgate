@@ -17,7 +17,7 @@ class CompilationView extends Component { // eslint-disable-line
   }
   renderPdfLink() {
     if (this.props.compilation.pdf && this.props.compilation.pdf.url) {
-      return <a className="btn btn-default right-bumper" target="_blank" href={this.props.compilation.pdf.url}>Compilation Pdf {this.props.compilation.pdf.lastModified ? moment(this.props.compilation.pdf.lastModified).fromNow() : ''}</a>;
+      return <a className="btn btn-default right-bumper" target="_blank" href={this.props.compilation.pdf.url}>Compilation Pdf {this.props.compilation.pdf.lastModified ? moment(this.props.compilation.pdf.updatedAt).fromNow() : ''}</a>;
     }
   }
   renderCoverPdfLink() {
