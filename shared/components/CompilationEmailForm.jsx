@@ -17,13 +17,20 @@ class CompilationEmailForm extends Component {
     this.template = new EmailTemplate(nextProps.email);
     this.state = this.template.initialFormState();
   }
+  componentWillUpdate(nextProps, nextState) {
+    this.template = new EmailTemplate(nextState);
+    this.state = this.template.initialFormState();
+  }
   setBodyState(newVal) {
     const newState = { body: newVal };
     this.setState(newState);
   }
-  setFormState(event) {
-    const newState = {};
-    newState[event.target.getAttribute('name')] = event.target.innerHTML;
+  setFormState(event, newState) {
+    if (!newState) {
+      newState = {}; // eslint-disable-line no-param-reassign
+      newState[event.target.getAttribute('name')] = event.target.innerHTML; // eslint-disable-line no-param-reassign
+    }
+
     this.setState(newState);
   }
   submitForm(e) {

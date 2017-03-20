@@ -190,6 +190,8 @@ export default (io) => {
       .then((email) => {
         email.subject = data.newData.subject; // eslint-disable-line no-param-reassign
         email.body = data.newData.body; // eslint-disable-line no-param-reassign
+        email.date = data.newData.date; // eslint-disable-line no-param-reassign
+        email.from = data.newData.from; // eslint-disable-line no-param-reassign
         return email.save();
       })
       .then((email) => {

@@ -26,6 +26,11 @@
   border: 1px solid #CCC;
 }
 .pointer:hover { cursor: pointer; }
+.inline-children {
+  div {
+    display: inline-block;
+  }
+}
 
 .centerize { text-align: center;}
 .editable { border: 1px solid #CCC; }

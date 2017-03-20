@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { renderToString } from 'react-dom/server';
 import moment from 'moment';
 import ReactQuill from 'react-quill';
+import DatePicker from 'react-datepicker';
+
+class EmailDateInput extends Component { // eslint-disable-line
+  // constructor(email) {
+  // }
+  render() {
+    const divStyle = {
+      fontFamily: '\'Montserrat\', sans-serif !important',
+      fontSize: '11px',
+      marginBottom: '2px',
+      color: '#666',
+      border: '1px solid #CCC',
+    };
+
+    return <span style={divStyle} className="pointer" onClick={this.props.onClick}>{this.props.value}</span>; // eslint-disable-line
+  }
+}
 
 class EmailTemplate {
   constructor(email) {
@@ -20,13 +37,6 @@ class EmailTemplate {
 
   mapEmailUser(user, index, array) {
     let text = user.name || user.address;
-
-    // let text = `${user.name} - ${user.address}`;
-    // if (!user.name && user.address) {
-    //   text = user.address;
-    // } else if (user.name && !user.address) {
-    //   text = user.name;
-    // }
 
     if (index !== (array.length - 1)) {
       text += ',';
@@ -71,18 +81,18 @@ class EmailTemplate {
       color: '#666',
     };
 
-    return <div style={divStyle}>{moment(date).format('LL')}</div>;
+    return <div style={divStyle}>{date}</div>;
   }
 
-  renderFrom(from) {
-    if (!from) { return null; }
+  renderFrom(fromText) {
+    if (!fromText) { return null; }
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
       fontSize: '12px',
       margin: '0',
     };
 
-    return <div style={divStyle}>From: {from.map(this.mapEmailUser)}</div>;
+    return <div style={divStyle}>From: {fromText}</div>;
   }
 
   renderTo(to) {
@@ -119,22 +129,75 @@ class EmailTemplate {
     const email = this.email;
 
     return (<div style={{ fontSize: '20px' }}>
-      {this.renderDate(email.date)}
+      {this.renderDate(moment(email.date).format('LL'))}
       {this.renderSubject(email.subject)}
-      {this.renderFrom(email.from)}
+      {this.renderFrom(email.from.map(this.mapEmailUser))}
       {this.renderBodyDangerously(email.body)}
       {this.renderAttachments(email.attachments)}
+    </div>);
+  }
+
+  renderFromInput(users, field, setFormState) {
+    function removeItem(index) {
+      const newState = {};
+      newState[field] = [
+        ...users.slice(0, index),
+        ...users.slice(index + 1),
+      ];
+      setFormState(undefined, newState);
+    }
+
+    function addItem() {
+      const newState = {};
+      newState[field] = [
+        ...users,
+        { name: '', address: '' },
+      ];
+      setFormState(undefined, newState);
+    }
+
+    function updateItem(event, index) {
+      console.log('balh updateitem');
+      const newState = {};
+      newState[field] = [
+        ...users.slice(0, index),
+        { name: event.target.innerHTML },
+        ...users.slice(index + 1),
+      ];
+      setFormState(undefined, newState);
+    }
+
+    const inputItems = users.map((user, index) => {
+      const text = user.name || user.address;
+
+      return <div key={index}><span style={{ display: 'inline-block', minWidth: '150px' }} className="editable" contentEditable onBlur={(event) => { updateItem(event, index); }}>{text}</span> <span onClick={() => { removeItem(index); }} className="btn btn-danger btn-xs-true btn-xs"><span className="glyphicon glyphicon-trash" aria-hidden="true"></span></span></div>;
+    });
+
+    return (<div>
+      {inputItems}
+      <div><span className="btn btn-default btn-xs-true" onClick={addItem}><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> From Entry</span></div>
     </div>);
   }
 
   renderForm(setFormState, setBodyState) {
     const bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
     const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;
+    const dateInput = (<DatePicker
+      style={{ display: 'inline-block' }}
+      className="inline-block form-control"
+      name="Start Date"
+      showYearDropdown
+      fixedHeight
+      dateFormat="LL"
+      selected={this.email.date ? moment(this.email.date, 'YYYY/M/D') : null}
+      onChange={(params) => { setFormState(undefined, { date: params.toDate() }); }}
+      customInput={<EmailDateInput />}
+    />);
 
     return (<div style={{ fontSize: '20px' }}>
-      {this.renderDate(this.email.date)}
+      {dateInput}
       {this.renderSubject(subjectInput)}
-      {this.renderFrom(this.email.from)}
+      {this.renderFrom(this.renderFromInput(this.email.from, 'from', setFormState))}
       {this.renderBody(bodyInput)}
     </div>);
   }
