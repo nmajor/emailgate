@@ -40,6 +40,11 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
     this.body = sanitizeEmailBody(this.body);
   }
 
+  if (this.propChanged('attachments') && !_.isEmpty(this.attachments)) {
+    // TODO: RESIZE IMAGE ATTACHMENTS BEFORE SAVING
+    // resizeAttachments(this);
+  }
+
   this.getTemplateHtml()
   .then(() => {
     if (this.propChanged('body')) {

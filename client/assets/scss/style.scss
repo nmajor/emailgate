@@ -423,6 +423,24 @@ input {
   }
 }
 
+.attachment-dropzone {
+  width: 100%;
+  padding: 40px;
+  text-align: center;
+  border: 1px dashed #ccc;
+  background-color: #f2f2f2;
+  font-size: 16px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #ebebeb;
+  }
+}
+.active-attachment-dropzone {
+  @extend .attachment-dropzone;
+  background-color: #e2e2e2;
+}
+
 /* IE 6 */
 * html .fixed-footer {
    position:absolute;

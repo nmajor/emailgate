@@ -1,8 +1,74 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { renderToString } from 'react-dom/server';
+import Dropzone from 'react-dropzone';
 import moment from 'moment';
 import ReactQuill from 'react-quill';
 import DatePicker from 'react-datepicker';
+import _ from 'lodash';
+
+class AttachmentDropzone extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.onDrop = this.onDrop.bind(this);
+  }
+  onDrop(acceptedFiles, rejectedFiles) {
+    console.log('Accepted files: ', acceptedFiles);
+    console.log('Rejected files: ', rejectedFiles);
+
+    const addAttachment = this.props.addAttachment;
+
+    _.forEach(acceptedFiles, (file) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', file.preview, true);
+      xhr.responseType = 'arraybuffer';
+
+      // xhr.onload = function(e) {
+      xhr.onload = function () { // eslint-disable-line func-names
+          // Obtain a blob: URL for the image data.
+        const content = (new Buffer(this.response)).toString('base64');
+        console.log('blah hey blob', content);
+
+        const attachment = {
+          contentType: file.type,
+          fileName: file.name,
+          contentDisposition: 'attachment',
+          length: file.size,
+          content: (new Buffer(this.response)).toString('base64'),
+        };
+
+        addAttachment(attachment);
+
+        // const urlCreator = window.URL || window.webkitURL;
+        // const imageUrl = urlCreator.createObjectURL(blob);
+        // const img = document.querySelector( "#photo" );
+        // img.src = imageUrl;
+      };
+      xhr.send();
+    });
+  }
+  render() {
+    return (<div>
+      <Dropzone className="attachment-dropzone" activeClassName="active-attachment-dropzone" onDrop={this.onDrop}>
+        {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => {
+          if (isDragActive) {
+            return 'This file is authorized';
+          }
+          if (isDragReject) {
+            return 'This file is not authorized';
+          }
+          return acceptedFiles.length || rejectedFiles.length
+            ? `Accepted ${acceptedFiles.length}, rejected ${rejectedFiles.length} files`
+            : 'Drop or click to add image attachment...';
+        }}
+      </Dropzone>
+    </div>);
+  }
+}
+
+AttachmentDropzone.propTypes = {
+  addAttachment: PropTypes.func.isRequired,
+};
 
 class EmailDateInput extends Component { // eslint-disable-line
   // constructor(email) {
@@ -48,13 +114,14 @@ class EmailTemplate {
   renderAttachments(attachments) {
     const divStyle = {
       width: '100%',
+      marginTop: '5px',
     };
 
     const imageComponents = attachments.map((attachment, index) => {
       if (['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
-        const imageString = new Buffer(attachment.content).toString('base64');
-        return <img role="presentation" style={divStyle} key={index} src={dataUriPrefix + imageString} />;
+        // const imageString = (new Buffer(attachment.content)).toString('base64');
+        return <img role="presentation" style={divStyle} key={index} src={dataUriPrefix + attachment.content} />;
       }
       return null;
     });
@@ -179,6 +246,23 @@ class EmailTemplate {
     </div>);
   }
 
+  renderAttachmentForm(setFormState) {
+    const attachments = this.email.attachments;
+
+    function addAttachment(attachment) {
+      const newState = {};
+      newState.attachments = [
+        ...attachments,
+        attachment,
+      ];
+      setFormState(undefined, newState);
+    }
+
+    return (<div className="top-bumper">
+      <AttachmentDropzone addAttachment={addAttachment} />
+    </div>);
+  }
+
   renderForm(setFormState, setBodyState) {
     const bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
     const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;
@@ -199,6 +283,8 @@ class EmailTemplate {
       {this.renderSubject(subjectInput)}
       {this.renderFrom(this.renderFromInput(this.email.from, 'from', setFormState))}
       {this.renderBody(bodyInput)}
+      {this.renderAttachments(this.email.attachments)}
+      {this.renderAttachmentForm(setFormState)}
     </div>);
   }
 
