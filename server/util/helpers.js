@@ -5,6 +5,7 @@ import Compilation from '../models/compilation';
 import * as sharedHelpers from '../../shared/helpers';
 import _ from 'lodash';
 import sanitizeHtml from 'sanitize-html';
+import sharp from 'sharp';
 
 import CoverTemplate from '../../shared/templates/cover';
 import TitlePageTemplate from '../../shared/templates/titlePage';
@@ -192,4 +193,25 @@ export function pageTemplateFactory(page) {
 // export function calculateShipping(items, address) {
 export function calculateShipping() {
   return 699;
+}
+
+export function resizeAttachment(attachment) {
+  const maxWidthIn = 5;
+  const pixelsPerInch = 300;
+  const maxWidthPx = maxWidthIn * pixelsPerInch;
+
+  return new Promise((resolve) => {
+    const contentBuffer = new Buffer(attachment.content, 'base64');
+
+    sharp(contentBuffer)
+    .resize(maxWidthPx)
+    .toBuffer((err, outputBuffer, info) => {
+      if (err) { console.log('An error happened while resizing attachment image', err); }
+
+      attachment.content = outputBuffer.toString('base64'); // eslint-disable-line
+      attachment.resizeInfo = info; // eslint-disable-line
+
+      resolve(attachment);
+    });
+  });
 }

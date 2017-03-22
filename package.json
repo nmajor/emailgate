@@ -93,6 +93,7 @@
     "request": "^2.81.0",
     "sanitize-html": "^1.11.4",
     "sass-loader": "^3.1.2",
+    "sharp": "^0.17.2",
     "shortid": "^2.2.4",
     "slug": "^0.9.1",
     "socket.io": "^1.4.5",

@@ -1,7 +1,7 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import Page from './page';
-import { sanitizeEmailBody, sanitizeEmailBodyPreview } from '../util/helpers';
+import { sanitizeEmailBody, sanitizeEmailBodyPreview, resizeAttachment } from '../util/helpers';
 import EmailTemplate from '../../shared/templates/email';
 import _ from 'lodash';
 
@@ -36,16 +36,35 @@ EmailSchema.post('remove', (doc) => {
 });
 
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
-  if (this.propChanged('body') && !_.isEmpty(this.body)) {
-    this.body = sanitizeEmailBody(this.body);
-  }
+  Promise.resolve()
+  .then(() => {
+    if (this.propChanged('attachments')) {
+      // console.log('blah attachments', this.attachments);
+      this.attachments = _.filter(this.attachments, (a) => { return a.content; });
+      return Promise.all(this.attachments.map((attachment) => {
+        return resizeAttachment(attachment)
+        .then((thing) => {
+          return Promise.resolve(thing);
+        });
+      }))
+      .then((resizedAttachments) => {
+        this.attachments = resizedAttachments;
+        return Promise.resolve(this);
+      });
+    }
 
-  if (this.propChanged('attachments') && !_.isEmpty(this.attachments)) {
-    // TODO: RESIZE IMAGE ATTACHMENTS BEFORE SAVING
-    // resizeAttachments(this);
-  }
+    return Promise.resolve(this);
+  })
+  .then(() => {
+    if (this.propChanged('body') && !_.isEmpty(this.body)) {
+      this.body = sanitizeEmailBody(this.body);
+    }
 
-  this.getTemplateHtml()
+    return Promise.resolve(this);
+  })
+  .then(() => {
+    return this.getTemplateHtml();
+  })
   .then(() => {
     if (this.propChanged('body')) {
       this.bodyPreview = sanitizeEmailBodyPreview(this.body);

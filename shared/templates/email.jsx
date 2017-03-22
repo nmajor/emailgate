@@ -12,9 +12,10 @@ class AttachmentDropzone extends Component {
 
     this.onDrop = this.onDrop.bind(this);
   }
-  onDrop(acceptedFiles, rejectedFiles) {
-    console.log('Accepted files: ', acceptedFiles);
-    console.log('Rejected files: ', rejectedFiles);
+  // onDrop(acceptedFiles, rejectedFiles) {
+  onDrop(acceptedFiles) {
+    // console.log('Accepted files: ', acceptedFiles);
+    // console.log('Rejected files: ', rejectedFiles);
 
     const addAttachment = this.props.addAttachment;
 
@@ -25,10 +26,6 @@ class AttachmentDropzone extends Component {
 
       // xhr.onload = function(e) {
       xhr.onload = function () { // eslint-disable-line func-names
-          // Obtain a blob: URL for the image data.
-        const content = (new Buffer(this.response)).toString('base64');
-        console.log('blah hey blob', content);
-
         const attachment = {
           contentType: file.type,
           fileName: file.name,
@@ -45,16 +42,17 @@ class AttachmentDropzone extends Component {
   render() {
     return (<div>
       <Dropzone className="attachment-dropzone" activeClassName="active-attachment-dropzone" onDrop={this.onDrop}>
-        {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => {
+        {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => { // eslint-disable-line
           if (isDragActive) {
             return 'This file is authorized';
           }
           if (isDragReject) {
             return 'This file is not authorized';
           }
-          return acceptedFiles.length || rejectedFiles.length
-            ? `Accepted ${acceptedFiles.length}, rejected ${rejectedFiles.length} files`
-            : 'Drop or click to add image attachment...';
+          if (rejectedFiles.length) {
+            return 'File rejected. Please try again.';
+          }
+          return 'Drop or click to add image attachment...';
         }}
       </Dropzone>
     </div>);
@@ -191,7 +189,6 @@ class AttachmentInput extends Component { // eslint-disable-line
 
 AttachmentInput.propTypes = {
   email: PropTypes.object.isRequired,
-  field: PropTypes.string.isRequired,
   setFormState: PropTypes.func.isRequired,
 };
 
