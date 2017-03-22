@@ -38,11 +38,6 @@ class AttachmentDropzone extends Component {
         };
 
         addAttachment(attachment);
-
-        // const urlCreator = window.URL || window.webkitURL;
-        // const imageUrl = urlCreator.createObjectURL(blob);
-        // const img = document.querySelector( "#photo" );
-        // img.src = imageUrl;
       };
       xhr.send();
     });
@@ -68,6 +63,136 @@ class AttachmentDropzone extends Component {
 
 AttachmentDropzone.propTypes = {
   addAttachment: PropTypes.func.isRequired,
+};
+
+class EmailUserInput extends Component { // eslint-disable-line
+  constructor(props, context) {
+    super(props, context);
+
+    this.addItem = this.addItem.bind(this);
+    this.removeItem = this.removeItem.bind(this);
+    this.updateItem = this.updateItem.bind(this);
+
+    this.users = this.props.email[this.props.field];
+  }
+  componentWillUpdate(nextProps) {
+    this.users = nextProps.email[nextProps.field];
+  }
+  addItem() {
+    const newState = {};
+    newState[this.props.field] = [
+      ...this.users,
+      { name: this.refs.newFrom.innerHTML, address: '' },
+    ];
+    this.props.setFormState(undefined, newState);
+    this.refs.newFrom.innerHTML = '';
+  }
+  removeItem(index) {
+    const newState = {};
+    newState[this.props.field] = [
+      ...this.users.slice(0, index),
+      ...this.users.slice(index + 1),
+    ];
+    this.props.setFormState(undefined, newState);
+  }
+  updateItem(event, index) {
+    const newState = {};
+    newState[this.props.field] = [
+      ...this.users.slice(0, index),
+      { name: event.target.innerHTML },
+      ...this.users.slice(index + 1),
+    ];
+    this.props.setFormState(undefined, newState);
+  }
+  renderItems() {
+    return this.users.map((user, index) => {
+      const text = user.name || user.address;
+
+      return (<div key={index}>
+        <span style={{ display: 'inline-block', minWidth: '150px' }} className="editable" contentEditable onBlur={(event) => { this.updateItem(event, index); }}>{text}</span>
+        <span onClick={() => { this.removeItem(index); }} className="btn btn-danger btn-xs-true btn-xs">
+          <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </span>
+      </div>);
+    });
+  }
+  render() {
+    return (<div>
+      {this.renderItems()}
+      <div>
+        <span style={{ display: 'inline-block', minWidth: '150px' }} className="editable" ref="newFrom" contentEditable></span>
+        <span onClick={() => { this.addItem(); }} className="btn btn-success btn-xs-true btn-xs">
+          <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </span>
+      </div>
+    </div>);
+  }
+}
+
+EmailUserInput.propTypes = {
+  email: PropTypes.object.isRequired,
+  field: PropTypes.string.isRequired,
+  setFormState: PropTypes.func.isRequired,
+};
+
+class AttachmentInput extends Component { // eslint-disable-line
+  constructor(props, context) {
+    super(props, context);
+
+    this.addAttachment = this.addAttachment.bind(this);
+  }
+  addAttachment(attachment) {
+    const newState = {};
+    newState.attachments = [
+      ...this.props.email.attachments,
+      attachment,
+    ];
+    this.props.setFormState(undefined, newState);
+  }
+  removeAttachment(index) {
+    const newState = {};
+    newState.attachments = [
+      ...this.props.email.attachments.slice(0, index),
+      ...this.props.email.attachments.slice(index + 1),
+    ];
+    this.props.setFormState(undefined, newState);
+  }
+  renderAttachments() {
+    const divStyle = {
+      width: '100%',
+      marginTop: '5px',
+    };
+
+    const imageComponents = this.props.email.attachments.map((attachment, index) => {
+      if (['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
+        const dataUriPrefix = `data:${attachment.contentType};base64,`;
+        // const imageString = (new Buffer(attachment.content)).toString('base64');
+        return (<div>
+          <div className="remove-attachment">
+            <div className="btn btn-danger btn-xs-true" onClick={() => { this.removeAttachment(index); }}><span className="glyphicon glyphicon-trash" aria-hidden="true"></span></div>
+          </div>
+          <img role="presentation" style={divStyle} key={index} src={dataUriPrefix + attachment.content} />
+        </div>);
+      }
+      return null;
+    });
+
+    return <div>{imageComponents}</div>;
+  }
+  render() {
+    return (<div className="top-bumper">
+      {this.renderAttachments()}
+      <div className="top-bumper">
+        <AttachmentDropzone addAttachment={this.addAttachment} />
+      </div>
+    </div>);
+  }
+}
+
+AttachmentInput.propTypes = {
+  email: PropTypes.object.isRequired,
+  field: PropTypes.string.isRequired,
+  setFormState: PropTypes.func.isRequired,
 };
 
 class EmailDateInput extends Component { // eslint-disable-line
@@ -204,87 +329,27 @@ class EmailTemplate {
     </div>);
   }
 
-  renderFromInput(users, field, setFormState) {
-    function removeItem(index) {
-      const newState = {};
-      newState[field] = [
-        ...users.slice(0, index),
-        ...users.slice(index + 1),
-      ];
-      setFormState(undefined, newState);
-    }
-
-    function addItem() {
-      const newState = {};
-      newState[field] = [
-        ...users,
-        { name: '', address: '' },
-      ];
-      setFormState(undefined, newState);
-    }
-
-    function updateItem(event, index) {
-      console.log('balh updateitem');
-      const newState = {};
-      newState[field] = [
-        ...users.slice(0, index),
-        { name: event.target.innerHTML },
-        ...users.slice(index + 1),
-      ];
-      setFormState(undefined, newState);
-    }
-
-    const inputItems = users.map((user, index) => {
-      const text = user.name || user.address;
-
-      return <div key={index}><span style={{ display: 'inline-block', minWidth: '150px' }} className="editable" contentEditable onBlur={(event) => { updateItem(event, index); }}>{text}</span> <span onClick={() => { removeItem(index); }} className="btn btn-danger btn-xs-true btn-xs"><span className="glyphicon glyphicon-trash" aria-hidden="true"></span></span></div>;
-    });
-
-    return (<div>
-      {inputItems}
-      <div><span className="btn btn-default btn-xs-true" onClick={addItem}><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> From Entry</span></div>
-    </div>);
-  }
-
-  renderAttachmentForm(setFormState) {
-    const attachments = this.email.attachments;
-
-    function addAttachment(attachment) {
-      const newState = {};
-      newState.attachments = [
-        ...attachments,
-        attachment,
-      ];
-      setFormState(undefined, newState);
-    }
-
-    return (<div className="top-bumper">
-      <AttachmentDropzone addAttachment={addAttachment} />
-    </div>);
-  }
-
   renderForm(setFormState, setBodyState) {
     const bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
     const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;
-    const dateInput = (<DatePicker
-      style={{ display: 'inline-block' }}
-      className="inline-block form-control"
-      name="Start Date"
-      showYearDropdown
-      fixedHeight
-      dateFormat="LL"
-      selected={this.email.date ? moment(this.email.date, 'YYYY/M/D') : null}
-      onChange={(params) => { setFormState(undefined, { date: params.toDate() }); }}
-      customInput={<EmailDateInput />}
-    />);
+    const fromInput = <EmailUserInput email={this.email} field="from" setFormState={setFormState} />;
 
     return (<div style={{ fontSize: '20px' }}>
-      {dateInput}
+      <DatePicker
+        style={{ display: 'inline-block' }}
+        className="inline-block form-control"
+        name="Start Date"
+        showYearDropdown
+        fixedHeight
+        dateFormat="LL"
+        selected={this.email.date ? moment(this.email.date, 'YYYY/M/D') : null}
+        onChange={(params) => { setFormState(undefined, { date: params.toDate() }); }}
+        customInput={<EmailDateInput />}
+      />
       {this.renderSubject(subjectInput)}
-      {this.renderFrom(this.renderFromInput(this.email.from, 'from', setFormState))}
+      {this.renderFrom(fromInput)}
       {this.renderBody(bodyInput)}
-      {this.renderAttachments(this.email.attachments)}
-      {this.renderAttachmentForm(setFormState)}
+      <AttachmentInput email={this.email} setFormState={setFormState} />
     </div>);
   }
 

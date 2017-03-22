@@ -30,7 +30,6 @@ class CompilationEmailForm extends Component {
       newState = {}; // eslint-disable-line no-param-reassign
       newState[event.target.getAttribute('name')] = event.target.innerHTML; // eslint-disable-line no-param-reassign
     }
-
     this.setState(newState);
   }
   submitForm(e) {

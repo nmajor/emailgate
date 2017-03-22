@@ -193,7 +193,6 @@ export default (io) => {
         email.date = data.newData.date; // eslint-disable-line no-param-reassign
         email.from = data.newData.from; // eslint-disable-line no-param-reassign
         email.attachments = data.newData.attachments; // eslint-disable-line no-param-reassign
-        console.log('blah last', email.attachments[email.attachments.length - 1]);
         return email.save();
       })
       .then((email) => {
