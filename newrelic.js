@@ -8,7 +8,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['dathobby'],
+  app_name: ['emailgate'],
   /**
    * Your New Relic license key.
    */
