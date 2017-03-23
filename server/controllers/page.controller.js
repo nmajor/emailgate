@@ -17,6 +17,7 @@ export function getCompilationPages(req, res) {
     })
     .then((newPages) => {
       return res.json(newPages);
-    });
+    })
+    .catch((err) => { console.log('An error happened', err); });
   });
 }

@@ -26,7 +26,7 @@ class CompilationEmailForm extends Component {
     this.setState(newState);
   }
   setFormState(event, newState) {
-    if (!newState) {
+    if (event) {
       newState = {}; // eslint-disable-line no-param-reassign
       newState[event.target.getAttribute('name')] = event.target.innerHTML; // eslint-disable-line no-param-reassign
     }

@@ -212,8 +212,8 @@ class EmailTemplate {
   constructor(email) {
     this.email = email;
 
-    this.email.subject = this.email.subject || 'No email subject';
-    this.email.body = this.email.body || 'No email body';
+    // this.email.subject = this.email.subject || '';
+    // this.email.body = this.email.body || '';
 
     this.render = this.render.bind(this);
     this.renderForm = this.renderForm.bind(this);
@@ -274,7 +274,7 @@ class EmailTemplate {
   }
 
   renderFrom(fromText) {
-    if (!fromText) { return null; }
+    if (_.isEmpty(fromText)) { return null; }
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
       fontSize: '12px',
@@ -319,9 +319,9 @@ class EmailTemplate {
 
     return (<div style={{ fontSize: '20px' }}>
       {this.renderDate(moment(email.date).format('LL'))}
-      {this.renderSubject(email.subject)}
+      {this.renderSubject(email.subject || 'No email subject')}
       {this.renderFrom(email.from.map(this.mapEmailUser))}
-      {this.renderBodyDangerously(email.body)}
+      {this.renderBodyDangerously(_.isEmpty(email.bodyPreview) ? 'No email body' : email.body)}
       {this.renderAttachments(email.attachments)}
     </div>);
   }

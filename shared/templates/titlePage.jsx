@@ -97,7 +97,7 @@ class TitlePageTemplate {
         box-sizing: border-box;
       }
     </style>
-    ${this.primary.link}
+    ${this.primaryFont.link}
     ${this.secondaryFont.link}
   </head>
   <body>

@@ -39,13 +39,16 @@ class CompilationBuildContainer extends Component {
     }
   }
   renderAddBlankAction() {
-    return (<div className="btn btn-default top-bumper" onClick={this.addBlankEmail}>
+    return (<div className="btn btn-default btn-xs-true" onClick={this.addBlankEmail}>
       <span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Blank Email
     </div>);
   }
   render() {
     return (<div className="row">
       <div className={colWrapperClass()}>
+        <div className="text-right">
+          {this.renderAddBlankAction()}
+        </div>
         <CompilationComponentsListContainer
           currentEmailId={_.get(this.props.currentEmail, '_id')}
           currentPageId={_.get(this.props.currentPage, '_id')}
@@ -53,7 +56,6 @@ class CompilationBuildContainer extends Component {
           edit={this.props.edit}
           componentProps={this.props.componentProps}
         />
-        {this.renderAddBlankAction()}
       </div>
       {this.renderFixedFooter()}
     </div>);

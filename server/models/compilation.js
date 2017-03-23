@@ -92,7 +92,7 @@ CompilationSchema.methods.seedPages = function seedPages() {
       }))
       .then(() => {
         return this.updatePages();
-      });
+      }).catch((err) => { console.log('blah yo', err); });
     }
   });
 };

@@ -56,10 +56,17 @@ export function sanitizeEmailBody(text) {
 }
 
 export function sanitizeEmailBodyPreview(text) {
-  return sanitizeHtml(text, { // eslint-disable-line prefer-template
+  const maxLength = 300;
+  const bareText = sanitizeHtml(text, { // eslint-disable-line prefer-template
     allowedTags: [],
     allowedAttributes: [],
-  }).substring(0, 300) + '...';
+  });
+
+  if (bareText.length < maxLength) {
+    return bareText;
+  }
+
+  return `${bareText.substring(0, maxLength)}...`;
 }
 
 export function filteredAttachments(attachments) {

@@ -62,11 +62,11 @@ class CompilationTitleForm extends Component {
       <div>
         <span
           className={`btn btn-default ${this.state.coverTemplate === 'BoxTitle' ? 'active' : ''}`}
-          onClick={() => { this.setState({ coverTemplate: 'BoxTitle' }); this.setSaveAbility(); }}
+          onClick={() => { this.setState({ coverTemplate: 'BoxTitle' }); this.setState({ savable: true }); }}
         >Template 1</span>
         <span
           className={`btn btn-default ${this.state.coverTemplate === 'BlackSpine' ? 'active' : ''}`}
-          onClick={() => { this.setState({ coverTemplate: 'BlackSpine' }); this.setSaveAbility(); }}
+          onClick={() => { this.setState({ coverTemplate: 'BlackSpine' }); this.setState({ savable: true }); }}
         >Template 2</span>
       </div>
     </div>);
@@ -119,18 +119,20 @@ class CompilationTitleForm extends Component {
     const titleRef = this.refs.title || {};
     const subtitleRef = this.refs.subtitle || {};
 
-    const compilation = {
-      title: titleRef.value || this.props.compilation.title,
-      subtitle: subtitleRef.value || this.props.compilation.subtitle,
-      cover: {
-        spineWidth: '',
-      },
-    };
+    if (titleRef.value || this.props.compilation.title) {
+      const compilation = {
+        title: titleRef.value || this.props.compilation.title,
+        subtitle: subtitleRef.value || this.props.compilation.subtitle,
+        cover: {
+          spineWidth: '',
+        },
+      };
 
-    const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless' });
-    return (<div style={{ zoom: '70%' }}>
-      {coverTemplate.renderFrontCover()}
-    </div>);
+      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless' });
+      return (<div style={{ zoom: '70%' }}>
+        {coverTemplate.renderFrontCover()}
+      </div>);
+    }
   }
   render() {
     return (<form onSubmit={this.handleSubmit}>
@@ -138,6 +140,7 @@ class CompilationTitleForm extends Component {
       {this.renderSubtitleFormGroup()}
       {this.renderTemplateFormGroup()}
       {this.renderErrors('base')}
+      {this.renderCoverPreview()}
       <div className="text-right">
         {this.renderBackAction()}
         <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
@@ -145,7 +148,6 @@ class CompilationTitleForm extends Component {
           {this.renderLoading()}
         </button>
       </div>
-      {this.renderCoverPreview()}
     </form>);
   }
 }

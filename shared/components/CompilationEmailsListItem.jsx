@@ -4,6 +4,7 @@ import moment from 'moment';
 import EmailView from './EmailView';
 import CompilationEmailForm from './CompilationEmailForm';
 import Loading from './Loading';
+import _ from 'lodash';
 
 class CompilationEmailsListItem extends Component {
   constructor(props, context) {
@@ -12,8 +13,6 @@ class CompilationEmailsListItem extends Component {
     this.submitForm = this.submitForm.bind(this);
   }
   submitForm() {
-    console.log(this.refs.form);
-    console.log(this.refs.form.state);
     this.refs.form.submitForm();
   }
   renderHideAction() {
@@ -50,10 +49,10 @@ class CompilationEmailsListItem extends Component {
     </div>);
   }
   renderSubject() {
-    return <div className="subject">{this.props.email.subject}</div>;
+    return <div className="subject">{this.props.email.subject || 'No email subject'}</div>;
   }
   renderBodyPreview() {
-    return <div>{this.props.email.bodyPreview}</div>;
+    return <div>{_.isEmpty(this.props.email.bodyPreview) ? 'No email body' : this.props.email.bodyPreview}</div>;
   }
   renderEmailThumb() {
     return (<Link
