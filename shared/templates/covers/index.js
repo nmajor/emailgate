@@ -1,5 +1,5 @@
-import BlackSpine from './BlackSpine';
-import BoxTitle from './BoxTitle';
+import BlackSpine from './blackSpine';
+import BoxTitle from './boxTitle';
 
 export default {
   BlackSpine,
