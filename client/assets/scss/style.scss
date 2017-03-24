@@ -13,6 +13,7 @@
 @import 'modal';
 @import 'admin';
 @import 'react-datepicker/datepicker';
+@import 'react-crop';
 
 .right-bumper { margin-right: 10px; }
 .left-bumper { margin-left: 10px; }
@@ -442,6 +443,15 @@ input {
   background-color: #e2e2e2;
 }
 
+.image-dropzone {
+  @extend .attachment-dropzone;
+}
+
+.active-image-dropzone {
+  @extend .image-dropzone;
+  background-color: #e2e2e2;
+}
+
 .remove-attachment {
   position: relative;
   width: 100%;
@@ -449,6 +459,15 @@ input {
   text-align: right;
   top: 10px;
   right: 10px;
+}
+
+.image-selector-crop-wrapper {
+  .ReactCrop, .ReactCrop__crop-wrapper, img {
+    width: 100%;
+  }
+  img {
+    width: 100%;
+  }
 }
 
 /* IE 6 */

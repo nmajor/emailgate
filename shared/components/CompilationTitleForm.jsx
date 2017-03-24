@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ImageSelector from './ImageSelector';
 import Loading from './Loading';
 import covers from '../templates/covers';
 
@@ -8,11 +9,16 @@ class CompilationTitleForm extends Component {
     this.state = {
       savable: false,
       coverTemplate: props.compilation.coverTemplate || covers.options[0],
+      showImageSelector: false,
+      image: undefined,
     };
 
     this.submitForm = this.submitForm.bind(this);
     this.back = this.back.bind(this);
     this.setSaveAbility = this.setSaveAbility.bind(this);
+    this.openImageSelector = this.openImageSelector.bind(this);
+    this.closeImageSelector = this.closeImageSelector.bind(this);
+    this.updateCompilationImage = this.updateCompilationImage.bind(this);
   }
   setSaveAbility() {
     if (this.formChanged()) {
@@ -20,6 +26,16 @@ class CompilationTitleForm extends Component {
     } else {
       this.setState({ savable: false });
     }
+  }
+  openImageSelector() {
+    this.setState({ showImageSelector: true });
+  }
+  closeImageSelector() {
+    this.setState({ showImageSelector: false });
+  }
+  updateCompilationImage(data) {
+    this.setState({ image: data });
+    this.closeImageSelector();
   }
   formChanged() {
     const titleRef = this.refs.title || {};
@@ -68,6 +84,10 @@ class CompilationTitleForm extends Component {
           className={`btn btn-default ${this.state.coverTemplate === 'BlackSpine' ? 'active' : ''}`}
           onClick={() => { this.setState({ coverTemplate: 'BlackSpine' }); this.setState({ savable: true }); }}
         >Template 2</span>
+        <span
+          className={`btn btn-default ${this.state.coverTemplate === 'DarkPic' ? 'active' : ''}`}
+          onClick={() => { this.setState({ coverTemplate: 'DarkPic' }); this.setState({ savable: true }); }}
+        >Template 3</span>
       </div>
     </div>);
   }
@@ -128,18 +148,20 @@ class CompilationTitleForm extends Component {
         },
       };
 
-      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless' });
-      return (<div style={{ zoom: '70%' }}>
+      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', image: this.state.image });
+      return (<div style={{ zoom: '100%' }}>
         {coverTemplate.renderFrontCover()}
       </div>);
     }
   }
   render() {
     return (<form onSubmit={this.handleSubmit}>
+      <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} />
       {this.renderTitleFormGroup()}
       {this.renderSubtitleFormGroup()}
       {this.renderTemplateFormGroup()}
       {this.renderErrors('base')}
+      <div><div className="btn btn-default" onClick={this.openImageSelector}>Change Image</div></div>
       {this.renderCoverPreview()}
       <div className="text-right">
         {this.renderBackAction()}

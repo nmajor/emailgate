@@ -11,13 +11,19 @@ class Modal extends Component {
   }
   componentDidMount() {
     document.body.className = `${document.body.className} ${this.bodyClass}`;
-    document.querySelector('footer').className = `${document.querySelector('footer').className} ${this.hiddenClass}`;
-    document.querySelector('.header').className = `${document.querySelector('.header').className} ${this.hiddenClass}`;
+    const footer = document.querySelector('footer') || {};
+    footer.className = `${footer.className} ${this.hiddenClass}`;
+
+    const header = document.querySelector('.header') || {};
+    header.className = `${header.className} ${this.hiddenClass}`;
   }
   componentWillUnmount() {
     document.body.className = document.body.className.replace(` ${this.bodyClass}`, '');
-    document.querySelector('footer').className = document.querySelector('footer').className.replace(` ${this.hiddenClass}`, '');
-    document.querySelector('.header').className = document.querySelector('.header').className.replace(` ${this.hiddenClass}`, '');
+    const footer = document.querySelector('footer') || {};
+    footer.className = (footer.className || '').replace(` ${this.hiddenClass}`, '');
+
+    const header = document.querySelector('.header') || {};
+    header.className = (header.className || '').replace(` ${this.hiddenClass}`, '');
   }
   renderFixedFooter() {
     if (this.props.showFixedFooter) {

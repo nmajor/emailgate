@@ -109,6 +109,10 @@ docker run -it --rm -v /Users/nmajor/tmp:/tmp ubuntu:trusty /bin/bash
 
 ### Library Notes
 
+devDependencies
+"react-addons-test-utils": "^0.14.7",
+
+
 ******** CHECK THIS OUT **********
 Redux form helper:
 https://github.com/erikras/redux-form
