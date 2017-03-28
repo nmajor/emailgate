@@ -34,7 +34,7 @@ class CompilationTitleForm extends Component {
     this.setState({ showImageSelector: false });
   }
   updateCompilationImage(data) {
-    this.setState({ image: data });
+    this.setState({ image: data, savable: true });
     this.closeImageSelector();
   }
   formChanged() {

@@ -207,9 +207,10 @@ class CaseboundCoverTemplate {
       if (this.image.crop) {
         const crop = this.image.crop;
 
-        imageWrapperStyles = imageStyles;
-        imageWrapperStyles.overflow = 'hidden';
-        imageWrapperStyles.display = 'inline-block';
+        const outerImageStyles = imageStyles;
+        outerImageStyles.overflow = 'hidden';
+        outerImageStyles.position = 'absolute';
+        outerImageStyles.perspective = '1px';
 
         const scaleRatio = imageSize / crop.width;
 
@@ -220,7 +221,7 @@ class CaseboundCoverTemplate {
           top: `-${(crop.y) * scaleRatio}px`,
         };
 
-        image = <div style={imageStyles}><img style={imageInnerStyles} role="presentation" src={dataUriPrefix + this.image.content} /></div>;
+        image = <div style={outerImageStyles}><img style={imageInnerStyles} role="presentation" src={dataUriPrefix + this.image.content} /></div>;
       }
     }
 
