@@ -470,6 +470,41 @@ input {
   }
 }
 
+.cover-image-wrapper {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.cover-image-wrapper:hover .cover-image-overlay {
+  opacity: 0.7;
+
+}
+
+.cover-image-overlay {
+  position: absolute;
+  text-align: center;
+  background: #333;
+  color: #f8f8f8;
+  opacity: 0;
+  transition: opacity .25s ease;
+  -moz-transition: opacity .25s ease;
+  width: inherit;
+  height: inherit;
+  padding-top: 75px;
+  z-index: 1;
+  border-top-left-radius: 50% 50%;
+  border-top-right-radius: 50% 50%;
+  border-bottom-right-radius: 50% 50%;
+  border-bottom-left-radius: 50% 50%;
+
+  &:hover {
+    z-index: 2;
+  }
+}
+
+#box:hover #overlay
+
 /* IE 6 */
 * html .fixed-footer {
    position:absolute;

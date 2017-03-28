@@ -62,6 +62,7 @@ class Modal extends Component {
       isOpen
       className={`modal-content ${colWrapperClass()} ${this.renderFixedFooterClass()}`}
       style={styles}
+      contentLabel=""
     >
       <div className="modal-content-inner">
         {this.props.children}

@@ -26,12 +26,25 @@ const CompilationSchema = new Schema({
   title: String,
   subtitle: String,
   coverTemplate: String,
+  image: {},
   cover: { type: CompilationCoverSchema, default: {} },
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
   pdf: {},
 }, {
   timestamps: true,
+});
+
+CompilationSchema.pre('save', function (next) { // eslint-disable-line func-names
+  if (!this.image.updatedAt) {
+    serverHelpers.processCoverImage(this.image)
+    .then((image) => {
+      this.image = image;
+      next();
+    });
+  } else {
+    next();
+  }
 });
 
 CompilationSchema.methods.updateEmails = function updateEmails() {

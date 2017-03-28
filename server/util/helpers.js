@@ -222,3 +222,29 @@ export function resizeAttachment(attachment) {
     });
   });
 }
+
+export function processCoverImage(image) {
+  const maxWidthIn = 3;
+  const pixelsPerInch = 300;
+  const maxWidthPx = maxWidthIn * pixelsPerInch;
+
+  return new Promise((resolve) => {
+    const contentBuffer = new Buffer(image.content, 'base64');
+    const crop = image.crop;
+
+    sharp(contentBuffer)
+    .extract({ left: crop.x, top: crop.y, width: crop.width, height: crop.height })
+    .resize(maxWidthPx)
+    .toBuffer((err, outputBuffer, info) => {
+      if (err) { console.log('An error happened while resizing attachment image', err); }
+
+      image.content = outputBuffer.toString('base64'); // eslint-disable-line
+      image.resizeInfo = info; // eslint-disable-line
+      image.crop = undefined; // eslint-disable-line
+      image.length = undefined; // eslint-disable-line
+      image.updatedAt = new Date(); // eslint-disable-line
+
+      resolve(image);
+    });
+  });
+}

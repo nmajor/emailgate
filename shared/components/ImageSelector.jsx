@@ -34,7 +34,7 @@ class ImageDropzone extends Component {
     });
   }
   render() {
-    return (<div>
+    return (<div className="bottom-bumper">
       <Dropzone className="image-dropzone" activeClassName="active-image-dropzone" onDrop={this.onDrop}>
         {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => { // eslint-disable-line
           if (isDragActive) {
@@ -63,6 +63,8 @@ class ImageSelector extends Component { // eslint-disable-line
 
     this.state = {
       image: undefined,
+      naturalHeight: undefined,
+      naturalWidth: undefined,
       crop: {
         width: 30,
         aspect: 1,
@@ -73,16 +75,22 @@ class ImageSelector extends Component { // eslint-disable-line
     this.addImage = this.addImage.bind(this);
     this.submitImage = this.submitImage.bind(this);
     this.handleCropChange = this.handleCropChange.bind(this);
+    this.handlImageLoad = this.handlImageLoad.bind(this);
   }
   addImage(image) {
     this.setState({ image });
   }
   submitImage() {
     const data = this.state.image;
-    data.crop = this.state.crop;
-    data.pixelCrop = this.state.pixelCrop;
+    data.crop = this.state.pixelCrop || {};
+    data.crop.naturalHeight = this.state.naturalHeight;
+    data.crop.naturalWidth = this.state.naturalWidth;
+    data.selectedAt = (new Date()).getTime();
 
     this.props.submit(data);
+  }
+  handlImageLoad(evt) {
+    this.setState({ naturalHeight: evt.target.naturalHeight, naturalWidth: evt.target.naturalWidth });
   }
   handleCropChange(crop, pixelCrop) {
     this.setState({ crop, pixelCrop });
@@ -97,7 +105,8 @@ class ImageSelector extends Component { // eslint-disable-line
         marginTop: '5px',
       };
 
-      return (<div className="image-selector-crop-wrapper">
+      return (<div className="image-selector-crop-wrapper bottom-bumper">
+        <img role="presentation" style={{ display: 'none' }} src={dataUriPrefix + image.content} onLoad={this.handlImageLoad} />
         <ReactCrop
           style={divStyle}
           crop={this.state.crop}
@@ -110,8 +119,8 @@ class ImageSelector extends Component { // eslint-disable-line
   }
   renderActions() {
     return (<div className="text-right">
-      <span className="btn btn-success" onClick={this.submitImage}>Submit</span>
       <span className="btn btn-danger" onClick={this.props.close}>Back</span>
+      <span className="btn btn-success marginless-right" onClick={this.submitImage}>Submit</span>
     </div>);
   }
   render() {

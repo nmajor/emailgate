@@ -61,6 +61,7 @@ class CompilationTitleForm extends Component {
       title: titleRef.value,
       subtitle: subtitleRef.value,
       coverTemplate: this.state.coverTemplate,
+      image: this.state.image,
     });
   }
   back(e) {
@@ -146,9 +147,10 @@ class CompilationTitleForm extends Component {
         cover: {
           spineWidth: '',
         },
+        image: this.props.compilation.image,
       };
 
-      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', image: this.state.image });
+      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', image: this.state.image, changeImage: this.openImageSelector });
       return (<div style={{ zoom: '100%' }}>
         {coverTemplate.renderFrontCover()}
       </div>);
@@ -161,7 +163,6 @@ class CompilationTitleForm extends Component {
       {this.renderSubtitleFormGroup()}
       {this.renderTemplateFormGroup()}
       {this.renderErrors('base')}
-      <div><div className="btn btn-default" onClick={this.openImageSelector}>Change Image</div></div>
       {this.renderCoverPreview()}
       <div className="text-right">
         {this.renderBackAction()}

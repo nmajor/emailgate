@@ -5,12 +5,15 @@ import patterns from './patterns';
 import moment from 'moment';
 import fonts from './fonts';
 import bleedMap from './bleedMap';
+import defaultImage from './defaultImage';
 
 class CaseboundCoverTemplate {
   constructor(props) {
+    this.changeImage = props.changeImage || function () {}; // eslint-disable-line func-names
+
     this.compilation = props.compilation;
     this.bleedType = props.bleedType || 'casebound';
-    this.image = props.image || {};
+    this.image = props.image || this.compilation.image || {};
     this.templatePreview = true;
     this.startDate = props.startDate;
     this.endDate = props.endDate;
@@ -176,27 +179,11 @@ class CaseboundCoverTemplate {
       </div>
     </div>);
   }
-  // renderTitleBox() {
-  //   if (this.compilation.title) {
-  //     const titleBox = {
-  //       border: '3px solid #fff',
-  //       padding: '8px 8px 4px 4px',
-  //     };
-  //
-  //     const titleStyles = {
-  //       fontSize: '40px',
-  //       fontWeight: '300',
-  //     };
-  //
-  //     return (<div style={titleBox}>
-  //       <div style={titleStyles}>{this.renderTitleRows()}</div>
-  //     </div>);
-  //   }
-  // }
   renderCoverImage() {
-    const imageStyles = {
-      height: '180px',
-      width: '180px',
+    const imageSize = 180;
+    let imageStyles = {
+      height: `${imageSize}px`,
+      width: `${imageSize}px`,
       borderTopLeftRadius: '50% 50%',
       borderTopRightRadius: '50% 50%',
       borderBottomRightRadius: '50% 50%',
@@ -204,24 +191,43 @@ class CaseboundCoverTemplate {
       border: '1px solid #444',
     };
 
+    let imageWrapperStyles = {
+      overflow: 'hidden',
+      display: 'inline-block',
+      height: `${imageSize}px`,
+      width: `${imageSize}px`,
+    };
+
+    let image = <img style={imageStyles} role="presentation" src={`data:image/png;base64,${defaultImage}`} />;
+
     if (this.image.content) {
       const dataUriPrefix = `data:${this.image.contentType};base64,`;
+      image = <img style={imageStyles} role="presentation" src={dataUriPrefix + this.image.content} />;
 
       if (this.image.crop) {
-        // const crop = this.image.pixelCrop;
-        //
-        // imageStyles.maxWidth = `${crop.width}px`;
-        // imageStyles.overflow = 'hidden';
-        //
-        // return (<div style={imageStyles}>
-        //   <img style={{ maxWidth: 'initial' }} role="presentation" src={dataUriPrefix + this.image.content} />
-        // </div>);
-      }
+        const crop = this.image.crop;
 
-      return <img style={imageStyles} role="presentation" src={dataUriPrefix + this.image.content} />;
+        imageWrapperStyles = imageStyles;
+        imageWrapperStyles.overflow = 'hidden';
+        imageWrapperStyles.display = 'inline-block';
+
+        const scaleRatio = imageSize / crop.width;
+
+        const imageInnerStyles = {
+          width: `${crop.naturalWidth * scaleRatio}px`,
+          position: 'relative',
+          left: `-${crop.x * scaleRatio}px`,
+          top: `-${(crop.y) * scaleRatio}px`,
+        };
+
+        image = <div style={imageStyles}><img style={imageInnerStyles} role="presentation" src={dataUriPrefix + this.image.content} /></div>;
+      }
     }
 
-    return <img style={imageStyles} role="presentation" src="http://lorempixel.com/400/400/people/" />;
+    return (<div className="cover-image-wrapper" onClick={this.changeImage} style={imageWrapperStyles}>
+      <div className="cover-image-overlay">EDIT</div>
+      {image}
+    </div>);
   }
   renderSubtitle() {
     const subtitleStyles = {
@@ -284,13 +290,10 @@ class CaseboundCoverTemplate {
   }
   render() {
     const mainStyles = {
-      // width: `${this.fullWidth}${this.unitType}`,
-      // height: `${this.fullHeight}${this.unitType}`,
       backgroundColor: this.backgroundColor,
       color: this.textColor,
       fontSize: '20px',
       letterSpacing: '0.5px',
-      // backgroundImage: `url("${this.pattern}")`,
       fontFamily: this.primaryFont.family,
       fontWeight: '100',
     };
