@@ -24,7 +24,7 @@ class CompilationCheckoutContainer extends Component {
     }
   }
   addToCart(props) {
-    this.props.dispatch(Actions.addCartItem(1, props.quantity, {
+    this.props.dispatch(Actions.addCartItem(props.productId, props.quantity, {
       compilationId: this.props.compilation._id,
       compilationTitle: this.props.compilation.title,
       compilationSubtitle: this.props.compilation.subtitle,

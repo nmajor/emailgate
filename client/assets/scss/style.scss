@@ -492,7 +492,6 @@ input {
   width: inherit;
   height: inherit;
   padding-top: 75px;
-  z-index: 1;
   border-top-left-radius: 50% 50%;
   border-top-right-radius: 50% 50%;
   border-bottom-right-radius: 50% 50%;
@@ -500,6 +499,13 @@ input {
 
   &:hover {
     z-index: 2;
+  }
+}
+
+.product-option {
+  &:hover {
+    background: #f2f2f2;
+    cursor: pointer;
   }
 }
 

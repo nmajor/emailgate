@@ -2,11 +2,20 @@
   {
     "_id": 1,
     "name": "email_book",
-    "desc": "Custom Email Book Publishing",
+    "desc": "Hardback Email Book (Standard Color)",
     "tags": ["compilation"],
     "taxCode": 81100,
     "taxCodeCategory": "Books",
     "price": 7900
+  },
+  {
+    "_id": 3,
+    "name": "email_book",
+    "desc": "Hardback Email Book (Premium Color)",
+    "tags": ["compilation"],
+    "taxCode": 81100,
+    "taxCodeCategory": "Books",
+    "price": 11900
   },
   {
     "_id": 2,

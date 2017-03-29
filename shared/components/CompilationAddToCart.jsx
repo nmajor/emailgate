@@ -1,14 +1,18 @@
 import React, { PropTypes, Component } from 'react';
 import { prettyPrice } from '../helpers';
+import _ from 'lodash';
 
 class CompilationAddToCart extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = { quantity: 1 };
+    this.state = { quantity: 1, productId: 3 };
 
     this.submitForm = this.submitForm.bind(this);
     this.setFormState = this.setFormState.bind(this);
+  }
+  setProductId(productId) {
+    this.setState({ productId });
   }
   setFormState(event) {
     const newState = {};
@@ -35,25 +39,35 @@ class CompilationAddToCart extends Component {
   renderPageCountEstimate() {
     return <div>Estimated Pages: {this.props.compilationTotalPageCountEstimate}</div>;
   }
-  renderProductDesc() {
-    return <h5>{this.props.products[0].desc}</h5>;
+  renderProductOption(productId) {
+    const product = _.find(this.props.products, (p) => { return p._id === productId; });
+
+    return (<div className="list-group bottom-bumper">
+      <div className={`list-group-item product-option ${productId === this.state.productId ? 'active' : ''}`} onClick={() => { this.setProductId(productId); }}>
+        <h5>{product.desc}</h5>
+        <div>Price: ${prettyPrice(product.price)}/each</div>
+      </div>
+    </div>);
   }
-  renderProductInfo() {
-    return (<div>Price: ${prettyPrice(this.props.products[0].price)}/each</div>);
+  renderProductOptions() {
+    return (<div>
+      <label htmlFor="quantity">Please select print type?</label>
+      <div className="list-group">
+        {this.renderProductOption(3)}
+        {this.renderProductOption(1)}
+      </div>
+    </div>);
   }
   render() {
     return (<div>
       <div className="row">
-        <div className="col-sm-6">
-          <div className="padded-box">
-            <h3 className="margin-topless text-center">{this.props.compilation.title}</h3>
-            {this.renderProductDesc()}
+        <div className="col-sm-12">
+          <h3 className="margin-topless">{this.props.compilation.title}</h3>
+          <div className="bottom-bumper">
             {this.renderEmailCount()}
             {this.renderPageCountEstimate()}
-            {this.renderProductInfo()}
           </div>
-        </div>
-        <div className="col-sm-6">
+          {this.renderProductOptions()}
           {this.renderAddToCartForm()}
         </div>
       </div>
