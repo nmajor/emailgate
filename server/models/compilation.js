@@ -36,7 +36,7 @@ const CompilationSchema = new Schema({
 });
 
 CompilationSchema.pre('save', function (next) { // eslint-disable-line func-names
-  if (!this.image.updatedAt) {
+  if (this.image && !this.image.updatedAt) {
     serverHelpers.processCoverImage(this.image)
     .then((image) => {
       this.image = image;
