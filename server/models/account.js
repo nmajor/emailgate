@@ -217,7 +217,7 @@ AccountSchema.methods.getEmailsById = function getEmailsById(ids) {
 AccountSchema.methods.getEmailById = function getEmailById(id) {
   if (this.kind === 'google') {
     const client = googleAuth.getClient(this.authProps.token);
-    return googleAuth.getMessageById(client, id, { includeAttachments: true });
+    return googleAuth.getMessageById(client, id, { includeAttachments: true, resizeAttachments: true });
   }
 
   // return this.imapfilteredEmailsStream(options.filter, options.password, options.countCb, options.errCb);

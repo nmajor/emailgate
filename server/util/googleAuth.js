@@ -92,17 +92,23 @@ export function getMessageById(client, id, options = {}) {
       }
 
       if (options.format === 'metadata') {
-        resolve(processEmailFromMetadata(messageResponse));
-      } else {
-        const mailparser = new MailParser();
-        mailparser.on('end', (msgObj) => {
-          msgObj.id = id; // eslint-disable-line no-param-reassign
-          return resolve(processEmail(msgObj, { includeAttachments: options.includeAttachments }));
+        return processEmailFromMetadata(messageResponse)
+        .then((email) => {
+          resolve(email);
         });
-
-        mailparser.write(base64.decode(messageResponse.raw));
-        mailparser.end();
       }
+
+      const mailparser = new MailParser();
+      mailparser.on('end', (msgObj) => {
+        msgObj.id = id; // eslint-disable-line no-param-reassign
+        return processEmail(msgObj, { includeAttachments: options.includeAttachments, resizeAttachments: options.resizeAttachments })
+        .then((email) => {
+          resolve(email);
+        });
+      });
+
+      mailparser.write(base64.decode(messageResponse.raw));
+      mailparser.end();
     });
   });
 }

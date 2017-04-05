@@ -95,56 +95,71 @@ export function processAttachments(attachments) {
 }
 
 export function processEmail(email, options = {}) {
-  // mid should be unique to the message not the object
-  const mid = email.messageId;
+  return new Promise((resolve) => {
+    // mid should be unique to the message not the object
+    const mid = email.messageId;
 
-  const processedEmail = {
-    date: email.date,
-    id: email.id,
-    remote_id: email.id,
-    mid,
-    // headers: email.headers,
-    to: email.to,
-    from: email.from,
-    subject: email.subject,
-    // messageId: email.messageId,
-    // text: email.text,
-    body: sanitizeEmailBody(email.html),
-    bodyPreview: email.text ? `${email.text.substring(0, 150)}...` : '',
-    attachments: [],
-  };
+    const processedEmail = {
+      date: email.date,
+      id: email.id,
+      remote_id: email.id,
+      mid,
+      // headers: email.headers,
+      to: email.to,
+      from: email.from,
+      subject: email.subject,
+      // messageId: email.messageId,
+      // text: email.text,
+      body: sanitizeEmailBody(email.html),
+      bodyPreview: email.text ? `${email.text.substring(0, 150)}...` : '',
+      attachments: [],
+    };
 
-  if (options.includeAttachments) {
-    const attachments = email.attachments ? processAttachments(email.attachments) : [];
-    processedEmail.attachments = attachments;
-  }
+    if (options.includeAttachments) {
+      let attachments = email.attachments ? processAttachments(email.attachments) : [];
+      processedEmail.attachments = attachments;
 
-  return processedEmail;
+      if (options.resizeAttachments) {
+        attachments = _.filter(attachments, (a) => { return a.content; });
+        console.log('blah hey attachments 1');
+        return Promise.all(attachments.map(resizeAttachment))
+        .then((resizedAttachments) => {
+          console.log('blah hey attachments 2');
+          processedEmail.attachments = resizedAttachments;
+          return resolve(processedEmail);
+        });
+      }
+    }
+
+    return resolve(processedEmail);
+  });
 }
 
 export function processEmailFromMetadata(metadata) {
-  const headers = metadata.payload.headers.reduce((acc, val) => {
-    acc[val.name] = val.value;
-    return acc;
-  }, {});
+  return new Promise((resolve) => {
+    const headers = metadata.payload.headers.reduce((acc, val) => {
+      acc[val.name] = val.value;
+      return acc;
+    }, {});
 
-  const processedEmail = {
-    incomplete: true,
-    id: metadata.id,
-    remote_id: metadata.id,
+    const processedEmail = {
+      incomplete: true,
+      id: metadata.id,
+      remote_id: metadata.id,
 
-    date: headers.Date,
-    mid: headers['Message-ID'],
-    to: headers.To,
-    from: headers.From,
-    subject: headers.Subject,
+      date: headers.Date,
+      mid: headers['Message-ID'],
+      to: headers.To,
+      from: headers.From,
+      subject: headers.Subject,
 
-    body: metadata.snippet,
-    bodyPreview: metadata.snippet,
-    attachments: [],
-  };
+      body: metadata.snippet,
+      bodyPreview: metadata.snippet,
+      attachments: [],
+    };
 
-  return processedEmail;
+    return resolve(processedEmail);
+  });
 }
 
 export function processEmailStream() {
