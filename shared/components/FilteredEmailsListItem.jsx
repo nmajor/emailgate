@@ -76,13 +76,21 @@ class FilteredEmailsListItem extends Component {
       </div>
     </div>);
   }
+  renderEmailView() {
+    console.log('blah hey', this.props.email);
+    if (this.props.email.fetching) {
+      return <div className={this.className()}>Loading email...</div>;
+    }
+
+    return <EmailView email={this.props.email} disabled={this.props.disabled} />;
+  }
   renderEmailListItem() {
     if (this.props.previewing) {
       return (<div>
         <div className="list-item-actions">
           {this.renderHideAction()}
         </div>
-        <EmailView email={this.props.email} disabled={this.props.disabled} />
+        {this.renderEmailView()}
       </div>);
     }
 

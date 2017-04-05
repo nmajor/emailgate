@@ -154,6 +154,8 @@ router.post('/forgot-password', AppController.forgotPassword);
 router.put('/reset-password', AppController.resetPassword);
 router.post('/reset-password', AppController.resetPassword);
 
+router.get('/emails/full/:accountId/:emailId', ensureAuthenticated, AppController.getFullEmail);
+
 router.get('/orders', ensureAuthenticated, OrderController.getOrders);
 router.post('/orders', ensureAuthenticated, OrderController.createOrder);
 router.post('/orders/preview/promo', ensureAuthenticated, OrderController.applyPromoCodeToOrderPreview);

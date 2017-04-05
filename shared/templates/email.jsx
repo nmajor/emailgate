@@ -233,6 +233,9 @@ class EmailTemplate {
 
     return <span key={index} style={{ whiteSpace: 'nowrap' }}>{text}</span>;
   }
+  processEmailUser(userValues) {
+    return typeof(userValues) === 'string' ? userValues : userValues.map(this.mapEmailUser);
+  }
   renderAttachments(attachments) {
     const divStyle = {
       width: '100%',
@@ -320,7 +323,7 @@ class EmailTemplate {
     return (<div style={{ fontSize: '20px' }}>
       {this.renderDate(moment(email.date).format('LL'))}
       {this.renderSubject(email.subject || 'No email subject')}
-      {this.renderFrom(email.from.map(this.mapEmailUser))}
+      {this.renderFrom(this.processEmailUser(email.from))}
       {this.renderBodyDangerously(_.isEmpty(email.bodyPreview) ? 'No email body' : email.body)}
       {this.renderAttachments(email.attachments)}
     </div>);

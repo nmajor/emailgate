@@ -3,7 +3,7 @@ import google from 'googleapis';
 import GoogleAuth from 'google-auth-library';
 import { MailParser } from 'mailparser';
 import base64 from 'base64url';
-import { googlifyFilter, processEmail } from './helpers';
+import { googlifyFilter, processEmail, processEmailFromMetadata } from './helpers';
 import stream from 'stream';
 import config from '../config';
 // import _ from 'lodash';
@@ -77,31 +77,39 @@ export function getGoogleAuthToken(code) {
   return getAuthToken(client, code);
 }
 
-export function getMessagesById(client, messageIds) {
+export function getMessageById(client, id, options = {}) {
   const gmail = google.gmail('v1');
 
-  return Promise.all(messageIds.map((id) => {
-    return new Promise((resolve, reject) => {
-      gmail.users.messages.get({
-        id,
-        auth: client,
-        userId: 'me',
-        format: 'raw',
-      }, (messageErr, messageResponse) => {
-        if (messageErr) {
-          return reject({ base: [`There was a problem getting the gmail thread - ${messageErr}`] });
-        }
+  return new Promise((resolve, reject) => {
+    gmail.users.messages.get({
+      id,
+      auth: client,
+      userId: 'me',
+      format: options.format || 'raw',
+    }, (messageErr, messageResponse) => {
+      if (messageErr) {
+        return reject({ base: [`There was a problem getting the gmail thread - ${messageErr}`] });
+      }
 
+      if (options.format === 'metadata') {
+        resolve(processEmailFromMetadata(messageResponse));
+      } else {
         const mailparser = new MailParser();
         mailparser.on('end', (msgObj) => {
           msgObj.id = id; // eslint-disable-line no-param-reassign
-          return resolve(processEmail(msgObj));
+          return resolve(processEmail(msgObj, { includeAttachments: options.includeAttachments }));
         });
 
         mailparser.write(base64.decode(messageResponse.raw));
         mailparser.end();
-      });
+      }
     });
+  });
+}
+
+export function getMessagesById(client, messageIds, options = {}) {
+  return Promise.all(messageIds.map((id) => {
+    return getMessageById(client, id, options);
   }));
 }
 
@@ -155,7 +163,7 @@ export function searchMessages(account, searchOptions) {
           });
         }
 
-        getMessagesById(client, response.messages.map((m) => { return m.id; }))
+        getMessagesById(client, response.messages.map((m) => { return m.id; }), { format: 'metadata' })
         .then((messages) => {
           resolve({
             nextPageToken: response.nextPageToken,

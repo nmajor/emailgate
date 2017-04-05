@@ -1,3 +1,10 @@
+TOP PRIORITY:
+- Refactor to not send attachments in initial search
+
+
+
+
+
 COVER IDEAS:
 https://www.google.pt/search?q=notebook+design&espv=2&biw=1337&bih=780&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiAlcHDib_RAhUGj1QKHWE3AYAQ_AUIBigB#imgrc=Qn7g5UwYodBOUM%3A
 

@@ -94,13 +94,11 @@ export function processAttachments(attachments) {
   });
 }
 
-export function processEmail(email) {
+export function processEmail(email, options = {}) {
   // mid should be unique to the message not the object
   const mid = email.messageId;
 
-  const attachments = email.attachments ? processAttachments(email.attachments) : [];
-
-  return {
+  const processedEmail = {
     date: email.date,
     id: email.id,
     remote_id: email.id,
@@ -113,8 +111,40 @@ export function processEmail(email) {
     // text: email.text,
     body: sanitizeEmailBody(email.html),
     bodyPreview: email.text ? `${email.text.substring(0, 150)}...` : '',
-    attachments,
+    attachments: [],
   };
+
+  if (options.includeAttachments) {
+    const attachments = email.attachments ? processAttachments(email.attachments) : [];
+    processedEmail.attachments = attachments;
+  }
+
+  return processedEmail;
+}
+
+export function processEmailFromMetadata(metadata) {
+  const headers = metadata.payload.headers.reduce((acc, val) => {
+    acc[val.name] = val.value;
+    return acc;
+  }, {});
+
+  const processedEmail = {
+    incomplete: true,
+    id: metadata.id,
+    remote_id: metadata.id,
+
+    date: headers.Date,
+    mid: headers['Message-ID'],
+    to: headers.To,
+    from: headers.From,
+    subject: headers.Subject,
+
+    body: metadata.snippet,
+    bodyPreview: metadata.snippet,
+    attachments: [],
+  };
+
+  return processedEmail;
 }
 
 export function processEmailStream() {

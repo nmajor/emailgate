@@ -14,6 +14,7 @@ export * from './compilationEmailsActions';
 export * from './compilationPagesActions';
 export * from './filteredAccountEmailsActions';
 export * from './filteredAccountEmailsResultsActions';
+export * from './currentFilteredAccountEmailActions';
 export * from './selectedFilteredEmailIdsActions';
 export * from './cartActions';
 export * from './checkoutActions';

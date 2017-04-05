@@ -33,6 +33,7 @@ class FilteredAccountEmailsContainer extends Component {
           compilation={this.props.compilation}
           compilationEmailMids={this.compilationEmailMids}
           currentFilteredEmail={this.currentFilteredEmail}
+          currentAccount={this.props.currentAccount}
         />
       </div>
     );
@@ -52,6 +53,7 @@ FilteredAccountEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
   filteredAccountEmailsResults: PropTypes.object.isRequired,
+  currentAccount: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array.isRequired,
   currentFilteredEmailMid: PropTypes.string,
   compilation: PropTypes.object,

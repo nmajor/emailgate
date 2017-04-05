@@ -3,14 +3,16 @@ import FilteredEmailsListItem from './FilteredEmailsListItem';
 
 class FilteredEmailsList extends Component {
   renderEmails() {
+    console.log('blah hey', this.props.currentFilteredEmail);
     return this.props.emails.map((email, index) => {
+      const isCurrent = email.id ? (email.id === this.props.currentFilteredEmail.id) : false;
       const selected = this.props.selectedIds.indexOf(email.id) > -1;
       return (<FilteredEmailsListItem
         key={`${email.mid}-${index}`}
-        email={email}
+        email={isCurrent ? this.props.currentFilteredEmail : email}
         disabled={this.props.compilationEmailMids.indexOf(email.mid) > -1}
         selected={selected}
-        previewing={email.mid ? (email.mid === this.props.currentFilteredEmailMid) : false}
+        previewing={isCurrent}
         selectEmail={this.props.selectEmail}
         deselectEmail={this.props.deselectEmail}
         setCurrentFilteredEmail={this.props.setCurrentFilteredEmail}
@@ -30,7 +32,7 @@ FilteredEmailsList.propTypes = {
   emails: PropTypes.array.isRequired,
   compilationEmailMids: PropTypes.array.isRequired,
   selectedIds: PropTypes.array.isRequired,
-  currentFilteredEmailMid: PropTypes.string,
+  currentFilteredEmail: PropTypes.object,
   selectEmail: PropTypes.func.isRequired,
   deselectEmail: PropTypes.func.isRequired,
   setCurrentFilteredEmail: PropTypes.func.isRequired,
