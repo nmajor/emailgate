@@ -208,7 +208,16 @@ AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStre
 AccountSchema.methods.getEmailsById = function getEmailsById(ids) {
   if (this.kind === 'google') {
     const client = googleAuth.getClient(this.authProps.token);
-    return googleAuth.getMessagesById(client, ids);
+    return googleAuth.getMessagesById(client, ids, { includeAttachments: true });
+  }
+
+  // return this.imapfilteredEmailsStream(options.filter, options.password, options.countCb, options.errCb);
+};
+
+AccountSchema.methods.getEmailById = function getEmailById(id) {
+  if (this.kind === 'google') {
+    const client = googleAuth.getClient(this.authProps.token);
+    return googleAuth.getMessageById(client, id, { includeAttachments: true, resizeAttachments: true });
   }
 
   // return this.imapfilteredEmailsStream(options.filter, options.password, options.countCb, options.errCb);

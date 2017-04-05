@@ -18,7 +18,11 @@ class FilteredEmailsListContainer extends Component {
   }
 
   setCurrentFilteredEmail(email) {
-    this.props.dispatch(Actions.setCurrentFilteredEmailMid(email ? email.mid : ''));
+    if (email && email.id) {
+      this.props.dispatch(Actions.fetchCurrentFilteredAccountEmail(this.props.currentAccount._id, email.id));
+    } else {
+      this.props.dispatch(Actions.setCurrentFilteredAccountEmail(email));
+    }
   }
   selectEmail(email) {
     this.props.dispatch(Actions.addIdToSelectedFilteredEmailIds(email.id));
@@ -53,7 +57,7 @@ class FilteredEmailsListContainer extends Component {
         <FilteredEmailsList
           emails={sortedEmails(this.props.filteredAccountEmails)}
           compilationEmailMids={this.props.compilationEmailMids}
-          currentFilteredEmailMid={this.props.currentFilteredEmail.mid}
+          currentFilteredEmail={this.props.currentFilteredAccountEmail}
           deselectEmail={this.deselectEmail}
           selectEmail={this.selectEmail}
           setCurrentFilteredEmail={this.setCurrentFilteredEmail}
@@ -68,6 +72,7 @@ function mapStateToProps(store) {
   return {
     filteredAccountEmails: store.filteredAccountEmails,
     selectedFilteredEmailIds: store.selectedFilteredEmailIds,
+    currentFilteredAccountEmail: store.currentFilteredAccountEmail,
   };
 }
 
@@ -75,8 +80,9 @@ FilteredEmailsListContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
   selectedFilteredEmailIds: PropTypes.array.isRequired,
+  currentAccount: PropTypes.object.isRequired,
   compilationEmailMids: PropTypes.array.isRequired,
-  currentFilteredEmail: PropTypes.object,
+  currentFilteredAccountEmail: PropTypes.object,
   compilation: PropTypes.object,
 };
 

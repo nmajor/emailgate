@@ -97,7 +97,7 @@ class AddCompilationEmailsContainer extends Component {
   }
   renderFilteredAccountEmailsContainer() {
     if (this.showResults()) {
-      return <FilteredAccountEmailsContainer compilation={this.compilation} />;
+      return <FilteredAccountEmailsContainer compilation={this.compilation} currentAccount={this.currentAccount} />;
     }
   }
   renderSelectAccount() {

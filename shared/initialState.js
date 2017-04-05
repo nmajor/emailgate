@@ -10,6 +10,7 @@ export default {
   compilationPages: [],
   filteredAccountEmails: [],
   filteredAccountEmailsResults: {},
+  currentFilteredAccountEmail: {},
   selectedFilteredEmailIds: [],
   currentFilteredEmailMid: '',
   cart: {},

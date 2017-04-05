@@ -39,13 +39,9 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   Promise.resolve()
   .then(() => {
     if (this.propChanged('attachments')) {
-      // console.log('blah attachments', this.attachments);
       this.attachments = _.filter(this.attachments, (a) => { return a.content; });
       return Promise.all(this.attachments.map((attachment) => {
-        return resizeAttachment(attachment)
-        .then((thing) => {
-          return Promise.resolve(thing);
-        });
+        return resizeAttachment(attachment);
       }))
       .then((resizedAttachments) => {
         this.attachments = resizedAttachments;

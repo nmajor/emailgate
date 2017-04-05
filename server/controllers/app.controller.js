@@ -1,6 +1,7 @@
 import { getGoogleAuthUrl } from '../util/googleAuth';
 import Cart from '../models/cart';
 import User from '../models/user';
+import Account from '../models/account';
 import PromoCode from '../models/promoCode';
 
 export function getAppConfig(req, res) {
@@ -113,7 +114,20 @@ export function applyPromoCodeToCart(req, res) {
       return res.json({ error: { message: 'Invalid promo code' } });
     })
     .catch((err) => {
-      console.log('blah an error happened', err);
+      console.log('An error happened', err);
     });
+  });
+}
+
+export function getFullEmail(req, res) {
+  Account.findOne({ _user: req.user._id, _id: req.params.accountId })
+  .then((account) => {
+    return account.getEmailById(req.params.emailId);
+  })
+  .then((email) => {
+    res.json(email);
+  })
+  .catch((err) => {
+    console.log('An error happened', err);
   });
 }

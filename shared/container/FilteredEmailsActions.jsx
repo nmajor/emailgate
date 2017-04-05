@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
-import FilteredEmailsSelectEverythingContainer from '../container/FilteredEmailsSelectEverythingContainer';
+// import FilteredEmailsSelectEverythingContainer from '../container/FilteredEmailsSelectEverythingContainer';
 
 class FilteredEmailsActions extends Component {
   constructor(props, context) {
@@ -17,9 +17,11 @@ class FilteredEmailsActions extends Component {
   }
   getResultRange() {
     const resultsPerPage = this.props.filteredAccountEmailsResults.resultsPerPage;
+    const resultsCount = this.props.filteredAccountEmailsResults.resultsCount;
     const startingPage = 1 + (this.currentPage() * resultsPerPage);
-    let endingPage = startingPage + resultsPerPage - 1;
-    endingPage = endingPage > this.props.filteredAccountEmailsResults.count ? this.props.filteredAccountEmailsResults.count : endingPage;
+    console.log(resultsCount);
+    const endingPage = startingPage + resultsCount - 1;
+    // endingPage = endingPage > this.props.filteredAccountEmailsResults.count ? this.props.filteredAccountEmailsResults.count : endingPage;
     return <span>{startingPage} - {endingPage}</span>;
   }
   pageTokens() {
@@ -61,7 +63,7 @@ class FilteredEmailsActions extends Component {
   }
   renderNavResults() {
     if (this.props.filteredAccountEmailsResults.count) {
-      const resultInfo = <div className="filter-result-info">{this.getResultRange()} of {this.props.filteredAccountEmailsResults.count}</div>;
+      const resultInfo = <div className="filter-result-info">{this.getResultRange()} of {this.props.filteredAccountEmailsResults.count}{this.props.filteredAccountEmailsResults.moreThanTotalResults ? '+' : ''}</div>;
 
       const prevLink = (<span
         className={`prev btn btn-default btn-xs-true ${!this.showPrev() ? 'disabled' : ''}`}

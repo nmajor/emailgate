@@ -26,7 +26,7 @@ class FilteredEmailsListItem extends Component {
     }
   }
   unpreview() {
-    this.props.setCurrentFilteredEmail();
+    this.props.setCurrentFilteredEmail({});
   }
   className() {
     let className = 'filtered-emails-list-item list-item';
@@ -76,13 +76,22 @@ class FilteredEmailsListItem extends Component {
       </div>
     </div>);
   }
+  renderEmailView() {
+    if (this.props.email.fetching) {
+      return (<div className={this.className()}>
+        <div className="email-fetching text-center"><span className="outside-button-loading"><Loading /></span> loading...</div>
+      </div>);
+    }
+
+    return <EmailView email={this.props.email} disabled={this.props.disabled} />;
+  }
   renderEmailListItem() {
     if (this.props.previewing) {
       return (<div>
         <div className="list-item-actions">
           {this.renderHideAction()}
         </div>
-        <EmailView email={this.props.email} disabled={this.props.disabled} />
+        {this.renderEmailView()}
       </div>);
     }
 
