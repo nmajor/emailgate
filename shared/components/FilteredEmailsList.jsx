@@ -3,7 +3,6 @@ import FilteredEmailsListItem from './FilteredEmailsListItem';
 
 class FilteredEmailsList extends Component {
   renderEmails() {
-    console.log('blah hey', this.props.currentFilteredEmail);
     return this.props.emails.map((email, index) => {
       const isCurrent = email.id ? (email.id === this.props.currentFilteredEmail.id) : false;
       const selected = this.props.selectedIds.indexOf(email.id) > -1;

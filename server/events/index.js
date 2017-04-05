@@ -310,9 +310,6 @@ export default (io) => {
     //   };
     //
     //   function callback(error, response, body) {
-    //     console.log('blah hey error', error);
-    //     console.log('blah hey error', body);
-    //     console.log('blah hey error', response);
     //     if (!error && response.statusCode === 200) {
     //       console.log(body);
     //     }

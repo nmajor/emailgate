@@ -88,7 +88,7 @@ export function getMessageById(client, id, options = {}) {
       format: options.format || 'raw',
     }, (messageErr, messageResponse) => {
       if (messageErr) {
-        return reject({ base: [`There was a problem getting the gmail thread - ${messageErr}`] });
+        return reject({ base: [`There was a problem getting the gmail message - ${messageErr}`] });
       }
 
       if (options.format === 'metadata') {
@@ -120,6 +120,7 @@ function queryResults(client, q) {
       auth: client,
       q,
       userId: 'me',
+      maxResults: 1000,
     }, (err, response) => {
       if (err) {
         return reject({ base: [`There was a problem searching for gmail messages ${err}`] });
@@ -130,7 +131,7 @@ function queryResults(client, q) {
       }
 
       const totalResultsIds = response.messages.map((message) => { return message.id; });
-      return resolve({ totalResults: response.resultSizeEstimate, totalResultsIds });
+      return resolve({ totalResults: response.resultSizeEstimate, totalResultsIds, moreResults: !!(response.nextPageToken) });
     });
   });
 }
@@ -169,8 +170,9 @@ export function searchMessages(account, searchOptions) {
             nextPageToken: response.nextPageToken,
             messages,
             totalResults: results.totalResults,
-            totalResultsIds: results.totalResultsIds,
+            moreThanTotalResults: results.moreResults,
             resultsPerPage: config.emailsPerPage,
+            resultsCount: response.messages.length,
           });
         });
       });

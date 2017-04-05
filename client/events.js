@@ -22,10 +22,14 @@ socket.on('FILTERED_ACCOUNT_EMAILS_ERROR', (errs) => {
 
 socket.on('FILTERED_ACCOUNT_EMAILS', (data) => {
   console.log('event FILTERED_ACCOUNT_EMAILS');
+  console.log(data);
   store.dispatch(Actions.setFilteredAccountEmails(data.messages));
   store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('count', data.totalResults));
   store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('totalResults', data.totalResults));
-  store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('totalResultsIds', data.totalResultsIds));
+  store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('resultsCount', data.resultsCount));
+  store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('moreThanTotalResults', data.moreThanTotalResults));
+  store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('moreThanTotalResults', data.moreThanTotalResults));
+  // store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('totalResultsIds', data.totalResultsIds));
   store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('resultsPerPage', data.resultsPerPage));
   store.dispatch(Actions.setPropertyFilteredAccountEmailsResults('nextPageToken', data.nextPageToken));
   store.dispatch(Actions.setPropertyForFetching('filteredAccountEmails', false));

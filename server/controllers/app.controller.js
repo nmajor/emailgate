@@ -114,7 +114,7 @@ export function applyPromoCodeToCart(req, res) {
       return res.json({ error: { message: 'Invalid promo code' } });
     })
     .catch((err) => {
-      console.log('blah an error happened', err);
+      console.log('An error happened', err);
     });
   });
 }
@@ -128,6 +128,6 @@ export function getFullEmail(req, res) {
     res.json(email);
   })
   .catch((err) => {
-    console.log('blah an error happened', err);
+    console.log('An error happened', err);
   });
 }

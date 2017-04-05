@@ -18,7 +18,11 @@ class FilteredEmailsListContainer extends Component {
   }
 
   setCurrentFilteredEmail(email) {
-    this.props.dispatch(Actions.fetchCurrentFilteredAccountEmail(this.props.currentAccount._id, email.id));
+    if (email && email.id) {
+      this.props.dispatch(Actions.fetchCurrentFilteredAccountEmail(this.props.currentAccount._id, email.id));
+    } else {
+      this.props.dispatch(Actions.setCurrentFilteredAccountEmail(email));
+    }
   }
   selectEmail(email) {
     this.props.dispatch(Actions.addIdToSelectedFilteredEmailIds(email.id));
