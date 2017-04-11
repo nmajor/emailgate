@@ -9,7 +9,7 @@ import defaultImage from './defaultImage';
 
 class CaseboundCoverTemplate {
   constructor(props) {
-    this.changeImage = props.changeImage || function () {}; // eslint-disable-line func-names
+    this.changeImage = props.changeImage; // eslint-disable-line func-names
 
     this.compilation = props.compilation;
     this.bleedType = props.bleedType || 'casebound';
@@ -174,6 +174,9 @@ class CaseboundCoverTemplate {
     }
 
     return (<div className="wrapper" style={styles}>
+      <style>
+        {this.renderClassStyles()}
+      </style>
       <div className="container" style={containerStyles}>
         {this.renderFrontCoverInners()}
       </div>
@@ -224,9 +227,9 @@ class CaseboundCoverTemplate {
         image = <div style={outerImageStyles}><img style={imageInnerStyles} role="presentation" src={dataUriPrefix + this.image.content} /></div>;
       }
     }
-
+    console.log('blah', this.changeImage);
     return (<div className="cover-image-wrapper" onClick={this.changeImage} style={imageWrapperStyles}>
-      <div className="cover-image-overlay">EDIT</div>
+      {this.changeImage ? <div className="cover-image-overlay">EDIT</div> : null}
       {image}
     </div>);
   }
@@ -288,6 +291,42 @@ class CaseboundCoverTemplate {
       </div>
       <div style={footerStyles}>{prettyStartDate} - {prettyEndDate}</div>
     </div>);
+  }
+  renderClassStyles() {
+    return `
+      .cover-image-wrapper {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      .cover-image-wrapper:hover .cover-image-overlay {
+        opacity: 0.7;
+
+      }
+      .cover-image-overlay {
+        position: absolute;
+        text-align: center;
+        background: #333;
+        color: #f8f8f8;
+        opacity: 0;
+        transition: opacity .25s ease;
+        -moz-transition: opacity .25s ease;
+        width: inherit;
+        height: inherit;
+        padding-top: 75px;
+        border-top-left-radius: 50% 50%;
+        border-top-right-radius: 50% 50%;
+        border-bottom-right-radius: 50% 50%;
+        border-bottom-left-radius: 50% 50%;
+
+        &:hover {
+          z-index: 2;
+        }
+      }
+      .cover-image-overlay:hover {
+        z-index: 2;
+      }
+    `;
   }
   render() {
     const mainStyles = {
