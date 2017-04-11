@@ -148,7 +148,7 @@ export function processEmailFromMetadata(metadata) {
       remote_id: metadata.id,
 
       date: headers.Date,
-      mid: headers['Message-ID'],
+      mid: headers['Message-ID'].replace(/^</, '').replace(/>$/, ''),
       to: headers.To,
       from: headers.From,
       subject: headers.Subject,
