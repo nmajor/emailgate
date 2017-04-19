@@ -47,10 +47,11 @@ class TableOfContentsTemplate {
     };
 
     const pageNum = this.pageMap[email._id] || (index + 1);
+    const subject = email.subject || 'No Subject';
 
     return (
       <div className="unbreakable" key={index} style={entryStyle}>
-        <div style={subjectStyle}>{email.subject}</div>
+        <div style={subjectStyle}>{subject}</div>
         <div style={{ lineHeight: '8px', marginBottom: '4px' }}>
           <div style={dateStyle}>{prettyDate}</div>
           <div style={pageStyle}>{pageNum}</div>

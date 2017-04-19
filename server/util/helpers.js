@@ -110,7 +110,7 @@ export function processEmail(email, options = {}) {
       subject: email.subject,
       // messageId: email.messageId,
       // text: email.text,
-      body: sanitizeEmailBody(email.html),
+      body: sanitizeEmailBody(email.html || email.text),
       bodyPreview: email.text ? `${email.text.substring(0, 150)}...` : '',
       attachments: [],
     };
@@ -121,10 +121,8 @@ export function processEmail(email, options = {}) {
 
       if (options.resizeAttachments) {
         attachments = _.filter(attachments, (a) => { return a.content; });
-        console.log('blah hey attachments 1');
         return Promise.all(attachments.map(resizeAttachment))
         .then((resizedAttachments) => {
-          console.log('blah hey attachments 2');
           processedEmail.attachments = resizedAttachments;
           return resolve(processedEmail);
         });

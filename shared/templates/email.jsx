@@ -155,6 +155,31 @@ class AttachmentInput extends Component { // eslint-disable-line
     ];
     this.props.setFormState(undefined, newState);
   }
+  rotateAttachment(index) {
+    const newState = {};
+    const newAttachment = Object.assign({}, this.props.email.attachments[index]);
+
+    newAttachment.rotate = newAttachment.rotate + 90;
+    newAttachment.style = {
+      MsTransform: `rotate(${newAttachment.rotate}deg)`,
+      WebkitTransform: `rotate(${newAttachment.rotate}deg)`,
+      transform: `rotate(${newAttachment.rotate}deg)`,
+    };
+
+    newState.attachments = [
+      ...this.props.email.attachments.slice(0, index),
+      newAttachment,
+      ...this.props.email.attachments.slice(index + 1),
+    ];
+    this.props.setFormState(undefined, newState);
+  }
+  renderAttachmentActions(attachment, index) {
+    return (<div className="attachment-actions">
+      <div className="btn btn-primary btn-xs-true" onClick={() => { this.removeAttachment(index); }}><span className="glyphicon glyphicon-repeat" aria-hidden="true"></span></div>
+      <div className="btn btn-primary left-bumper btn-xs-true" onClick={() => { this.rotateAttachment(index, '1'); }}><span className="glyphicon glyphicon-repeat icon-flipped" aria-hidden="true"></span></div>
+      <div className="btn btn-danger left-bumper btn-xs-true" onClick={() => { this.rotateAttachment(index, '2'); }}><span className="glyphicon glyphicon-trash" aria-hidden="true"></span></div>
+    </div>);
+  }
   renderAttachments() {
     const divStyle = {
       width: '100%',
@@ -165,11 +190,12 @@ class AttachmentInput extends Component { // eslint-disable-line
       if (['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
         // const imageString = (new Buffer(attachment.content)).toString('base64');
+
+        const attachmentStyle = Object.assign(divStyle, attachment.style);
+
         return (<div>
-          <div className="remove-attachment">
-            <div className="btn btn-danger btn-xs-true" onClick={() => { this.removeAttachment(index); }}><span className="glyphicon glyphicon-trash" aria-hidden="true"></span></div>
-          </div>
-          <img role="presentation" style={divStyle} key={index} src={dataUriPrefix + attachment.content} />
+          {this.renderAttachmentActions()}
+          <img role="presentation" style={attachmentStyle} key={index} src={dataUriPrefix + attachment.content} />
         </div>);
       }
       return null;
@@ -246,7 +272,7 @@ class EmailTemplate {
       if (['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
         // const imageString = (new Buffer(attachment.content)).toString('base64');
-        return <img role="presentation" style={divStyle} key={index} src={dataUriPrefix + attachment.content} />;
+        return (<img role="presentation" style={divStyle} key={index} src={dataUriPrefix + attachment.content} />);
       }
       return null;
     });
