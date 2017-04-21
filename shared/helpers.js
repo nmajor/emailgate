@@ -224,3 +224,20 @@ export function applyPromoCodeToAmount(promoCode, amount) {
 
   return amount - (getDiscountedAmount(promoCode, amount));
 }
+
+export function rotateImage(imageString, degrees, cb) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const image = new Image();
+
+  image.src = imageString;
+  image.onload = () => {
+    canvas.width = image.height;
+    canvas.height = image.width;
+    ctx.rotate(degrees * Math.PI / 180);
+    ctx.translate(0, -canvas.width);
+    ctx.drawImage(image, 0, 0);
+
+    cb(canvas.toDataURL());
+  };
+}

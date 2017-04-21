@@ -5,6 +5,7 @@ import moment from 'moment';
 import ReactQuill from 'react-quill';
 import DatePicker from 'react-datepicker';
 import _ from 'lodash';
+import { rotateImage } from '../helpers';
 
 class AttachmentDropzone extends Component {
   constructor(props, context) {
@@ -156,46 +157,87 @@ class AttachmentInput extends Component { // eslint-disable-line
     this.props.setFormState(undefined, newState);
   }
   rotateAttachment(index) {
-    const newState = {};
-    const newAttachment = Object.assign({}, this.props.email.attachments[index]);
+    const { attachments } = this.props.email;
+    const attachment = attachments[index];
+    const dataUriPrefix = `data:${attachment.contentType};base64,`;
 
-    newAttachment.rotate = newAttachment.rotate + 90;
-    newAttachment.style = {
-      MsTransform: `rotate(${newAttachment.rotate}deg)`,
-      WebkitTransform: `rotate(${newAttachment.rotate}deg)`,
-      transform: `rotate(${newAttachment.rotate}deg)`,
-    };
+    rotateImage((dataUriPrefix + attachment.content), 90, (newImageString) => {
+      newImageString = newImageString.replace(/^data.*base64,/, '');
 
-    newState.attachments = [
-      ...this.props.email.attachments.slice(0, index),
-      newAttachment,
-      ...this.props.email.attachments.slice(index + 1),
-    ];
-    this.props.setFormState(undefined, newState);
+      const newState = {};
+      const newAttachment = Object.assign({}, attachments[index]);
+      newAttachment.content = newImageString;
+
+      newState.attachments = [
+        ...attachments.slice(0, index),
+        newAttachment,
+        ...attachments.slice(index + 1),
+      ];
+
+      this.props.setFormState(undefined, newState);
+    });
+
+    // const newState = {};
+    // const newAttachment = Object.assign({}, attachments[index]);
+
+    // console.log('blah hey rotateAttachment');
+    // const newState = {};
+    // const newAttachment = Object.assign({}, attachments[index]);
+    //
+    // newAttachment.rotate = (newAttachment.rotate || 0) + (90 * direction);
+    // newAttachment.style = {
+    //   MsTransform: `rotate(${newAttachment.rotate}deg)`,
+    //   WebkitTransform: `rotate(${newAttachment.rotate}deg)`,
+    //   transform: `rotate(${newAttachment.rotate}deg)`,
+    // };
+    //
+    // newState.attachments = [
+    //   ...attachments.slice(0, index),
+    //   newAttachment,
+    //   ...attachments.slice(index + 1),
+    // ];
+    //
+    // console.log('attachments', attachments);
+    //
+    // this.props.setFormState(undefined, newState);
   }
   renderAttachmentActions(attachment, index) {
     return (<div className="attachment-actions">
-      <div className="btn btn-primary btn-xs-true" onClick={() => { this.removeAttachment(index); }}><span className="glyphicon glyphicon-repeat" aria-hidden="true"></span></div>
-      <div className="btn btn-primary left-bumper btn-xs-true" onClick={() => { this.rotateAttachment(index, '1'); }}><span className="glyphicon glyphicon-repeat icon-flipped" aria-hidden="true"></span></div>
-      <div className="btn btn-danger left-bumper btn-xs-true" onClick={() => { this.rotateAttachment(index, '2'); }}><span className="glyphicon glyphicon-trash" aria-hidden="true"></span></div>
+      <div
+        className="btn btn-primary btn-xs-true"
+        onClick={() => { this.rotateAttachment(index); }}
+      >
+        <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+      </div>
+
+      <div
+        className="btn btn-danger left-bumper btn-xs-true"
+        onClick={() => { this.removeAttachment(index); }}
+      >
+        <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
+      </div>
     </div>);
   }
   renderAttachments() {
     const divStyle = {
-      width: '100%',
+      maxWidth: '100%',
+      maxHeight: '500px',
+    };
+
+    const wrapperStyle = {
+      backgroundColor: '#f2f2f2',
       marginTop: '5px',
+      border: '1px solid #ccc',
+      textAlign: 'center',
     };
 
     const imageComponents = this.props.email.attachments.map((attachment, index) => {
       if (['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
-        // const imageString = (new Buffer(attachment.content)).toString('base64');
 
-        const attachmentStyle = Object.assign(divStyle, attachment.style);
-
-        return (<div>
-          {this.renderAttachmentActions()}
-          <img role="presentation" style={attachmentStyle} key={index} src={dataUriPrefix + attachment.content} />
+        return (<div style={wrapperStyle} key={index}>
+          {this.renderAttachmentActions(attachment, index)}
+          <img role="presentation" style={divStyle} src={dataUriPrefix + attachment.content} />
         </div>);
       }
       return null;
@@ -264,8 +306,9 @@ class EmailTemplate {
   }
   renderAttachments(attachments) {
     const divStyle = {
-      width: '100%',
+      maxWidth: '100%',
       marginTop: '5px',
+      maxHeight: '500px',
     };
 
     const imageComponents = attachments.map((attachment, index) => {
@@ -277,7 +320,7 @@ class EmailTemplate {
       return null;
     });
 
-    return <div>{imageComponents}</div>;
+    return <div style={{ textAlign: 'center' }}>{imageComponents}</div>;
   }
 
   renderSubject(subject) {
