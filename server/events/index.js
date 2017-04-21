@@ -198,7 +198,8 @@ export default (io) => {
       .then((email) => {
         socket.emit('UPDATED_COMPILATION_EMAIL', email);
         return Promise.resolve(email);
-      });
+      })
+      .catch((err) => { console.log('An error happened when updating a compilation email', err); });
     });
 
     socket.on('UPDATE_COMPILATION_PAGE', (data) => {

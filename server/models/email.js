@@ -40,6 +40,7 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   .then(() => {
     if (this.propChanged('attachments')) {
       this.attachments = _.filter(this.attachments, (a) => { return a.content; });
+
       return Promise.all(this.attachments.map((attachment) => {
         return resizeAttachment(attachment);
       }))

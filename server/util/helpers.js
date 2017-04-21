@@ -55,6 +55,14 @@ export function sanitizeEmailBody(text) {
   });
 }
 
+export function cleanEmailTextBody(text) {
+  console.log('blah hey text', text);
+  text = text.replace(/\n\n/, '<br />');
+  text = text.replace(/\n/, '');
+
+  return text;
+}
+
 export function sanitizeEmailBodyPreview(text) {
   const maxLength = 300;
   const bareText = sanitizeHtml(text, { // eslint-disable-line prefer-template
@@ -110,7 +118,7 @@ export function processEmail(email, options = {}) {
       subject: email.subject,
       // messageId: email.messageId,
       // text: email.text,
-      body: sanitizeEmailBody(email.html || email.text),
+      body: (sanitizeEmailBody(email.html) || cleanEmailTextBody(email.text)),
       bodyPreview: email.text ? `${email.text.substring(0, 150)}...` : '',
       attachments: [],
     };
@@ -254,7 +262,7 @@ export function resizeAttachment(attachment) {
     const contentBuffer = new Buffer(attachment.content, 'base64');
 
     sharp(contentBuffer)
-    .resize(maxWidthPx)
+    .max(maxWidthPx, maxWidthPx)
     .toBuffer((err, outputBuffer, info) => {
       if (err) { console.log('An error happened while resizing attachment image', err); }
 
