@@ -75,7 +75,7 @@ CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
     const startDate = firstEmail.date;
     const endDate = lastEmail.date;
 
-    const template = new covers.Default({ compilation: this, startDate, endDate });
+    const template = new covers[this.coverTemplate]({ compilation: this, startDate, endDate });
 
     this.cover.html = template.toString();
     return this.save()

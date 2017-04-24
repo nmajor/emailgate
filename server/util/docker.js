@@ -50,8 +50,8 @@ function parseStreamChunk(chunk, cb) {
         cb(entry);
       });
     } catch (e) {
-      console.log(e);
-      console.log(logEntryString);
+      // console.log(e);
+      // console.log(logEntryString);
     }
   } else {
     try {

@@ -49,7 +49,7 @@ class CompilationEmailsListItem extends Component {
     </div>);
   }
   renderSubject() {
-    return <div className="subject">{this.props.email.subject || 'No email subject'}</div>;
+    return <div className="subject">{this.props.email.subject || 'No subject'}</div>;
   }
   renderBodyPreview() {
     return <div>{_.isEmpty(this.props.email.bodyPreview) ? 'No email body' : this.props.email.bodyPreview}</div>;

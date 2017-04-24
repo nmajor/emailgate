@@ -26,16 +26,12 @@ class CompilationView extends Component { // eslint-disable-line
     }
   }
   renderCoverFile() {
-    if (this.props.compilation.cover) {
-      const boxTitle = new covers.BoxTitle({ compilation: this.props.compilation });
-      const blackSpine = new covers.BlackSpine({ compilation: this.props.compilation });
+    const { compilation } = this.props;
+    if (compilation.cover && compilation.cover.spineWidth) {
+      const template = new covers[compilation.coverTemplate]({ compilation });
+
       return (<div>
-        <div>
-          {boxTitle.render()}
-        </div>
-        <div>
-          {blackSpine.render()}
-        </div>
+          {template.render()}
       </div>);
     }
   }

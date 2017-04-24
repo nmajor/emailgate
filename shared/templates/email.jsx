@@ -221,7 +221,7 @@ class AttachmentInput extends Component { // eslint-disable-line
   renderAttachments() {
     const divStyle = {
       maxWidth: '100%',
-      maxHeight: '500px',
+      maxHeight: '280px',
     };
 
     const wrapperStyle = {
@@ -308,7 +308,9 @@ class EmailTemplate {
     const divStyle = {
       maxWidth: '100%',
       marginTop: '5px',
-      maxHeight: '500px',
+      maxHeight: '280px',
+      marginLeft: '3px',
+      marginRight: '3px',
     };
 
     const imageComponents = attachments.map((attachment, index) => {
@@ -391,7 +393,7 @@ class EmailTemplate {
 
     return (<div style={{ fontSize: '20px' }}>
       {this.renderDate(moment(email.date).format('LL'))}
-      {this.renderSubject(email.subject || 'No email subject')}
+      {this.renderSubject(email.subject || 'No subject')}
       {this.renderFrom(this.processEmailUser(email.from))}
       {this.renderBodyDangerously(_.isEmpty(email.bodyPreview) ? 'No email body' : email.body)}
       {this.renderAttachments(email.attachments)}
