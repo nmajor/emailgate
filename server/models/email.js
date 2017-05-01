@@ -1,7 +1,7 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import Page from './page';
-import { sanitizeEmailBody, sanitizeEmailBodyPreview, resizeAttachment } from '../util/helpers';
+import { sanitizeEmailBody, sanitizeEmailBodyPreview, resizeAttachment, uploadAttachment } from '../util/helpers';
 import EmailTemplate from '../../shared/templates/email';
 import _ from 'lodash';
 
@@ -38,14 +38,27 @@ EmailSchema.post('remove', (doc) => {
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   Promise.resolve()
   .then(() => {
-    if (this.propChanged('attachments')) {
-      this.attachments = _.filter(this.attachments, (a) => { return a.content; });
+    const oldAttachments = _.filter(this.attachments, (a) => { return a.url; });
+    const newAttachments = _.filter(this.attachments, (a) => {
+      a._compilation = this._id;
+      return a.content;
+    });
 
-      return Promise.all(this.attachments.map((attachment) => {
+    if (newAttachments.length > 0) {
+      return Promise.all(newAttachments.map((attachment) => {
         return resizeAttachment(attachment);
       }))
       .then((resizedAttachments) => {
-        this.attachments = resizedAttachments;
+        return Promise.all(resizedAttachments.map((attachment) => {
+          return uploadAttachment(attachment);
+        }))
+        .catch((err) => { console.log('An error happened uploading attachments', err); });
+      })
+      .then((newUploadedAttachments) => {
+        this.attachments = [
+          ...oldAttachments,
+          ...newUploadedAttachments,
+        ];
         return Promise.resolve(this);
       });
     }

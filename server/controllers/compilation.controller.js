@@ -47,7 +47,7 @@ export function patchCompilation(req, res) {
     compilation.title = req.body.title; // eslint-disable-line no-param-reassign
     compilation.subtitle = req.body.subtitle; // eslint-disable-line no-param-reassign
     compilation.coverTemplate = req.body.coverTemplate; // eslint-disable-line no-param-reassign
-    compilation.image = req.body.image; // eslint-disable-line no-param-reassign
+    compilation.image = req.body.image || compilation.image; // eslint-disable-line no-param-reassign
 
     return compilation.save();
   })

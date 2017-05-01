@@ -176,30 +176,6 @@ class AttachmentInput extends Component { // eslint-disable-line
 
       this.props.setFormState(undefined, newState);
     });
-
-    // const newState = {};
-    // const newAttachment = Object.assign({}, attachments[index]);
-
-    // console.log('blah hey rotateAttachment');
-    // const newState = {};
-    // const newAttachment = Object.assign({}, attachments[index]);
-    //
-    // newAttachment.rotate = (newAttachment.rotate || 0) + (90 * direction);
-    // newAttachment.style = {
-    //   MsTransform: `rotate(${newAttachment.rotate}deg)`,
-    //   WebkitTransform: `rotate(${newAttachment.rotate}deg)`,
-    //   transform: `rotate(${newAttachment.rotate}deg)`,
-    // };
-    //
-    // newState.attachments = [
-    //   ...attachments.slice(0, index),
-    //   newAttachment,
-    //   ...attachments.slice(index + 1),
-    // ];
-    //
-    // console.log('attachments', attachments);
-    //
-    // this.props.setFormState(undefined, newState);
   }
   renderAttachmentActions(attachment, index) {
     return (<div className="attachment-actions">
@@ -232,7 +208,12 @@ class AttachmentInput extends Component { // eslint-disable-line
     };
 
     const imageComponents = this.props.email.attachments.map((attachment, index) => {
-      if (['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
+      if (attachment.url) {
+        return (<div style={wrapperStyle} key={index}>
+          {this.renderAttachmentActions(attachment, index)}
+          <img role="presentation" style={divStyle} src={attachment.url} />
+        </div>);
+      } else if (attachment.content && ['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
 
         return (<div style={wrapperStyle} key={index}>
@@ -314,7 +295,9 @@ class EmailTemplate {
     };
 
     const imageComponents = attachments.map((attachment, index) => {
-      if (['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
+      if (attachment.url) {
+        return (<img role="presentation" style={divStyle} key={index} src={attachment.url} />);
+      } else if (attachment.content && ['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
         // const imageString = (new Buffer(attachment.content)).toString('base64');
         return (<img role="presentation" style={divStyle} key={index} src={dataUriPrefix + attachment.content} />);

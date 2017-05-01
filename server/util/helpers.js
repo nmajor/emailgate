@@ -6,11 +6,23 @@ import * as sharedHelpers from '../../shared/helpers';
 import _ from 'lodash';
 import sanitizeHtml from 'sanitize-html';
 import sharp from 'sharp';
+import manta from 'manta';
 
 import CoverTemplate from '../../shared/templates/cover';
 import TitlePageTemplate from '../../shared/templates/titlePage';
 import MessagePageTemplate from '../../shared/templates/messagePage';
 import TableOfContentsTemplate from '../../shared/templates/tableOfContents';
+
+const client = manta.createClient({
+  sign: manta.privateKeySigner({
+    key: process.env.MANTA_APP_KEY.replace(/\\n/g, '\n'),
+    keyId: process.env.MANTA_APP_KEY_ID,
+    user: process.env.MANTA_APP_USER,
+  }),
+  user: process.env.MANTA_APP_USER,
+  url: process.env.MANTA_APP_URL,
+  connectTimeout: 25000,
+});
 
 export function imapifyFilter(filter) {
   const imapFilter = ['ALL'];
@@ -56,7 +68,6 @@ export function sanitizeEmailBody(text) {
 }
 
 export function cleanEmailTextBody(text) {
-  console.log('blah hey text', text);
   text = text.replace(/\n\n/, '<br />');
   text = text.replace(/\n/, '');
 
@@ -296,6 +307,64 @@ export function processCoverImage(image) {
       image.updatedAt = new Date(); // eslint-disable-line
 
       resolve(image);
+    });
+  });
+}
+
+export function bufferToStream(buffer) {
+  const bufferStream = new stream.PassThrough();
+  bufferStream.end(buffer);
+  return bufferStream;
+}
+
+export function uploadAttachment(attachment) {
+  return new Promise((resolve, reject) => {
+    const filename = attachment.fileName;
+    const path = `${process.env.MANTA_APP_PUBLIC_PATH}/compilations/${attachment._compilation}/${filename}`;
+    const buffer = new Buffer(attachment.content, 'base64');
+
+    const options = {
+      mkdirs: true,
+      headers: {
+        'Access-Control-Allow-Headers': 'Range',
+        'Access-Control-Expose-Headers': 'Accept-Ranges, Content-Encoding, Content-Length, Content-Range',
+        'Access-Control-Allow-Origin': '*',
+      },
+    };
+
+    client.put(path, bufferToStream(buffer), options, (err) => {
+      if (err) { return reject(err); }
+
+      const updatedAt = new Date();
+
+      client.info(path, (newErr, results) => {
+        if (newErr) { return reject({ message: newErr.message, newErr, path }); }
+
+        const url = `${process.env.MANTA_APP_URL}/${path}`;
+
+        resolve({
+          _compilation: attachment._compilation,
+          resizeInfo: attachment.resizeInfo,
+          fileName: attachment.fileName,
+          contentType: attachment.contentType,
+          contentDisposition: attachment.contentDisposition,
+          contentId: attachment.contentId,
+          checksum: attachment.checksum,
+          length: attachment.length,
+
+          url,
+          updatedAt,
+          path,
+
+          extension: results.extension,
+          lastModified: results.headers['last-modified'],
+          type: results.type,
+          etag: results.etag,
+          md5: results.md5,
+          size: results.size,
+          fileResults: results,
+        });
+      });
     });
   });
 }

@@ -20,6 +20,7 @@ class EmailView extends Component {
     </div>);
   }
   render() {
+    console.log('blah hey', this.props.email.attachments[0]);
     return this.renderView();
   }
 }

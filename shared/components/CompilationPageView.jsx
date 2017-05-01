@@ -8,7 +8,7 @@ class CompilationPageView extends Component {
     const template = this.props.componentProps.templateFactory(this.props.page);
 
     if (template && this.props.page.type === 'cover') {
-      return template.renderFrontCover();
+      return <div className="top-bumper padded-box">{template.renderFrontCover()}</div>;
     } else if (template) {
       return template.render();
     }

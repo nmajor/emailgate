@@ -5,6 +5,28 @@ import moment from 'moment';
 //   return price / 100;
 // }
 
+
+// BookTypeIds
+// 14   - B&W 6 x 9 in or 229 x 152 mm Case Laminate on White w/Gloss Lam
+// 414  - B&W 6 x 9 in or 229 x 152 mm Case Laminate on White w/Matte Lam
+
+// 4314 - Standard Color 6 x 9 in or 229 x 152 mm Case Laminate on Standard 70 White w/Gloss Lam
+// 4414 - Standard Color 6 x 9 in or 229 x 152 mm Case Laminate on Standard 70 White w/Matte Lam
+
+// 97   - Premium Color 6 x 9 in or 229 - 152 mm Case Laminate on White w/Gloss Lam
+// 497  - Premium Color 6 x 9 in or 229 - 152 mm Case Laminate on White w/Matte Lam
+
+const productBookTypeIdMap = {
+  // 4314 - Standard Color 6 x 9 in or 229 x 152 mm Case Laminate on Standard 70 White w/Gloss Lam
+  1: 4314,
+
+  // 97   - Premium Color 6 x 9 in or 229 - 152 mm Case Laminate on White w/Gloss Lam
+  3: 97,
+
+  // 14   - B&W 6 x 9 in or 229 x 152 mm Case Laminate on White w/Gloss Lam
+  4: 14,
+};
+
 const returnToAddress = {
   Id: 'addr-return',
   City: 'Pleasant Grove',
@@ -99,20 +121,17 @@ export function requestAddress(address) {
   };
 }
 
-// BookTypeIds
-// 4314 - Standard Color 6 x 9 in or 229 x 152 mm Case Laminate on Standard 70 White w/Gloss Lam
-// 4414 - Standard Color 6 x 9 in or 229 x 152 mm Case Laminate on Standard 70 White w/Matte Lam
-
 // Thu, 20 Oct 2016 20:09:50 GMT
 
 // YYYY-MM-DD HH:mm:SS
 
 export function requestItem(item) {
   const compilation = item.props.compilation;
+
   return {
     Id: getItemId(item.props.compilation),
     BindingType: 'Hardcover',
-    BookTypeId: 4414,
+    BookTypeId: productBookTypeIdMap[item.product._id],
     BookBlock: {
       FileVersion: moment(compilation.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
       Url: compilation.pdf.url,

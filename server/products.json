@@ -9,6 +9,15 @@
     "price": 7900
   },
   {
+    "_id": 2,
+    "name": "email_book_pdf",
+    "desc": "Email Book Pdf Download",
+    "tags": ["compilation"],
+    "taxCode": 31000,
+    "taxCodeCategory": "Digital Goods",
+    "price": 999
+  },
+  {
     "_id": 3,
     "name": "email_book",
     "desc": "Hardback Email Book (Premium Color)",
@@ -18,12 +27,12 @@
     "price": 11900
   },
   {
-    "_id": 2,
-    "name": "email_book_pdf",
-    "desc": "Email Book Pdf Download",
+    "_id": 4,
+    "name": "email_book",
+    "desc": "Hardback Email Book (Black and White)",
     "tags": ["compilation"],
-    "taxCode": 31000,
-    "taxCodeCategory": "Digital Goods",
-    "price": 999
+    "taxCode": 81100,
+    "taxCodeCategory": "Books",
+    "price": 5900
   }
 ]
