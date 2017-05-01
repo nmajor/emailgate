@@ -159,14 +159,16 @@ class AttachmentInput extends Component { // eslint-disable-line
   rotateAttachment(index) {
     const { attachments } = this.props.email;
     const attachment = attachments[index];
-    const dataUriPrefix = `data:${attachment.contentType};base64,`;
 
-    rotateImage((dataUriPrefix + attachment.content), 90, (newImageString) => {
+    const imageSrc = attachment.url ? attachment.url : `data:${attachment.contentType};base64,${attachment.content}`;
+
+    rotateImage(imageSrc, 90, (newImageString) => {
       newImageString = newImageString.replace(/^data.*base64,/, '');
 
       const newState = {};
       const newAttachment = Object.assign({}, attachments[index]);
       newAttachment.content = newImageString;
+      newAttachment.url = undefined;
 
       newState.attachments = [
         ...attachments.slice(0, index),

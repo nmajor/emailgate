@@ -38,10 +38,12 @@ EmailSchema.post('remove', (doc) => {
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   Promise.resolve()
   .then(() => {
-    const oldAttachments = _.filter(this.attachments, (a) => { return a.url; });
-    const newAttachments = _.filter(this.attachments, (a) => {
+    const oldAttachments = _.filter(this.attachments, (a) => { return a.url && !a.content; });
+    let newAttachments = _.filter(this.attachments, (a) => { return a.content && !a.url; });
+
+    newAttachments = _.map(newAttachments, (a) => {
       a._compilation = this._id;
-      return a.content;
+      return a;
     });
 
     if (newAttachments.length > 0) {

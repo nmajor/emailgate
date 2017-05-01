@@ -7,6 +7,7 @@ import _ from 'lodash';
 import sanitizeHtml from 'sanitize-html';
 import sharp from 'sharp';
 import manta from 'manta';
+import shortid from 'shortid';
 
 import CoverTemplate from '../../shared/templates/cover';
 import TitlePageTemplate from '../../shared/templates/titlePage';
@@ -103,7 +104,7 @@ export function processAttachments(attachments) {
   return filteredAttachments(attachments).map((a) => {
     return {
       contentType: a.contentType,
-      fileName: a.fileName,
+      fileName: `${shortid.generate()}-${a.fileName}`,
       contentDisposition: a.contentDisposition,
       contentId: a.contentId,
       checksum: a.checksum,
@@ -117,6 +118,7 @@ export function processEmail(email, options = {}) {
   return new Promise((resolve) => {
     // mid should be unique to the message not the object
     const mid = email.messageId;
+    const body = email.html ? sanitizeEmailBody(email.html) : cleanEmailTextBody(email.text);
 
     const processedEmail = {
       date: email.date,
@@ -129,7 +131,7 @@ export function processEmail(email, options = {}) {
       subject: email.subject,
       // messageId: email.messageId,
       // text: email.text,
-      body: (sanitizeEmailBody(email.html) || cleanEmailTextBody(email.text)),
+      body,
       bodyPreview: email.text ? `${email.text.substring(0, 150)}...` : '',
       attachments: [],
     };

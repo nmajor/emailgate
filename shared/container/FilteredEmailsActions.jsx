@@ -19,7 +19,6 @@ class FilteredEmailsActions extends Component {
     const resultsPerPage = this.props.filteredAccountEmailsResults.resultsPerPage;
     const resultsCount = this.props.filteredAccountEmailsResults.resultsCount;
     const startingPage = 1 + (this.currentPage() * resultsPerPage);
-    console.log(resultsCount);
     const endingPage = startingPage + resultsCount - 1;
     // endingPage = endingPage > this.props.filteredAccountEmailsResults.count ? this.props.filteredAccountEmailsResults.count : endingPage;
     return <span>{startingPage} - {endingPage}</span>;
