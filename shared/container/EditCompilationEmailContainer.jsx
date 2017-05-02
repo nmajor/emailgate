@@ -31,6 +31,7 @@ class EditCompilationEmailContainer extends Component {
   remove() {
     if (window.confirm('Are you sure you want to delete this email?')) { // eslint-disable-line no-alert
       this.props.dispatch(Actions.removeEmailFromCompilationEmails(this.props.compilation._id, this.currentEmail));
+      this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
     }
   }
   render() {
@@ -43,6 +44,10 @@ function mapStateToProps(store) {
     compilationEmails: store.compilationEmails,
   };
 }
+
+EditCompilationEmailContainer.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 EditCompilationEmailContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,

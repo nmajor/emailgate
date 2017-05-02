@@ -160,7 +160,7 @@ class AttachmentInput extends Component { // eslint-disable-line
     const { attachments } = this.props.email;
     const attachment = attachments[index];
 
-    const imageSrc = attachment.url ? attachment.url : `data:${attachment.contentType};base64,${attachment.content}`;
+    const imageSrc = attachment.url ? `${attachment.url}?t=${attachment.updatedAt}` : `data:${attachment.contentType};base64,${attachment.content}`;
 
     rotateImage(imageSrc, 90, (newImageString) => {
       newImageString = newImageString.replace(/^data.*base64,/, '');
@@ -213,7 +213,7 @@ class AttachmentInput extends Component { // eslint-disable-line
       if (attachment.url) {
         return (<div style={wrapperStyle} key={index}>
           {this.renderAttachmentActions(attachment, index)}
-          <img role="presentation" style={divStyle} src={attachment.url} />
+          <img role="presentation" style={divStyle} src={`${attachment.url}?t=${attachment.updatedAt}`} />
         </div>);
       } else if (attachment.content && ['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
@@ -298,7 +298,7 @@ class EmailTemplate {
 
     const imageComponents = attachments.map((attachment, index) => {
       if (attachment.url) {
-        return (<img role="presentation" style={divStyle} key={index} src={attachment.url} />);
+        return (<img role="presentation" style={divStyle} key={index} src={`${attachment.url}?t=${attachment.updatedAt}`} />);
       } else if (attachment.content && ['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
         // const imageString = (new Buffer(attachment.content)).toString('base64');

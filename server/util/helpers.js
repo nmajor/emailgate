@@ -102,6 +102,8 @@ export function filteredAttachments(attachments) {
 
 export function processAttachments(attachments) {
   return filteredAttachments(attachments).map((a) => {
+    const updatedAt = Date.now();
+
     return {
       contentType: a.contentType,
       fileName: `${shortid.generate()}-${a.fileName}`,
@@ -110,6 +112,7 @@ export function processAttachments(attachments) {
       checksum: a.checksum,
       length: a.length,
       content: a.content,
+      updatedAt,
     };
   });
 }
@@ -306,7 +309,7 @@ export function processCoverImage(image) {
       image.resizeInfo = info; // eslint-disable-line
       image.crop = undefined; // eslint-disable-line
       image.length = undefined; // eslint-disable-line
-      image.updatedAt = new Date(); // eslint-disable-line
+      image.updatedAt = Date.now(); // eslint-disable-line
 
       resolve(image);
     });
@@ -337,7 +340,7 @@ export function uploadAttachment(attachment) {
     client.put(path, bufferToStream(buffer), options, (err) => {
       if (err) { return reject(err); }
 
-      const updatedAt = new Date();
+      const updatedAt = Date.now();
 
       client.info(path, (newErr, results) => {
         if (newErr) { return reject({ message: newErr.message, newErr, path }); }

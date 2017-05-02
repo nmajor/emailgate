@@ -125,7 +125,6 @@ export function getFullEmail(req, res) {
     return account.getEmailById(req.params.emailId);
   })
   .then((email) => {
-    console.log('blah email');
     res.json(email);
   })
   .catch((err) => {

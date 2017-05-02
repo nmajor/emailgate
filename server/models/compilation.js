@@ -105,7 +105,7 @@ CompilationSchema.methods.seedPages = function seedPages() {
       }))
       .then(() => {
         return this.updatePages();
-      }).catch((err) => { console.log('blah yo', err); });
+      }).catch((err) => { console.log('An error happened when seeding the pages', err); });
     }
   });
 };

@@ -227,7 +227,7 @@ class CaseboundCoverTemplate {
         image = <div style={outerImageStyles}><img style={imageInnerStyles} role="presentation" src={dataUriPrefix + this.image.content} /></div>;
       }
     }
-    console.log('blah', this.changeImage);
+
     return (<div className="cover-image-wrapper" onClick={this.changeImage} style={imageWrapperStyles}>
       {this.changeImage ? <div className="cover-image-overlay">EDIT</div> : null}
       {image}
