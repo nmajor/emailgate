@@ -65,7 +65,7 @@ export function createCompilation(props, cb) {
       dispatch(setPropertyForFetching('newCompilation', false));
       dispatch(addCompilation(res));
 
-      const ReactGA = require('../../ga'); // eslint-disable-line
+      const ReactGA = require('../../ga').default; // eslint-disable-line
       ReactGA.event({
         category: 'Compilation',
         action: 'Created a Compilation',

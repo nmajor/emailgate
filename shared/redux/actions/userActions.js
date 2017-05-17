@@ -7,7 +7,7 @@ import baseURL from '../../baseURL';
 // User Actions
 export function setUser(user) {
   if (window && user._id) {
-    const ReactGA = require('../../ga'); // eslint-disable-line
+    const ReactGA = require('../../ga').default; // eslint-disable-line
     ReactGA.set({ userId: user._id });
   }
 

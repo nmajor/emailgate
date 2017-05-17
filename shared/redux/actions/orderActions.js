@@ -48,7 +48,7 @@ export function getOrderPreview(orderProps, cb) {
       return res.json();
     })
     .then((res) => {
-      const ReactGA = require('../../ga'); // eslint-disable-line
+      const ReactGA = require('../../ga').default; // eslint-disable-line
       ReactGA.event({
         category: 'Checkout',
         action: 'Order Previewed',
@@ -120,7 +120,7 @@ export function createOrder(orderProps, cb) {
         throw new Error(res.error.message);
       }
 
-      const ReactGA = require('../../ga'); // eslint-disable-line
+      const ReactGA = require('../../ga').default; // eslint-disable-line
       ReactGA.event({
         category: 'Checkout',
         action: 'Order Created',

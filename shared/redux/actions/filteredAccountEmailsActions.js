@@ -29,7 +29,7 @@ export function getFilteredAccountEmailsStream(account, filter, password) {
 
 export function getFilteredAccountEmails(account, filter, password) {
   return (dispatch) => {
-    const ReactGA = require('../../ga'); // eslint-disable-line
+    const ReactGA = require('../../ga').default; // eslint-disable-line
     ReactGA.event({
       category: 'Compilation',
       action: 'Searching Account Emails',

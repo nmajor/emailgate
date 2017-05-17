@@ -87,7 +87,7 @@ export function getCompilationEmails(compilationId, cookie) {
 
 export function addEmailsToCompilationEmailsById(compilationId, accountId, emailIds) {
   return (dispatch) => {
-    const ReactGA = require('../../ga'); // eslint-disable-line
+    const ReactGA = require('../../ga').default; // eslint-disable-line
     ReactGA.event({
       category: 'Compilation',
       action: 'Adding Compilation Emails',
@@ -101,7 +101,7 @@ export function addEmailsToCompilationEmailsById(compilationId, accountId, email
 
 export function addEmailsToCompilationEmails(compilationId, emails) {
   return (dispatch) => {
-    const ReactGA = require('../../ga'); // eslint-disable-line
+    const ReactGA = require('../../ga').default; // eslint-disable-line
     ReactGA.event({
       category: 'Compilation',
       action: 'Adding Compilation Emails',

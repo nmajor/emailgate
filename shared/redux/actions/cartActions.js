@@ -30,7 +30,7 @@ export function setPropertyForCartItem(cartItemId, prop, val) {
 
 export function addCartItem(productId, quantity, props) {
   return dispatch => {
-    const ReactGA = require('../../ga'); // eslint-disable-line
+    const ReactGA = require('../../ga').default; // eslint-disable-line
     ReactGA.event({
       category: 'Checkout',
       action: 'Adding Cart Item',
