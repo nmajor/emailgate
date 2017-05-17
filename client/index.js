@@ -6,18 +6,33 @@ import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import store from './store';
 import Modal from 'react-modal';
+import ReactGA from '../shared/ga';
 
 require('./events');
 
 // Pull in the styles for webpack
 require('./assets/scss/style.scss'); // eslint-disable-line
 
+function logPageView() {
+  ReactGA.set({ page: window.location.pathname });
+  ReactGA.pageview(window.location.pathname);
+}
+
+function setGaUserId() {
+  const state = store.getState();
+
+  if (state.user._id) {
+    ReactGA.set({ userId: state.user._id });
+  }
+}
+
 const history = browserHistory;
 const dest = document.getElementById('root');
+console.log('blah hey store', store.getState());
 
 render((
   <Provider store={store}>
-    <Router history={history} routes={routes} />
+    <Router history={history} routes={routes} onUpdate={logPageView} />
   </Provider>
 ), dest);
 
@@ -28,6 +43,7 @@ if (process.env.NODE_ENV !== 'production') {
     console.error('Server-side React render was discarded. Make sure that your initial render does not contain any client-side code.'); // eslint-disable-line
   }
 }
+setGaUserId();
 
 Modal.setAppElement('#root');
 
