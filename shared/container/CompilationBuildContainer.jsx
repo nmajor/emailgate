@@ -11,7 +11,16 @@ class CompilationBuildContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.openChat = this.openChat.bind(this);
     this.addBlankEmail = this.addBlankEmail.bind(this);
+  }
+  openChat() {
+    const chatElm = document.getElementById('tawkchat-status-icon');
+    if (chatElm) {
+      chatElm.click();
+    } else {
+      window.open('https://tawk.to/chat/591c6a9c76be7313d291d516/default/?$_tawk_popout=true');
+    }
   }
   addBlankEmail() {
     this.props.dispatch(Actions.addBlankEmail(this.props.compilation._id, (email) => {
@@ -23,6 +32,11 @@ class CompilationBuildContainer extends Component {
       return <Link to={`/compilations/${this.props.compilation._id}/build/register`} className="btn btn-default"><span className="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Finish Later</Link>;
     }
   }
+  renderStuckButton() {
+    return (
+      <div className="btn btn-default" onClick={this.openChat}>Need Help?</div>
+    );
+  }
   renderFixedFooter() {
     if (!this.props.edit && this.props.ffooter !== false) {
       return (<FixedFooter>
@@ -32,6 +46,7 @@ class CompilationBuildContainer extends Component {
             {this.renderSaveAction()}
           </div>
           <div className="col-xs-6 text-right">
+            {this.renderStuckButton()}
             <Link to={`/compilations/${this.props.compilation._id}/post-next`} className="btn btn-success marginless-right"><span className="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Checkout</Link>
           </div>
         </div>
