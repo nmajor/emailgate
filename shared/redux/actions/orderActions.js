@@ -48,6 +48,12 @@ export function getOrderPreview(orderProps, cb) {
       return res.json();
     })
     .then((res) => {
+      const ReactGA = require('../../ga'); // eslint-disable-line
+      ReactGA.event({
+        category: 'Checkout',
+        action: 'Order Previewed',
+      });
+
       dispatch(setPropertyForCheckout('orderPreview', res));
       cb(res);
     })
@@ -113,6 +119,12 @@ export function createOrder(orderProps, cb) {
       if (res.error && !res._id) {
         throw new Error(res.error.message);
       }
+
+      const ReactGA = require('../../ga'); // eslint-disable-line
+      ReactGA.event({
+        category: 'Checkout',
+        action: 'Order Created',
+      });
 
       dispatch(addOrder(res));
       cb(res);

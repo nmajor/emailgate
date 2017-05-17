@@ -130,6 +130,7 @@ const renderFullPage = (html, renderedState) => {
           window.__INITIAL_STATE__ = ${JSON.stringify(renderedState)};
         </script>
 
+        <script>var GA_TRACKING_ID='${process.env.GA_TRACKING_ID}'</script>
         <script src="/js/app.bundle.js"></script>
 
         <!-- Theme Javascript Files -->
@@ -192,7 +193,6 @@ const renderAdminPage = (html, renderedState) => {
         <script src="/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="/js/ie10-viewport-bug-workaround.js"></script>
-
       </body>
     </html>
   `;

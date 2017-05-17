@@ -28,7 +28,6 @@ function setGaUserId() {
 
 const history = browserHistory;
 const dest = document.getElementById('root');
-console.log('blah hey store', store.getState());
 
 render((
   <Provider store={store}>
@@ -43,7 +42,10 @@ if (process.env.NODE_ENV !== 'production') {
     console.error('Server-side React render was discarded. Make sure that your initial render does not contain any client-side code.'); // eslint-disable-line
   }
 }
+
+// Set GA user and trigger initial page view
 setGaUserId();
+logPageView();
 
 Modal.setAppElement('#root');
 

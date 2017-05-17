@@ -87,6 +87,13 @@ export function getCompilationEmails(compilationId, cookie) {
 
 export function addEmailsToCompilationEmailsById(compilationId, accountId, emailIds) {
   return (dispatch) => {
+    const ReactGA = require('../../ga'); // eslint-disable-line
+    ReactGA.event({
+      category: 'Compilation',
+      action: 'Adding Compilation Emails',
+      value: emailIds.length,
+    });
+
     dispatch(setPropertyForSomeFilteredAccountEmailsById(emailIds, 'saving', true));
     socket.emit('ADD_COMPILATION_EMAILS_BY_ID', { compilationId, accountId, emailIds });
   };
@@ -94,6 +101,13 @@ export function addEmailsToCompilationEmailsById(compilationId, accountId, email
 
 export function addEmailsToCompilationEmails(compilationId, emails) {
   return (dispatch) => {
+    const ReactGA = require('../../ga'); // eslint-disable-line
+    ReactGA.event({
+      category: 'Compilation',
+      action: 'Adding Compilation Emails',
+      value: emails.length,
+    });
+
     dispatch(setPropertyForSomeFilteredAccountEmails(_.map(emails, (email) => { return email.mid; }), 'saving', true));
     socket.emit('ADD_COMPILATION_EMAILS', { compilationId, emails });
   };

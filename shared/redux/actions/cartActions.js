@@ -30,6 +30,12 @@ export function setPropertyForCartItem(cartItemId, prop, val) {
 
 export function addCartItem(productId, quantity, props) {
   return dispatch => {
+    const ReactGA = require('../../ga'); // eslint-disable-line
+    ReactGA.event({
+      category: 'Checkout',
+      action: 'Adding Cart Item',
+    });
+
     dispatch(setPropertyForCart('fetching', true));
     socket.emit('ADD_CART_ITEM', { productId, quantity, props });
   };
