@@ -7,10 +7,16 @@ class FilteredEmailsListItem extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.add = this.add.bind(this);
     this.select = this.select.bind(this);
     this.deselect = this.deselect.bind(this);
     this.preview = this.preview.bind(this);
     this.unpreview = this.unpreview.bind(this);
+  }
+  add() {
+    if (this.props.email.id) {
+      this.props.addEmail(this.props.email);
+    }
   }
   select() {
     if (this.props.email.mid) {
@@ -40,6 +46,28 @@ class FilteredEmailsListItem extends Component {
       <span className="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
     </div>);
   }
+  renderAddAction() {
+    if (this.props.disabled) {
+      return (<div className="btn btn-success disabled">
+        <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      </div>);
+    } else if (this.props.email.saving) {
+      return (<div className="btn btn-success disabled">
+        <span className="icon-loading"><Loading /></span>
+      </div>);
+    }
+
+    return (<div className="btn btn-success" onClick={this.add}>
+      <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    </div>);
+  }
+  renderAddButton() {
+    if (!this.props.disabled && !this.props.selected && !this.props.email.saving) {
+      return (<span className="btn btn-success" onClick={this.add}>
+        <span className="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      </span>);
+    }
+  }
   renderCheckbox() {
     if (this.props.email.saving) {
       return <span className="icon-loading"><Loading /></span>;
@@ -68,7 +96,14 @@ class FilteredEmailsListItem extends Component {
   }
   renderEmailThumb() {
     return (<div className={this.className()}>
-      <div className="select-email">{this.renderCheckbox()}</div>
+      <div className="filtered-email-actions">
+        <div className="select-email">
+          {this.renderCheckbox()}
+        </div>
+        <div className="add-email-now">
+          {this.renderAddButton()}
+        </div>
+      </div>
       <div className="email-thumb-main" onClick={this.preview}>
         {this.renderDate()}
         {this.renderSubject()}
@@ -89,6 +124,7 @@ class FilteredEmailsListItem extends Component {
     if (this.props.previewing) {
       return (<div>
         <div className="list-item-actions">
+          {this.renderAddAction()}
           {this.renderHideAction()}
         </div>
         {this.renderEmailView()}
@@ -108,6 +144,7 @@ FilteredEmailsListItem.propTypes = {
   disabled: PropTypes.bool,
   selected: PropTypes.bool,
   selectEmail: PropTypes.func.isRequired,
+  addEmail: PropTypes.func.isRequired,
   deselectEmail: PropTypes.func.isRequired,
   setCurrentFilteredEmail: PropTypes.func.isRequired,
 };

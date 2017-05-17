@@ -55,9 +55,17 @@
           border: 1px solid #ccc;
         }
       }
-      .select-email {
+      .filtered-email-actions {
         position: absolute;
+      }
+      .select-email {
         padding: 10px 0 0 2px;
+      }
+      .add-email-now {
+        margin: 6px 0 0 2px;
+        .btn {
+          padding: 3px 5px 3px 7px;
+        }
       }
       .email-thumb-main {
         padding-top: 5px;

@@ -9,6 +9,7 @@ class FilteredEmailsListContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.addEmail = this.addEmail.bind(this);
     this.selectEmail = this.selectEmail.bind(this);
     this.deselectEmail = this.deselectEmail.bind(this);
     this.setCurrentFilteredEmail = this.setCurrentFilteredEmail.bind(this);
@@ -26,6 +27,9 @@ class FilteredEmailsListContainer extends Component {
   }
   selectEmail(email) {
     this.props.dispatch(Actions.addIdToSelectedFilteredEmailIds(email.id));
+  }
+  addEmail(email) {
+    this.props.dispatch(Actions.addEmailsToCompilationEmailsById(this.props.compilation._id, this.props.currentAccount._id, [email.id]));
   }
   deselectEmail(email) {
     this.props.dispatch(Actions.removeIdFromSelectedFilteredEmailIds(email.id));
@@ -60,6 +64,7 @@ class FilteredEmailsListContainer extends Component {
           currentFilteredEmail={this.props.currentFilteredAccountEmail}
           deselectEmail={this.deselectEmail}
           selectEmail={this.selectEmail}
+          addEmail={this.addEmail}
           setCurrentFilteredEmail={this.setCurrentFilteredEmail}
           selectedIds={this.props.selectedFilteredEmailIds}
         />

@@ -13,6 +13,7 @@ class FilteredEmailsList extends Component {
         selected={selected}
         previewing={isCurrent}
         selectEmail={this.props.selectEmail}
+        addEmail={this.props.addEmail}
         deselectEmail={this.props.deselectEmail}
         setCurrentFilteredEmail={this.props.setCurrentFilteredEmail}
       />);
@@ -32,6 +33,7 @@ FilteredEmailsList.propTypes = {
   compilationEmailMids: PropTypes.array.isRequired,
   selectedIds: PropTypes.array.isRequired,
   currentFilteredEmail: PropTypes.object,
+  addEmail: PropTypes.func.isRequired,
   selectEmail: PropTypes.func.isRequired,
   deselectEmail: PropTypes.func.isRequired,
   setCurrentFilteredEmail: PropTypes.func.isRequired,
