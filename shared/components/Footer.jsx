@@ -11,8 +11,9 @@ class Footer extends Component {
     return (<div className="links">
       <Link to="/">Home</Link>-
       <Link to="/about">About</Link>-
-      <Link to="/terms">Terms</Link>-
-      <Link to="/support">Support</Link>
+      <Link to="/terms">Terms and Conditions</Link>-
+      <Link to="/privacy">Privacy Policy</Link>-
+      <a href="https://tawk.to/chat/591c6a9c76be7313d291d516/default/?$_tawk_popout=true">Support</a>
     </div>);
   }
   render() {
