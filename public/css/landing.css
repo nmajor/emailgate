@@ -18,7 +18,7 @@ body {
 }
 
 .landing.navbar-inverse {
-	background-color: transparent;
+  background-color:rgba(33, 33, 33, 0.9);
 	border: 0px;
 }
 
@@ -99,11 +99,9 @@ p {
 }
 
 #gwrap {
-	background-color: #fbfcfe;
 	padding-top: 60px;
 	padding-bottom: 60px;
 	border-top: 1px solid #eff0f2;
-	border-bottom: 1px solid #eff0f2;
 	width: 100%;
 }
 

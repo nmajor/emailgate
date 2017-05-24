@@ -55,6 +55,7 @@ class CompilationAddToCart extends Component {
       <div className="list-group">
         {this.renderProductOption(3)}
         {this.renderProductOption(1)}
+        {this.renderProductOption(4)}
       </div>
     </div>);
   }
