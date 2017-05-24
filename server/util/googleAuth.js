@@ -95,7 +95,8 @@ export function getMessageById(client, id, options = {}) {
         return processEmailFromMetadata(messageResponse)
         .then((email) => {
           resolve(email);
-        });
+        })
+        .catch((err) => { console.log('An error happened when processing email from metadata', err); });
       }
 
       const mailparser = new MailParser();
@@ -104,8 +105,11 @@ export function getMessageById(client, id, options = {}) {
         return processEmail(msgObj, { includeAttachments: options.includeAttachments, resizeAttachments: options.resizeAttachments })
         .then((email) => {
           resolve(email);
-        });
+        })
+        .catch((er) => { console.log('An error happened processing the emails', er); });
       });
+
+      mailparser.on('error', (e) => { console.log('Error happened mailparser', e); });
 
       mailparser.write(base64.decode(messageResponse.raw));
       mailparser.end();
@@ -116,7 +120,8 @@ export function getMessageById(client, id, options = {}) {
 export function getMessagesById(client, messageIds, options = {}) {
   return Promise.all(messageIds.map((id) => {
     return getMessageById(client, id, options);
-  }));
+  }))
+  .catch((err) => { console.log('Error getting messages by id', err); });
 }
 
 function queryResults(client, q) {
@@ -180,7 +185,8 @@ export function searchMessages(account, searchOptions) {
             resultsPerPage: config.emailsPerPage,
             resultsCount: response.messages.length,
           });
-        });
+        })
+        .catch((error) => { console.log('Error searching messages', error); });
       });
     });
   });
