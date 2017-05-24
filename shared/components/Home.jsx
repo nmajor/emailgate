@@ -153,7 +153,7 @@ class Home extends Component { // eslint-disable-line
               <div className="block">
                 <span className="fa fa-edit"></span>
                 <h4>Edit</h4>
-                <p>Notice a typo? Thing a section of one email is not important? No problem. You can edit the body of any email. After all, your email book may outlast you.</p>
+                <p>Notice a typo? Think a section of one email is not important? No problem. You can edit the body of any email. After all, your email book may outlast you.</p>
               </div>
             </div>
           </div>
