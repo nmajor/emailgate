@@ -5,7 +5,7 @@ class PromoCodeTile extends Component { // eslint-disable-line
   renderExpires() {
     if (this.props.promoCode.expiresAt) {
       return (<div>
-        Expires: {moment(this.props.promoCode.createdAt).format('LLL')} - {moment(this.props.promoCode.createdAt).fromNow()}
+        Expires: {moment(this.props.promoCode.expiresAt).format('LLL')} - {moment(this.props.promoCode.expiresAt).fromNow()}
       </div>);
     }
   }
