@@ -30,9 +30,11 @@ export function getFilteredAccountEmailsStream(account, filter, password) {
 export function getFilteredAccountEmails(account, filter, password) {
   return (dispatch) => {
     const ReactGA = require('../../ga').default; // eslint-disable-line
+    const qIsComplex = ((filter || {}).q || '').indexOf(':') > -1;
     ReactGA.event({
       category: 'Compilation',
       action: 'Searching Account Emails',
+      label: qIsComplex ? 'Complex Search' : 'Basic Search',
     });
 
     if (!filter.pageToken) {

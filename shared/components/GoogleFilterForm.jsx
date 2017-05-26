@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import Loading from './Loading';
+// import Loading from './Loading';
 import GoogleAdvancedFilterForm from './GoogleAdvancedFilterForm';
 
 function buildFilterOperators(params) {
@@ -40,7 +40,7 @@ class GoogleFilterForm extends Component {
     super(props, context);
 
     this.state = {
-      showAdvanced: false,
+      showAdvanced: true,
     };
 
     this.toggleAdvanced = this.toggleAdvanced.bind(this);
@@ -64,7 +64,7 @@ class GoogleFilterForm extends Component {
     this.submitForm();
   }
   advancedValuesFromQuery() {
-    const q = (this.refs.q || {}).value;
+    const q = (this.refs.q || {}).value || '';
 
     const toReg = /to:\((.*?)\)/;
     const fromReg = /from:\((.*?)\)/;

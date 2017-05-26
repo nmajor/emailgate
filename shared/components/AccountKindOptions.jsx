@@ -5,9 +5,17 @@ class AccountKindOptions extends Component {
     super(props, context);
 
     this.setKindToImap = this.setKindToImap.bind(this);
+    this.handleGoogleKindClick = this.handleGoogleKindClick.bind(this);
   }
   setKindToImap() {
     this.props.setKind('imap');
+  }
+  handleGoogleKindClick() {
+    const ReactGA = require('../ga').default; // eslint-disable-line
+    ReactGA.event({
+      category: 'Compilation',
+      action: 'Connect Gmail Account Clicked',
+    });
   }
   renderImapKind() {
     return;
@@ -19,7 +27,7 @@ class AccountKindOptions extends Component {
   }
   renderGoogleKind() {
     return (<div className="col-sm-3">
-      <a className="account-kind-option" href={this.props.authUrls.googleAuthUrl}>
+      <a className="account-kind-option" href={this.props.authUrls.googleAuthUrl} onClick={this.handleGoogleKindClick}>
         <img role="presentation" src="/img/gmail_logo.png" />
       </a>
     </div>);
