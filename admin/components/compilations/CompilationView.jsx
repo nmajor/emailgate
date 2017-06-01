@@ -6,7 +6,39 @@ import covers from '../../../shared/templates/covers';
 import CompilationSpineWidthForm from './CompilationSpineWidthForm';
 import BuildLogs from './BuildLogs';
 
+import baseURL from '../../../shared/baseURL';
+
 class CompilationView extends Component { // eslint-disable-line
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      compilationEmails: [],
+    };
+  }
+  componentDidMount() {
+    fetch(`${baseURL}/api/compilations/${this.props.compilation._id}/emails`, { credentials: 'include' })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      this.setState({ compilationEmails: res });
+    });
+  }
+  renderEmailPreviews() {
+    return this.state.compilationEmails.map((email) => {
+      return (<div className="bottom-bumper">
+        <span><strong>{email.subject}</strong></span> - <span>{email.bodyPreview}</span>
+      </div>);
+    });
+  }
   renderErrorLog() {
     if (this.props.compilation.logs) {
       const logs = _.filter(this.props.compilation.logs, { type: 'error' });
@@ -93,6 +125,9 @@ class CompilationView extends Component { // eslint-disable-line
       </div>
       <div>
         <JsonViewer obj={this.props.compilation} />
+      </div>
+      <div>
+        {this.renderEmailPreviews()}
       </div>
       <div>
         {this.renderCoverFile()}
