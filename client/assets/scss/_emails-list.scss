@@ -21,6 +21,10 @@
     color: inherit;
     display: block;
 
+    .attachment-icon {
+      margin-right: 3px;
+    }
+
     &:hover {
       cursor: pointer;
       border-color: #909090;

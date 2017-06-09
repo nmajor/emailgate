@@ -46,6 +46,7 @@ class CompilationEmailsListItem extends Component {
   renderDate() {
     return (<div className="type">
       <span className="glyphicon glyphicon-envelope" aria-hidden="true"></span> <span className="date">{moment(this.props.email.date).format('LL')}</span>
+      {this.renderAttachmentIcons()}
     </div>);
   }
   renderSubject() {
@@ -53,6 +54,15 @@ class CompilationEmailsListItem extends Component {
   }
   renderBodyPreview() {
     return <div>{_.isEmpty(this.props.email.bodyPreview) ? 'No email body' : this.props.email.bodyPreview}</div>;
+  }
+  renderAttachmentIcons() {
+    if (this.props.email.attachments.length > 0) {
+      const attachments = this.props.email.attachments.map(() => {
+        return (<span className="attachment-icon glyphicon glyphicon-picture" aria-hidden="true"></span>);
+      });
+
+      return <span><span className="left-bumper right-bumper">-</span>{attachments}</span>;
+    }
   }
   renderEmailThumb() {
     return (<Link

@@ -53,11 +53,20 @@ class TableOfContentsTemplate {
       <div className="unbreakable" key={index} style={entryStyle}>
         <div style={subjectStyle}>{subject}</div>
         <div style={{ lineHeight: '8px', marginBottom: '4px' }}>
-          <div style={dateStyle}>{prettyDate}</div>
+          <div style={dateStyle}>{prettyDate} {this.renderAttachmentIcons(email)}</div>
           <div style={pageStyle}>{pageNum}</div>
         </div>
       </div>
     );
+  }
+  renderAttachmentIcons(email) {
+    if (email.attachments.length > 0) {
+      const attachments = email.attachments.map(() => {
+        return (<span style={{ marginRight: '3px' }} className="glyphicon glyphicon-picture" aria-hidden="true"></span>);
+      });
+
+      return <span><span style={{ margin: '0 10px' }}>-</span>{attachments}</span>;
+    }
   }
   renderEntries() {
     if (this.emails.length === 0) {
@@ -102,6 +111,7 @@ class TableOfContentsTemplate {
     </style>
     <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   </head>
   <body>
   ${renderToString(this.render())}

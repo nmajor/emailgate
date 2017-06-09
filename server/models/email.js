@@ -1,7 +1,14 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import Page from './page';
-import { sanitizeEmailBody, sanitizeEmailBodyPreview, resizeAttachment, uploadAttachment } from '../util/helpers';
+import {
+  sanitizeEmailBody,
+  sanitizeEmailBodyPreview,
+  resizeAttachment,
+  uploadAttachment,
+  trimKnownBodyFluff,
+} from '../util/helpers';
+
 import EmailTemplate from '../../shared/templates/email';
 import _ from 'lodash';
 
@@ -68,6 +75,7 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
     return Promise.resolve(this);
   })
   .then(() => {
+    this.body = trimKnownBodyFluff(this.body);
     if (this.propChanged('body') && !_.isEmpty(this.body)) {
       this.body = sanitizeEmailBody(this.body);
     }

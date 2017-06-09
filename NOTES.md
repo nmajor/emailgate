@@ -1,5 +1,7 @@
-TOP PRIORITY:
-- Refactor to not send attachments in initial search
+TODO:
+Show spinner when adding email with the plus button (with email open)
+On checkout discounts dont show on the confirm page (Maybe promo code doesnt persist)
+
 
 
 
@@ -16,9 +18,6 @@ Source: http://www.dallinjones.com/2008/07/how-to-convert-from-pixels-to-millime
 
 
 subject:isaac after:2013/5/1 before:2013/6/1
-
-TODO:
-
 
 
 

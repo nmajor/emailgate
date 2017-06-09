@@ -200,6 +200,13 @@ export default (io) => {
         return Promise.resolve(email);
       })
       .catch((err) => { console.log('An error happened when updating a compilation email', err); });
+
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then(compilation => Email.find({ _compilation: compilation._id }))
+      .then((emails) => {
+        Promise.all(emails.map((email) => { return email.save(); }));
+      });
     });
 
     socket.on('UPDATE_COMPILATION_PAGE', (data) => {
