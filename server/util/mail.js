@@ -4,7 +4,7 @@ import mailgunJs from 'mailgun-js';
 
 export function sendMail(data) {
   return new Promise((resolve, reject) => {
-    const from = 'Excited User <no-reply@sandbox81435.mailgun.org>';
+    const from = 'MyEmailBook <no-reply@myemailbook.com>';
 
     const mailData = {
       from,

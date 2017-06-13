@@ -1,6 +1,11 @@
 import _ from 'lodash';
 import moment from 'moment';
 
+const compilationOverwriteMap = {
+  'BkPvfW3f-': 'https://us-east.manta.joyent.com//nmajor/public/emailgate/compilation-BJwbRWHRg-padded-with-blanks.pdf',
+  'rJa-cFHzW': 'https://us-east.manta.joyent.com//nmajor/public/emailgate/compilation-BJwbRWHRg-padded-with-blanks.pdf',
+};
+
 // function decPrice(price) {
 //   return price / 100;
 // }
@@ -15,6 +20,14 @@ import moment from 'moment';
 
 // 97   - Premium Color 6 x 9 in or 229 - 152 mm Case Laminate on White w/Gloss Lam
 // 497  - Premium Color 6 x 9 in or 229 - 152 mm Case Laminate on White w/Matte Lam
+
+function compilationUrl(compilation) {
+  if (compilation._id in compilationOverwriteMap) {
+    return compilationOverwriteMap[compilation._id];
+  }
+
+  return compilation.pdf.url;
+}
 
 const productBookTypeIdMap = {
   // 4314 - Standard Color 6 x 9 in or 229 x 152 mm Case Laminate on Standard 70 White w/Gloss Lam
@@ -134,7 +147,7 @@ export function requestItem(item) {
     BookTypeId: productBookTypeIdMap[item.product._id],
     BookBlock: {
       FileVersion: moment(compilation.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
-      Url: compilation.pdf.url,
+      Url: compilationUrl(compilation),
     },
     Cover: {
       FileVersion: moment(compilation.cover.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),

@@ -4,17 +4,18 @@ import patterns from './patterns';
 import moment from 'moment';
 import fonts from './fonts';
 import bleedMap from './bleedMap';
+import _ from 'lodash';
 
 class CaseboundCoverTemplate {
   constructor(props) {
     this.compilation = props.compilation;
     this.bleedType = props.bleedType || 'casebound';
     this.templatePreview = false;
-    this.startDate = props.startDate;
-    this.endDate = props.endDate;
+    this.startDate = props.startDate || _.get(this.compiilation, 'emailMetaData.startingDate');
+    this.endDate = props.endDate || _.get(this.compiilation, 'emailMetaData.endingDate');
 
-    this.prettyStartDate = moment(this.startDate).format('MMM, YYYY');
-    this.prettyEndDate = moment(this.endDate).format('MMM, YYYY');
+    this.prettyStartDate = moment(this.startDate).format('MMM YYYY');
+    this.prettyEndDate = moment(this.endDate).format('MMM YYYY');
 
     this.patterns = patterns;
     this.pattern = this.patterns.arabesque;
@@ -108,14 +109,14 @@ class CaseboundCoverTemplate {
       <div
         style={{
           height: `${this.fullHeight}${this.unitType}`,
-          width: `${this.colorWrapOverWidth}${this.unitType}`,
+          width: `${this.colorWrapOverWidth + 2}${this.unitType}`,
           position: 'absolute',
-          right: 0,
+          right: -2,
           backgroundColor: '#222',
         }}
       ></div>
       <div style={innerStyles}>
-        <div style={footerStyles}><div style={logoStyles}>myemailbook.com</div></div>
+        <div style={footerStyles}><div style={logoStyles}>missionarymemoir.com</div></div>
       </div>
     </div>);
   }
@@ -224,9 +225,9 @@ class CaseboundCoverTemplate {
       <div
         style={{
           height: `${this.fullHeight}${this.unitType}`,
-          width: `${this.colorWrapOverWidth}${this.unitType}`,
+          width: `${this.colorWrapOverWidth + 2}${this.unitType}`,
           position: 'absolute',
-          left: 0,
+          left: -2,
           backgroundColor: '#222',
         }}
       ></div>

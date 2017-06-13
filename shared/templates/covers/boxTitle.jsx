@@ -10,7 +10,7 @@ class CaseboundCoverTemplate {
   constructor(props) {
     this.compilation = props.compilation;
     this.bleedType = props.bleedType || 'casebound';
-    this.templatePreview = true;
+    this.templatePreview = false;
     this.startDate = props.startDate;
     this.endDate = props.endDate;
 
@@ -99,7 +99,7 @@ class CaseboundCoverTemplate {
 
     return (<div style={styles}>
       <div style={innerStyles}>
-        <div style={footerStyles}>myemailbook.com</div>
+        <div style={footerStyles}>missionarymemoir.com</div>
       </div>
     </div>);
   }
@@ -218,8 +218,11 @@ class CaseboundCoverTemplate {
       fontWeight: '100',
     };
 
-    const prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
-    const prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
+    const prettyStartDate = moment(this.startDate).format('MMM YYYY');
+    const prettyEndDate = moment(this.endDate).format('MMM YYYY');
+
+    // const prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
+    // const prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
 
     return (<div className="border">
       <div style={titlesWrapperStypes}>

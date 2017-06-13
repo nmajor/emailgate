@@ -30,6 +30,10 @@ const CompilationSchema = new Schema({
   cover: { type: CompilationCoverSchema, default: {} },
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
+  emailMetaData: {
+    startingDate: { type: Date, default: new Date },
+    endingDate: { type: Date, default: new Date },
+  },
   pdf: {},
 }, {
   timestamps: true,
@@ -49,9 +53,13 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
 
 CompilationSchema.methods.updateEmails = function updateEmails() {
   return Email.find({ _compilation: this._id })
-  .select('_id')
+  .select('_id date')
   .then((emails) => {
-    this.emails = emails;
+    const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+    this.emailMetaData.startindDate = (sortedEmails[0] || {}).date;
+    this.emailMetaData.endingDate = (sortedEmails[(sortedEmails.length - 1)] || {}).date;
+
+    this.emails = emails.map((email) => { return email._id; });
     return this.save();
   });
 };

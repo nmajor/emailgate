@@ -33,6 +33,12 @@ class CompilationTitleContainer extends Component {
   }
 }
 
+function mapStateToProps(store) {
+  return {
+    compilationEmails: store.compilationEmails,
+  };
+}
+
 CompilationTitleContainer.contextTypes = {
   router: PropTypes.object.isRequired,
 };
@@ -41,6 +47,7 @@ CompilationTitleContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   params: PropTypes.object,
+  compilationEmails: PropTypes.array.isRequired,
 };
 
-export default connect()(CompilationTitleContainer);
+export default connect(mapStateToProps)(CompilationTitleContainer);
