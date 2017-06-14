@@ -132,7 +132,12 @@ function ensureAuthenticated(req, res, next) {
 }
 
 function ensureAdmin(req, res, next) {
-  if (req.user.isAdmin || req.user.email === 'nick@nmajor.com') {
+  const admins = [
+    'nick@nmajor.com',
+    'king.benjamin012@gmail.com',
+  ];
+
+  if (req.user.isAdmin || admins.indexOf(req.user.email) > -1) {
     console.log('User is an admin.');
     next();
   } else {
