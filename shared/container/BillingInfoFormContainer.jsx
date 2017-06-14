@@ -67,6 +67,7 @@ class BillingInfoFormContainer extends Component {
         billingAddress={this.billingAddress}
         onSubmit={this.submitBillingForm}
         cardErrors={this.state.cardErrors}
+        initialValues={{ exp_month: 1, exp_year: new Date().getFullYear() }}
       />
     </div>);
   }

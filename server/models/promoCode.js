@@ -19,6 +19,7 @@ const PromoCodeSchema = new Schema({
   discount: { type: Number },
   expiresAt: { type: Date },
   oneTimeUse: { type: Boolean, default: false },
+  freeShipping: { type: Boolean, default: false },
   orders: [{ type: String, ref: 'Order' }],
 }, {
   timestamps: true,

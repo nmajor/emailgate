@@ -12,6 +12,7 @@ class PromoCodeForm extends Component { // eslint-disable-line
         discount,
         expiresAt,
         oneTimeUse,
+        freeShipping,
       },
       error,
       handleSubmit,
@@ -62,6 +63,13 @@ class PromoCodeForm extends Component { // eslint-disable-line
               </div>
             </div>
           </div>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="checkbox">
+                <label className="control-label"><input type="checkbox" {...freeShipping} /> Free Shipping</label>
+              </div>
+            </div>
+          </div>
           <div className="form-group text-right">
             {error && <div className="text-danger">{error}</div>}
             <button className="btn btn-success marginless-right" type="submit">Submit</button>
@@ -86,6 +94,7 @@ PromoCodeForm = reduxForm({ // eslint-disable-line no-class-assign
     'discount',
     'expiresAt',
     'oneTimeUse',
+    'freeShipping',
   ],
 })(PromoCodeForm);
 

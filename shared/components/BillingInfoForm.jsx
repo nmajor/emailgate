@@ -84,7 +84,7 @@ class BillingInfoForm extends Component {
                 <div className="form-group">
                   <label>Exp Month</label>
                   <select type="text" className="form-control" {...exp_month}>
-                    {this.renderRangedOptions(1, 12)}
+                    {this.renderRangedOptions(1, 12, exp_month.value)}
                   </select>
                 </div>
               </div>
@@ -92,7 +92,7 @@ class BillingInfoForm extends Component {
                 <div className="form-group">
                   <label>Exp Year</label>
                   <select type="text" className="form-control" {...exp_year}>
-                    {this.renderRangedOptions(new Date().getFullYear(), (new Date().getFullYear()) + 10)}
+                    {this.renderRangedOptions(new Date().getFullYear(), (new Date().getFullYear()) + 10, exp_year)}
                   </select>
                 </div>
               </div>

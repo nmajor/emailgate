@@ -1,5 +1,6 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
+import PromoCode from './promoCode';
 import { getProductById, calculateShipping } from '../util/helpers';
 import _ from 'lodash';
 
@@ -40,8 +41,26 @@ CartSchema.pre('save', function (next) { // eslint-disable-line func-names
 
 CartSchema.methods.getEstimatedShipping = function getEstimatedShipping() {
   return new Promise((resolve) => {
-    this.shippingEst = calculateShipping(this.items, this.shippingAddress);
-    return resolve(this);
+    if (!_.isEmpty(this._promoCode)) {
+      const promoCodeId = typeof this._promoCode === 'string' ? this._promoCode : this._promoCode._id;
+      PromoCode.findOne({ _id: promoCodeId })
+      .then((promoCode) => {
+        return promoCode.isValid()
+        .then((isValid) => {
+          if (isValid && promoCode.freeShipping) {
+            this.shippingEst = 0;
+            this._promoCode = promoCode;
+            return resolve(this);
+          }
+
+          this.shippingEst = calculateShipping(this.items, this.shippingAddress);
+          return resolve(this);
+        });
+      });
+    } else {
+      this.shippingEst = calculateShipping(this.items, this.shippingAddress);
+      return resolve(this);
+    }
   });
 };
 

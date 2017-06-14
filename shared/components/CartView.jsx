@@ -106,9 +106,9 @@ class CartView extends Component {
     }
   }
   renderShipping() {
-    if (this.props.cart.shipping || this.props.cart.shippingEst) {
+    if (this.props.cart.shipping !== undefined || this.props.cart.shippingEst !== undefined) {
       const amount = this.props.cart.shipping || this.props.cart.shippingEst;
-      const desc = this.props.cart.shipping ? 'Shipping' : 'Estimated Shipping';
+      const desc = this.props.cart.shipping !== undefined ? 'Shipping' : 'Estimated Shipping';
 
       return (<tr>
         <td colSpan="3" className="text-right text-bold">{desc}:</td>

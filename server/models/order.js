@@ -119,8 +119,28 @@ OrderSchema.methods.syncCart = function syncCart() {
 OrderSchema.methods.getShipping = function getShipping() {
   return (!this.items ? this.syncCart() : Promise.resolve(true))
   .then(() => {
-    this.shipping = calculateShipping(this.items, this.shippingAddress);
-    return Promise.resolve(this);
+    return new Promise((resolve) => {
+      if (!_.isEmpty(this._promoCode)) {
+        const promoCodeId = typeof this._promoCode === 'string' ? this._promoCode : this._promoCode._id;
+        PromoCode.findOne({ _id: promoCodeId })
+        .then((promoCode) => {
+          return promoCode.isValid()
+          .then((isValid) => {
+            if (isValid && promoCode.freeShipping) {
+              this.shipping = 0;
+              this._promoCode = promoCode;
+              return resolve(this);
+            }
+
+            this.shipping = calculateShipping(this.items, this.shippingAddress);
+            return resolve(this);
+          });
+        });
+      } else {
+        this.shipping = calculateShipping(this.items, this.shippingAddress);
+        return resolve(this);
+      }
+    });
   });
 };
 
