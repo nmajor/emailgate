@@ -11,8 +11,8 @@ class CaseboundCoverTemplate {
     this.compilation = props.compilation;
     this.bleedType = props.bleedType || 'casebound';
     this.templatePreview = false;
-    this.startDate = props.startDate || _.get(this.compiilation, 'emailMetaData.startingDate');
-    this.endDate = props.endDate || _.get(this.compiilation, 'emailMetaData.endingDate');
+    this.startDate = props.startDate || _.get(this.compiilation, 'metaData.startingDate');
+    this.endDate = props.endDate || _.get(this.compiilation, 'metaData.endingDate');
 
     this.prettyStartDate = moment(this.startDate).format('MMM YYYY');
     this.prettyEndDate = moment(this.endDate).format('MMM YYYY');

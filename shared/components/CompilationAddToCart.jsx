@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { prettyPrice } from '../helpers';
+import { prettyPrice, compilationTotalPageCountEstimate } from '../helpers';
 import _ from 'lodash';
 
 class CompilationAddToCart extends Component {
@@ -34,10 +34,12 @@ class CompilationAddToCart extends Component {
     </form>);
   }
   renderEmailCount() {
-    return <div>Emails: {this.props.compilationEmailsCount}</div>;
+    const count = this.props.compilationEmailsCount || _.get(this.props.compilation, 'emails.length');
+
+    return <div>Emails: {count}</div>;
   }
   renderPageCountEstimate() {
-    return <div>Estimated Pages: {this.props.compilationTotalPageCountEstimate}</div>;
+    return <div>Estimated Pages: {compilationTotalPageCountEstimate(this.props.compilation)}</div>;
   }
   renderProductOption(productId) {
     const product = _.find(this.props.products, (p) => { return p._id === productId; });
@@ -78,8 +80,7 @@ class CompilationAddToCart extends Component {
 
 CompilationAddToCart.propTypes = {
   compilation: PropTypes.object.isRequired,
-  compilationEmailsCount: PropTypes.number.isRequired,
-  compilationTotalPageCountEstimate: PropTypes.number.isRequired,
+  compilationEmailsCount: PropTypes.number,
   products: PropTypes.array.isRequired,
   submitForm: PropTypes.func.isRequired,
 };

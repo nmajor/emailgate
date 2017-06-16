@@ -12,7 +12,8 @@ export function addBlankEmail(req, res) {
   })
   .then((email) => {
     res.json(email);
-  });
+  })
+  .catch((err) => { console.log(err); });
 }
 
 export function findOneCompilation(req, res) {

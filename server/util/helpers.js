@@ -56,6 +56,8 @@ export function googlifyFilter(filter) {
 }
 
 export function trimKnownBodyFluff(text) {
+  if (!text) { return text; }
+
   return text
   .replace(/NOTICE:.?This.?email.?message.*original.?message.?/, '');
 }

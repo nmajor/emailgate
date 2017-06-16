@@ -127,10 +127,12 @@ export function pageEditPath(page) {
   return `compilations/${page._compilation}/build/pages/${page._id}/edit`;
 }
 
-export function compilationTotalPageCountEstimate(emails, pages) {
-  const emailPdfPages = emails.map((e) => { return e.estimatedPageCount; }).reduce((pre, cur) => { return pre + cur; });
+export function compilationTotalPageCountEstimate(compilation) {
+  let emailPdfPages = _.get(compilation, 'metaData.estimatedEmailPdfPages');
+  let pagePdfPages = _.get(compilation, 'metaData.estimatedPagePdfPages');
 
-  const pagePdfPages = pages.map((p) => { return p.estimatedPageCount; }).reduce((pre, cur) => { return pre + cur; });
+  emailPdfPages = emailPdfPages || compilation.emails.map(() => { return 3; }).reduce((pre, cur) => { return pre + cur; }, 0);
+  pagePdfPages = pagePdfPages || compilation.pages.map(() => { return 1; }).reduce((pre, cur) => { return pre + cur; }, 0);
 
   return emailPdfPages + pagePdfPages;
 }

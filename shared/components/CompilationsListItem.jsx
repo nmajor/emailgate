@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
+import CartCompilationButtonContainer from '../container/CartCompilationButtonContainer';
 
 class CompilationsListItem extends Component { // eslint-disable-line
   renderCompilationLink() {
@@ -13,18 +14,22 @@ class CompilationsListItem extends Component { // eslint-disable-line
       </span>);
     }
   }
-  renderButton() {
-    return (<Link className="btn btn-success btn-xs" to={this.renderCompilationLink()}>
+  renderViewButton() {
+    return (<Link className="btn btn-default btn-xs" to={this.renderCompilationLink()}>
       <span className="glyphicon glyphicon-eye-open right-bumper" aria-hidden="true"></span>
       View
     </Link>);
+  }
+  renderAddButton() {
+    return (<CartCompilationButtonContainer compilation={this.props.compilation} />);
   }
   render() {
     return (<div className="compilations-list-item">
       <h3>{this.props.compilation.title}</h3>
       <div className="actions">
         {this.renderEmailsCount()}
-        {this.renderButton()}
+        {this.renderViewButton()}
+        {this.renderAddButton()}
       </div>
     </div>);
   }

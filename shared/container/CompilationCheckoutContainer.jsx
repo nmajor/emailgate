@@ -5,7 +5,6 @@ import Modal from '../components/Modal';
 import CompilationBuildContainer from './CompilationBuildContainer';
 // import CartViewContainer from './CartViewContainer';
 import * as Actions from '../redux/actions/index';
-import { compilationTotalPageCountEstimate } from '../helpers';
 import _ from 'lodash';
 
 class CompilationCheckoutContainer extends Component {
@@ -36,9 +35,6 @@ class CompilationCheckoutContainer extends Component {
     });
     return products;
   }
-  compilationTotalPageCountEstimate() {
-    return compilationTotalPageCountEstimate(this.props.compilationEmails, this.props.compilationPages);
-  }
   back() {
     this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
@@ -51,7 +47,6 @@ class CompilationCheckoutContainer extends Component {
           <CompilationAddToCart
             compilation={this.props.compilation}
             compilationEmailsCount={this.props.compilationEmails.length}
-            compilationTotalPageCountEstimate={this.compilationTotalPageCountEstimate()}
             submitForm={this.addToCart}
             products={this.compilationProducts()}
           />

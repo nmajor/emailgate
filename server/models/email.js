@@ -75,8 +75,8 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
     return Promise.resolve(this);
   })
   .then(() => {
-    this.body = trimKnownBodyFluff(this.body);
     if (this.propChanged('body') && !_.isEmpty(this.body)) {
+      this.body = trimKnownBodyFluff(this.body);
       this.body = sanitizeEmailBody(this.body);
     }
 
