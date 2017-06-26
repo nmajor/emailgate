@@ -145,6 +145,7 @@ class CaseboundCoverTemplate {
     });
   }
   renderFrontCover() {
+    console.log('blah hey');
     const styles = {
       display: 'inline-block',
       verticalAlign: 'top',
@@ -161,12 +162,15 @@ class CaseboundCoverTemplate {
       height: `${this.fullHeight - (this.bleedWidth * 2)}${this.unitType}`,
       width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}${this.unitType}`,
       padding: '0',
+      backgroundColor: this.backgroundColor,
     };
 
     if (this.templatePreview) {
       styles.background = '#aaa';
       // containerStyles.backgroundImage = `url(${this.pattern})`;
-      containerStyles.backgroundColor = this.backgroundColor;
+
+
+      // containerStyles.backgroundColor = this.backgroundColor;
     }
 
     return (<div className="wrapper" style={styles}>
