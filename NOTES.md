@@ -2,7 +2,31 @@ TODO:
 Show spinner when adding email with the plus button (with email open)
 On checkout discounts dont show on the confirm page (Maybe promo code doesnt persist)
 
+FROM BJ:
+- New domain with SSL
+- Make Add Emails socket event add emails 1 by 1 instead of Promise.all
+- Add progress bar on top (Add Emails -> Edit Book (50 emails) -> Checkout)
+- Remove modal for add emails - Move to add emails progress step
+- Remove modal for checkout - Move to checkout progress step
+- Move search to a sidebar (See how it works)
+- When adding emails grey out pending emails and show progress (Adding 50 emails) in a notification strip below the navbar
+- Email preview and edit font needs to be bigger when viewing on website
+- Change icons to words (EDIT, SAVE, VIEW)
+- Grey out emails when saving
+- Estimated page number
+- Cover templates change to icons
+- Make the Table of Contents font smaller
+- Greyify date and photo icon line in Table of Contents
 
+
+STRETCH:
+- Custom page with any text
+- Quote page
+- New Cover Designs
+
+
+DONE:
+- Add EXPAND down arrow icon to collapsed emails
 
 
 

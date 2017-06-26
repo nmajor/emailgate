@@ -27,17 +27,17 @@ class CompilationEmailsListItem extends Component {
   }
   renderEditAction() {
     return (<Link className="btn btn-warning" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}/edit`}>
-      <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
+      <span className="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
     </Link>);
   }
   renderViewAction() {
     return (<Link className="btn btn-primary" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}>
-      <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+      <span className="glyphicon glyphicon-eye-open" aria-hidden="true"></span> View
     </Link>);
   }
   renderSaveAction() {
     const loading = <span className="alone-button-loading"><Loading /></span>;
-    const icon = <span className="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>;
+    const icon = <span><span className="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</span>;
 
     return (<button className="btn btn-success" onClick={this.submitForm}>
       {this.props.email.saving ? loading : icon}
@@ -68,6 +68,11 @@ class CompilationEmailsListItem extends Component {
     return (<Link
       className="compilation-emails-list-item list-item" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}
     >
+      <div className="email-thumb list-item-actions">
+        <div className="btn btn-default">
+          <span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+        </div>
+      </div>
       {this.renderDate()}
       {this.renderSubject()}
       {this.renderBodyPreview()}
