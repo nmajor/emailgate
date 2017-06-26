@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import CompilationAddToCart from '../components/CompilationAddToCart';
-import Modal from '../components/Modal';
-import CompilationBuildContainer from './CompilationBuildContainer';
 // import CartViewContainer from './CartViewContainer';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
@@ -39,19 +37,14 @@ class CompilationCheckoutContainer extends Component {
     this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
   render() {
-    return (<div>
-      <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
-      <Modal close={this.back}>
-        <div>
-          <h1 className="text-center">Add To Cart</h1>
-          <CompilationAddToCart
-            compilation={this.props.compilation}
-            compilationEmailsCount={this.props.compilationEmails.length}
-            submitForm={this.addToCart}
-            products={this.compilationProducts()}
-          />
-        </div>
-      </Modal>
+    return (<div className="container compilation-container">
+      <h1 className="text-center">Add To Cart</h1>
+      <CompilationAddToCart
+        compilation={this.props.compilation}
+        compilationEmailsCount={this.props.compilationEmails.length}
+        submitForm={this.addToCart}
+        products={this.compilationProducts()}
+      />
     </div>);
   }
 }

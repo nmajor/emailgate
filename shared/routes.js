@@ -78,20 +78,22 @@ const routes = (
       <Route path="/compilations/:compilationId/pre-next" component={CompilationPreNextContainer} />
       <Route path="/compilations/:compilationId/post-next" component={CompilationPostNextContainer} />
       <Route path="/compilations/:compilationId/build" component={CompilationBuildContainer} />
-      <Route path="/compilations/:compilationId/build/login" component={CompilationLoginContainer} />
-      <Route path="/compilations/:compilationId/build/login/:next" component={CompilationLoginContainer} />
-      <Route path="/compilations/:compilationId/build/register" component={CompilationRegisterContainer} />
-      <Route path="/compilations/:compilationId/build/register/:next" component={CompilationRegisterContainer} />
-      <Route path="/compilations/:compilationId/build/checkout" component={CompilationCheckoutContainer} />
       <Route path="/compilations/:compilationId/build/emails/:emailId" component={ViewCompilationEmailContainer} />
       <Route path="/compilations/:compilationId/build/emails/:emailId/edit" component={EditCompilationEmailContainer} />
       <Route path="/compilations/:compilationId/build/pages/:pageId" component={ViewCompilationPageContainer} />
       <Route path="/compilations/:compilationId/build/pages/:pageId/edit" component={EditCompilationPageContainer} />
-      <Route path="/compilations/:compilationId/build/add-emails/new-account" component={CompilationNewAccountContainer} />
-      <Route path="/compilations/:compilationId/build/add-emails/:accountId" component={AddCompilationEmailsContainer} />
-      <Route path="/compilations/:compilationId/build/add-emails" component={AddCompilationEmailsContainer} />
-      <Route path="/compilations/:compilationId/build/title" component={CompilationTitleContainer} />
       <Route path="/compilations/:compilationId/build/message" component={CompilationMessageContainer} />
+
+      <Route path="/compilations/:compilationId/build/login" component={CompilationLoginContainer} />
+      <Route path="/compilations/:compilationId/build/login/:next" component={CompilationLoginContainer} />
+      <Route path="/compilations/:compilationId/build/register" component={CompilationRegisterContainer} />
+      <Route path="/compilations/:compilationId/build/register/:next" component={CompilationRegisterContainer} />
+
+      <Route path="/compilations/:compilationId/title" component={CompilationTitleContainer} />
+      <Route path="/compilations/:compilationId/checkout" component={CompilationCheckoutContainer} />
+      <Route path="/compilations/:compilationId/add-emails/new-account" component={CompilationNewAccountContainer} />
+      <Route path="/compilations/:compilationId/add-emails/:accountId" component={AddCompilationEmailsContainer} />
+      <Route path="/compilations/:compilationId/add-emails" component={AddCompilationEmailsContainer} />
     </Route>
   </Route>
 );

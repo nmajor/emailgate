@@ -58,7 +58,7 @@ class CompilationBuildContainer extends Component {
       return (<FixedFooter>
         <div className="row">
           <div className="col-xs-6">
-            <Link to={`/compilations/${this.props.compilation._id}/build/add-emails`} className="btn btn-default"><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Emails</Link>
+            <Link to={`/compilations/${this.props.compilation._id}/add-emails`} className="btn btn-default"><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Emails</Link>
             {this.renderSaveAction()}
           </div>
           <div className="col-xs-6 text-right">

@@ -12,7 +12,7 @@ class CompilationPostNextContainer extends Component {
     if (this.userNeedsAuth()) {
       this.context.router.push(`/compilations/${this.props.compilation._id}/build/register/post`);
     } else if (!this.cartHasCompilation()) {
-      this.context.router.push(`/compilations/${this.props.compilation._id}/build/checkout`);
+      this.context.router.push(`/compilations/${this.props.compilation._id}/checkout`);
     } else {
       this.context.router.push('/cart');
     }

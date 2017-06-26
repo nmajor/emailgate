@@ -1,6 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import Modal from '../components/Modal';
-import CompilationBuildContainer from './CompilationBuildContainer';
 import CompilationTitleForm from '../components/CompilationTitleForm';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
@@ -21,14 +19,9 @@ class CompilationTitleContainer extends Component {
     this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
   render() {
-    return (<div>
-      <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
-      <Modal close={this.back}>
-        <div>
-          <h1 className="text-center">Edit Titles</h1>
-          <CompilationTitleForm compilation={this.props.compilation} submitForm={this.update} fetching={this.props.compilation.saving} back={this.back} />
-        </div>
-      </Modal>
+    return (<div className="container compilation-container">
+      <h1 className="text-center">Customize Cover</h1>
+      <CompilationTitleForm compilation={this.props.compilation} submitForm={this.update} fetching={this.props.compilation.saving} back={this.back} />
     </div>);
   }
 }

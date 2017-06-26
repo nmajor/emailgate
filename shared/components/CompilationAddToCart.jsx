@@ -44,7 +44,7 @@ class CompilationAddToCart extends Component {
   renderProductOption(productId) {
     const product = _.find(this.props.products, (p) => { return p._id === productId; });
 
-    return (<div className="list-group bottom-bumper">
+    return (<div className="list-group bottom-bumper col-md-4">
       <div className={`list-group-item product-option ${productId === this.state.productId ? 'active' : ''}`} onClick={() => { this.setProductId(productId); }}>
         <h5>{product.desc}</h5>
         <div>Price: ${prettyPrice(product.price)}/each</div>

@@ -53,7 +53,7 @@ class TableOfContentsTemplate {
       <div className="unbreakable" key={index} style={entryStyle}>
         <div style={subjectStyle}>{subject}</div>
         <div style={{ lineHeight: '8px', marginBottom: '4px' }}>
-          <div style={dateStyle}>{prettyDate} {this.renderAttachmentIcons(email)}</div>
+          <div style={dateStyle}>{prettyDate}{this.renderAttachmentIcons(email)}</div>
           <div style={pageStyle}>{pageNum}</div>
         </div>
       </div>

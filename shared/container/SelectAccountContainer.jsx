@@ -19,11 +19,11 @@ class SelectAccountContainer extends Component {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.currentAccountId });
   }
   deselectAccount() {
-    this.context.router.push(`/compilations/${this.props.compilation._id}/build/add-emails`);
+    this.context.router.push(`/compilations/${this.props.compilation._id}/add-emails`);
   }
   selectAccount(account) {
     if (account._id !== this.props.currentAccountId) {
-      this.context.router.push(`/compilations/${this.props.compilation._id}/build/add-emails/${account._id}`);
+      this.context.router.push(`/compilations/${this.props.compilation._id}/add-emails/${account._id}`);
     }
   }
   handleDeleteClick(account) {
@@ -31,7 +31,7 @@ class SelectAccountContainer extends Component {
   }
   renderNewAccountAction() {
     return (<div className="account-list">
-      <Link to={`/compilations/${this.props.compilation._id}/build/add-emails/new-account`} className="selected-account-list-item new-account-list-item" ><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new email account</Link>
+      <Link to={`/compilations/${this.props.compilation._id}/add-emails/new-account`} className="selected-account-list-item new-account-list-item" ><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new email account</Link>
     </div>);
   }
   renderFooter() {

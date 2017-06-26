@@ -36,7 +36,7 @@ class CompilationEmailsListItem extends Component {
     </Link>);
   }
   renderSaveAction() {
-    const loading = <span className="alone-button-loading"><Loading /></span>;
+    const loading = <span><span className="alone-button-loading"><Loading /></span> Saving</span>;
     const icon = <span><span className="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save</span>;
 
     return (<button className="btn btn-success" onClick={this.submitForm}>

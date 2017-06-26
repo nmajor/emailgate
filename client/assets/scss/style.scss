@@ -1,3 +1,4 @@
+@import 'variables';
 @import 'header';
 @import 'footer';
 @import 'email-form';
@@ -14,6 +15,7 @@
 @import 'admin';
 @import 'react-datepicker/datepicker';
 @import 'react-crop';
+@import 'progress-header';
 
 .right-bumper { margin-right: 10px; }
 .left-bumper { margin-left: 10px; }

@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CompilationHeader from '../components/CompilationHeader';
+import CompilationProgressHeader from '../components/CompilationProgressHeader';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import * as sharedHelpers from '../helpers';
@@ -12,7 +13,7 @@ class CompilationContainer extends Component {
     super(props, context);
 
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.compilationId }) || {};
-    this.currentCompilationPath = this.props.routes[this.props.routes.length - 1].path.split('/')[3];
+    this.currentCompilationPath = this.getCurrentPath(this.props);
   }
   componentDidMount() {
     if (this.props.accounts.length < 1) {
@@ -33,7 +34,7 @@ class CompilationContainer extends Component {
   }
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
-    this.currentCompilationPath = nextProps.routes[nextProps.routes.length - 1].path.split('/')[3];
+    this.currentCompilationPath = this.getCurrentPath(nextProps);
   }
   componentWillUnmount() {
     if (window.previousLocation) {
@@ -41,7 +42,10 @@ class CompilationContainer extends Component {
       this.props.dispatch(Actions.setCompilationPages([]));
     }
   }
-
+  getCurrentPath(props) {
+    const path = props.routes[props.routes.length - 1].path;
+    return path.split('/')[3];
+  }
   actionStatusMap() {
     return sharedHelpers.actionStatusMap(this.compilation, this.props.compilationEmails, this.props.compilationPages);
   }
@@ -56,6 +60,7 @@ class CompilationContainer extends Component {
     if (!_.isEmpty(this.compilation)) {
       return (<div>
         <Header />
+        <CompilationProgressHeader compilation={this.compilation} currentPath={this.currentCompilationPath} />
         <CompilationHeader compilation={this.compilation} />
         <div className="container-fluid compilation-container">
           {this.renderChildren()}

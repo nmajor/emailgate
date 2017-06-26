@@ -13,7 +13,7 @@ class CompilationPreNextContainer extends Component {
     // } else if (_.find(this.props.compilationPages, { type: 'message-page' })) {
     //   this.context.router.push(`/compilations/${this.props.compilation._id}/build/message`);
     } else if (!this.compilationHasEmails()) {
-      this.context.router.push(`/compilations/${this.props.compilation._id}/build/add-emails`);
+      this.context.router.push(`/compilations/${this.props.compilation._id}/add-emails`);
     } else {
       this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
     }

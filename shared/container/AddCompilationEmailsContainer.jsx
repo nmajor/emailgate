@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import * as Actions from '../redux/actions/index';
-import Modal from '../components/Modal';
-import CompilationBuildContainer from './CompilationBuildContainer';
 import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
@@ -26,7 +24,7 @@ class AddCompilationEmailsContainer extends Component {
   }
   componentWillMount() {
     if (this.props.accounts.length === 0) {
-      this.context.router.push(`/compilations/${this.props.compilation._id}/build/add-emails/new-account`);
+      this.context.router.push(`/compilations/${this.props.compilation._id}/build/new-account`);
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -43,7 +41,7 @@ class AddCompilationEmailsContainer extends Component {
     this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
   userReturnTo() {
-    return `/compilations/${this.props.compilation._id}/build/add-emails`;
+    return `/compilations/${this.props.compilation._id}/add-emails`;
   }
   firstTimer() {
     return this.props.compilationEmails.length === 0;
@@ -111,22 +109,11 @@ class AddCompilationEmailsContainer extends Component {
     return <h3 className="text-center">Pick an email account to search</h3>;
   }
   render() {
-    return (<div>
-      <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
-      <Modal
-        close={this.back}
-        renderFixedFooter={this.renderModalFixedFooter}
-        renderFixedFooterAlert={this.renderModalFixedFooterAlert}
-        showFixedFooter={this.showFixedFooter()}
-        showFixedFooterAlert={this.showFixedFooterAlert()}
-      >
-        <div>
-          {this.renderHeader()}
-          {this.renderSelectAccount()}
-          {this.renderFilterContainer()}
-          {this.renderFilteredAccountEmailsContainer()}
-        </div>
-      </Modal>
+    return (<div className="container compilation-container">
+      {this.renderHeader()}
+      {this.renderSelectAccount()}
+      {this.renderFilterContainer()}
+      {this.renderFilteredAccountEmailsContainer()}
     </div>);
   }
 }

@@ -11,7 +11,6 @@ FROM BJ:
 - Move search to a sidebar (See how it works)
 - When adding emails grey out pending emails and show progress (Adding 50 emails) in a notification strip below the navbar
 - Email preview and edit font needs to be bigger when viewing on website
-- Change icons to words (EDIT, SAVE, VIEW)
 - Grey out emails when saving
 - Estimated page number
 - Cover templates change to icons
@@ -27,7 +26,7 @@ STRETCH:
 
 DONE:
 - Add EXPAND down arrow icon to collapsed emails
-
+- Change icons to words (EDIT, SAVE, VIEW)
 
 
 
