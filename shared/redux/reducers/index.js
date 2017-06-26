@@ -63,7 +63,7 @@ const appReducer = combineReducers({
 
 const rootReducer = (state = initialState, action) => {
   if (action.type === ActionTypes.RESET_STATE) {
-    state = initialState; // eslint-disable-line no-param-reassign
+    state = Object.assign({}, initialState, { config: state.config });
   }
   return appReducer(state, action);
 };
