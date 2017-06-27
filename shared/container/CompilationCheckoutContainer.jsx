@@ -38,13 +38,17 @@ class CompilationCheckoutContainer extends Component {
   }
   render() {
     return (<div className="container compilation-container">
-      <h1 className="text-center">Add To Cart</h1>
-      <CompilationAddToCart
-        compilation={this.props.compilation}
-        compilationEmailsCount={this.props.compilationEmails.length}
-        submitForm={this.addToCart}
-        products={this.compilationProducts()}
-      />
+      <div className="row">
+        <div className="col-md-8 col-md-offset-2">
+          <h1 className="text-center">Add To Cart</h1>
+          <CompilationAddToCart
+            compilation={this.props.compilation}
+            compilationEmailsCount={this.props.compilationEmails.length}
+            submitForm={this.addToCart}
+            products={this.compilationProducts()}
+          />
+        </div>
+      </div>
     </div>);
   }
 }

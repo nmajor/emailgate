@@ -375,6 +375,28 @@ class CaseboundCoverTemplate {
 </html>
     `;
   }
+  frontCoverToString() {
+    return `
+<html>
+  <head>
+    <meta charset="utf8">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        box-sizing: border-box;
+      }
+    </style>
+    ${this.primaryFont.link}
+    ${this.primaryFont.link !== this.secondaryFont.link ? this.secondaryFont.link : ''}
+  </head>
+  <body>
+  ${renderToString(this.renderFrontCover())}
+  </body>
+</html>
+    `;
+  }
 }
 
 export default CaseboundCoverTemplate;

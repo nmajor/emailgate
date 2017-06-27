@@ -60,8 +60,8 @@ class CompilationContainer extends Component {
     if (!_.isEmpty(this.compilation)) {
       return (<div>
         <Header />
+        <CompilationHeader compilation={this.compilation} compilationEmails={this.props.compilationEmails} />
         <CompilationProgressHeader compilation={this.compilation} currentPath={this.currentCompilationPath} />
-        <CompilationHeader compilation={this.compilation} />
         <div className="container-fluid compilation-container">
           {this.renderChildren()}
         </div>

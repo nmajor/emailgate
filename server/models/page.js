@@ -29,10 +29,11 @@ PageSchema.post('init', function () {  // eslint-disable-line func-names
 });
 
 PageSchema.pre('save', function (next) { // eslint-disable-line func-names
-  this.getHtml()
-  .then(() => {
-    next();
-  });
+  let tasks = Promise.resolve();
+
+  tasks = tasks.then(this.getHtml);
+
+  tasks.then(() => { next(); });
 });
 
 PageSchema.methods.getHtml = function getHtml() {

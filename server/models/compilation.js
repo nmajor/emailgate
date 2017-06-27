@@ -5,6 +5,7 @@ import Email from './email';
 import Page from './page';
 import * as sharedHelpers from '../../shared/helpers';
 import * as serverHelpers from '../util/helpers';
+import { htmlToPdf } from '../util/pdf';
 import { startWorker } from '../util/docker';
 import covers from '../../shared/templates/covers';
 
@@ -26,6 +27,7 @@ const CompilationSchema = new Schema({
   title: String,
   subtitle: String,
   coverTemplate: String,
+  thumbnail: {},
   image: {},
   cover: { type: CompilationCoverSchema, default: {} },
   emails: [{ type: String, ref: 'Email' }],
@@ -41,17 +43,73 @@ const CompilationSchema = new Schema({
   timestamps: true,
 });
 
+CompilationSchema.post('init', function () {  // eslint-disable-line func-names
+  this._original = this.toObject();
+});
+
 CompilationSchema.pre('save', function (next) { // eslint-disable-line func-names
+  let tasks = Promise.resolve();
+
   if (this.image && !this.image.updatedAt) {
-    serverHelpers.processCoverImage(this.image)
+    tasks = tasks.then(() => { return serverHelpers.processCoverImage(this.image); })
     .then((image) => {
       this.image = image;
-      next();
     });
-  } else {
-    next();
   }
+
+  // if (this.coverPropsChanged()) {
+
+  tasks = tasks.then(() => { return this.buildThumbnail(); });
+
+  // }
+
+  tasks.then(() => {
+    next();
+  });
 });
+
+CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
+  const thumbnailOptions = {
+    type: 'jpeg',             // allowed file types: png, jpeg, pdf
+    quality: '75',
+    height: '400px',
+    width: '267px',
+  };
+
+  const startDate = this.metaData.startingDate;
+  const endDate = this.metaData.endingDate;
+
+  const template = new covers[this.coverTemplate]({ compilation: this, bleedType: 'bleedless', startDate, endDate });
+
+  return htmlToPdf(template.frontCoverToString(), thumbnailOptions)
+  .then((imgBuffer) => {
+    this.thumbnail = {
+      content: imgBuffer.toString('base64'),
+      contentType: 'image/jpeg',
+      updatedAt: Date.now(),
+    };
+  })
+  .catch((err) => { console.log('An error happened when trying to update compilation thumbnail', err); });
+};
+
+CompilationSchema.methods.buildCoverHtml = function buildCoverHtml() {
+  return this.updateCoverDimentions()
+  .then(() => { return Email.find({ _compilation: this._id }); })
+  .then((emails) => {
+    const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+    const firstEmail = sortedEmails[0] || {};
+    const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
+    this.metaData.startingDate = firstEmail.date;
+    this.metaData.endingDate = lastEmail.date;
+
+    const startDate = this.metaData.startingDate;
+    const endDate = this.metaData.endingDate;
+
+    const template = new covers[this.coverTemplate]({ compilation: this, startDate, endDate });
+
+    this.cover.html = template.toString();
+  });
+};
 
 CompilationSchema.methods.updateEmails = function updateEmails() {
   return Email.find({ _compilation: this._id })
@@ -78,22 +136,10 @@ CompilationSchema.methods.updatePages = function updatePages() {
 };
 
 CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
-  return this.updateCoverDimentions()
-  .then(() => { return Email.find({ _compilation: this._id }); })
-  .then((emails) => {
-    const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
-    const firstEmail = sortedEmails[0] || {};
-    const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
-    const startDate = firstEmail.date;
-    const endDate = lastEmail.date;
-
-    const template = new covers[this.coverTemplate]({ compilation: this, startDate, endDate });
-
-    this.cover.html = template.toString();
-    return this.save()
-    .then(() => {
-      return startWorker({ compilationId: this.id, kind: 'compilation-cover-pdf' }, statusCb);
-    });
+  return this.buildCoverHtml()
+  .then(() => { return this.save(); })
+  .then(() => {
+    return startWorker({ compilationId: this._id, kind: 'compilation-cover-pdf' }, statusCb);
   });
 };
 
@@ -103,7 +149,7 @@ CompilationSchema.methods.updateCoverDimentions = function getCoverDimentions() 
 
   this.cover.height = dimentions.height;
   this.cover.width = dimentions.width;
-  return this.save();
+  return Promise.resolve(this);
 };
 
 CompilationSchema.methods.seedPages = function seedPages() {
@@ -195,6 +241,21 @@ CompilationSchema.methods.getPagePositionMap = function getPagePositionMap() {
     });
     return Promise.resolve(positionMap);
   });
+};
+
+CompilationSchema.methods.coverPropsChanged = function coverPropsChanged() {
+  const original = this._original || {};
+  const current = this.toObject();
+  const coverProps = [
+    'image.updatedAt',
+    'title',
+    'subtitle',
+    'emails',
+    'metaData.startingDate',
+    'metaData.endingDate',
+  ];
+
+  _.some(coverProps, (prop) => { return !_.isEqual(_.get(current, prop), _.get(original, prop)); });
 };
 
 export default Mongoose.model('Compilation', CompilationSchema);

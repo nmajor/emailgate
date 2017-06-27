@@ -145,7 +145,6 @@ class CaseboundCoverTemplate {
     });
   }
   renderFrontCover() {
-    console.log('blah hey');
     const styles = {
       display: 'inline-block',
       verticalAlign: 'top',
@@ -282,6 +281,28 @@ class CaseboundCoverTemplate {
   </head>
   <body>
   ${renderToString(this.render())}
+  </body>
+</html>
+    `;
+  }
+  frontCoverToString() {
+    return `
+<html>
+  <head>
+    <meta charset="utf8">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        box-sizing: border-box;
+      }
+    </style>
+    ${this.primaryFont.link}
+    ${this.primaryFont.link !== this.secondaryFont.link ? this.secondaryFont.link : ''}
+  </head>
+  <body>
+  ${renderToString(this.renderFrontCover())}
   </body>
 </html>
     `;

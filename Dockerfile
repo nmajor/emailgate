@@ -1,8 +1,14 @@
 FROM node:4.2.6
 
 RUN apt-get update -qq
-RUN apt-get install -y nginx supervisor
+RUN apt-get install -y bzip2 libfontconfig nginx supervisor
 RUN mkdir -p /var/log/nginx /var/log/supervisor
+
+# Download and install phantomjs
+WORKDIR /tmp
+RUN wget https://us-east.manta.joyent.com//nmajor/public/emailgate/container/phantomjs-2.1.1-linux-x86_64.tar.bz2
+RUN tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
+RUN mv phantomjs-2.1.1-linux-x86_64/bin/phantomjs /bin/
 
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
