@@ -2,22 +2,14 @@ require('dotenv').config();
 if (process.env.NODE_ENV === 'production') { require('newrelic'); } // eslint-disable-line global-require
 
 import Express from 'express';
-import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import http from 'http';
-import socketIo from 'socket.io';
-import session from 'express-session';
 import passport from 'passport';
-
-import connectMongo from 'connect-mongo';
-const ConnectMongo = connectMongo(session);
-
 
 import appInitialState from '../shared/initialState';
 import adminInitialState from '../admin/initialState';
-import socketEvents from './events/index';
 
 // Initialize the Express App
 const app = new Express();
@@ -50,37 +42,18 @@ import api from './routes/api.routes';
 import webhook from './routes/webhook.routes';
 import oath2 from './routes/oath2.routes';
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URL);
-mongoose.Promise = Promise;
-
 import User from './models/user';
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
-const sessionSecret = process.env.SESSION_SECRET || 'supercat';
-// Define session middleware
-const sessionMiddleware = session({
-  secret: sessionSecret,
-  resave: true,
-  saveUninitialized: false,
-  store: new ConnectMongo({
-    url: process.env.MONGO_URL,
-    mongoose_connection: mongoose.connections[0],
-  }),
-});
-
-// Socket.io
-const io = socketIo();
-socketEvents(io);
-io.use((socket, next) => { sessionMiddleware(socket.request, socket.request.res, next); });
+import sessionMiddleware from './session-middleware';
 
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
+import io from './io';
 
 // Apply body Parser and server public assets and routes
 app.use(bodyParser.json({ limit: '20mb' }));
@@ -91,7 +64,6 @@ app.use('/', index);
 app.use('/api', api);
 app.use('/webhook', webhook);
 app.use('/oath2', oath2);
-
 
 // Render Initial HTML
 const renderFullPage = (html, renderedState) => {
