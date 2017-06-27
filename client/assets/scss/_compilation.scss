@@ -35,7 +35,23 @@
 
       .badge {
         background-color: $primary-color;
+        font-weight: 400;
+        line-height: 15px;
       }
+    }
+  }
+}
+.cover-preview {
+  border: 1px solid #CCC;
+  background: #EEE;
+  padding: 10px 0;
+
+  .template {
+    text-align: center;
+
+    .wrapper {
+      border: 1px solid #CCC;
+      margin: auto;
     }
   }
 }

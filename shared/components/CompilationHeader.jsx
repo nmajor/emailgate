@@ -27,13 +27,13 @@ class CompilationHeader extends Component { // eslint-disable-line
       emailsCount = compilationEmails.length;
     }
 
-    return (<span className="badge right-bumper"><span className="glyphicon glyphicon-envelope" aria-hidden="true"></span> {emailsCount}</span>);
+    return (<span className="badge right-bumper"><span className="glyphicon glyphicon-envelope" aria-hidden="true"></span> Emails {emailsCount}</span>);
   }
   renderEstPages() {
     const { compilation } = this.props;
     const pagesCount = compilationTotalPageCountEstimate(compilation);
 
-    return (<span className="badge"><span className="glyphicon glyphicon-file" aria-hidden="true"></span> {pagesCount}</span>);
+    return (<span className="badge"><span className="glyphicon glyphicon-file" aria-hidden="true"></span> Estimated Pages {pagesCount}</span>);
   }
   renderMetaData() {
     return (<div className="meta-data">

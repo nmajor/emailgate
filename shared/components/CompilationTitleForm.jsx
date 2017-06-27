@@ -159,17 +159,27 @@ class CompilationTitleForm extends Component {
   render() {
     return (<form onSubmit={this.handleSubmit}>
       <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} />
-      {this.renderTitleFormGroup()}
-      {this.renderSubtitleFormGroup()}
-      {this.renderTemplateFormGroup()}
-      {this.renderErrors('base')}
-      {this.renderCoverPreview()}
-      <div className="text-right">
-        {this.renderBackAction()}
-        <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
-          Submit
-          {this.renderLoading()}
-        </button>
+      <div className="row">
+        <div className="col-md-6">
+          {this.renderTitleFormGroup()}
+          {this.renderSubtitleFormGroup()}
+          {this.renderTemplateFormGroup()}
+          {this.renderErrors('base')}
+          <div className="text-right">
+            {this.renderBackAction()}
+            <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
+              Submit
+              {this.renderLoading()}
+            </button>
+          </div>
+        </div>
+        <div className="col-md-6">
+          <div className="cover-preview">
+            <div className="template">
+              {this.renderCoverPreview()}
+            </div>
+          </div>
+        </div>
       </div>
     </form>);
   }
