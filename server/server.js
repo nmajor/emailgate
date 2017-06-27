@@ -41,19 +41,21 @@ import index from './routes/index.routes';
 import api from './routes/api.routes';
 import webhook from './routes/webhook.routes';
 import oath2 from './routes/oath2.routes';
+import socketEvents from './events/index';
+import sessionMiddleware from './session-middleware';
 
 import User from './models/user';
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-import sessionMiddleware from './session-middleware';
-
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
 import io from './io';
+socketEvents(io);
+io.use((socket, next) => { sessionMiddleware(socket.request, socket.request.res, next); });
 
 // Apply body Parser and server public assets and routes
 app.use(bodyParser.json({ limit: '20mb' }));

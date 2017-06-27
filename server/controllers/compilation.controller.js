@@ -1,6 +1,7 @@
 import Compilation from '../models/compilation';
 import Page from '../models/page';
 import Email from '../models/email';
+import io from '../io';
 
 export function addBlankEmail(req, res) {
   Compilation.findOne({ _user: req.user._id, _id: req.params.id })
@@ -54,6 +55,15 @@ export function patchCompilation(req, res) {
   })
   .then((compilation) => {
     res.json(compilation);
+
+    return compilation.buildThumbnail();
+  })
+  .then((compilation) => {
+    return compilation.save();
+  })
+  .then((compilation) => {
+    io.to(`users/${compilation._user}`).emit('UPDATED_COMPILATION', { _id: compilation._id, title: 'Bogus title' });
+    // compilation.broadcast();
   });
 }
 

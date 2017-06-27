@@ -9,6 +9,7 @@ export function setUser(user) {
   if (window && user._id) {
     const ReactGA = require('../../ga').default; // eslint-disable-line
     ReactGA.set({ userId: user._id });
+    socket.emit('JOIN_USER_ROOM', { userId: user._id, userEmail: user.email });
   }
 
   return {

@@ -4,7 +4,7 @@ import Compilation from '../models/compilation';
 import Email from '../models/email';
 import Page from '../models/page';
 import Cart from '../models/cart';
-// import _ from 'lodash';
+import _ from 'lodash';
 import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
@@ -21,6 +21,22 @@ function userIsAdmin(user) {
 export default (io) => {
   io.on('connection', (socket) => {
     console.log('a user connected');
+
+    // socket.join('everyone');
+
+    socket.on('JOIN_USER_ROOM', (data) => {
+      console.log('JOIN_USER_ROOM', data);
+      User.findOne({ email: socket.request.session.passport.user })
+      .then((user) => {
+        console.log('blah user._id', user._id);
+        console.log('blah data.userId', data.userId);
+        console.log('blah compare', _.isEqual(user._id, data.userId));
+        if (_.isEqual(user._id, data.userId)) {
+          console.log('blah join', `users/${user._id}`);
+          socket.join(`user/${user._id}`);
+        }
+      });
+    });
 
     socket.on('CHECK_IMAP_ACCOUNT_CONNECTION', (data) => {
       console.log('CHECK_IMAP_ACCOUNT_CONNECTION');
@@ -200,13 +216,6 @@ export default (io) => {
         return Promise.resolve(email);
       })
       .catch((err) => { console.log('An error happened when updating a compilation email', err); });
-
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Email.find({ _compilation: compilation._id }))
-      .then((emails) => {
-        Promise.all(emails.map((email) => { return email.save(); }));
-      });
     });
 
     socket.on('UPDATE_COMPILATION_PAGE', (data) => {

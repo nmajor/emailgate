@@ -7,6 +7,7 @@ import { Router, browserHistory } from 'react-router';
 import store from './store';
 import Modal from 'react-modal';
 import ReactGA from '../shared/ga';
+import socket from './socket';
 
 require('./events');
 
@@ -23,6 +24,14 @@ function setGaUserId() {
 
   if (state.user._id) {
     ReactGA.set({ userId: state.user._id });
+  }
+}
+
+function joinUserRoom() {
+  const state = store.getState();
+
+  if (state.user._id) {
+    socket.emit('JOIN_USER_ROOM', { userId: state.user._id, userEmail: state.user.email });
   }
 }
 
@@ -44,6 +53,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Set GA user and trigger initial page view
+joinUserRoom();
 setGaUserId();
 logPageView();
 

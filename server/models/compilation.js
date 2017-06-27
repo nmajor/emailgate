@@ -1,6 +1,7 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import _ from 'lodash';
+import io from '../io';
 import Email from './email';
 import Page from './page';
 import * as sharedHelpers from '../../shared/helpers';
@@ -47,6 +48,11 @@ CompilationSchema.post('init', function () {  // eslint-disable-line func-names
   this._original = this.toObject();
 });
 
+// CompilationSchema.post('save', (doc) => {
+//   io.to('everyone').emit('UPDATED_COMPILATION', { title: 'Bogus title' });
+//   // io.broadcast.to('priv/John').emit(...)
+// });
+
 CompilationSchema.pre('save', function (next) { // eslint-disable-line func-names
   let tasks = Promise.resolve();
 
@@ -58,9 +64,7 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
   }
 
   // if (this.coverPropsChanged()) {
-
-  tasks = tasks.then(() => { return this.buildThumbnail(); });
-
+  //   tasks = tasks.then(() => { return this.buildThumbnail(); });
   // }
 
   tasks.then(() => {
@@ -88,6 +92,7 @@ CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
       contentType: 'image/jpeg',
       updatedAt: Date.now(),
     };
+    return Promise.resolve(this);
   })
   .catch((err) => { console.log('An error happened when trying to update compilation thumbnail', err); });
 };
@@ -255,7 +260,12 @@ CompilationSchema.methods.coverPropsChanged = function coverPropsChanged() {
     'metaData.endingDate',
   ];
 
-  _.some(coverProps, (prop) => { return !_.isEqual(_.get(current, prop), _.get(original, prop)); });
+  return _.some(coverProps, (prop) => { return !_.isEqual(_.get(current, prop), _.get(original, prop)); });
+};
+
+CompilationSchema.methods.broadcast = function broadcast() {
+  console.log('blah broadcast', `users/${this._user}`);
+  io.to(`users/${this._user}`).emit('UPDATED_COMPILATION', { _id: this._id, title: 'Bogus title' });
 };
 
 export default Mongoose.model('Compilation', CompilationSchema);
