@@ -1,8 +1,9 @@
 .pages-list {
+  border-top: 1px solid #ccc;
+
   .compilation-pages-list-item {
-    border: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     padding: 3px 5px;
-    margin: 3px 0;
     text-decoration: inherit;
     color: inherit;
     display: block;

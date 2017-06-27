@@ -14,9 +14,8 @@
 }
 .emails-list {
   .list-item {
-    border: 1px solid #ccc;
-    padding: 3px 5px;
-    margin: 3px 0;
+    border-bottom: 1px solid #ccc;
+    padding: 3px 0;
     text-decoration: inherit;
     color: inherit;
     display: block;
@@ -27,7 +26,7 @@
 
     &:hover {
       cursor: pointer;
-      border-color: #909090;
+      background-color: #fafafa;
     }
 
     .date {
@@ -78,7 +77,7 @@
     }
     &.compilation-emails-list-item {
       .email-thumb.list-item-actions {
-        padding: 4px 44px 0 0
+        margin-top: 2px;
       }
       &.current {
         border: 2px solid #777;

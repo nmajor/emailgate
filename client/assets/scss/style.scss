@@ -113,7 +113,7 @@ h1 > .loading {
 
 .email-view {
   padding: 50px;
-  border: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 
   &.disabled {
     background-color: #ccc;
@@ -260,10 +260,8 @@ h1 > .loading {
 }
 .component-list {
   .list-item-actions {
-    position: absolute;
-    width: 100%;
-    text-align: right;
-    padding: 8px 38px 0 0;
+    float: right;
+    margin-top: 5px;
 
     .btn {
       margin-right: 0;
