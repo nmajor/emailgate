@@ -32,6 +32,10 @@
     .meta-data {
       font-size: 14px;
       color: #888;
+
+      .badge {
+        background-color: $primary-color;
+      }
     }
   }
 }
