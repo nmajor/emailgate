@@ -264,8 +264,7 @@ CompilationSchema.methods.coverPropsChanged = function coverPropsChanged() {
 };
 
 CompilationSchema.methods.broadcast = function broadcast() {
-  console.log('blah broadcast', `users/${this._user}`);
-  io.to(`users/${this._user}`).emit('UPDATED_COMPILATION', { _id: this._id, title: 'Bogus title' });
+  io.to(`users/${this._user}`).emit('UPDATED_COMPILATION', this);
 };
 
 export default Mongoose.model('Compilation', CompilationSchema);

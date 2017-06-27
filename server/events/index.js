@@ -28,12 +28,8 @@ export default (io) => {
       console.log('JOIN_USER_ROOM', data);
       User.findOne({ email: socket.request.session.passport.user })
       .then((user) => {
-        console.log('blah user._id', user._id);
-        console.log('blah data.userId', data.userId);
-        console.log('blah compare', _.isEqual(user._id, data.userId));
         if (_.isEqual(user._id, data.userId)) {
-          console.log('blah join', `users/${user._id}`);
-          socket.join(`user/${user._id}`);
+          socket.join(`users/${user._id}`);
         }
       });
     });
