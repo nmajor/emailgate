@@ -1,7 +1,7 @@
 .compilations-list {
   .compilations-list-item {
-    border: 1px solid #ccc;
-    padding: 10px;
+    @extend .content-box;
+
     margin-bottom: 10px;
     display: block;
     text-decoration: inherit;

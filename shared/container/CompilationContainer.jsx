@@ -58,11 +58,11 @@ class CompilationContainer extends Component {
   }
   renderCompilation() {
     if (!_.isEmpty(this.compilation)) {
-      return (<div>
+      return (<div className="allheight">
         <Header />
         <CompilationHeader compilation={this.compilation} compilationEmails={this.props.compilationEmails} />
         <CompilationProgressHeader compilation={this.compilation} currentPath={this.currentCompilationPath} />
-        <div className="container-fluid compilation-container">
+        <div className="container-fluid compilation-wrapper">
           {this.renderChildren()}
         </div>
         <Footer />
@@ -73,7 +73,7 @@ class CompilationContainer extends Component {
   }
 
   render() {
-    return (<div>
+    return (<div className="allheight">
       {this.renderCompilation()}
     </div>);
   }

@@ -1,8 +1,7 @@
 .address-list {
   .address-list-item {
-    border: 1px solid #ccc;
-    padding: 10px;
     margin-bottom: 10px;
+    @extend .content-box;
 
     &.selectable {
       &:hover {
@@ -19,8 +18,7 @@
 
 .selected-address {
   .address-list-item {
-    border: 1px solid #ccc;
-    padding: 10px;
+    @extend .content-box;
     margin-bottom: 10px;
 
     &.selected {

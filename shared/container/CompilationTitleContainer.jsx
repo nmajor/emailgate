@@ -20,8 +20,10 @@ class CompilationTitleContainer extends Component {
   }
   render() {
     return (<div className="container compilation-container">
-      <h1 className="text-center">Customize Cover</h1>
-      <CompilationTitleForm compilation={this.props.compilation} submitForm={this.update} fetching={this.props.compilation.saving} back={this.back} />
+      <div className="compilation-content-box">
+        <h1 className="text-center">Customize Cover</h1>
+        <CompilationTitleForm compilation={this.props.compilation} submitForm={this.update} fetching={this.props.compilation.saving} back={this.back} />
+      </div>
     </div>);
   }
 }

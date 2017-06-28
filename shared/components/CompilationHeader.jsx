@@ -42,8 +42,8 @@ class CompilationHeader extends Component { // eslint-disable-line
     </div>);
   }
   render() {
-    return (<div className="container">
-      <div className="compilation-header">
+    return (<div className="compilation-header">
+      <div className="container">
         <div className="thumb">
           {this.renderCoverPreview()}
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import moment from 'moment';
-import fonts from './covers/fonts';
+import fonts from './covers/utils/fonts';
 
 class TitlePageTemplate {
   constructor(page, props) {

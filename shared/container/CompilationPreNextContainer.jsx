@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 class CompilationPreNextContainer extends Component {
   constructor(props, context) {
     super(props, context);
-    this.compilationHasTitle = this.compilationHasTitle.bind(this);
+    this.compilationHasCoverTemplate = this.compilationHasCoverTemplate.bind(this);
     this.compilationHasEmails = this.compilationHasEmails.bind(this);
   }
   componentWillMount() {
-    if (!this.compilationHasTitle()) {
-      this.context.router.push(`/compilations/${this.props.compilation._id}/build/title`);
+    if (!this.compilationHasCoverTemplate()) {
+      this.context.router.push(`/compilations/${this.props.compilation._id}/title`);
     // } else if (_.find(this.props.compilationPages, { type: 'message-page' })) {
     //   this.context.router.push(`/compilations/${this.props.compilation._id}/build/message`);
     } else if (!this.compilationHasEmails()) {
@@ -18,8 +18,9 @@ class CompilationPreNextContainer extends Component {
       this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
     }
   }
-  compilationHasTitle() {
-    return !!(this.props.compilation.title);
+  compilationHasCoverTemplate() {
+    console.log(this.props.compilation);
+    return !!(this.props.compilation.coverTemplate);
   }
   compilationHasEmails() {
     const emailIds = this.props.compilation.emails || [];

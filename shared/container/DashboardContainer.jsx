@@ -38,9 +38,11 @@ class DashboardContainer extends Component {
         <h3>Email Books</h3>
         <CompilationsListContainer />
       </div>
-      <div>
-        <h3>Email Accounts</h3>
-        <AccountsListContainer />
+      <div className="row">
+        <div className="col-md-6">
+          <h3>Email Accounts</h3>
+          <AccountsListContainer />
+        </div>
       </div>
       <div>
         <h3>Orders</h3>

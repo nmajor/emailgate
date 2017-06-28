@@ -1,9 +1,10 @@
 .filtered-emails-list {
+  border-top: 1px solid #CCC;
   .list-item-actions {
     position: absolute;
     width: 100%;
     text-align: right;
-    padding: 8px 48px 0 0;
+    padding: 8px 0 0 0;
 
     .btn {
       margin-right: 0;
@@ -59,6 +60,7 @@
         }
       }
       .filtered-email-actions {
+        width: 30px;
         position: absolute;
       }
       .select-email {

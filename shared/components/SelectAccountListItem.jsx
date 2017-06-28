@@ -20,6 +20,11 @@ class SelectAccountListItem extends Component {
       this.props.handleDeleteClick(this.props.account);
     }
   }
+  renderChangeLink() {
+    if (this.props.selected) {
+      return <span className="btn-link text-danger pointer" onClick={this.props.deselectAccount}>change</span>;
+    }
+  }
   renderRemoveLink() { // eslint-disable-line consistent-return
     if (this.props.handleDeleteClick) {
       return (<span className="btn btn-xs-true btn-danger left-bumper" onClick={this.handleDeleteClick}>
@@ -61,6 +66,7 @@ class SelectAccountListItem extends Component {
           {this.renderEmail()}
         </span>
         <span className="actions">
+          {this.renderChangeLink()}
           {this.renderEditLink()}
           {this.renderRemoveLink()}
         </span>

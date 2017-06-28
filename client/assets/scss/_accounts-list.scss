@@ -1,6 +1,5 @@
 .accounts-list-item {
-  border: 1px solid #ccc;
-  padding: 10px;
+  @extend .content-box;
   margin-bottom: 10px;
 
   .actions {
@@ -15,8 +14,7 @@
 }
 
 .selected-account-list-item {
-  border: 1px solid #ccc;
-  padding: 6px;
+  @extend .content-box;
   margin-bottom: 10px;
 
   .my-checkbox {

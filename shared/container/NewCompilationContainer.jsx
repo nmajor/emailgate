@@ -1,9 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import Header from '../components/Header';
-import CompilationTitleForm from '../components/CompilationTitleForm';
+import NewCompilationForm from '../components/NewCompilationForm';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
-import { colWrapperClass } from '../helpers';
 import _ from 'lodash';
 
 class NewCompilationContainer extends Component {
@@ -39,9 +38,9 @@ class NewCompilationContainer extends Component {
         <Header />
         <div className="container">
           <div className="row">
-            <div className={colWrapperClass()}>
+            <div className="col-md-6 col-md-offset-3">
               <h3>Add a title to get started</h3>
-              <CompilationTitleForm compilation={{}} submitForm={this.submitForm} fetching={this.props.fetching.newCompilation} />
+              <NewCompilationForm compilation={{}} submitForm={this.submitForm} fetching={this.props.fetching.newCompilation} />
             </div>
           </div>
         </div>

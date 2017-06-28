@@ -1,9 +1,9 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import patterns from './patterns';
+import patterns from './utils/patterns';
 import moment from 'moment';
-import fonts from './fonts';
-import bleedMap from './bleedMap';
+import fonts from './utils/fonts';
+import bleedMap from './utils/bleedMap';
 import _ from 'lodash';
 
 class CaseboundCoverTemplate {

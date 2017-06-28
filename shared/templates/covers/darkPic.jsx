@@ -1,11 +1,11 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 // import Textfit from 'react-textfit';
-import patterns from './patterns';
+import patterns from './utils/patterns';
 import moment from 'moment';
-import fonts from './fonts';
-import bleedMap from './bleedMap';
-import defaultImage from './defaultImage';
+import fonts from './utils/fonts';
+import bleedMap from './utils/bleedMap';
+import defaultImage from './utils/defaultImage';
 
 class CaseboundCoverTemplate {
   constructor(props) {
@@ -14,7 +14,7 @@ class CaseboundCoverTemplate {
     this.compilation = props.compilation;
     this.bleedType = props.bleedType || 'casebound';
     this.image = props.image || this.compilation.image || {};
-    this.templatePreview = true;
+    this.templatePreview = false;
     this.startDate = props.startDate;
     this.endDate = props.endDate;
 
@@ -78,6 +78,7 @@ class CaseboundCoverTemplate {
       height: `${this.fullHeight}${this.unitType}`,
       fontSize: '14px',
       fontFamily: this.secondaryFont.family,
+      backgroundColor: this.backgroundColor,
     };
 
     const innerStyles = {
@@ -156,6 +157,7 @@ class CaseboundCoverTemplate {
       height: `${this.fullHeight}${this.unitType}`,
       color: this.textColor,
       fontSize: '20px',
+      backgroundColor: this.backgroundColor,
       // lineHeight: '55px',
     };
 

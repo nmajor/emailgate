@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   render() {
-    return (<div>
+    return (<div className="allheight">
       {this.props.children}
     </div>);
   }

@@ -22,7 +22,7 @@ class GoogleAdvancedFilterForm extends Component { // eslint-disable-line
       <div className="toggle-search-help hide-advanced">
         <span onClick={this.props.toggleAdvanced}>hide advanced search</span></div>
       <div className="padded-box top-bumper">
-        <h3>Advanced Search</h3>
+        <h3 className="marginless-top">Advanced Search</h3>
         <form onSubmit={handleSubmit}>
           <div className="row">
             <div className="col-sm-6">

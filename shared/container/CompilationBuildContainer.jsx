@@ -4,8 +4,6 @@ import { Link } from 'react-router';
 import CompilationComponentsListContainer from './CompilationComponentsListContainer';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-// import FixedFooter from '../components/FixedFooter';
-import { colWrapperClass } from '../helpers';
 
 class CompilationBuildContainer extends Component {
   constructor(props, context) {
@@ -80,9 +78,9 @@ class CompilationBuildContainer extends Component {
     </div>);
   }
   render() {
-    return (<div className="container">
-      <div className="row">
-        <div className={colWrapperClass()}>
+    return (<div className="container compilation-container">
+      <div className="compilation-content-box">
+        <div>
           {this.renderActions}
           <CompilationComponentsListContainer
             currentEmailId={_.get(this.props.currentEmail, '_id')}

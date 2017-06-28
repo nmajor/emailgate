@@ -122,7 +122,7 @@ class FilteredEmailsListItem extends Component {
   }
   renderEmailListItem() {
     if (this.props.previewing) {
-      return (<div>
+      return (<div className="relative">
         <div className="list-item-actions">
           {this.renderAddAction()}
           {this.renderHideAction()}

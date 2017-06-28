@@ -6,7 +6,7 @@ import Loading from '../components/Loading';
 class CompilationComponentsListContainer extends Component {
   renderCompilationComponentsList() {
     if (this.props.fetching.compilationEmails || this.props.fetching.compilationPages) {
-      return <span className="alone-loading"><Loading /></span>;
+      return <div className="top-bumper text-center"><span className="alone-loading"><Loading /></span></div>;
     }
 
     return (<CompilationComponentsList
