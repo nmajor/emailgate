@@ -521,6 +521,21 @@ input {
   }
 }
 
+.cover-templates {
+  text-align: center;
+
+  .template-thumb {
+    cursor: pointer;
+    background: #DDD;
+
+    img { max-width: 100%; opacity: 0.7  }
+
+    &.active {
+      img { opacity: 1 }
+    }
+  }
+}
+
 .email-fetching {
   padding: 20px 0;
 }

@@ -73,22 +73,30 @@ class CompilationTitleForm extends Component {
       return <span className="button-loading"><Loading /></span>;
     }
   }
+  renderTemplateOption(option) {
+    return (<div className="col-md-2">
+      <span
+        className={`template-thumb ${this.state.coverTemplate === option ? 'active' : ''}`}
+        onClick={() => { this.setState({ coverTemplate: option }); this.setState({ savable: true }); }}
+      >
+        <img role="presentation" className="img-responsive" src={`/img/cover-thumbs/${option}.png`} />
+      </span>
+    </div>);
+  }
   renderTemplateFormGroup() {
-    return (<div className="form-group">
-      <label htmlFor="compilation-title">Cover Template</label>
-      <div>
-        <span
-          className={`btn btn-default ${this.state.coverTemplate === 'BoxTitle' ? 'active' : ''}`}
-          onClick={() => { this.setState({ coverTemplate: 'BoxTitle' }); this.setState({ savable: true }); }}
-        >Template 1</span>
-        <span
-          className={`btn btn-default ${this.state.coverTemplate === 'BlackSpine' ? 'active' : ''}`}
-          onClick={() => { this.setState({ coverTemplate: 'BlackSpine' }); this.setState({ savable: true }); }}
-        >Template 2</span>
-        <span
-          className={`btn btn-default ${this.state.coverTemplate === 'DarkPic' ? 'active' : ''}`}
-          onClick={() => { this.setState({ coverTemplate: 'DarkPic' }); this.setState({ savable: true }); }}
-        >Template 3</span>
+    return (<div className="row cover-templates">
+      <div className="col-md-12">
+        <div className="form-group">
+          <div className="text-center">
+            <label htmlFor="compilation-title">Cover Template</label>
+          </div>
+          <div className="row">
+            <div className="col-md-3"></div>
+            {this.renderTemplateOption('BoxTitle')}
+            {this.renderTemplateOption('BlackSpine')}
+            {this.renderTemplateOption('DarkPic')}
+          </div>
+        </div>
       </div>
     </div>);
   }
@@ -150,6 +158,9 @@ class CompilationTitleForm extends Component {
         image: this.props.compilation.image,
       };
 
+      // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
+      // {coverTemplate.renderFrontCover()}
+
       const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', image: this.state.image, changeImage: this.openImageSelector });
       return (<div style={{ zoom: '100%' }}>
         {coverTemplate.renderFrontCover()}
@@ -163,7 +174,9 @@ class CompilationTitleForm extends Component {
         <div className="col-md-6">
           {this.renderTitleFormGroup()}
           {this.renderSubtitleFormGroup()}
+          <hr />
           {this.renderTemplateFormGroup()}
+          <hr />
           {this.renderErrors('base')}
           <div className="text-right">
             {this.renderBackAction()}

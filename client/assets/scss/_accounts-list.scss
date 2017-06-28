@@ -1,6 +1,6 @@
 .accounts-list-item {
-  @extend .content-box;
   margin-bottom: 10px;
+  @extend .content-box;
 
   .actions {
     margin-top: 20px;
@@ -14,7 +14,8 @@
 }
 
 .selected-account-list-item {
-  @extend .content-box;
+  border: 1px solid #CCC;
+  padding: 5px;
   margin-bottom: 10px;
 
   .my-checkbox {

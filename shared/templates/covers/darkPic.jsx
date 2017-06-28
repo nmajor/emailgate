@@ -66,6 +66,8 @@ class CaseboundCoverTemplate {
 
     this.fullWidth = this.frontCoverWidth + this.spineWidth + this.frontCoverWidth;
     this.fullHeight = this.bleedWidth + this.boardHeight + this.bleedWidth;
+
+    console.log('blah', this.fullHeight);
   }
   getCoverDimentions() {
     return { width: this.fullWidth, height: this.fullHeight };
@@ -280,9 +282,6 @@ class CaseboundCoverTemplate {
       marginTop: '50px',
     };
 
-    const prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
-    const prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
-
     return (<div className="border">
       <div style={imageWrapperStyles}>
         {this.renderCoverImage()}
@@ -291,7 +290,7 @@ class CaseboundCoverTemplate {
         <div style={titleStyles}>{this.compilation.title}</div>
         {this.renderSubtitle()}
       </div>
-      <div style={footerStyles}>{prettyStartDate} - {prettyEndDate}</div>
+      <div style={footerStyles}>{this.prettyStartDate} - {this.prettyEndDate}</div>
     </div>);
   }
   renderClassStyles() {

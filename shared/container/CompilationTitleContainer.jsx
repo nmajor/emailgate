@@ -8,21 +8,15 @@ class CompilationTitleContainer extends Component {
     super(props, context);
 
     this.update = this.update.bind(this);
-    this.back = this.back.bind(this);
   }
   update(props) {
-    this.props.dispatch(Actions.updateCompilationFetch(this.props.compilation._id, props, (compilation) => {
-      this.context.router.push(`/compilations/${compilation._id}/build`);
-    }));
-  }
-  back() {
-    this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
+    this.props.dispatch(Actions.updateCompilationFetch(this.props.compilation._id, props, () => {}));
   }
   render() {
     return (<div className="container compilation-container">
       <div className="compilation-content-box">
         <h1 className="text-center">Customize Cover</h1>
-        <CompilationTitleForm compilation={this.props.compilation} submitForm={this.update} fetching={this.props.compilation.saving} back={this.back} />
+        <CompilationTitleForm compilation={this.props.compilation} submitForm={this.update} fetching={this.props.compilation.saving} />
       </div>
     </div>);
   }
