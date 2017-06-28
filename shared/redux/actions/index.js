@@ -16,6 +16,7 @@ export * from './filteredAccountEmailsActions';
 export * from './filteredAccountEmailsResultsActions';
 export * from './currentFilteredAccountEmailActions';
 export * from './selectedFilteredEmailIdsActions';
+export * from './addingFilteredEmailIdsActions';
 export * from './cartActions';
 export * from './checkoutActions';
 export * from './orderActions';

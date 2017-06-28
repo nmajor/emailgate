@@ -66,6 +66,7 @@ class FilterContainer extends Component {
       return !_.some(this.props.compilationEmails, (cEmail) => { return cEmail.remote_id === id; });
     });
 
+    this.props.dispatch(Actions.removeIdsFromSelectedFilteredEmailIds(this.props.selectedFilteredEmailIds));
     this.props.dispatch(Actions.addEmailsToCompilationEmailsById(this.props.compilation._id, this.props.currentAccount._id, nonCompilationSelectedEmailIds));
   }
   renderFetching() {

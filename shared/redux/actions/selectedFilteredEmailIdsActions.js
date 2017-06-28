@@ -20,3 +20,10 @@ export function removeIdFromSelectedFilteredEmailIds(id) {
     id,
   };
 }
+
+export function removeIdsFromSelectedFilteredEmailIds(ids) {
+  return {
+    type: ActionTypes.REMOVE_IDS_FROM_SELECTED_FILTERED_EMAIL_IDS,
+    ids,
+  };
+}

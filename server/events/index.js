@@ -128,18 +128,24 @@ export default (io) => {
 
         return account.getEmailsById(data.emailIds)
         .then((emails) => {
-          return Promise.all(emails.map((emailData) => {
-            const newEmail = new Email(emailData);
-            newEmail._compilation = compilation._id;
-            return newEmail.save()
-            .then((email) => {
-              socket.emit('ADDED_COMPILATION_EMAIL', email.toObject());
-              return Promise.resolve(email);
-            })
-            .catch((err) => {
-              console.log(`Error happened when adding compilation email ${err}`);
+          let tasks = Promise.resolve();
+
+          _.forEach(emails, (emailData) => {
+            tasks = tasks.then(() => {
+              const newEmail = new Email(emailData);
+              newEmail._compilation = compilation._id;
+              return newEmail.save()
+              .then((email) => {
+                socket.emit('ADDED_COMPILATION_EMAIL', email.toObject());
+                return Promise.resolve(email);
+              })
+              .catch((err) => {
+                console.log(`Error happened when adding compilation email ${err}`);
+              });
             });
-          }));
+          });
+
+          return tasks;
         })
         .then(() => {
           return compilation.updateEmails();

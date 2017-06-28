@@ -29,6 +29,7 @@ class FilteredEmailsListContainer extends Component {
     this.props.dispatch(Actions.addIdToSelectedFilteredEmailIds(email.id));
   }
   addEmail(email) {
+    this.props.dispatch(Actions.removeIdFromSelectedFilteredEmailIds(email.id));
     this.props.dispatch(Actions.addEmailsToCompilationEmailsById(this.props.compilation._id, this.props.currentAccount._id, [email.id]));
   }
   deselectEmail(email) {

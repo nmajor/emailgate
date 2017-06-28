@@ -60,7 +60,7 @@ class CompilationContainer extends Component {
     if (!_.isEmpty(this.compilation)) {
       return (<div className="allheight">
         <Header />
-        <CompilationHeader compilation={this.compilation} compilationEmails={this.props.compilationEmails} />
+        <CompilationHeader compilation={this.compilation} compilationEmails={this.props.compilationEmails} addingFilteredEmailIds={this.props.addingFilteredEmailIds} />
         <CompilationProgressHeader compilation={this.compilation} currentPath={this.currentCompilationPath} />
         <div className="container-fluid compilation-wrapper">
           {this.renderChildren()}
@@ -101,6 +101,7 @@ function mapStateToProps(store) {
     compilations: store.compilations,
     compilationEmails: store.compilationEmails,
     compilationPages: store.compilationPages,
+    addingFilteredEmailIds: store.addingFilteredEmailIds,
   };
 }
 
@@ -115,6 +116,7 @@ CompilationContainer.propTypes = {
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
   compilationPages: PropTypes.array,
+  addingFilteredEmailIds: PropTypes.array.isRequired,
   fetching: PropTypes.object.isRequired,
   params: PropTypes.object,
   routes: PropTypes.array,

@@ -1,20 +1,27 @@
 import * as ActionTypes from '../constants';
 import initialState from '../../initialState';
 
-const selectedFilteredEmailIds = (state = initialState.selectedFilteredEmailIds, action) => {
+const addingFilteredEmailIds = (state = initialState.addingFilteredEmailIds, action) => {
   switch (action.type) {
-    case ActionTypes.SET_SELECTED_FILTERED_EMAIL_IDS : {
+    case ActionTypes.SET_ADDING_FILTERED_EMAIL_IDS : {
       return action.val;
     }
 
-    case ActionTypes.ADD_ID_TO_SELECTED_FILTERED_EMAIL_IDS : {
+    case ActionTypes.ADD_ID_TO_ADDING_FILTERED_EMAIL_IDS : {
       return [
         ...state,
         action.id,
       ];
     }
 
-    case ActionTypes.REMOVE_ID_FROM_SELECTED_FILTERED_EMAIL_IDS : {
+    case ActionTypes.ADD_IDS_TO_ADDING_FILTERED_EMAIL_IDS : {
+      return [
+        ...state,
+        ...action.ids,
+      ];
+    }
+
+    case ActionTypes.REMOVE_ID_FROM_ADDING_FILTERED_EMAIL_IDS : {
       const removeIdIndex = state.indexOf(action.id);
       if (removeIdIndex > -1) {
         return [
@@ -25,16 +32,10 @@ const selectedFilteredEmailIds = (state = initialState.selectedFilteredEmailIds,
       return state;
     }
 
-    case ActionTypes.REMOVE_IDS_FROM_SELECTED_FILTERED_EMAIL_IDS : {
-      return state.filter((id) => {
-        return !action.ids.includes(id);
-      });
-    }
-
     default: {
       return state;
     }
   }
 };
 
-export default selectedFilteredEmailIds;
+export default addingFilteredEmailIds;

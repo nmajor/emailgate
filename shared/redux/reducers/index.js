@@ -16,6 +16,7 @@ import filteredAccountEmails from './filteredAccountEmails';
 import filteredAccountEmailsResults from './filteredAccountEmailsResults';
 import currentFilteredAccountEmail from './currentFilteredAccountEmail';
 import selectedFilteredEmailIds from './selectedFilteredEmailIds';
+import addingFilteredEmailIds from './addingFilteredEmailIds';
 import cart from './cart';
 import checkout from './checkout';
 import orders from './orders';
@@ -55,6 +56,7 @@ const appReducer = combineReducers({
   filteredAccountEmailsResults,
   currentFilteredAccountEmail,
   selectedFilteredEmailIds,
+  addingFilteredEmailIds,
   currentFilteredEmailMid,
   cart,
   checkout,

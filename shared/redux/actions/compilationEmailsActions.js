@@ -4,6 +4,7 @@ import baseURL from '../../baseURL';
 import socket from '../../../client/socket';
 
 import { setPropertyForFetching } from './fetchingActions';
+import { addIdsToAddingFilteredEmailIds } from './addingFilteredEmailIdsActions';
 
 import {
   setPropertyForSomeFilteredAccountEmails,
@@ -94,6 +95,7 @@ export function addEmailsToCompilationEmailsById(compilationId, accountId, email
       value: emailIds.length,
     });
 
+    dispatch(addIdsToAddingFilteredEmailIds(emailIds));
     dispatch(setPropertyForSomeFilteredAccountEmailsById(emailIds, 'saving', true));
     socket.emit('ADD_COMPILATION_EMAILS_BY_ID', { compilationId, accountId, emailIds });
   };

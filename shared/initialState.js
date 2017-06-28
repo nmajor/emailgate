@@ -12,6 +12,7 @@ export default {
   filteredAccountEmailsResults: {},
   currentFilteredAccountEmail: {},
   selectedFilteredEmailIds: [],
+  addingFilteredEmailIds: [],
   currentFilteredEmailMid: '',
   cart: {},
   checkout: {},

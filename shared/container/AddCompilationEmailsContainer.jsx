@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import * as Actions from '../redux/actions/index';
 import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
@@ -36,6 +36,7 @@ class AddCompilationEmailsContainer extends Component {
       return !_.some(this.props.compilationEmails, (cEmail) => { return cEmail.remote_id === id; });
     });
 
+    this.props.dispatch(Actions.removeIdsFromSelectedFilteredEmailIds(this.props.selectedFilteredEmailIds));
     this.props.dispatch(Actions.addEmailsToCompilationEmailsById(this.props.compilation._id, this.currentAccount._id, nonCompilationSelectedEmailIds));
   }
   back() {

@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import { compilationTotalPageCountEstimate } from '../helpers';
+import Loading from './Loading';
 
 class CompilationHeader extends Component { // eslint-disable-line
   renderCoverPreview() {
@@ -44,18 +45,28 @@ class CompilationHeader extends Component { // eslint-disable-line
       {this.renderEstPages()}
     </div>);
   }
+  renderHeaderNotice() {
+    if (this.props.addingFilteredEmailIds.length > 0) {
+      return (<div className="compilation-header-notice">
+        <span className="button-loading"><Loading /></span> Adding {this.props.addingFilteredEmailIds.length} emails
+      </div>);
+    }
+  }
   render() {
-    return (<div className="compilation-header">
-      <div className="container">
-        <div className="thumb">
-          {this.renderCoverPreview()}
-        </div>
-        <div className="details">
-          {this.renderTitle()}
-          {this.renderSubtitle()}
-          {this.renderMetaData()}
+    return (<div>
+      <div className="compilation-header">
+        <div className="container">
+          <div className="thumb">
+            {this.renderCoverPreview()}
+          </div>
+          <div className="details">
+            {this.renderTitle()}
+            {this.renderSubtitle()}
+            {this.renderMetaData()}
+          </div>
         </div>
       </div>
+      {this.renderHeaderNotice()}
     </div>);
   }
 }
@@ -63,6 +74,7 @@ class CompilationHeader extends Component { // eslint-disable-line
 CompilationHeader.propTypes = {
   compilation: PropTypes.object.isRequired,
   compilationEmails: PropTypes.array.isRequired,
+  addingFilteredEmailIds: PropTypes.array.isRequired,
 };
 
 export default CompilationHeader;
