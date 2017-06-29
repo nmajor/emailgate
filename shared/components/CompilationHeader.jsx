@@ -48,7 +48,8 @@ class CompilationHeader extends Component { // eslint-disable-line
   renderHeaderNotice() {
     if (this.props.addingFilteredEmailIds.length > 0) {
       return (<div className="compilation-header-notice">
-        <span className="button-loading"><Loading /></span> Adding {this.props.addingFilteredEmailIds.length} emails
+        <span className="button-loading">
+          <Loading /></span> Adding {this.props.addingFilteredEmailIds.length} emails. This can take a while...
       </div>);
     }
   }

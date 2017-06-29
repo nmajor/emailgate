@@ -58,7 +58,9 @@ class CompilationEmailForm extends Component {
     return (<div>
       <form className="email-form" onSubmit={this.handleSubmit}>
         <div className="email-view">
-          {this.renderForm()}
+          <div className="email-container">
+            {this.renderForm()}
+          </div>
         </div>
 
         {this.renderErrors('base')}

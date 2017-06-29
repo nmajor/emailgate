@@ -5,10 +5,8 @@ On checkout discounts dont show on the confirm page (Maybe promo code doesnt per
 FROM BJ:
 - New domain with SSL
 - Make Add Emails socket event add emails 1 by 1 instead of Promise.all
-- Move search to a sidebar (See how it works)
-- When adding emails grey out pending emails and show progress (Adding 50 emails) in a notification strip below the navbar
+
 - Email preview and edit font needs to be bigger when viewing on website
-- Grey out emails when saving
 - Estimated page number
 - Cover templates change to icons (thumbnails)
 - Make the Table of Contents font smaller
@@ -20,13 +18,17 @@ STRETCH:
 - Quote page
 - New Cover Designs
 
-
 DONE:
 - Add EXPAND down arrow icon to collapsed emails
 - Change icons to words (EDIT, SAVE, VIEW)
 - Add progress bar on top (Add Emails -> Edit Book (50 emails) -> Checkout)
 - Remove modal for add emails - Move to add emails progress step
 - Remove modal for checkout - Move to checkout progress step
+- When adding emails grey out pending emails and show progress (Adding 50 emails) in a notification strip below the navbar
+
+MAYBE NOT THAT IMPORTANT OR CHANGED MY MIND:
+- Move search to a sidebar (See how it works)
+- Grey out emails when saving
 
 
 

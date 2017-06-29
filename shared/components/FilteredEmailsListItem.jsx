@@ -46,6 +46,11 @@ class FilteredEmailsListItem extends Component {
       <span className="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
     </div>);
   }
+  renderShowAction() {
+    return (<div className="btn btn-default" onClick={this.preview}>
+      <span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+    </div>);
+  }
   renderAddAction() {
     if (this.props.disabled) {
       return (<div className="btn btn-success disabled">
@@ -96,6 +101,9 @@ class FilteredEmailsListItem extends Component {
   }
   renderEmailThumb() {
     return (<div className={this.className()}>
+      <div className="list-item-actions">
+        {this.renderShowAction()}
+      </div>
       <div className="filtered-email-actions">
         <div className="select-email">
           {this.renderCheckbox()}

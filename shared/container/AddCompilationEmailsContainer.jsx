@@ -7,6 +7,7 @@ import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
 import ImapAccountPasswordFormContainer from './ImapAccountPasswordFormContainer';
 import ReconnectGoogleAccount from '../components/ReconnectGoogleAccount';
 import FixedFooter from '../components/FixedFooter';
+import Loading from '../components/Loading';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -70,12 +71,20 @@ class AddCompilationEmailsContainer extends Component {
       </div>
     </div>);
   }
+  renderAddingMessage() {
+    if (this.props.addingFilteredEmailIds.length > 0) {
+      return (<span className="right-bumper message">
+        <span className="button-loading"><Loading /> Adding {this.props.addingFilteredEmailIds.length} emails</span>
+      </span>);
+    }
+  }
   renderFixedFooter() {
     if (this.showResults()) {
       return (<FixedFooter>
         <div className="container">
           <div className="row">
             <div className="col-xs-12 text-right">
+              {this.renderAddingMessage()}
               <button className="btn btn-success" onClick={this.addSelected}>Add {this.props.selectedFilteredEmailIds.length > 0 ? <strong>{this.props.selectedFilteredEmailIds.length}</strong> : <span className="glyphicon glyphicon-check" aria-hidden="true"></span>} Email{this.props.selectedFilteredEmailIds.length > 1 || this.props.selectedFilteredEmailIds.length === 0 ? 's' : ''} to Email Book</button>
             </div>
           </div>
@@ -129,6 +138,7 @@ function mapStateToProps(store) {
     filteredAccountEmails: store.filteredAccountEmails,
     filteredAccountEmailsResults: store.filteredAccountEmailsResults,
     selectedFilteredEmailIds: store.selectedFilteredEmailIds,
+    addingFilteredEmailIds: store.addingFilteredEmailIds,
   };
 }
 
@@ -144,6 +154,7 @@ AddCompilationEmailsContainer.propTypes = {
   filteredAccountEmails: PropTypes.array.isRequired,
   filteredAccountEmailsResults: PropTypes.object.isRequired,
   selectedFilteredEmailIds: PropTypes.array.isRequired,
+  addingFilteredEmailIds: PropTypes.array.isRequired,
   compilationEmails: PropTypes.array.isRequired,
   params: PropTypes.object,
 };

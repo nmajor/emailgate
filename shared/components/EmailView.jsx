@@ -16,7 +16,9 @@ class EmailView extends Component {
   }
   renderView() {
     return (<div ref="view" className={`email-view ${this.props.disabled ? 'disabled' : ''}`} id={`email-view-${this.props.email._id}`}>
-      {this.template.render()}
+      <div className="email-container">
+        {this.template.render()}
+      </div>
     </div>);
   }
   render() {
