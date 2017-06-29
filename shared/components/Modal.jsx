@@ -54,6 +54,7 @@ class Modal extends Component {
         left: 0,
         right: 0,
         bottom: 0,
+        zIndex: 1,
         backgroundColor: 'rgba(20, 20, 20, 0.75)',
       },
     };

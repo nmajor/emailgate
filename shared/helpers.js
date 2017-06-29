@@ -204,8 +204,7 @@ export function actionStatusMap(compilation, emails, pages) {
 }
 
 export function colWrapperClass() {
-  return 'col-md-12';
-  // return 'col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3';
+  return 'col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3';
 }
 
 export function serializeQuery(obj) {

@@ -61,15 +61,37 @@ class CompilationAddToCart extends Component {
       </div>
     </div>);
   }
-  render() {
-    return (<div>
-      <div className="row">
-        <div className="col-sm-12">
+  renderCompilationThumb() {
+    const { compilation } = this.props;
+
+    if (_.get(compilation, 'thumbnail.content')) {
+      const dataUriPrefix = `data:${compilation.thumbnail.contentType};base64,`;
+      return (<img role="presentation" src={dataUriPrefix + compilation.thumbnail.content} />);
+    }
+  }
+  renderCompilationSummary() {
+    return (<div className="row bottom-bumper">
+      <div className="col-md-3 relative">
+        <div className="summary-compilation-img-thumb">{this.renderCompilationThumb()}</div>
+      </div>
+      <div className="col-md-9">
+        <div className="padded-box compilation-summary-details">
           <h3 className="margin-topless">{this.props.compilation.title}</h3>
+          <h5 className="margin-topless">{this.props.compilation.subtitle}</h5>
           <div className="bottom-bumper">
             {this.renderEmailCount()}
             {this.renderPageCountEstimate()}
           </div>
+        </div>
+      </div>
+    </div>);
+  }
+  render() {
+    return (<div>
+      <div className="row">
+        <div className="col-sm-12">
+          {this.renderCompilationSummary()}
+          <hr />
           {this.renderProductOptions()}
           {this.renderAddToCartForm()}
         </div>

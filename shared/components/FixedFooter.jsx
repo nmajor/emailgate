@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import { colWrapperClass } from '../helpers';
 
 class FixedFooter extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -18,7 +17,7 @@ class FixedFooter extends Component { // eslint-disable-line
   render() {
     return (<div className="fixed-footer container">
       <div className="row">
-        <div className={colWrapperClass()}>
+        <div className="col-md-12">
           <div className="col-md-12">
             {this.props.children}
           </div>
