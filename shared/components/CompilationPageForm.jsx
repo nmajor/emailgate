@@ -42,7 +42,9 @@ class CompilationPageForm extends Component {
   render() {
     return (<div>
       <div className="compilation-page">
-        {this.renderForm()}
+        <div className="page-container">
+          {this.renderForm()}
+        </div>
       </div>
     </div>);
   }

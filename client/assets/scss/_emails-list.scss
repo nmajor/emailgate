@@ -1,16 +1,16 @@
 .filtered-emails-list {
   border-top: 1px solid #CCC;
-  .list-item-actions {
-    position: absolute;
-    width: 100%;
-    text-align: right;
-    padding: 8px 5px 0 0;
+}
+.list-item-actions {
+  position: absolute;
+  width: 100%;
+  text-align: right;
+  padding: 8px 6px 0 0;
 
-    .btn {
-      margin-right: 0;
-      margin-left: 5px;
-      padding: 6px 10px;
-    }
+  .btn {
+    margin-right: 0;
+    margin-left: 5px;
+    padding: 6px 10px;
   }
 }
 .emails-list {
@@ -18,7 +18,7 @@
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
     border-left: 1px solid #ccc;
-
+    position: relative;
 
     padding: 3px 3px;
     text-decoration: inherit;
@@ -92,6 +92,7 @@
     &.compilation-emails-list-item {
       .email-thumb.list-item-actions {
         margin-top: 2px;
+        padding: 3px 8px 0 0;
       }
       &.current {
         border: 2px solid #777;

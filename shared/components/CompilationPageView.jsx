@@ -2,20 +2,18 @@ import React, { PropTypes, Component } from 'react';
 
 class CompilationPageView extends Component {
   componentDidMount() {
-    this.refs.view.scrollIntoView(true);
+    // this.refs.view.scrollIntoView(true);
   }
   renderTemplate() {
     const template = this.props.componentProps.templateFactory(this.props.page);
 
     if (template && this.props.page.type === 'cover') {
-      return <div className="top-bumper padded-box">{template.renderFrontCover()}</div>;
+      return <div className="page-cover-container">{template.renderFrontCover()}</div>;
     } else if (template) {
-      return template.render();
+      return <div className="page-container">{template.render()}</div>;
     }
   }
   renderClassName() {
-    if (this.props.page.type === 'cover') { return null; }
-
     return 'compilation-page';
   }
   render() {

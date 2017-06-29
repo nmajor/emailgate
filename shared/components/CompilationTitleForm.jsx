@@ -74,7 +74,7 @@ class CompilationTitleForm extends Component {
     }
   }
   renderTemplateOption(option) {
-    return (<div className="col-md-2">
+    return (<div className="col-md-2 col-sm-3 col-xs-4">
       <span
         className={`template-thumb ${this.state.coverTemplate === option ? 'active' : ''}`}
         onClick={() => { this.setState({ coverTemplate: option }); this.setState({ savable: true }); }}
@@ -91,7 +91,7 @@ class CompilationTitleForm extends Component {
             <label htmlFor="compilation-title">Cover Template</label>
           </div>
           <div className="row">
-            <div className="col-md-3"></div>
+            <div className="col-md-3 col-sm-1 col-xs-0"></div>
             {this.renderTemplateOption('BoxTitle')}
             {this.renderTemplateOption('BlackSpine')}
             {this.renderTemplateOption('DarkPic')}
@@ -178,7 +178,7 @@ class CompilationTitleForm extends Component {
           {this.renderTemplateFormGroup()}
           <hr />
           {this.renderErrors('base')}
-          <div className="text-right">
+          <div className="text-right hidden-sm hidden-xs">
             {this.renderBackAction()}
             <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
               Submit
@@ -191,6 +191,13 @@ class CompilationTitleForm extends Component {
             <div className="template">
               {this.renderCoverPreview()}
             </div>
+          </div>
+          <div className="text-right hidden-md hidden-lg">
+            {this.renderBackAction()}
+            <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
+              Submit
+              {this.renderLoading()}
+            </button>
           </div>
         </div>
       </div>

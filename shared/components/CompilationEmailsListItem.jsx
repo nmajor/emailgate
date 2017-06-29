@@ -80,7 +80,7 @@ class CompilationEmailsListItem extends Component {
   }
   renderEmailListItem() {
     if (this.props.show === 'view') {
-      return (<div>
+      return (<div className="relative">
         <div className="list-item-actions">
           {this.renderEditAction()}
           {this.renderRemoveAction()}
@@ -89,7 +89,7 @@ class CompilationEmailsListItem extends Component {
         <EmailView email={this.props.email} scroll />
       </div>);
     } else if (this.props.show === 'edit') {
-      return (<div>
+      return (<div className="relative">
         <div className="list-item-actions">
           {this.renderSaveAction()}
           {this.renderViewAction()}

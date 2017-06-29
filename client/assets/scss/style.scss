@@ -119,6 +119,13 @@ h1 > .loading {
   height: 700px;
   border: 1px solid #ccc;
 }
+.paper-like-container {
+  width: 80%;
+  margin: 0 auto;
+  background-color: white;
+  padding: 50px;
+  border: 1px solid #ccc;
+}
 
 .email-view {
   padding-top: 50px;
@@ -137,17 +144,32 @@ h1 > .loading {
   }
 
   .email-container {
-    width: 80%;
-    margin: 0 auto;
-    background-color: white;
-    padding: 50px;
-    border: 1px solid #ccc;
+    @extend .paper-like-container;
   }
 }
 
 .compilation-page {
-  padding: 50px;
-  border: 1px solid #ccc;
+  padding-top: 50px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+
+  .page-container {
+    @extend .paper-like-container;
+  }
+  .page-cover-container {
+    display: flex;
+    justify-content: center;
+  }
+}
+.compilation-pages-list-item {
+  position: relative;
+  padding: 5px 3px;
+  .page-thumb.list-item-actions { padding: 4px 10px 0 0; }
+  a.list-item {
+    color: #333;
+  }
 }
 
 .btn.half-left {
@@ -285,13 +307,10 @@ h1 > .loading {
 }
 .component-list {
   .list-item-actions {
-    float: right;
-    margin-top: 5px;
-
     .btn {
       margin-right: 0;
       margin-left: 5px;
-      padding: 6px 10px;
+      padding: 3px 7px;
     }
   }
 }

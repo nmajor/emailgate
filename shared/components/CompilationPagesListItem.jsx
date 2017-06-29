@@ -10,6 +10,11 @@ class CompilationPagesListItem extends Component {
       <span className="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
     </Link>);
   }
+  renderShowAction() {
+    return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
+      <span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+    </Link>);
+  }
   renderEditAction() {
     if (this.props.page.type === 'table-of-contents') { return null; }
 
@@ -31,15 +36,18 @@ class CompilationPagesListItem extends Component {
   }
   renderPageThumb() {
     return (<Link className="compilation-pages-list-item list-item" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
+      <div className="list-item-actions page-thumb">
+        {this.renderShowAction()}
+      </div>
       <div className="type">
         <span className="glyphicon glyphicon-file" aria-hidden="true"></span> Page
       </div>
       {pageMeta(this.props.page).desc}
-    </Link>);
+      </Link>);
   }
   renderPageListItem() {
     if (this.props.show === 'view') {
-      return (<div>
+      return (<div className="relative">
         <div className="list-item-actions">
           {this.renderEditAction()}
           {this.renderHideAction()}
