@@ -67,9 +67,12 @@ export function patchCompilation(req, res) {
 }
 
 export function removeCompilation(req, res) {
-  Compilation.remove({ _user: req.user._id, _id: req.params.id })
+  Compilation.findOne({ _user: req.user._id, _id: req.params.id })
   .then((compilation) => {
-    res.json(compilation);
+    return compilation.remove()
+    .then(() => {
+      res.json(compilation);
+    });
   });
 }
 

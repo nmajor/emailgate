@@ -7,6 +7,7 @@ import {
   resizeAttachment,
   uploadAttachment,
   trimKnownBodyFluff,
+  removeFile,
 } from '../util/helpers';
 
 import EmailTemplate from '../../shared/templates/email';
@@ -38,7 +39,11 @@ EmailSchema.post('init', function () {  // eslint-disable-line func-names
 EmailSchema.post('remove', (doc) => {
   Page.findOne({ _compilation: doc._compilation, type: 'table-of-contents' })
   .then((page) => {
-    return page.save();
+    if (page) { return page.save(); }
+  });
+
+  _.forEach(doc.attachments, (attachment) => {
+    removeFile(attachment.path);
   });
 });
 

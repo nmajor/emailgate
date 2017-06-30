@@ -10,7 +10,7 @@ class CompilationsList extends Component {
     }
 
     return this.props.compilations.map((compilation) => {
-      return <CompilationsListItem key={compilation._id} compilation={compilation} />;
+      return <CompilationsListItem key={compilation._id} compilation={compilation} viewable onDeleteClick={this.props.onDeleteClick} />;
     });
   }
   renderNewCompilation() {
@@ -37,6 +37,7 @@ class CompilationsList extends Component {
 
 CompilationsList.propTypes = {
   compilations: PropTypes.array.isRequired,
+  onDeleteClick: PropTypes.func,
 };
 
 export default CompilationsList;

@@ -39,6 +39,17 @@ const compilations = (state = initialState.compilations, action) => {
       return state;
     }
 
+    case ActionTypes.REMOVE_COMPILATION_FROM_COMPILATIONS : {
+      const removeCompilationIndex = _.findIndex(state, { _id: action.compilationId });
+      if (removeCompilationIndex > -1) {
+        return [
+          ...state.slice(0, removeCompilationIndex),
+          ...state.slice(removeCompilationIndex + 1),
+        ];
+      }
+      return state;
+    }
+
     default:
       return state;
   }

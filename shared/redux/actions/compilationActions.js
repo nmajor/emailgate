@@ -37,6 +37,13 @@ export function updateCompilationInCompilations(compilation) {
   };
 }
 
+export function removeCompilationFromCompilations(compilationId) {
+  return {
+    type: ActionTypes.REMOVE_COMPILATION_FROM_COMPILATIONS,
+    compilationId,
+  };
+}
+
 // THUNKS
 export function createCompilation(props, cb) {
   return (dispatch) => {
@@ -143,6 +150,40 @@ export function getCompilations(cookie) {
     })
     .catch((err) => {
       dispatch(setPropertyForFetching('compilations', false));
+      console.log(err);
+    });
+  };
+}
+
+export function deleteCompilation(compilationId, cb) {
+  cb = cb || function() {}; // eslint-disable-line
+
+  return (dispatch) => {
+    dispatch(setPropertyForCompilation(compilationId, 'saving', true));
+
+    return fetch(`${baseURL}/api/compilations/${compilationId}`, {
+      credentials: 'include',
+      method: 'delete',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(removeCompilationFromCompilations(res._id));
+      cb(res);
+    })
+    .catch((err) => {
       console.log(err);
     });
   };

@@ -588,6 +588,40 @@ input {
 .compilation-summary-details {
   height: 19.7vw;
 }
+.compilation-cart-card {
+  height: 125px;
+
+  .compilation-thumb {
+    display: inline-block;
+    position: absolute;
+    img {
+      vertical-align: inherit;
+      max-width: 50px;
+      max-height: 80px;
+      margin-right: 10px;
+    }
+  }
+
+  h3 { margin: 0; font-size: 20px; }
+  h5 { margin: 5px 0 0 0; height: 15px; }
+
+  .details {
+    height: 80px;
+    display: inline-block;
+    margin-left: 60px;
+    .actions {
+      margin-top: 6px;
+      .label {
+        padding: 8px;
+      }
+      .btn {
+        padding: 6px 10px;
+      }
+    }
+  }
+
+
+}
 
 #box:hover #overlay
 

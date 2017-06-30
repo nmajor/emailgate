@@ -329,6 +329,17 @@ export function bufferToStream(buffer) {
   return bufferStream;
 }
 
+export function removeFile(path) {
+  return new Promise((resolve, reject) => {
+    client.delete(path, (err, results) => {
+      if (err) { console.log('blah err yo', err); return reject({ message: err.message, err, path }); }
+      console.log('blah hey yo', results);
+
+      resolve(results);
+    });
+  });
+}
+
 export function uploadAttachment(attachment) {
   return new Promise((resolve, reject) => {
     const filename = attachment.fileName;

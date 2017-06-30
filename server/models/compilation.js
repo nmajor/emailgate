@@ -63,13 +63,14 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
     });
   }
 
-  // if (this.coverPropsChanged()) {
-  //   tasks = tasks.then(() => { return this.buildThumbnail(); });
-  // }
-
   tasks.then(() => {
     next();
   });
+});
+
+CompilationSchema.post('remove', function (doc) { // eslint-disable-line
+  Page.remove({ _compilation: doc._id });
+  Email.remove({ _compilation: doc._id });
 });
 
 CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
