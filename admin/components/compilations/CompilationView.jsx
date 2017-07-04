@@ -59,7 +59,7 @@ class CompilationView extends Component { // eslint-disable-line
   }
   renderCoverFile() {
     const { compilation } = this.props;
-    if (compilation.cover && compilation.cover.spineWidth) {
+    if (compilation.cover) {
       const template = new covers[compilation.coverTemplate]({ compilation });
 
       return (<div>

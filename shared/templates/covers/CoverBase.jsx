@@ -1,0 +1,264 @@
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import patterns from './utils/patterns';
+import moment from 'moment';
+import fonts from './utils/fonts';
+import bleedMap from './utils/bleedMap';
+import _ from 'lodash';
+
+class CoverBase {
+  constructor(props) {
+    this.compilation = props.compilation;
+    this.bleedType = props.bleedType || 'casebound';
+    this.templatePreview = false;
+    this.startDate = props.startDate || _.get(this.compiilation, 'metaData.startingDate');
+    this.endDate = props.endDate || _.get(this.compiilation, 'metaData.endingDate');
+    this.compilationSpineWidth = this.compilation.cover.spineWidth || 0.625;
+
+    this.prettyStartDate = moment(this.startDate).format('MMM YYYY');
+    this.prettyEndDate = moment(this.endDate).format('MMM YYYY');
+
+    this.patterns = patterns;
+    this.pattern = this.patterns.arabesque;
+    this.backgroundColor = '#faf0e6';
+    this.textColor = '#222';
+
+    this.primaryFont = fonts.abril;
+    this.secondaryFont = fonts.raleway;
+
+    // http://www.ingramcontent.com/Documents/CoverBleedDimensions.pdf
+
+    // // In milimeters (mm)
+    // this.unitType = 'mm'
+    // this.bleedWidth = 16;
+    // this.gutterWidth = 13;
+    // this.boardWidth = 148;
+    // this.boardHeight = 235;
+    // this.spineWidth = this.compilation.cover.spineWidth;
+
+
+    // // In pixels (px)
+    // this.unitType = 'px';
+    // this.pixelsPerMm = 2.834646;
+    // this.bleedWidth = 16 * this.pixelsPerMm;
+    // this.gutterWidth = 13 * this.pixelsPerMm;
+    // this.boardWidth = 148 * this.pixelsPerMm;
+    // this.boardHeight = 235 * this.pixelsPerMm;
+    // this.spineWidth = this.compilation.cover.spineWidth * this.pixelsPerMm;
+
+    // In pixels (px)
+    this.unitType = 'px';
+    this.pixelsPerInch = 72;
+    this.bleedWidth = bleedMap[this.bleedType].bleedWidth * this.pixelsPerInch;
+    this.gutterWidth = bleedMap[this.bleedType].gutterWidth * this.pixelsPerInch;
+    this.boardWidth = 5.818 * this.pixelsPerInch;
+    this.boardHeight = 9.25 * this.pixelsPerInch;
+    this.spineWidth = this.compilationSpineWidth * this.pixelsPerInch;
+
+    this.coverWidth = this.bleedWidth + this.boardWidth + this.gutterWidth;
+
+    this.fullWidth = this.frontCoverWidth + this.spineWidth + this.frontCoverWidth;
+    this.fullHeight = this.bleedWidth + this.boardHeight + this.bleedWidth;
+  }
+  outerStyles() {
+    return {
+      display: 'inline-block',
+      width: `${this.coverWidth}${this.unitType}`,
+      height: `${this.fullHeight}${this.unitType}`,
+      position: 'relative',
+    };
+  }
+  innerStyles() {
+    return {
+      height: `${this.fullHeight - (this.bleedWidth * 2)}${this.unitType}`,
+      width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}${this.unitType}`,
+      marginTop: `${this.bleedWidth}${this.unitType}`,
+      marginBottom: `${this.bleedWidth}${this.unitType}`,
+    };
+  }
+  getCoverDimentions() {
+    return { width: this.fullWidth, height: this.fullHeight };
+  }
+  renderBackCover() {
+    const styles = {
+      ...this.outerStyles(),
+    };
+
+    const innerStyles = {
+      position: 'relative',
+      marginRight: `${this.gutterWidth}${this.unitType}`,
+      marginLeft: `${this.bleedWidth}${this.unitType}`,
+    };
+
+    if (this.templatePreview) {
+      styles.background = '#aaa';
+      // innerStyles.backgroundImage = `url(${this.pattern})`;
+      innerStyles.backgroundColor = this.backgroundColor;
+      innerStyles.opacity = 0.5;
+    }
+
+    // const descStyles = {
+    //   fontFamily: this.secondaryFont.family,
+    // };
+
+    return (<div style={styles}>
+      <div style={innerStyles}>
+      </div>
+    </div>);
+  }
+  renderSpine() {
+    const styles = {
+      display: 'inline-block',
+      verticalAlign: 'top',
+      width: `${this.spineWidth}${this.unitType}`,
+      height: `${this.fullHeight}${this.unitType}`,
+      fontSize: '20px',
+      fontFamily: this.secondaryFont.family,
+      backgroundColor: '#222',
+    };
+
+    const textWrapper = {
+      backgroundColor: '#222',
+      color: '#FFF',
+      transform: 'rotate(90deg)',
+      WebkitTransform: 'rotate(90deg)',
+      transformOrigin: 'left top 0',
+      WebkitTransformOrigin: 'left top 0',
+      width: `${this.fullHeight}${this.unitType}`,
+      height: `${this.spineWidth}${this.unitType}`,
+      lineHeight: `${this.spineWidth}${this.unitType}`,
+      position: 'relative',
+      left: `${this.spineWidth}${this.unitType}`,
+      textAlign: 'center',
+      fontWeight: '100',
+    };
+
+    if (this.templatePreview) {
+      styles.backgroundColor = '#aaa';
+      // innerStyles.backgroundImage = `url(${this.pattern})`;
+      textWrapper.opacity = 0.5;
+      textWrapper.zIndex = 1;
+    }
+
+    const dateStyle = {
+      fontSize: '14px',
+      fontWeight: '100',
+    };
+
+    return (<div style={styles}>
+      <div style={textWrapper}>{this.compilation.title} &middot; <span style={dateStyle}>{this.prettyStartDate} - {this.prettyEndDate}</span></div>
+    </div>);
+  }
+  renderFrontCover() {
+    const styles = {
+      display: 'inline-block',
+      verticalAlign: 'top',
+      width: `${this.frontCoverWidth}${this.unitType}`,
+      height: `${this.fullHeight}${this.unitType}`,
+      color: this.textColor,
+      lineHeight: '33px',
+      position: 'relative',
+      backgroundColor: this.backgroundColor,
+    };
+
+    const innerStyles = {
+      position: 'relative',
+      margin: `${this.bleedWidth}${this.unitType} ${this.bleedWidth}${this.unitType} ${this.bleedWidth}${this.unitType} ${this.gutterWidth}${this.unitType}`,
+      height: `${this.fullHeight - (this.bleedWidth * 2)}${this.unitType}`,
+      width: `${this.backCoverWidth - this.bleedWidth - this.gutterWidth}${this.unitType}`,
+      paddingLeft: '0',
+      paddingRight: '0',
+    };
+
+    if (this.templatePreview) {
+      styles.background = '#aaa';
+      // containerStyles.backgroundImage = `url(${this.pattern})`;
+      innerStyles.backgroundColor = this.backgroundColor;
+      innerStyles.opacity = 0.5;
+    }
+
+    return (<div className="wrapper" style={styles}>
+      <div className="container" style={innerStyles}>
+        <div style={titlesWrapperStypes}>
+          <div style={titleStyles}>{this.compilation.title}</div>
+          <div style={subtitleStyles}>{this.compilation.subtitle}</div>
+        </div>
+        <div style={footerStyles}>{this.prettyStartDate} - {this.prettyEndDate}</div>
+      </div>
+    </div>);
+  }
+  render() {
+    const mainStyles = {
+      // width: `${this.fullWidth}${this.unitType}`,
+      // height: `${this.fullHeight}${this.unitType}`,
+      backgroundColor: this.backgroundColor,
+      color: this.textColor,
+      fontSize: '20px',
+      letterSpacing: '0.5px',
+      // backgroundImage: `url("${this.pattern}")`,
+      fontFamily: this.primaryFont.family,
+      fontWeight: '100',
+    };
+
+    const classes = `
+.casebound {
+  width: ${this.fullWidth}${this.unitType};
+  height: ${this.fullHeight}${this.unitType};
+  background-color: #222222;
+}
+`;
+
+    return (<div className="casebound" style={mainStyles}>
+      <style>{classes}</style>
+      {this.renderBackCover()}
+      {this.renderSpine()}
+      {this.renderFrontCover()}
+    </div>);
+  }
+  toString() {
+    return `
+<html>
+  <head>
+    <meta charset="utf8">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        box-sizing: border-box;
+      }
+    </style>
+    ${this.primaryFont.link}
+    ${this.primaryFont.link !== this.secondaryFont.link ? this.secondaryFont.link : ''}
+  </head>
+  <body>
+  ${renderToString(this.render())}
+  </body>
+</html>
+    `;
+  }
+  frontCoverToString() {
+    return `
+<html>
+  <head>
+    <meta charset="utf8">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        box-sizing: border-box;
+      }
+    </style>
+    ${this.primaryFont.link}
+    ${this.primaryFont.link !== this.secondaryFont.link ? this.secondaryFont.link : ''}
+  </head>
+  <body>
+  ${renderToString(this.renderFrontCover())}
+  </body>
+</html>
+    `;
+  }
+}
+
+export default CoverBase;

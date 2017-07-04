@@ -83,6 +83,11 @@ class CompilationTitleForm extends Component {
       </span>
     </div>);
   }
+  renderTemplateOptions() {
+    return covers.options.map((option, index) => {
+      return <div key={index}>this.renderTemplateOption(option)</div>;
+    });
+  }
   renderTemplateFormGroup() {
     return (<div className="row cover-templates">
       <div className="col-md-12">
@@ -92,9 +97,7 @@ class CompilationTitleForm extends Component {
           </div>
           <div className="row">
             <div className="col-md-3 col-sm-1 col-xs-0"></div>
-            {this.renderTemplateOption('BoxTitle')}
-            {this.renderTemplateOption('BlackSpine')}
-            {this.renderTemplateOption('DarkPic')}
+            {this.renderTemplateOptions()}
           </div>
         </div>
       </div>
