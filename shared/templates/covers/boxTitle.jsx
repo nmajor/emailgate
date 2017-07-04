@@ -62,9 +62,6 @@ class CaseboundCoverTemplate {
 
     this.fullWidth = this.frontCoverWidth + this.spineWidth + this.frontCoverWidth;
     this.fullHeight = this.bleedWidth + this.boardHeight + this.bleedWidth;
-
-    console.log('blah', this.fullHeight);
-    
   }
   getCoverDimentions() {
     return { width: this.fullWidth, height: this.fullHeight };

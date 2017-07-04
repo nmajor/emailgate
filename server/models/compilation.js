@@ -71,7 +71,30 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
 CompilationSchema.post('remove', function (doc) { // eslint-disable-line
   Page.remove({ _compilation: doc._id });
   Email.remove({ _compilation: doc._id });
+
+  serverHelpers.removeDir(doc.publicFolderBase());
+
+  if (_.get(doc, 'pdf.path')) {
+    serverHelpers.removeFile(doc.pdf.path);
+  }
+
+  if (_.get(doc, 'cover.pdf.path')) {
+    serverHelpers.removeFile(doc.cover.pdf.path);
+  }
 });
+
+CompilationSchema.methods.publicFolderBase = function publicFolderBase() {
+  if (_.get(this, 'pdf.path')) {
+    const regex = new RegExp(`^.*${this._id}`);
+    return regex.exec(this.pdf.path)[0];
+  } else if (_.get(this, 'pdf.path')) {
+    const regex = new RegExp(`^.*${this._id}`);
+    return regex.exec(this.pdf.path)[0];
+  }
+
+  const publicPath = (process.env.NODE_ENV !== 'production' ? `${process.env.MANTA_APP_PUBLIC_PATH}/dev` : process.env.MANTA_APP_PUBLIC_PATH);
+  return `${publicPath}/compilations/${this._id}`;
+};
 
 CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
   const thumbnailOptions = {
