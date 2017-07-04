@@ -106,7 +106,7 @@ class CaseboundCoverTemplate {
 
     return (<div style={styles}>
       <div style={innerStyles}>
-        <div style={footerStyles}>myemailbook.com</div>
+        <div style={footerStyles}>missionarymemoir.com</div>
       </div>
     </div>);
   }

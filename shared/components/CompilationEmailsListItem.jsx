@@ -20,6 +20,18 @@ class CompilationEmailsListItem extends Component {
       <span className="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
     </Link>);
   }
+  renderShowAction() {
+    return (<div className="btn btn-default">
+      <span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+    </div>);
+  }
+  renderPdfAction() {
+    if (_.get(this.props.email, 'pdf.url')) {
+      return (<a className="btn btn-primary" href={this.props.email.pdf.url}>
+        <span className="glyphicon glyphicon-file" aria-hidden="true"></span> PDF
+      </a>);
+    }
+  }
   renderRemoveAction() {
     return (<span className="btn btn-danger" onClick={this.props.componentProps.remove}>
       <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -57,22 +69,24 @@ class CompilationEmailsListItem extends Component {
   }
   renderAttachmentIcons() {
     if (this.props.email.attachments.length > 0) {
-      const attachments = this.props.email.attachments.map(() => {
-        return (<span className="attachment-icon glyphicon glyphicon-picture" aria-hidden="true"></span>);
+      const attachments = this.props.email.attachments.map((attachment, index) => {
+        return (<span key={index} className="attachment-icon glyphicon glyphicon-picture" aria-hidden="true"></span>);
       });
 
       return <span><span className="left-bumper right-bumper">-</span>{attachments}</span>;
     }
   }
+  renderThumbActions() {
+    return (<div className="email-thumb list-item-actions">
+      {this.renderPdfAction()}
+      {this.renderShowAction()}
+    </div>);
+  }
   renderEmailThumb() {
     return (<Link
       className="compilation-emails-list-item list-item" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}
     >
-      <div className="email-thumb list-item-actions">
-        <div className="btn btn-default">
-          <span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-        </div>
-      </div>
+      {this.renderThumbActions()}
       {this.renderDate()}
       {this.renderSubject()}
       {this.renderBodyPreview()}

@@ -29,7 +29,7 @@ If we ask for your personal information for a secondary reason, like marketing, 
 
 How do I withdraw my consent?
 
-If after you opt-in, you change your mind, you may withdraw your consent for us to contact you, for the continued collection, use or disclosure of your information, at anytime, by contacting us at hello@myemail
+If after you opt-in, you change your mind, you may withdraw your consent for us to contact you, for the continued collection, use or disclosure of your information, at anytime, by contacting us at hello@missionarymemoir.com
 
 
 SECTION 3 - DISCLOSURE
@@ -114,7 +114,7 @@ If our store is acquired or merged with another company, your information may be
 
 QUESTIONS AND CONTACT INFORMATION
 
-If you would like to: access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information contact our Privacy Compliance Officer at privacy@myemailbook.com
+If you would like to: access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information contact our Privacy Compliance Officer at hello@missionarymemoir.com
 
 ----
 

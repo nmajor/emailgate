@@ -45,6 +45,10 @@ EmailSchema.post('remove', (doc) => {
   _.forEach(doc.attachments, (attachment) => {
     removeFile(attachment.path);
   });
+
+  if (doc.pdf.path) {
+    removeFile(doc.pdf.path);
+  }
 });
 
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names

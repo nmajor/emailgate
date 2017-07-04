@@ -43,7 +43,7 @@ router.post('/register/tmp', (req, res) => {
   const tmpUser = new User({});
   const password = Math.random().toString(36).substr(2, 8);
   tmpUser.name = `Temp User ${tmpUser._id}`;
-  tmpUser.email = `tmp-${tmpUser._id}@myemailbook.com`;
+  tmpUser.email = `tmp-${tmpUser._id}@missionarymemoir.com`;
 
   User.register(tmpUser, password, (err, user) => {
     if (err) {

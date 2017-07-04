@@ -177,7 +177,7 @@ export function processEmailFromMetadata(metadata) {
       remote_id: metadata.id,
 
       date: headers.Date,
-      mid: (headers['Message-ID'] || `${metadata.id}@myemailbook.com`).replace(/^</, '').replace(/>$/, ''),
+      mid: (headers['Message-ID'] || `${metadata.id}@missionarymemoir.com`).replace(/^</, '').replace(/>$/, ''),
       to: headers.To,
       from: headers.From,
       subject: headers.Subject,
@@ -330,6 +330,7 @@ export function bufferToStream(buffer) {
 }
 
 export function removeFile(path) {
+  console.log('blah removeFile', path);
   return new Promise((resolve, reject) => {
     client.delete(path, (err, results) => {
       if (err) { console.log('blah err yo', err); return reject({ message: err.message, err, path }); }

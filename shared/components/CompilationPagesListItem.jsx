@@ -11,9 +11,9 @@ class CompilationPagesListItem extends Component {
     </Link>);
   }
   renderShowAction() {
-    return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
+    return (<div className="btn btn-default">
       <span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-    </Link>);
+    </div>);
   }
   renderEditAction() {
     if (this.props.page.type === 'table-of-contents') { return null; }
@@ -43,7 +43,7 @@ class CompilationPagesListItem extends Component {
         <span className="glyphicon glyphicon-file" aria-hidden="true"></span> Page
       </div>
       {pageMeta(this.props.page).desc}
-      </Link>);
+    </Link>);
   }
   renderPageListItem() {
     if (this.props.show === 'view') {

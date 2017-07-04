@@ -1,7 +1,7 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import _ from 'lodash';
-import { pageTemplateFactory } from '../util/helpers';
+import { pageTemplateFactory, removeFile } from '../util/helpers';
 
 const PageSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -34,6 +34,12 @@ PageSchema.pre('save', function (next) { // eslint-disable-line func-names
   tasks = tasks.then(this.getHtml);
 
   tasks.then(() => { next(); });
+});
+
+PageSchema.post('remove', (doc) => {
+  if (doc.pdf.path) {
+    removeFile(doc.pdf.path);
+  }
 });
 
 PageSchema.methods.getHtml = function getHtml() {

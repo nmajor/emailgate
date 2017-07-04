@@ -73,7 +73,7 @@ class Home extends Component { // eslint-disable-line
       <nav className="landing navbar navbar-inverse navbar-fixed-top">
         <div className="container-fluid">
           <div className="landing navbar-header">
-            <Link to="/" className="landing navbar-brand">myemailbook.com</Link>
+            <Link to="/" className="landing navbar-brand">Missionary Memoir</Link>
           </div>
           <div id="navbar" className="collapse navbar-collapse">
             <ul className="nav navbar-nav">
@@ -87,7 +87,7 @@ class Home extends Component { // eslint-disable-line
       <div id="headerwrap">
         <div className="container">
           <div className="row">
-            <h1>myemailbook.com</h1>
+            <h1>Missionary Memoir</h1>
             <h2>There's a story in your emails. Find it. Publish it. Keep it forever.</h2>
             <br /><br />
             <Link to="/compilations/new" className="btn btn-transparent">FREE INSTANT DEMO</Link>
@@ -121,7 +121,7 @@ class Home extends Component { // eslint-disable-line
             </div>
             <div className="col-sm-4">
               <h3>WHAT?</h3>
-              <p>MYEMAILBOOK.COM is a website that lets you build and publish a book from your emails.</p>
+              <p>Missionary Memoir is a website that lets you build and publish a book from your emails.</p>
               <p>Search and filter your emails, then export them into our custom email book builder.</p>
               <p>Edit, tweak, and preview your email book.</p>
               <p>We will print and publish your book on demand and ship as many as your want to your door.</p>

@@ -43,7 +43,7 @@ const productBookTypeIdMap = {
 const returnToAddress = {
   Id: 'addr-return',
   City: 'Pleasant Grove',
-  Company: 'MYEMAILBOOK.COM',
+  Company: 'Missionary Memoir',
   Country: 'USA',
   Line1: '1195 N 850 E',
   PostalCode: '84062',
@@ -99,7 +99,7 @@ function requestShipTo(order) {
     PackingSlip: {
       Currency: 'USD',
       MessageLine1: 'Thank you for your order',
-      MessageLine2: 'Please tell your friends about myemailbook.com',
+      MessageLine2: 'Please tell your friends about missionarymemoir.com',
     },
   };
 }

@@ -11,10 +11,6 @@ public/css/style.css.map
 .env
 tmp/*
 secret.env
-myemailbook.com.csr
-myemailbook.com.key
-myemailbook.com.ca-bundle
-myemailbook.com.crt
-myemailbook.com.p7b
-myemailbook.com.bundle.crt
+container/myemailbook*
+container/app_missionarymemoir_com*
 newrelic_agent.log
