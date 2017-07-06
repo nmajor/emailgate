@@ -268,6 +268,7 @@ class CaseboundCoverTemplate {
       {this.renderFrontCover()}
     </div>);
   }
+  renderWrappedFrontCover() { return this.renderFrontCover(); }
   toString() {
     return `
 <html>

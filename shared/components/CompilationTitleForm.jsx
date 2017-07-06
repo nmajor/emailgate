@@ -85,7 +85,7 @@ class CompilationTitleForm extends Component {
   }
   renderTemplateOptions() {
     return covers.options.map((option, index) => {
-      return <div key={index}>this.renderTemplateOption(option)</div>;
+      return <div key={index}>{this.renderTemplateOption(option)}</div>;
     });
   }
   renderTemplateFormGroup() {
@@ -166,7 +166,7 @@ class CompilationTitleForm extends Component {
 
       const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', image: this.state.image, changeImage: this.openImageSelector });
       return (<div style={{ zoom: '100%' }}>
-        {coverTemplate.renderFrontCover()}
+        {coverTemplate.renderWrappedFrontCover()}
       </div>);
     }
   }
