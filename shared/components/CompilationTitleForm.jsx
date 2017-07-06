@@ -164,7 +164,7 @@ class CompilationTitleForm extends Component {
       // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
       // {coverTemplate.renderFrontCover()}
 
-      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', image: this.state.image, changeImage: this.openImageSelector });
+      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', image: this.state.image, selectImage: this.openImageSelector });
       return (<div style={{ zoom: '100%' }}>
         {coverTemplate.renderWrappedFrontCover()}
       </div>);

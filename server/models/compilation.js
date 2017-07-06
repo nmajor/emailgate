@@ -18,6 +18,7 @@ const CompilationCoverSchema = new Schema({
   width: Number,
   html: String,
   pdf: {},
+  templateConfig: {},
 }, {
   timestamps: true,
 });

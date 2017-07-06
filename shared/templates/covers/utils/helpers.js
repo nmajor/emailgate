@@ -33,6 +33,8 @@ export function getMeasurementProps(props) {
     boardWidth: getUnits(boardWidth),
     boardHeight: getUnits(boardHeight),
     spineWidth: getUnits(spineWidth),
+    boardWidthPx: getPx(boardWidth),
+    boardHeightPx: getPx(boardHeight),
 
     bleedWidth: getUnits(bleedWidth),
     gutterWidth: getUnits(gutterWidth),

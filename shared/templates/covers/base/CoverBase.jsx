@@ -35,6 +35,8 @@ export class CoverBase {
 
       primaryFont: fonts.abril,
       secondaryFont: fonts.raleway,
+
+      selectImage: props.selectImage,
     };
 
     this.props.opaqueBackgroundColor = hexToRgba(this.props.backgroundColor, 0.7);

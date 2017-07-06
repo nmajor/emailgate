@@ -9,7 +9,7 @@ import defaultImage from './utils/defaultImage';
 
 class CaseboundCoverTemplate {
   constructor(props) {
-    this.changeImage = props.changeImage; // eslint-disable-line func-names
+    this.changeImage = props.selectImage; // eslint-disable-line func-names
 
     this.compilation = props.compilation;
     this.bleedType = props.bleedType || 'casebound';
@@ -66,8 +66,6 @@ class CaseboundCoverTemplate {
 
     this.fullWidth = this.frontCoverWidth + this.spineWidth + this.frontCoverWidth;
     this.fullHeight = this.bleedWidth + this.boardHeight + this.bleedWidth;
-
-    console.log('blah', this.fullHeight);
   }
   getCoverDimentions() {
     return { width: this.fullWidth, height: this.fullHeight };
