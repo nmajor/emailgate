@@ -10,6 +10,7 @@ class CompilationTitleForm extends Component {
       savable: false,
       coverTemplate: props.compilation.coverTemplate || covers.options[0],
       showImageSelector: false,
+      imageSelectorAspect: 1,
       image: undefined,
     };
 
@@ -19,6 +20,7 @@ class CompilationTitleForm extends Component {
     this.openImageSelector = this.openImageSelector.bind(this);
     this.closeImageSelector = this.closeImageSelector.bind(this);
     this.updateCompilationImage = this.updateCompilationImage.bind(this);
+    this.addCompilationImage = this.addCompilationImage.bind(this);
   }
   setSaveAbility() {
     if (this.formChanged()) {
@@ -27,8 +29,8 @@ class CompilationTitleForm extends Component {
       this.setState({ savable: false });
     }
   }
-  openImageSelector() {
-    this.setState({ showImageSelector: true });
+  openImageSelector(props) {
+    this.setState({ showImageSelector: true, imageSelectorAspect: props.aspect });
   }
   closeImageSelector() {
     this.setState({ showImageSelector: false });
@@ -36,6 +38,17 @@ class CompilationTitleForm extends Component {
   updateCompilationImage(data) {
     this.setState({ image: data, savable: true });
     this.closeImageSelector();
+  }
+  addCompilationImage(data) {
+    const existingImages = this.props.compilation.images || [];
+    data = { ...data, uploading: true };
+
+    console.log('addCompilationImage', data);
+
+    const images = [...existingImages, data];
+    this.props.submitForm({
+      images,
+    });
   }
   formChanged() {
     const titleRef = this.refs.title || {};
@@ -61,7 +74,6 @@ class CompilationTitleForm extends Component {
       title: titleRef.value,
       subtitle: subtitleRef.value,
       coverTemplate: this.state.coverTemplate,
-      image: this.state.image,
     });
   }
   back(e) {
@@ -77,7 +89,7 @@ class CompilationTitleForm extends Component {
     return (<div className="col-md-2 col-sm-3 col-xs-4">
       <span
         className={`template-thumb ${this.state.coverTemplate === option ? 'active' : ''}`}
-        onClick={() => { this.setState({ coverTemplate: option }); this.setState({ savable: true }); }}
+        onClick={() => { this.setState({ coverTemplate: option, savable: true }); }}
       >
         <img role="presentation" className="img-responsive" src={`/img/cover-thumbs/${option}.png`} />
       </span>
@@ -158,7 +170,7 @@ class CompilationTitleForm extends Component {
         cover: {
           spineWidth: '',
         },
-        image: this.props.compilation.image,
+        images: this.props.compilation.images,
       };
 
       // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
@@ -171,8 +183,10 @@ class CompilationTitleForm extends Component {
     }
   }
   render() {
+    const images = this.props.compilation.images || [];
+
     return (<form onSubmit={this.handleSubmit}>
-      <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} />
+      <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} upload={this.addCompilationImage} aspect={this.state.imageSelectorAspect} images={images} />
       <div className="row">
         <div className="col-md-6">
           {this.renderTitleFormGroup()}

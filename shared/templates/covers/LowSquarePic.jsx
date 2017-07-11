@@ -64,6 +64,7 @@ class LowSquarePic extends CoverBase {
           width={imageWidth}
           image={defaultImage}
           selectImage={selectImage}
+          aspect={4 / 3}
         />
       </div>
     </FrontCoverBase>);

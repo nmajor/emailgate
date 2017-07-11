@@ -30,6 +30,14 @@ export function setPropertyForCompilation(compilationId, prop, val) {
   };
 }
 
+export function setPropertiesForCompilation(compilationId, props) {
+  return {
+    type: ActionTypes.SET_PROPERTIES_FOR_COMPILATION,
+    compilationId,
+    props,
+  };
+}
+
 export function updateCompilationInCompilations(compilation) {
   return {
     type: ActionTypes.UPDATE_COMPILATION_IN_COMPILATIONS,
@@ -89,7 +97,7 @@ export function createCompilation(props, cb) {
 
 export function updateCompilationFetch(compilationId, props, cb) {
   return (dispatch) => {
-    dispatch(setPropertyForCompilation(compilationId, 'saving', true));
+    dispatch(setPropertiesForCompilation(compilationId, ...{ ...props, saving: true }));
 
     return fetch(`${baseURL}/api/compilations/${compilationId}`, {
       credentials: 'include',
@@ -201,7 +209,7 @@ export function updateCompilation(compilation, newData) {
 
 export function addBlankEmail(compilationId, cb) {
   return (dispatch) => {
-    dispatch(setPropertyForFetching('newCompilation', true));
+    dispatch(setPropertyForCompilation(compilationId, 'saving', true));
 
     return fetch(`${baseURL}/api/compilations/${compilationId}/add-blank`, {
       credentials: 'include',
@@ -230,3 +238,35 @@ export function addBlankEmail(compilationId, cb) {
     });
   };
 }
+
+// export function addCompilationImage(compilationId, image, cb) {
+//   return (dispatch) => {
+//     dispatch(setPropertyForCompilation(compilationId, 'addingImage', true));
+//
+//     return fetch(`${baseURL}/api/compilations/${compilationId}/add-image`, {
+//       credentials: 'include',
+//       method: 'post',
+//       headers: new Headers({
+//         'Content-Type': 'application/json',
+//       }),
+//     })
+//     .then((res) => {
+//       if (res.status >= 400) {
+//         throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+//       }
+//
+//       return res.json();
+//     })
+//     .then((res) => {
+//       if (res.error) {
+//         throw new Error(res.error.message);
+//       }
+//
+//       dispatch(addCompilationEmail(res));
+//       cb(res);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+//   };
+// }

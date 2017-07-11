@@ -30,7 +30,7 @@ const CompilationSchema = new Schema({
   subtitle: String,
   coverTemplate: String,
   thumbnail: {},
-  image: {},
+  images: [],
   cover: { type: CompilationCoverSchema, default: {} },
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
@@ -57,16 +57,38 @@ CompilationSchema.post('init', function () {  // eslint-disable-line func-names
 CompilationSchema.pre('save', function (next) { // eslint-disable-line func-names
   let tasks = Promise.resolve();
 
-  if (this.image && !this.image.updatedAt) {
-    tasks = tasks.then(() => { return serverHelpers.processCoverImage(this.image); })
-    .then((image) => {
-      this.image = image;
-    });
-  }
+  _.forEach(this.images, (image) => {
+    this.images = [];
+
+    if (image.content) {
+      tasks = tasks.then(() => {
+        image._compilation = this.id;
+        return serverHelpers.processCoverImage(image);
+      })
+      .then((processedImage) => {
+        return serverHelpers.uploadCoverImage(processedImage);
+      })
+      .then((uploadedImage) => {
+        this.images.push(uploadedImage);
+        return Promise.resolve(this);
+      });
+    } else {
+      tasks = tasks.then(() => {
+        this.images.push(image);
+        return Promise.resolve(this);
+      });
+    }
+
+    // tasks = tasks.then(() => { return serverHelpers.processCoverImage(this.image); })
+    // .then((image) => {
+    //   this.image = image;
+    // });
+  });
 
   tasks.then(() => {
     next();
-  });
+  })
+  .catch((err) => { console.log('blah an error happened compilation pre save', err); });
 });
 
 CompilationSchema.post('remove', function (doc) { // eslint-disable-line

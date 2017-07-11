@@ -522,6 +522,10 @@ input {
 
 .image-dropzone {
   @extend .attachment-dropzone;
+
+  &.select {
+    padding: 15px;
+  }
 }
 
 .active-image-dropzone {
@@ -574,6 +578,16 @@ input {
       img { opacity: 1 }
     }
   }
+}
+.selector-image-thumb {
+  margin: 0 5px;
+  display: inline-block;
+  img {
+    max-height: 100px;
+  }
+}
+.selector-image-thumbs {
+  overflow-x: scroll;
 }
 
 .email-fetching {

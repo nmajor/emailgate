@@ -5,6 +5,13 @@ import React, { Component } from 'react';
 class CoverImage extends Component {
   constructor(props) { // eslint-disable-line
     super(props);
+
+    this.handleImageClick = this.handleImageClick.bind(this);
+  }
+  handleImageClick() {
+    return this.props.selectImage({
+      aspect: this.props.aspect,
+    });
   }
   imageOuterStyle() {
     const { height, width } = this.props;
@@ -94,7 +101,7 @@ class CoverImage extends Component {
       // }
     // }
 
-    return (<div className="cover-image-wrapper" onClick={this.props.selectImage} style={this.imageWrapperStyle()}>
+    return (<div className="cover-image-wrapper" onClick={this.handleImageClick} style={this.imageWrapperStyle()}>
       {this.renderOverlay()}
       {this.renderImage()}
     </div>);

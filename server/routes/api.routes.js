@@ -186,6 +186,7 @@ router.put('/compilations/:id', ensureAuthenticated, CompilationController.patch
 router.patch('/compilations/:id', ensureAuthenticated, CompilationController.patchCompilation);
 router.delete('/compilations/:id', ensureAuthenticated, CompilationController.removeCompilation);
 router.post('/compilations/:id/add-blank', ensureAuthenticated, CompilationController.addBlankEmail);
+// router.post('/compilations/:id/add-image', ensureAuthenticated, CompilationController.addImage);
 
 router.patch('/compilations/:id/page', ensureAuthenticated, CompilationController.patchCompilationPage);
 router.put('/compilations/:id/page', ensureAuthenticated, CompilationController.patchCompilationPage);

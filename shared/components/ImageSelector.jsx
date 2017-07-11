@@ -35,7 +35,7 @@ class ImageDropzone extends Component {
   }
   render() {
     return (<div className="bottom-bumper">
-      <Dropzone className="image-dropzone" activeClassName="active-image-dropzone" onDrop={this.onDrop}>
+      <Dropzone className="image-dropzone selector" activeClassName="active-image-dropzone" onDrop={this.onDrop}>
         {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => { // eslint-disable-line
           if (isDragActive) {
             return 'This file is authorized';
@@ -62,7 +62,6 @@ class ImageSelector extends Component { // eslint-disable-line
     super(props, context);
 
     this.state = {
-      image: undefined,
       naturalHeight: undefined,
       naturalWidth: undefined,
       crop: {
@@ -77,8 +76,15 @@ class ImageSelector extends Component { // eslint-disable-line
     this.handleCropChange = this.handleCropChange.bind(this);
     this.handlImageLoad = this.handlImageLoad.bind(this);
   }
+  getAspect() {
+    if (this.props.aspect) {
+      return this.props.aspect;
+    }
+
+    return 1;
+  }
   addImage(image) {
-    this.setState({ image });
+    this.props.upload(image);
   }
   submitImage() {
     const data = this.state.image;
@@ -123,6 +129,21 @@ class ImageSelector extends Component { // eslint-disable-line
       <span className="btn btn-success marginless-right" onClick={this.submitImage}>Submit</span>
     </div>);
   }
+  renderImageThumb(image) {
+    if (image.content) {
+      const dataUriPrefix = `data:${image.contentType};base64,`;
+      return <img role="presentation" src={dataUriPrefix + image.content} />;
+    }
+
+    return <img role="presentation" src={image.url} />;
+  }
+  renderImageThumbs() {
+    return this.props.images.map((image, index) => {
+      return (<div key={index} className="selector-image-thumb">
+        {this.renderImageThumb(image)}
+      </div>);
+    });
+  }
   render() {
     if (!this.props.isVisible) {
       return <div></div>;
@@ -131,6 +152,9 @@ class ImageSelector extends Component { // eslint-disable-line
     return (<div>
       <Modal close={this.props.close}>
         <div>
+          <div className="selector-image-thumbs">
+            {this.renderImageThumbs()}
+          </div>
           <ImageDropzone addImage={this.addImage} />
           {this.renderImage()}
           {this.renderActions()}
@@ -141,9 +165,12 @@ class ImageSelector extends Component { // eslint-disable-line
 }
 
 ImageSelector.propTypes = {
+  images: PropTypes.array.isRequired,
   isVisible: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
+  upload: PropTypes.func.isRequired,
+  aspect: PropTypes.number,
 };
 
 export default ImageSelector;
