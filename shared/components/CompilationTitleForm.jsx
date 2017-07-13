@@ -11,7 +11,6 @@ class CompilationTitleForm extends Component {
       coverTemplate: props.compilation.coverTemplate || covers.options[0],
       showImageSelector: false,
       imageSelectorAspect: 1,
-      image: undefined,
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -30,24 +29,21 @@ class CompilationTitleForm extends Component {
     }
   }
   openImageSelector(props) {
-    this.setState({ showImageSelector: true, imageSelectorAspect: props.aspect });
+    this.setState({ showImageSelector: true, coverProps: props });
   }
   closeImageSelector() {
     this.setState({ showImageSelector: false });
   }
-  updateCompilationImage(data) {
-    this.setState({ image: data, savable: true });
+  updateCompilationImage() {
+    this.setState({ savable: true });
     this.closeImageSelector();
   }
   addCompilationImage(data) {
-    const existingImages = this.props.compilation.images || [];
     data = { ...data, uploading: true };
 
-    console.log('addCompilationImage', data);
-
-    const images = [...existingImages, data];
+    const newImages = [data];
     this.props.submitForm({
-      images,
+      newImages,
     });
   }
   formChanged() {
@@ -176,17 +172,17 @@ class CompilationTitleForm extends Component {
       // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
       // {coverTemplate.renderFrontCover()}
 
-      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', image: this.state.image, selectImage: this.openImageSelector });
+      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', selectImage: this.openImageSelector });
       return (<div style={{ zoom: '100%' }}>
         {coverTemplate.renderWrappedFrontCover()}
       </div>);
     }
   }
   render() {
-    const images = this.props.compilation.images || [];
+    const images = this.props.compilation.images || {};
 
     return (<form onSubmit={this.handleSubmit}>
-      <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} upload={this.addCompilationImage} aspect={this.state.imageSelectorAspect} images={images} />
+      <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} upload={this.addCompilationImage} coverProps={this.state.coverProps} images={images} />
       <div className="row">
         <div className="col-md-6">
           {this.renderTitleFormGroup()}

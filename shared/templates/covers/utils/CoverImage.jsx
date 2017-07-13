@@ -1,6 +1,7 @@
 /* eslint react/prop-types: 0 */
 
 import React, { Component } from 'react';
+import { getCoverImage } from '../../../helpers';
 
 class CoverImage extends Component {
   constructor(props) { // eslint-disable-line
@@ -10,7 +11,7 @@ class CoverImage extends Component {
   }
   handleImageClick() {
     return this.props.selectImage({
-      aspect: this.props.aspect,
+      coverProps: this.props.coverProps,
     });
   }
   imageOuterStyle() {
@@ -55,7 +56,8 @@ class CoverImage extends Component {
     </div>);
   }
   renderImage() {
-    const { image, height, width } = this.props;
+    const { height, width, coverProps, compilation } = this.props;
+    const image = getCoverImage(compilation, coverProps.key);
 
     const xScaleRatio = width / image.crop.width;
     const yScaleRatio = height / image.crop.width;

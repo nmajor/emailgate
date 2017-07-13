@@ -30,11 +30,11 @@ const CompilationSchema = new Schema({
   subtitle: String,
   coverTemplate: String,
   thumbnail: {},
-  images: [],
+  images: {},
   cover: { type: CompilationCoverSchema, default: {} },
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
-  metaData: {
+  meta: {
     startingDate: { type: Date, default: new Date },
     endingDate: { type: Date, default: new Date },
     estimatedEmailPdfPages: Number,
@@ -43,6 +43,15 @@ const CompilationSchema = new Schema({
   pdf: {},
 }, {
   timestamps: true,
+});
+
+CompilationSchema.virtual('newImages').get(function () { // eslint-disable-line func-names
+  return this._newImages || [];
+});
+
+CompilationSchema.virtual('newImages').set(function (val) { // eslint-disable-line func-names
+  this._newImages = val;
+  return;
 });
 
 CompilationSchema.post('init', function () {  // eslint-disable-line func-names
@@ -57,10 +66,11 @@ CompilationSchema.post('init', function () {  // eslint-disable-line func-names
 CompilationSchema.pre('save', function (next) { // eslint-disable-line func-names
   let tasks = Promise.resolve();
 
-  _.forEach(this.images, (image) => {
-    this.images = [];
+  if (this.newImages.length > 0) {
+    _.forEach(this.newImages, (image) => {
+      const imageId = shortid.generate();
+      image._id = imageId;
 
-    if (image.content) {
       tasks = tasks.then(() => {
         image._compilation = this.id;
         return serverHelpers.processCoverImage(image);
@@ -69,21 +79,13 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
         return serverHelpers.uploadCoverImage(processedImage);
       })
       .then((uploadedImage) => {
-        this.images.push(uploadedImage);
+        this.images = { ...this.images };
+        this.images[imageId] = uploadedImage;
+        console.log('blah hey after processing new image', this.images);
         return Promise.resolve(this);
       });
-    } else {
-      tasks = tasks.then(() => {
-        this.images.push(image);
-        return Promise.resolve(this);
-      });
-    }
-
-    // tasks = tasks.then(() => { return serverHelpers.processCoverImage(this.image); })
-    // .then((image) => {
-    //   this.image = image;
-    // });
-  });
+    });
+  }
 
   tasks.then(() => {
     next();
@@ -104,8 +106,8 @@ CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
     width: '267px',
   };
 
-  const startDate = this.metaData.startingDate;
-  const endDate = this.metaData.endingDate;
+  const startDate = this.meta.startingDate;
+  const endDate = this.meta.endingDate;
 
   const template = new covers[this.coverTemplate]({ compilation: this, bleedType: 'bleedless', startDate, endDate });
 
@@ -128,11 +130,11 @@ CompilationSchema.methods.buildCoverHtml = function buildCoverHtml() {
     const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
     const firstEmail = sortedEmails[0] || {};
     const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
-    this.metaData.startingDate = firstEmail.date;
-    this.metaData.endingDate = lastEmail.date;
+    this.meta.startingDate = firstEmail.date;
+    this.meta.endingDate = lastEmail.date;
 
-    const startDate = this.metaData.startingDate;
-    const endDate = this.metaData.endingDate;
+    const startDate = this.meta.startingDate;
+    const endDate = this.meta.endingDate;
 
     const template = new covers[this.coverTemplate]({ compilation: this, startDate, endDate });
 
@@ -145,9 +147,9 @@ CompilationSchema.methods.updateEmails = function updateEmails() {
   .select('_id date estimatedPageCount')
   .then((emails) => {
     const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
-    this.metaData.startindDate = (sortedEmails[0] || {}).date;
-    this.metaData.endingDate = (sortedEmails[(sortedEmails.length - 1)] || {}).date;
-    this.metaData.estimatedEmailPdfPages = emails.map((e) => { return e.estimatedPageCount; }).reduce((pre, cur) => { return pre + cur; });
+    this.meta.startindDate = (sortedEmails[0] || {}).date;
+    this.meta.endingDate = (sortedEmails[(sortedEmails.length - 1)] || {}).date;
+    this.meta.estimatedEmailPdfPages = emails.map((e) => { return e.estimatedPageCount; }).reduce((pre, cur) => { return pre + cur; });
 
     this.emails = emails.map((email) => { return email._id; });
     return this.save();
@@ -159,7 +161,7 @@ CompilationSchema.methods.updatePages = function updatePages() {
   .select('_id estimatedPageCount')
   .then((pages) => {
     this.pages = pages.map((page) => { return page._id; });
-    this.metaData.estimatedPagePdfPages = pages.map((p) => { return p.estimatedPageCount; }).reduce((pre, cur) => { return pre + cur; });
+    this.meta.estimatedPagePdfPages = pages.map((p) => { return p.estimatedPageCount; }).reduce((pre, cur) => { return pre + cur; });
     return this.save();
   });
 };
@@ -280,8 +282,8 @@ CompilationSchema.methods.coverPropsChanged = function coverPropsChanged() {
     'title',
     'subtitle',
     'emails',
-    'metaData.startingDate',
-    'metaData.endingDate',
+    'meta.startingDate',
+    'meta.endingDate',
   ];
 
   return _.some(coverProps, (prop) => { return !_.isEqual(_.get(current, prop), _.get(original, prop)); });

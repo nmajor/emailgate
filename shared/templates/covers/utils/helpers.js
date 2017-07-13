@@ -51,8 +51,8 @@ export function getMeasurementProps(props) {
 }
 
 export function getDateProps(props) {
-  const startDate = props.startDate || _.get(props.compiilation, 'metaData.startingDate');
-  const endDate = props.endDate || _.get(props.compiilation, 'metaData.endingDate');
+  const startDate = props.startDate || _.get(props.compiilation, 'meta.startingDate');
+  const endDate = props.endDate || _.get(props.compiilation, 'meta.endingDate');
   const prettyFormat = 'MMM YYYY';
 
   return {

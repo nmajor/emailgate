@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import ReactModal from 'react-modal';
-import { colWrapperClass } from '../helpers';
 
 class Modal extends Component {
   constructor(props, context) {
@@ -58,10 +57,14 @@ class Modal extends Component {
         backgroundColor: 'rgba(20, 20, 20, 0.75)',
       },
     };
+
+    const modalClassName = this.props.className || 'container';
+
     return (<ReactModal
       onRequestClose={this.props.close}
+      portalClassName="container"
       isOpen
-      className={`modal-content ${colWrapperClass()} ${this.renderFixedFooterClass()}`}
+      className={`modal-content ${modalClassName} ${this.renderFixedFooterClass() || ''}`}
       style={styles}
       contentLabel=""
     >
@@ -81,6 +84,7 @@ Modal.propTypes = {
   showFixedFooter: PropTypes.bool,
   showFixedFooterAlert: PropTypes.bool,
   close: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 export default Modal;

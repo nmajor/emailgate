@@ -4,7 +4,7 @@
   left: 40px;
   right: 40px;
   bottom: 40px;
-  border: 1px solid rgb(204, 204, 204);
+  border: 1px solid #333;
   background: rgb(255, 255, 255);
   border-radius: 4px;
   outline: none;
@@ -22,7 +22,6 @@
 
   .modal-content-inner {
     height: 100%;
-    padding: 20px;
     position: relative;
     overflow: auto;
     -webkit-overflow-scrolling: 'touch';

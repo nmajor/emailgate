@@ -304,44 +304,42 @@ export function processCoverImage(image) {
 
   return new Promise((resolve) => {
     const contentBuffer = new Buffer(image.content, 'base64');
-    const crop = image.crop;
+    // const crop = image.crop;
 
-    if (image.crop) {
-      sharp(contentBuffer)
-      .extract(() => {
-        if (image.crop) {
-          return { left: crop.x, top: crop.y, width: crop.width, height: crop.height };
-        }
+    // if (image.crop) {
+    //   sharp(contentBuffer)
+    //   .extract(() => {
+    //     if (image.crop) {
+    //       return { left: crop.x, top: crop.y, width: crop.width, height: crop.height };
+    //     }
+    //
+    //     return {};
+    //   })
+    //   .resize(maxWidthPx)
+    //   .toBuffer((err, outputBuffer, info) => {
+    //     if (err) { console.log('An error happened while resizing attachment image', err); }
+    //
+    //     image.content = outputBuffer.toString('base64'); // eslint-disable-line
+    //     image.resizeInfo = info; // eslint-disable-line
+    //     image.crop = undefined; // eslint-disable-line
+    //     image.length = undefined; // eslint-disable-line
+    //     image.updatedAt = Date.now(); // eslint-disable-line
+    //
+    //     resolve(image);
+    //   });
+    // } else {
+    sharp(contentBuffer)
+    .resize(maxWidthPx)
+    .toBuffer((err, outputBuffer, info) => {
+      if (err) { console.log('An error happened while resizing attachment image', err); }
 
-        return {};
-      })
-      .resize(maxWidthPx)
-      .toBuffer((err, outputBuffer, info) => {
-        if (err) { console.log('An error happened while resizing attachment image', err); }
+      image.content = outputBuffer.toString('base64'); // eslint-disable-line
+      image.resizeInfo = info; // eslint-disable-line
+      image.updatedAt = Date.now(); // eslint-disable-line
 
-        image.content = outputBuffer.toString('base64'); // eslint-disable-line
-        image.resizeInfo = info; // eslint-disable-line
-        image.crop = undefined; // eslint-disable-line
-        image.length = undefined; // eslint-disable-line
-        image.updatedAt = Date.now(); // eslint-disable-line
-
-        resolve(image);
-      });
-    } else {
-      sharp(contentBuffer)
-      .resize(maxWidthPx)
-      .toBuffer((err, outputBuffer, info) => {
-        if (err) { console.log('An error happened while resizing attachment image', err); }
-
-        image.content = outputBuffer.toString('base64'); // eslint-disable-line
-        image.resizeInfo = info; // eslint-disable-line
-        image.crop = undefined; // eslint-disable-line
-        image.length = undefined; // eslint-disable-line
-        image.updatedAt = Date.now(); // eslint-disable-line
-
-        resolve(image);
-      });
-    }
+      resolve(image);
+    });
+    // }
   });
 }
 
@@ -371,7 +369,12 @@ export function uploadCoverImage(image) {
 
 export function uploadImage(image, path) {
   return new Promise((resolve, reject) => {
-    const filename = image.fileName;
+    let filename = image.fileName;
+
+    if (image._id) {
+      filename = `${image._id}-${filename}`;
+    }
+
     const fullPath = `${process.env.MANTA_APP_PUBLIC_PATH}/${path}/${filename}`;
     const buffer = new Buffer(image.content, 'base64');
 
@@ -387,25 +390,19 @@ export function uploadImage(image, path) {
     client.put(fullPath, bufferToStream(buffer), options, (err) => {
       if (err) { return reject(err); }
 
-      const updatedAt = Date.now();
+      const uploadedAt = Date.now();
 
       client.info(fullPath, (newErr, results) => {
         if (newErr) { return reject({ message: newErr.message, newErr, fullPath }); }
 
         const url = `${process.env.MANTA_APP_URL}/${fullPath}`;
+        image.content = undefined;
 
         resolve({
-          _compilation: image._compilation,
-          resizeInfo: image.resizeInfo,
-          fileName: image.fileName,
-          contentType: image.contentType,
-          contentDisposition: image.contentDisposition,
-          contentId: image.contentId,
-          checksum: image.checksum,
-          length: image.length,
+          ...image,
 
           url,
-          updatedAt,
+          uploadedAt,
           path: fullPath,
 
           extension: results.extension,

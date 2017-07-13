@@ -32,16 +32,21 @@ class LowSquarePic extends CoverBase {
     const imageHeight = boardHeightPx * 0.7;
     const imageWidth = boardWidthPx;
 
-    const defaultImage = {
-      src: '/img/cover-images/field-standing.jpg',
-      crop: {
-        x: 100,
-        y: 100,
-        natrualWidth: 1410,
-        natrualHeight: 1480,
-        width: imageWidth / 5,
-        height: imageHeight / 5,
-      },
+    // const defaultImage = {
+    //   src: '/img/cover-images/field-standing.jpg',
+    //   crop: {
+    //     x: 100,
+    //     y: 100,
+    //     natrualWidth: 1410,
+    //     natrualHeight: 1480,
+    //     width: imageWidth / 5,
+    //     height: imageHeight / 5,
+    //   },
+    // };
+
+    const coverProps = {
+      aspect: (4 / 3),
+      metaKey: 'low-square-pic-front',
     };
 
     return (<FrontCoverBase {...this.props}>
@@ -62,9 +67,8 @@ class LowSquarePic extends CoverBase {
         <CoverImage
           height={imageHeight}
           width={imageWidth}
-          image={defaultImage}
           selectImage={selectImage}
-          aspect={4 / 3}
+          coverProp={coverProps}
         />
       </div>
     </FrontCoverBase>);
