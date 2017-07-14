@@ -68,7 +68,6 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
   let tasks = Promise.resolve();
 
   if (this.newImages.length > 0) {
-    console.log('blah something is happeneing.');
     _.forEach(this.newImages, (image) => {
       const imageId = shortid.generate();
       image._id = imageId;
@@ -93,7 +92,7 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
   tasks.then(() => {
     next();
   })
-  .catch((err) => { console.log('blah an error happened compilation pre save', err); });
+  .catch((err) => { console.log('an error happened compilation pre save', err); });
 });
 
 CompilationSchema.post('remove', function (doc) { // eslint-disable-line
@@ -190,15 +189,23 @@ CompilationSchema.methods.seedPages = function seedPages() {
   return Page.count({ _compilation: this._id })
   .then((count) => {
     if (count === 0) {
-      return Promise.all(Page.defaultPages().map((pageData) => {
-        const newPage = new Page(pageData);
-        newPage._compilation = this._id;
-        return newPage.save();
-      }))
-      .then(() => {
-        return this.updatePages();
-      }).catch((err) => { console.log('An error happened when seeding the pages', err); });
+      let tasks = Promise.resolve();
+      _.forEach(Page.defaultPages(), (pageData) => {
+        tasks = tasks.then(() => {
+          const newPage = new Page(pageData);
+          newPage._compilation = this._id;
+          return newPage.save();
+        });
+      });
+
+      tasks = tasks.then(() => {
+        this.updatePages();
+      });
+
+      return tasks;
     }
+
+    return Promise.resolve();
   });
 };
 

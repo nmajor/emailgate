@@ -17,8 +17,6 @@ class LowSquarePic extends CoverBase {
     this.props.backgroundColor = '#FFF';
     this.props.textColor = '#333';
   }
-  defaultImage() {
-  }
   renderFrontCover() {
     const {
       compilation,
@@ -57,11 +55,27 @@ class LowSquarePic extends CoverBase {
     return (<FrontCoverBase {...this.props}>
       <div style={{
         padding: '20px',
-        textAlign: 'center',
+        textAlign: 'left',
+        textTransform: 'uppercase',
+        fontWeight: '400',
+        letterSpacing: '2px',
       }}>
-        <h1>{compilation.title}</h1>
-        <h3>{compilation.subtitle}</h3>
-        <h5>{prettyStartDate} - {prettyEndDate}</h5>
+        <div style={{
+          height: '115px',
+          position: 'relative',
+          letterSpacing: '6px',
+          fontWeight: '500',
+          fontSize: '40px',
+        }}>
+          <span style={{ position: 'absolute', bottom: 0 }}>{compilation.title}</span>
+        </div>
+        <hr style={{ margin: '10px 0', borderColor: '#EEE' }} />
+        <div style={{
+          fontSize: '12px',
+        }}>{compilation.subtitle}</div>
+        <div style={{
+          fontSize: '12px',
+        }}>{prettyStartDate} - {prettyEndDate}</div>
       </div>
       <div style={{
         position: 'absolute',

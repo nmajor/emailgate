@@ -30,9 +30,7 @@ PageSchema.post('init', function () {  // eslint-disable-line func-names
 
 PageSchema.pre('save', function (next) { // eslint-disable-line func-names
   let tasks = Promise.resolve();
-
-  tasks = tasks.then(this.getHtml);
-
+  tasks = tasks.then(() => { return this.getHtml(); });
   tasks.then(() => { next(); });
 });
 
@@ -48,7 +46,8 @@ PageSchema.methods.getHtml = function getHtml() {
     this.html = template.toString();
 
     return Promise.resolve(this);
-  });
+  })
+  .catch((err) => { console.log('an error happend getting page html', err); });
 };
 
 PageSchema.methods.propChanged = function propChanged(propsString) {

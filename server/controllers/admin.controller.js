@@ -32,7 +32,7 @@ export function patchCompilation(req, res) {
   .then((compilation) => {
     res.json(compilation);
   })
-  .catch((err) => { console.log('blah an error happened', err); });
+  .catch((err) => { console.log('an error happened patching a compilation', err); });
 }
 
 export function getOrders(req, res) {

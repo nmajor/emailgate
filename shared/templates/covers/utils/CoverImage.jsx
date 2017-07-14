@@ -61,7 +61,6 @@ class CoverImage extends Component {
   renderImage() {
     const { height, width } = this.props;
     const image = this.getImage();
-    console.log('blah image crop', image.crop);
 
     if (!image) { return <div></div>; }
 
