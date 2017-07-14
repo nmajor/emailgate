@@ -11,7 +11,7 @@ class CompilationThumb extends Component {
       return (<img role="presentation" src={dataUriPrefix + compilation.thumbnail.content} />);
     }
 
-    return <img role="presentation" className="img-responsive" src="/img/thumbnail-placeholder.png" />;
+    return <img role="presentation" className="img-responsive" src="/img/cover-thumbs/thumbnail-placeholder.png" />;
   }
   render() {
     return this.renderThumbImage();

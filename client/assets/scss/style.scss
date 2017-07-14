@@ -33,6 +33,7 @@ html, body {
 .marginless-top { margin-top: 0; }
 .text-bold { font-weight: bold; }
 .no-margin { margin: 0; }
+.padded { padding: 20px; }
 .padded-box {
   padding: 20px;
   border: 1px solid #CCC;
@@ -522,6 +523,56 @@ input {
 
 .image-dropzone {
   @extend .attachment-dropzone;
+
+  &.selector {
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    padding: 0;
+    position: relative;
+    top: 2px;
+    margin-right: 5px;
+
+    .middle-text {
+      height: 100%;
+      width: 100%;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+}
+.image-selector {
+  position: absolute;
+  padding-bottom: 120px;
+  width: 100%;
+  height: 100%;
+
+  .header {
+    z-index: 2;
+    width: 100%;
+    position: absolute;
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+    font-weight: 300;
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    background-color: #FFF;
+  }
+  .main {
+    padding-top: 31px;
+    height: 100%;
+    position: relative;
+    overflow: auto;
+  }
+  .select {
+    // position: absolute;
+    // bottom: 0;
+    height: 120px;
+    width: 100%;
+    background-color: #555;
+    padding: 10px;
+  }
 }
 
 .active-image-dropzone {
@@ -546,12 +597,14 @@ input {
 }
 
 .image-selector-crop-wrapper {
-  .ReactCrop, .ReactCrop__crop-wrapper, img {
-    width: 100%;
-  }
-  img {
-    width: 100%;
-  }
+  padding: 10px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  overflow: scroll;
+
+  .ReactCrop, .ReactCrop__crop-wrapper {}
+  img {}
 }
 
 .product-option {
@@ -574,6 +627,19 @@ input {
       img { opacity: 1 }
     }
   }
+}
+.selector-image-thumb {
+  margin: 0 5px;
+  display: inline-block;
+  img {
+    max-height: 100px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+.selector-image-thumbs {
+  overflow-x: scroll;
 }
 
 .email-fetching {

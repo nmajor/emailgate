@@ -33,23 +33,24 @@ class ImageDropzone extends Component {
       xhr.send();
     });
   }
+  renderText(text) {
+    return <div className="middle-text">{text}</div>;
+  }
   render() {
-    return (<div className="bottom-bumper">
-      <Dropzone className="image-dropzone" activeClassName="active-image-dropzone" onDrop={this.onDrop}>
-        {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => { // eslint-disable-line
-          if (isDragActive) {
-            return 'This file is authorized';
-          }
-          if (isDragReject) {
-            return 'This file is not authorized';
-          }
-          if (rejectedFiles.length) {
-            return 'File rejected. Please try again.';
-          }
-          return 'Drop or click to add image...';
-        }}
-      </Dropzone>
-    </div>);
+    return (<Dropzone className="image-dropzone selector" activeClassName="active-image-dropzone" onDrop={this.onDrop}>
+      {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => { // eslint-disable-line
+        if (isDragActive) {
+          return this.renderText('This file is authorized');
+        }
+        if (isDragReject) {
+          return this.renderText('This file is not authorized');
+        }
+        if (rejectedFiles.length) {
+          return this.renderText('File rejected. Please try again.');
+        }
+        return this.renderText(<span><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Image</span>);
+      }}
+    </Dropzone>);
   }
 }
 
@@ -62,32 +63,53 @@ class ImageSelector extends Component { // eslint-disable-line
     super(props, context);
 
     this.state = {
-      image: undefined,
       naturalHeight: undefined,
       naturalWidth: undefined,
+      pixelCrop: undefined,
       crop: {
         width: 30,
-        aspect: 1,
+        aspect: props.coverProps.aspect || 1,
       },
-      pixelCrop: undefined,
     };
 
     this.addImage = this.addImage.bind(this);
     this.submitImage = this.submitImage.bind(this);
     this.handleCropChange = this.handleCropChange.bind(this);
     this.handlImageLoad = this.handlImageLoad.bind(this);
+    this.handleThumbClick = this.handleThumbClick.bind(this);
+
+    this.renderModalFixedFooter = this.renderModalFixedFooter.bind(this);
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.coverProps.aspect !== this.state.crop.aspect) {
+      this.setState({ crop: { ...this.state.crop, aspect: nextProps.coverProps.aspect } });
+    }
   }
   addImage(image) {
-    this.setState({ image });
+    this.props.upload(image);
   }
   submitImage() {
-    const data = this.state.image;
-    data.crop = this.state.pixelCrop || {};
-    data.crop.naturalHeight = this.state.naturalHeight;
-    data.crop.naturalWidth = this.state.naturalWidth;
-    data.selectedAt = (new Date()).getTime();
+    // const data = this.state.image;
 
-    this.props.submit(data);
+    // data.crop = this.state.pixelCrop || {};
+    // data.crop.naturalHeight = this.state.naturalHeight;
+    // data.crop.naturalWidth = this.state.naturalWidth;
+    // data.selectedAt = (new Date()).getTime();
+
+    const crop = this.state.pixelCrop || {};
+    crop.naturalHeight = this.state.naturalHeight;
+    crop.naturalWidth = this.state.naturalWidth;
+
+    const imageData = {
+      imageId: this.state.image._id,
+      selectedAt: (new Date()).getTime(),
+      crop,
+    };
+
+    const metaData = {};
+    metaData[this.props.coverProps.key] = imageData;
+
+    this.props.submit(metaData);
   }
   handlImageLoad(evt) {
     this.setState({ naturalHeight: evt.target.naturalHeight, naturalWidth: evt.target.naturalWidth });
@@ -95,24 +117,26 @@ class ImageSelector extends Component { // eslint-disable-line
   handleCropChange(crop, pixelCrop) {
     this.setState({ crop, pixelCrop });
   }
+  handleThumbClick(image) {
+    this.setState({ image });
+  }
   renderImage() {
     if (!_.isEmpty(this.state.image)) {
       const image = this.state.image;
-      const dataUriPrefix = `data:${image.contentType};base64,`;
 
       const divStyle = {
         width: '100%',
         marginTop: '5px',
       };
 
-      return (<div className="image-selector-crop-wrapper bottom-bumper">
-        <img role="presentation" style={{ display: 'none' }} src={dataUriPrefix + image.content} onLoad={this.handlImageLoad} />
+      return (<div className="image-selector-crop-wrapper">
+        <img role="presentation" style={{ display: 'none' }} src={image.url} onLoad={this.handlImageLoad} />
         <ReactCrop
           style={divStyle}
           crop={this.state.crop}
           keepSelection
           onComplete={this.handleCropChange}
-          src={dataUriPrefix + image.content}
+          src={image.url}
         />
       </div>);
     }
@@ -123,17 +147,57 @@ class ImageSelector extends Component { // eslint-disable-line
       <span className="btn btn-success marginless-right" onClick={this.submitImage}>Submit</span>
     </div>);
   }
+  renderImageThumb(image) {
+    if (image.content) {
+      const dataUriPrefix = `data:${image.contentType};base64,`;
+      return <img role="presentation" src={dataUriPrefix + image.content} />;
+    }
+
+    return <img role="presentation" src={image.url} />;
+  }
+  renderImageThumbs() {
+    return _.map(this.props.images, (image, id) => {
+      return (<div key={id} className="selector-image-thumb" onClick={() => { this.handleThumbClick(image); }}>
+        {this.renderImageThumb(image)}
+      </div>);
+    });
+  }
+  renderModalFixedFooter() {
+    return (<div className="row">
+      {this.renderActions()}
+    </div>);
+  }
+  renderSelector() {
+    return (<div className="select">
+      <ImageDropzone addImage={this.addImage} />
+      {this.renderImageThumbs()}
+    </div>);
+  }
+  renderMain() {
+    return (<div className="main">
+      {this.renderImage()}
+    </div>);
+  }
+  renderHeader() {
+    return (<div className="header text-center">
+      Select and customize an image for your cover...
+    </div>);
+  }
   render() {
     if (!this.props.isVisible) {
       return <div></div>;
     }
 
     return (<div>
-      <Modal close={this.props.close}>
-        <div>
-          <ImageDropzone addImage={this.addImage} />
-          {this.renderImage()}
-          {this.renderActions()}
+      <Modal
+        close={this.props.close}
+        renderFixedFooter={this.renderModalFixedFooter}
+        showFixedFooter
+      >
+        <div className="image-selector">
+          {this.renderHeader()}
+          {this.renderMain()}
+          {this.renderSelector()}
         </div>
       </Modal>
     </div>);
@@ -141,9 +205,12 @@ class ImageSelector extends Component { // eslint-disable-line
 }
 
 ImageSelector.propTypes = {
+  images: PropTypes.array.isRequired,
   isVisible: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
+  upload: PropTypes.func.isRequired,
+  coverProps: PropTypes.object.isRequired,
 };
 
 export default ImageSelector;

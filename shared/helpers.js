@@ -128,8 +128,8 @@ export function pageEditPath(page) {
 }
 
 export function compilationTotalPageCountEstimate(compilation) {
-  let emailPdfPages = _.get(compilation, 'metaData.estimatedEmailPdfPages');
-  let pagePdfPages = _.get(compilation, 'metaData.estimatedPagePdfPages');
+  let emailPdfPages = _.get(compilation, 'meta.estimatedEmailPdfPages');
+  let pagePdfPages = _.get(compilation, 'meta.estimatedPagePdfPages');
 
   emailPdfPages = emailPdfPages || compilation.emails.map(() => { return 3; }).reduce((pre, cur) => { return pre + cur; }, 0);
   pagePdfPages = pagePdfPages || compilation.pages.map(() => { return 1; }).reduce((pre, cur) => { return pre + cur; }, 0);
@@ -243,4 +243,13 @@ export function rotateImage(imgSrc, degrees, cb) {
 
     cb(canvas.toDataURL());
   };
+}
+
+export function getCoverImage(compilation, key) {
+  const imageMeta = _.get(compilation, `cover.meta.${key}`);
+  if (!imageMeta) { return undefined; }
+
+  const image = _.find(compilation.images, (img) => { return img._id === imageMeta.imageId; });
+
+  return { ...image, ...imageMeta };
 }

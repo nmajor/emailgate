@@ -304,22 +304,42 @@ export function processCoverImage(image) {
 
   return new Promise((resolve) => {
     const contentBuffer = new Buffer(image.content, 'base64');
-    const crop = image.crop;
+    // const crop = image.crop;
 
+    // if (image.crop) {
+    //   sharp(contentBuffer)
+    //   .extract(() => {
+    //     if (image.crop) {
+    //       return { left: crop.x, top: crop.y, width: crop.width, height: crop.height };
+    //     }
+    //
+    //     return {};
+    //   })
+    //   .resize(maxWidthPx)
+    //   .toBuffer((err, outputBuffer, info) => {
+    //     if (err) { console.log('An error happened while resizing attachment image', err); }
+    //
+    //     image.content = outputBuffer.toString('base64'); // eslint-disable-line
+    //     image.resizeInfo = info; // eslint-disable-line
+    //     image.crop = undefined; // eslint-disable-line
+    //     image.length = undefined; // eslint-disable-line
+    //     image.updatedAt = Date.now(); // eslint-disable-line
+    //
+    //     resolve(image);
+    //   });
+    // } else {
     sharp(contentBuffer)
-    .extract({ left: crop.x, top: crop.y, width: crop.width, height: crop.height })
     .resize(maxWidthPx)
     .toBuffer((err, outputBuffer, info) => {
       if (err) { console.log('An error happened while resizing attachment image', err); }
 
       image.content = outputBuffer.toString('base64'); // eslint-disable-line
       image.resizeInfo = info; // eslint-disable-line
-      image.crop = undefined; // eslint-disable-line
-      image.length = undefined; // eslint-disable-line
       image.updatedAt = Date.now(); // eslint-disable-line
 
       resolve(image);
     });
+    // }
   });
 }
 
@@ -330,8 +350,6 @@ export function bufferToStream(buffer) {
 }
 
 export function removeFile(path) {
-  console.log('blah removeFile', path);
-
   return new Promise((resolve, reject) => {
     client.unlink(path, (err, results) => {
       if (err) { return reject({ message: err.message, err, path }); }
@@ -343,8 +361,6 @@ export function removeFile(path) {
 }
 
 export function removeDir(path) {
-  console.log('blah removeDir', path);
-
   return new Promise((resolve, reject) => {
     client.rmr(path, (err, results) => {
       if (err) { return reject({ message: err.message, err, path }); }
@@ -356,10 +372,23 @@ export function removeDir(path) {
 }
 
 export function uploadAttachment(attachment) {
+  return uploadImage(attachment, `compilations/${attachment._compilation}/attachments`);
+}
+
+export function uploadCoverImage(image) {
+  return uploadImage(image, `compilations/${image._compilation}/cover-image`);
+}
+
+export function uploadImage(image, path) {
   return new Promise((resolve, reject) => {
-    const filename = attachment.fileName;
-    const path = `${process.env.MANTA_APP_PUBLIC_PATH}/compilations/${attachment._compilation}/${filename}`;
-    const buffer = new Buffer(attachment.content, 'base64');
+    let filename = image.fileName;
+
+    if (image._id) {
+      filename = `${image._id}-${filename}`;
+    }
+
+    const fullPath = `${process.env.MANTA_APP_PUBLIC_PATH}/${path}/${filename}`;
+    const buffer = new Buffer(image.content, 'base64');
 
     const options = {
       mkdirs: true,
@@ -370,29 +399,23 @@ export function uploadAttachment(attachment) {
       },
     };
 
-    client.put(path, bufferToStream(buffer), options, (err) => {
+    client.put(fullPath, bufferToStream(buffer), options, (err) => {
       if (err) { return reject(err); }
 
-      const updatedAt = Date.now();
+      const uploadedAt = Date.now();
 
-      client.info(path, (newErr, results) => {
-        if (newErr) { return reject({ message: newErr.message, newErr, path }); }
+      client.info(fullPath, (newErr, results) => {
+        if (newErr) { return reject({ message: newErr.message, newErr, fullPath }); }
 
-        const url = `${process.env.MANTA_APP_URL}/${path}`;
+        const url = `${process.env.MANTA_APP_URL}/${fullPath}`;
+        image.content = undefined;
 
         resolve({
-          _compilation: attachment._compilation,
-          resizeInfo: attachment.resizeInfo,
-          fileName: attachment.fileName,
-          contentType: attachment.contentType,
-          contentDisposition: attachment.contentDisposition,
-          contentId: attachment.contentId,
-          checksum: attachment.checksum,
-          length: attachment.length,
+          ...image,
 
           url,
-          updatedAt,
-          path,
+          uploadedAt,
+          path: fullPath,
 
           extension: results.extension,
           lastModified: results.headers['last-modified'],

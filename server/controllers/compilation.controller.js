@@ -1,6 +1,7 @@
 import Compilation from '../models/compilation';
 import Page from '../models/page';
 import Email from '../models/email';
+import _ from 'lodash';
 // import io from '../io';
 
 export function addBlankEmail(req, res) {
@@ -46,10 +47,13 @@ export function createCompilation(req, res) {
 export function patchCompilation(req, res) {
   Compilation.findOne({ _user: req.user._id, _id: req.params.id })
   .then((compilation) => {
-    compilation.title = req.body.title; // eslint-disable-line no-param-reassign
-    compilation.subtitle = req.body.subtitle; // eslint-disable-line no-param-reassign
-    compilation.coverTemplate = req.body.coverTemplate; // eslint-disable-line no-param-reassign
-    compilation.image = req.body.image || compilation.image; // eslint-disable-line no-param-reassign
+    if (req.body.title) { compilation.title = req.body.title; }
+    if (req.body.subtitle) { compilation.subtitle = req.body.subtitle; }
+    if (req.body.coverTemplate) { compilation.coverTemplate = req.body.coverTemplate; }
+    if (!_.isEmpty(req.body.newImages)) { compilation.newImages = req.body.newImages; }
+    if (!_.isEmpty(req.body.coverMeta)) {
+      compilation.cover.meta = { ...compilation.cover.meta, ...req.body.coverMeta };
+    }
 
     return compilation.save();
   })

@@ -8,10 +8,14 @@ class CompilationTitleContainer extends Component {
     super(props, context);
 
     this.update = this.update.bind(this);
+    // this.addImage = this.addImage.bind(this);
   }
   update(props) {
     this.props.dispatch(Actions.updateCompilationFetch(this.props.compilation._id, props, () => {}));
   }
+  // addImage(props) {
+  //   this.props.dispatch(Actions.addCompilationImage(this.props.compilation._id, props, () => {}));
+  // }
   render() {
     return (<div className="container compilation-container">
       <div className="compilation-content-box">

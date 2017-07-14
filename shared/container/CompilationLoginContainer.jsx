@@ -5,6 +5,7 @@ import * as Actions from '../redux/actions/index';
 import CompilationBuildContainer from './CompilationBuildContainer';
 import Modal from '../components/Modal';
 import LoginForm from '../components/LoginForm';
+import { colWrapperClass } from '../helpers';
 
 class CompilationRegisterContainer extends Component {
   constructor(props, context) {
@@ -47,7 +48,7 @@ class CompilationRegisterContainer extends Component {
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
-      <Modal close={this.back}>
+      <Modal close={this.back} className={colWrapperClass()}>
         <div>
           <h3>{this.renderHeaderText()}</h3>
           <LoginForm loginUser={this.login} errors={this.props.user.errors} user={this.props.user} />

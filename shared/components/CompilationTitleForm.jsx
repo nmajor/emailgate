@@ -10,7 +10,7 @@ class CompilationTitleForm extends Component {
       savable: false,
       coverTemplate: props.compilation.coverTemplate || covers.options[0],
       showImageSelector: false,
-      image: undefined,
+      coverProps: {},
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -19,6 +19,7 @@ class CompilationTitleForm extends Component {
     this.openImageSelector = this.openImageSelector.bind(this);
     this.closeImageSelector = this.closeImageSelector.bind(this);
     this.updateCompilationImage = this.updateCompilationImage.bind(this);
+    this.addCompilationImage = this.addCompilationImage.bind(this);
   }
   setSaveAbility() {
     if (this.formChanged()) {
@@ -27,15 +28,25 @@ class CompilationTitleForm extends Component {
       this.setState({ savable: false });
     }
   }
-  openImageSelector() {
-    this.setState({ showImageSelector: true });
+  openImageSelector(props) {
+    this.setState({ showImageSelector: true, coverProps: props });
   }
   closeImageSelector() {
     this.setState({ showImageSelector: false });
   }
   updateCompilationImage(data) {
-    this.setState({ image: data, savable: true });
-    this.closeImageSelector();
+    this.setState({ savable: true });
+    this.props.submitForm({ coverMeta: data });
+
+    // this.closeImageSelector();
+  }
+  addCompilationImage(data) {
+    data = { ...data, uploading: true };
+
+    const newImages = [data];
+    this.props.submitForm({
+      newImages,
+    });
   }
   formChanged() {
     const titleRef = this.refs.title || {};
@@ -61,7 +72,6 @@ class CompilationTitleForm extends Component {
       title: titleRef.value,
       subtitle: subtitleRef.value,
       coverTemplate: this.state.coverTemplate,
-      image: this.state.image,
     });
   }
   back(e) {
@@ -77,11 +87,16 @@ class CompilationTitleForm extends Component {
     return (<div className="col-md-2 col-sm-3 col-xs-4">
       <span
         className={`template-thumb ${this.state.coverTemplate === option ? 'active' : ''}`}
-        onClick={() => { this.setState({ coverTemplate: option }); this.setState({ savable: true }); }}
+        onClick={() => { this.setState({ coverTemplate: option, savable: true }); }}
       >
         <img role="presentation" className="img-responsive" src={`/img/cover-thumbs/${option}.png`} />
       </span>
     </div>);
+  }
+  renderTemplateOptions() {
+    return covers.options.map((option, index) => {
+      return <div key={index}>{this.renderTemplateOption(option)}</div>;
+    });
   }
   renderTemplateFormGroup() {
     return (<div className="row cover-templates">
@@ -92,9 +107,7 @@ class CompilationTitleForm extends Component {
           </div>
           <div className="row">
             <div className="col-md-3 col-sm-1 col-xs-0"></div>
-            {this.renderTemplateOption('BoxTitle')}
-            {this.renderTemplateOption('BlackSpine')}
-            {this.renderTemplateOption('DarkPic')}
+            {this.renderTemplateOptions()}
           </div>
         </div>
       </div>
@@ -152,24 +165,24 @@ class CompilationTitleForm extends Component {
       const compilation = {
         title: titleRef.value || this.props.compilation.title,
         subtitle: subtitleRef.value || this.props.compilation.subtitle,
-        cover: {
-          spineWidth: '',
-        },
-        image: this.props.compilation.image,
+        cover: this.props.compilation.cover,
+        images: this.props.compilation.images,
       };
 
       // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
       // {coverTemplate.renderFrontCover()}
 
-      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', image: this.state.image, changeImage: this.openImageSelector });
+      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', selectImage: this.openImageSelector });
       return (<div style={{ zoom: '100%' }}>
-        {coverTemplate.renderFrontCover()}
+        {coverTemplate.renderWrappedFrontCover()}
       </div>);
     }
   }
   render() {
+    const images = this.props.compilation.images || [];
+
     return (<form onSubmit={this.handleSubmit}>
-      <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} />
+      <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} upload={this.addCompilationImage} coverProps={this.state.coverProps} images={images} />
       <div className="row">
         <div className="col-md-6">
           {this.renderTitleFormGroup()}
