@@ -1,3 +1,13 @@
+Weekend TODO:
+- Add a loader when images are uploading
+- Also when the existing images are downloading to the page have some default width and background for the image elements
+- Get the thumbnail working for the new cover
+- Add a banner for unsaved compilations with a link to the login modal
+- Autoselect the currently selected image when re-opening the image selector
+- Persist the crop location when re-opening the image selector
+- Add 2 more covers
+
+
 TODO:
 Show spinner when adding email with the plus button (with email open)
 On checkout discounts dont show on the confirm page (Maybe promo code doesnt persist)
