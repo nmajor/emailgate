@@ -3,9 +3,11 @@
 }
 .list-item-actions {
   position: absolute;
-  width: 100%;
-  text-align: right;
   padding: 8px 6px 0 0;
+  text-align: right;
+  float: right;
+  right: 0;
+  z-index: 1;
 
   .btn {
     margin-right: 0;

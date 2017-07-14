@@ -83,7 +83,7 @@ export function applyPromoCodeToOrderPreview(req, res) {
       return res.json({ error: { message: 'Invalid promo code' } });
     })
     .catch((err) => {
-      console.log('an error happened applyting a promo code', err);
+      console.log('An error happened while applying promo code', err);
     });
   });
 }

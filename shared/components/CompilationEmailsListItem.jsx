@@ -21,9 +21,9 @@ class CompilationEmailsListItem extends Component {
     </Link>);
   }
   renderShowAction() {
-    return (<div className="btn btn-default">
+    return (<Link className="btn btn-default" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}>
       <span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-    </div>);
+    </Link>);
   }
   renderPdfAction() {
     if (_.get(this.props.email, 'pdf.url')) {
@@ -83,14 +83,19 @@ class CompilationEmailsListItem extends Component {
     </div>);
   }
   renderEmailThumb() {
-    return (<Link
-      className="compilation-emails-list-item list-item" to={`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`}
-    >
+    return (<div className="relative">
       {this.renderThumbActions()}
-      {this.renderDate()}
-      {this.renderSubject()}
-      {this.renderBodyPreview()}
-    </Link>);
+      <div
+        className="compilation-emails-list-item list-item"
+        onClick={() => {
+          this.context.router.push(`/compilations/${this.props.email._compilation}/build/emails/${this.props.email._id}`);
+        }}
+      >
+        {this.renderDate()}
+        {this.renderSubject()}
+        {this.renderBodyPreview()}
+      </div>
+    </div>);
   }
   renderEmailListItem() {
     if (this.props.show === 'view') {
@@ -120,6 +125,10 @@ class CompilationEmailsListItem extends Component {
     return (<div>{this.renderEmailListItem()}</div>);
   }
 }
+
+CompilationEmailsListItem.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 CompilationEmailsListItem.propTypes = {
   email: PropTypes.object.isRequired,

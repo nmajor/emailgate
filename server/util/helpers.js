@@ -351,12 +351,24 @@ export function bufferToStream(buffer) {
 
 export function removeFile(path) {
   return new Promise((resolve, reject) => {
-    client.delete(path, (err, results) => {
-      if (err) { console.log('blah err yo', err); return reject({ message: err.message, err, path }); }
+    client.unlink(path, (err, results) => {
+      if (err) { return reject({ message: err.message, err, path }); }
 
       resolve(results);
     });
-  });
+  })
+  .catch((err) => { console.log('Error happened when removing file', err); });
+}
+
+export function removeDir(path) {
+  return new Promise((resolve, reject) => {
+    client.rmr(path, (err, results) => {
+      if (err) { return reject({ message: err.message, err, path }); }
+
+      resolve(results);
+    });
+  })
+  .catch((err) => { console.log('Error happened when removing dir', err); });
 }
 
 export function uploadAttachment(attachment) {

@@ -167,7 +167,7 @@ h1 > .loading {
 .compilation-pages-list-item {
   position: relative;
   padding: 5px 3px;
-  .page-thumb.list-item-actions { padding: 4px 10px 0 0; }
+  .page-thumb.list-item-actions { padding: 4px 5px 0 0; }
   a.list-item {
     color: #333;
   }
@@ -424,7 +424,7 @@ input {
   .my-checkbox {
     position: relative;
     top: 3px;
-    margin: 0 10px;
+    margin: 0 10px 0 5px;
   }
 }
 .toggle-search-help {
