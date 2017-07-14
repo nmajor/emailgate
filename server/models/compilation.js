@@ -19,6 +19,7 @@ const CompilationCoverSchema = new Schema({
   html: String,
   pdf: {},
   templateConfig: {},
+  meta: {},
 }, {
   timestamps: true,
 });
@@ -30,7 +31,7 @@ const CompilationSchema = new Schema({
   subtitle: String,
   coverTemplate: String,
   thumbnail: {},
-  images: {},
+  images: [],
   cover: { type: CompilationCoverSchema, default: {} },
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
@@ -67,6 +68,7 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
   let tasks = Promise.resolve();
 
   if (this.newImages.length > 0) {
+    console.log('blah something is happeneing.');
     _.forEach(this.newImages, (image) => {
       const imageId = shortid.generate();
       image._id = imageId;
@@ -79,10 +81,11 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
         return serverHelpers.uploadCoverImage(processedImage);
       })
       .then((uploadedImage) => {
-        this.images = { ...this.images };
-        this.images[imageId] = uploadedImage;
-        console.log('blah hey after processing new image', this.images);
+        this.images.push(uploadedImage);
         return Promise.resolve(this);
+      })
+      .then(() => {
+        this.newImages = [];
       });
     });
   }

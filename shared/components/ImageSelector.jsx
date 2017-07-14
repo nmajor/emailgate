@@ -65,11 +65,11 @@ class ImageSelector extends Component { // eslint-disable-line
     this.state = {
       naturalHeight: undefined,
       naturalWidth: undefined,
+      pixelCrop: undefined,
       crop: {
         width: 30,
-        aspect: 1,
+        aspect: props.coverProps.aspect || 1,
       },
-      pixelCrop: undefined,
     };
 
     this.addImage = this.addImage.bind(this);
@@ -80,24 +80,36 @@ class ImageSelector extends Component { // eslint-disable-line
 
     this.renderModalFixedFooter = this.renderModalFixedFooter.bind(this);
   }
-  getAspect() {
-    if (this.props.aspect) {
-      return this.props.aspect;
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.coverProps.aspect !== this.state.crop.aspect) {
+      this.setState({ crop: { ...this.state.crop, aspect: nextProps.coverProps.aspect } });
     }
-
-    return 1;
   }
   addImage(image) {
     this.props.upload(image);
   }
   submitImage() {
-    const data = this.state.image;
-    data.crop = this.state.pixelCrop || {};
-    data.crop.naturalHeight = this.state.naturalHeight;
-    data.crop.naturalWidth = this.state.naturalWidth;
-    data.selectedAt = (new Date()).getTime();
+    // const data = this.state.image;
 
-    this.props.submit(data);
+    // data.crop = this.state.pixelCrop || {};
+    // data.crop.naturalHeight = this.state.naturalHeight;
+    // data.crop.naturalWidth = this.state.naturalWidth;
+    // data.selectedAt = (new Date()).getTime();
+
+    const crop = this.state.pixelCrop || {};
+    crop.naturalHeight = this.state.naturalHeight;
+    crop.naturalWidth = this.state.naturalWidth;
+
+    const imageData = {
+      imageId: this.state.image._id,
+      selectedAt: (new Date()).getTime(),
+      crop,
+    };
+
+    const metaData = {};
+    metaData[this.props.coverProps.key] = imageData;
+
+    this.props.submit(metaData);
   }
   handlImageLoad(evt) {
     this.setState({ naturalHeight: evt.target.naturalHeight, naturalWidth: evt.target.naturalWidth });
@@ -198,7 +210,7 @@ ImageSelector.propTypes = {
   close: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   upload: PropTypes.func.isRequired,
-  aspect: PropTypes.number,
+  coverProps: PropTypes.object.isRequired,
 };
 
 export default ImageSelector;

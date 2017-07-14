@@ -24,29 +24,34 @@ class LowSquarePic extends CoverBase {
       compilation,
       prettyStartDate,
       prettyEndDate,
-      boardHeightPx,
+      // boardHeightPx,
       boardWidthPx,
       selectImage,
     } = this.props;
 
-    const imageHeight = boardHeightPx * 0.7;
-    const imageWidth = boardWidthPx;
+    const aspect = (9 / 10);
 
-    // const defaultImage = {
-    //   src: '/img/cover-images/field-standing.jpg',
-    //   crop: {
-    //     x: 100,
-    //     y: 100,
-    //     natrualWidth: 1410,
-    //     natrualHeight: 1480,
-    //     width: imageWidth / 5,
-    //     height: imageHeight / 5,
-    //   },
-    // };
+    const imageWidth = boardWidthPx;
+    const imageHeight = boardWidthPx * (1 / aspect);
+    // Have to flip the aspect ratio because we want the longer length to be the
+    // height and aspect ratios always have the width as the first number
+
+    const defaultImage = {
+      src: '/img/cover-images/field-standing.jpg',
+      crop: {
+        x: 100,
+        y: 100,
+        natrualWidth: 1410,
+        natrualHeight: 1480,
+        width: imageWidth / 5,
+        height: imageHeight / 5,
+      },
+    };
 
     const coverProps = {
-      aspect: (4 / 3),
-      metaKey: 'low-square-pic-front',
+      aspect,
+      key: 'low-square-pic-front',
+      defaultImage,
     };
 
     return (<FrontCoverBase {...this.props}>
@@ -68,7 +73,8 @@ class LowSquarePic extends CoverBase {
           height={imageHeight}
           width={imageWidth}
           selectImage={selectImage}
-          coverProp={coverProps}
+          coverProps={coverProps}
+          compilation={compilation}
         />
       </div>
     </FrontCoverBase>);

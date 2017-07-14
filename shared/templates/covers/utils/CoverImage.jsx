@@ -9,10 +9,13 @@ class CoverImage extends Component {
 
     this.handleImageClick = this.handleImageClick.bind(this);
   }
+  getImage() {
+    const { coverProps, compilation } = this.props;
+    const image = getCoverImage(compilation, coverProps.key);
+    return image || coverProps.defaultImage;
+  }
   handleImageClick() {
-    return this.props.selectImage({
-      coverProps: this.props.coverProps,
-    });
+    return this.props.selectImage(this.props.coverProps);
   }
   imageOuterStyle() {
     const { height, width } = this.props;
@@ -56,11 +59,14 @@ class CoverImage extends Component {
     </div>);
   }
   renderImage() {
-    const { height, width, coverProps, compilation } = this.props;
-    const image = getCoverImage(compilation, coverProps.key);
+    const { height, width } = this.props;
+    const image = this.getImage();
+    console.log('blah image crop', image.crop);
+
+    if (!image) { return <div></div>; }
 
     const xScaleRatio = width / image.crop.width;
-    const yScaleRatio = height / image.crop.width;
+    const yScaleRatio = height / image.crop.height;
 
     const imageInnerStyles = {
       width: `${image.crop.naturalWidth * xScaleRatio}px`,
@@ -70,7 +76,7 @@ class CoverImage extends Component {
     };
 
     return (<div style={this.imageOuterStyle()}>
-      <img style={imageInnerStyles} src={image.src} role="presentation" />;
+      <img style={imageInnerStyles} src={image.url} role="presentation" />;
     </div>);
   }
 

@@ -10,7 +10,7 @@ class CompilationTitleForm extends Component {
       savable: false,
       coverTemplate: props.compilation.coverTemplate || covers.options[0],
       showImageSelector: false,
-      imageSelectorAspect: 1,
+      coverProps: {},
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -34,9 +34,11 @@ class CompilationTitleForm extends Component {
   closeImageSelector() {
     this.setState({ showImageSelector: false });
   }
-  updateCompilationImage() {
+  updateCompilationImage(data) {
     this.setState({ savable: true });
-    this.closeImageSelector();
+    this.props.submitForm({ coverMeta: data });
+
+    // this.closeImageSelector();
   }
   addCompilationImage(data) {
     data = { ...data, uploading: true };
@@ -163,9 +165,7 @@ class CompilationTitleForm extends Component {
       const compilation = {
         title: titleRef.value || this.props.compilation.title,
         subtitle: subtitleRef.value || this.props.compilation.subtitle,
-        cover: {
-          spineWidth: '',
-        },
+        cover: this.props.compilation.cover,
         images: this.props.compilation.images,
       };
 
@@ -179,7 +179,7 @@ class CompilationTitleForm extends Component {
     }
   }
   render() {
-    const images = this.props.compilation.images || {};
+    const images = this.props.compilation.images || [];
 
     return (<form onSubmit={this.handleSubmit}>
       <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} upload={this.addCompilationImage} coverProps={this.state.coverProps} images={images} />

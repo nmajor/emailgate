@@ -19,5 +19,6 @@ export function getCompilationPages(req, res) {
       return res.json(newPages);
     })
     .catch((err) => { console.log('An error happened', err); });
-  });
+  })
+  .catch((err) => { console.log('An error happened when finding compilation pages', err); });
 }

@@ -246,8 +246,10 @@ export function rotateImage(imgSrc, degrees, cb) {
 }
 
 export function getCoverImage(compilation, key) {
-  const imageMeta = compilation.meta[key];
-  const image = compilation.images[imageMeta.imageId];
+  const imageMeta = _.get(compilation, `cover.meta.${key}`);
+  if (!imageMeta) { return undefined; }
+
+  const image = _.find(compilation.images, (img) => { return img._id === imageMeta.imageId; });
 
   return { ...image, ...imageMeta };
 }

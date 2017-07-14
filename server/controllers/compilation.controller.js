@@ -51,6 +51,9 @@ export function patchCompilation(req, res) {
     if (req.body.subtitle) { compilation.subtitle = req.body.subtitle; }
     if (req.body.coverTemplate) { compilation.coverTemplate = req.body.coverTemplate; }
     if (!_.isEmpty(req.body.newImages)) { compilation.newImages = req.body.newImages; }
+    if (!_.isEmpty(req.body.coverMeta)) {
+      compilation.cover.meta = { ...compilation.cover.meta, ...req.body.coverMeta };
+    }
 
     return compilation.save();
   })

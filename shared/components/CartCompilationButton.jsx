@@ -27,7 +27,7 @@ class CartCompilationButton extends Component {
   renderModal() {
     if (this.state.modalVisible) {
       return (<Modal close={this.hideModal}>
-        <div>
+        <div className="padded">
           <h1 className="text-center">Add To Cart</h1>
           <CompilationAddToCart
             compilation={this.props.compilation}
