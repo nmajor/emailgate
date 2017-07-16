@@ -6,13 +6,10 @@ import Loading from './Loading';
 class CompilationHeader extends Component { // eslint-disable-line
   renderCoverPreview() {
     const { compilation } = this.props;
+    console.log();
 
-    if (_.get(compilation, 'thumbnail.content')) {
-      const dataUriPrefix = `data:${compilation.thumbnail.contentType};base64,`;
-
-      console.log(compilation.thumbnail.content);
-
-      return (<img role="presentation" src={dataUriPrefix + compilation.thumbnail.content} />);
+    if (_.get(compilation, 'thumbnail.url')) {
+      return (<img role="presentation" src={compilation.thumbnail.url} />);
     }
   }
   renderTitle() {

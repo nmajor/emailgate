@@ -646,7 +646,11 @@ input {
     cursor: pointer;
     background: #DDD;
 
-    img { max-width: 100%; opacity: 0.7  }
+    img {
+      max-width: 100%;
+      opacity: 0.7;
+      border: 1px solid #CCC;
+    }
 
     &.active {
       img { opacity: 1 }

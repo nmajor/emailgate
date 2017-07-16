@@ -125,10 +125,10 @@ CompilationSchema.methods.publicFolderBase = function publicFolderBase() {
 
 CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
   const thumbnailOptions = {
-    type: 'jpeg',             // allowed file types: png, jpeg, pdf
+    type: 'png',             // allowed file types: png, jpeg, pdf
     quality: '75',
-    height: '400px',
-    width: '267px',
+    height: 666,        // Dont change height/width, this option doesnt seem to work so
+    width: 419,         // this is what it naturally is. Using it to trim below.
   };
 
   const startDate = this.meta.startingDate;
@@ -138,11 +138,26 @@ CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
 
   return htmlToPdf(template.frontCoverToString(), thumbnailOptions)
   .then((imgBuffer) => {
-    this.thumbnail = {
+    const image = {
       content: imgBuffer.toString('base64'),
-      contentType: 'image/jpeg',
+      contentType: 'image/png',
       updatedAt: Date.now(),
     };
+    return Promise.resolve(image);
+  })
+  .then((image) => {
+    return serverHelpers.extractImage(image, {
+      top: 0,
+      left: 0,
+      height: thumbnailOptions.height,
+      width: thumbnailOptions.width,
+    });
+  })
+  .then((image) => {
+    return serverHelpers.uploadCoverThumbnailImage(image);
+  })
+  .then((image) => {
+    this.thumbnail = image;
     return Promise.resolve(this);
   })
   .catch((err) => { console.log('An error happened when trying to update compilation thumbnail', err); });

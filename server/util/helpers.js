@@ -343,6 +343,25 @@ export function processCoverImage(image) {
   });
 }
 
+export function extractImage(image, extractOptions) {
+  return new Promise((resolve) => {
+    const contentBuffer = new Buffer(image.content, 'base64');
+
+    sharp(contentBuffer)
+    .extract(extractOptions)
+    .toBuffer((err, outputBuffer) => {
+      if (err) { console.log('An error happened while resizing attachment image', err); }
+
+      image.content = outputBuffer.toString('base64'); // eslint-disable-line
+      // image.resizeInfo = info; // eslint-disable-line
+      image.updatedAt = Date.now(); // eslint-disable-line
+
+      resolve(image);
+    });
+    // }
+  });
+}
+
 export function bufferToStream(buffer) {
   const bufferStream = new stream.PassThrough();
   bufferStream.end(buffer);
@@ -377,6 +396,12 @@ export function uploadAttachment(attachment) {
 
 export function uploadCoverImage(image) {
   return uploadImage(image, `compilations/${image._compilation}/cover-image`);
+}
+
+export function uploadCoverThumbnailImage(image) {
+  image.fileName = 'cover-thumbnail.png';
+
+  return uploadImage(image, `compilations/${image._compilation}`);
 }
 
 export function uploadImage(image, path) {

@@ -64,9 +64,8 @@ class CompilationAddToCart extends Component {
   renderCompilationThumb() {
     const { compilation } = this.props;
 
-    if (_.get(compilation, 'thumbnail.content')) {
-      const dataUriPrefix = `data:${compilation.thumbnail.contentType};base64,`;
-      return (<img role="presentation" src={dataUriPrefix + compilation.thumbnail.content} />);
+    if (_.get(compilation, 'thumbnail.url')) {
+      return (<img role="presentation" src={compilation.thumbnail.url} />);
     }
   }
   renderCompilationSummary() {
