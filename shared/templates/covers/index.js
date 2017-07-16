@@ -12,7 +12,7 @@ export default {
   options: [
     'BoxTitle',
     'BlackSpine',
-    'DarkPic',
+    // 'DarkPic',
     'LowSquarePic',
   ],
 };

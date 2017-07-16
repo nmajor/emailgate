@@ -37,12 +37,12 @@ class LowSquarePic extends CoverBase {
     const defaultImage = {
       url: '/img/cover-images/field-standing.jpg',
       crop: {
-        x: 100,
-        y: 100,
-        natrualWidth: 1410,
-        natrualHeight: 1480,
-        width: imageWidth / 5,
-        height: imageHeight / 5,
+        height: 813,
+        naturalHeight: 945,
+        naturalWidth: 900,
+        width: 731,
+        x: 73,
+        y: 132,
       },
     };
 

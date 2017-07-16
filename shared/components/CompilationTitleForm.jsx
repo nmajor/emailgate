@@ -104,7 +104,7 @@ class CompilationTitleForm extends Component {
       <div className="col-md-12">
         <div className="form-group">
           <div className="text-center">
-            <label htmlFor="compilation-title">Cover Template</label>
+            <label htmlFor="compilation-title">Select a Cover Template</label>
           </div>
           <div className="row">
             <div className="col-md-3 col-sm-1 col-xs-0"></div>

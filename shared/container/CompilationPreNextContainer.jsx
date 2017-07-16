@@ -19,7 +19,6 @@ class CompilationPreNextContainer extends Component {
     }
   }
   compilationHasCoverTemplate() {
-    console.log(this.props.compilation);
     return !!(this.props.compilation.coverTemplate);
   }
   compilationHasEmails() {
