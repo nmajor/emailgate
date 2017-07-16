@@ -121,6 +121,8 @@ class ImageSelector extends Component { // eslint-disable-line
       pixelCrop: this.state.pixelCrop,
     };
 
+    console.log('image data for default image', imageData);
+
     const metaData = {};
     metaData[this.props.coverProps.key] = imageData;
 
