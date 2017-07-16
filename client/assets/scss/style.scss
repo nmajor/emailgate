@@ -523,29 +523,17 @@ input {
 
 .image-dropzone {
   @extend .attachment-dropzone;
-
-  &.selector {
-    display: inline-block;
-    height: 100px;
-    width: 100px;
-    padding: 0;
-    position: relative;
-    margin: 5px 0;
-
-    .middle-text {
-      height: 100%;
-      width: 100%;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-  }
 }
+
 .image-selector {
   position: absolute;
   width: 100%;
   height: 100%;
+
+  .body {
+    position: absolute;
+    height: 100%;
+  }
 
   .header {
     z-index: 2;
@@ -575,6 +563,24 @@ input {
     overflow: scroll;
     z-index: 1;
 
+    .image-dropzone {
+      display: inline-block;
+      height: 100px;
+      width: 100px;
+      padding: 0;
+      position: relative;
+      margin: 5px 0;
+
+      .middle-text {
+        height: 100%;
+        width: 100%;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+
     .loading {
       text-align: center;
       span {
@@ -597,6 +603,13 @@ input {
         cursor: pointer;
       }
     }
+  }
+
+  .welcome {
+    position: relative;
+    padding: 100px 80px;
+
+    .image-dropzone {}
   }
 }
 

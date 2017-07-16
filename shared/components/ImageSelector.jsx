@@ -38,7 +38,7 @@ class ImageDropzone extends Component {
     return <div className="middle-text">{text}</div>;
   }
   render() {
-    return (<Dropzone className="image-dropzone selector" activeClassName="active-image-dropzone" onDrop={this.onDrop}>
+    return (<Dropzone className="image-dropzone" activeClassName="active-image-dropzone" onDrop={this.onDrop}>
       {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => { // eslint-disable-line
         if (isDragActive) {
           return this.renderText('This file is authorized');
@@ -49,7 +49,7 @@ class ImageDropzone extends Component {
         if (rejectedFiles.length) {
           return this.renderText('File rejected. Please try again.');
         }
-        return this.renderText(<span><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Image</span>);
+        return this.renderText(this.props.text || '+ Image');
       }}
     </Dropzone>);
   }
@@ -57,6 +57,7 @@ class ImageDropzone extends Component {
 
 ImageDropzone.propTypes = {
   addImage: PropTypes.func.isRequired,
+  text: PropTypes.string,
 };
 
 class ImageSelector extends Component { // eslint-disable-line
@@ -203,6 +204,21 @@ class ImageSelector extends Component { // eslint-disable-line
       Select and customize an image for your cover...
     </div>);
   }
+  renderWelcome() {
+    return (<div className="welcome">
+      <ImageDropzone addImage={this.addImage} text="Click or drop here to add an image..." />
+    </div>);
+  }
+  renderBody() {
+    if (this.props.images.length > 0) {
+      return (<div className="body">
+        {this.renderSelector()}
+        {this.renderMain()}
+      </div>);
+    }
+
+    return this.renderWelcome();
+  }
   render() {
     if (!this.props.isVisible) {
       return <div></div>;
@@ -216,8 +232,7 @@ class ImageSelector extends Component { // eslint-disable-line
       >
         <div className="image-selector">
           {this.renderHeader()}
-          {this.renderSelector()}
-          {this.renderMain()}
+          {this.renderBody()}
         </div>
       </Modal>
     </div>);
