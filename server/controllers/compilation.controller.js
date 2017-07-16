@@ -67,7 +67,8 @@ export function patchCompilation(req, res) {
   })
   .then((compilation) => {
     compilation.broadcast();
-  });
+  })
+  .catch((err) => { console.log('An error happened when updating a compilation', err); });
 }
 
 export function removeCompilation(req, res) {

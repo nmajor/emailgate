@@ -131,10 +131,10 @@ export class CoverBase {
     </div>);
   }
   toString() {
-    return toStringWrapper(this.render());
+    return toStringWrapper({ render: this.render.bind(this), ...this.props });
   }
   frontCoverToString() {
-    return toStringWrapper(this.renderWrappedFrontCover());
+    return toStringWrapper({ render: this.renderWrappedFrontCover.bind(this), ...this.props });
   }
 }
 

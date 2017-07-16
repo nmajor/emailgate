@@ -10,7 +10,7 @@ class CompilationHeader extends Component { // eslint-disable-line
     if (_.get(compilation, 'thumbnail.content')) {
       const dataUriPrefix = `data:${compilation.thumbnail.contentType};base64,`;
 
-      // console.log(compilation.thumbnail.content);
+      console.log(compilation.thumbnail.content);
 
       return (<img role="presentation" src={dataUriPrefix + compilation.thumbnail.content} />);
     }

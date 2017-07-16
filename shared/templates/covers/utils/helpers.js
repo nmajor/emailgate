@@ -76,11 +76,11 @@ export function toStringWrapper(props) {
       box-sizing: border-box;
     }
   </style>
-  ${this.primaryFont.link}
-  ${this.primaryFont.link !== this.secondaryFont.link ? this.secondaryFont.link : ''}
+  ${props.primaryFont.link}
+  ${props.primaryFont.link !== props.secondaryFont.link ? props.secondaryFont.link : ''}
 </head>
 <body>
-  ${renderToString(props.children)}
+  ${renderToString(props.render())}
 </body>
 </html>
   `;
