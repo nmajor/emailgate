@@ -35,7 +35,7 @@ class LowSquarePic extends CoverBase {
     // height and aspect ratios always have the width as the first number
 
     const defaultImage = {
-      src: '/img/cover-images/field-standing.jpg',
+      url: '/img/cover-images/field-standing.jpg',
       crop: {
         x: 100,
         y: 100,

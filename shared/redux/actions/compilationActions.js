@@ -31,6 +31,7 @@ export function setPropertyForCompilation(compilationId, prop, val) {
 }
 
 export function setPropertiesForCompilation(compilationId, props) {
+  console.log('blah props', props);
   return {
     type: ActionTypes.SET_PROPERTIES_FOR_COMPILATION,
     compilationId,

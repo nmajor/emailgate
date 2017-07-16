@@ -15,7 +15,12 @@ class CoverImage extends Component {
     return image || coverProps.defaultImage;
   }
   handleImageClick() {
-    return this.props.selectImage(this.props.coverProps);
+    const { coverProps, compilation } = this.props;
+    const newCoverProps = {
+      ...coverProps,
+      image: getCoverImage(compilation, coverProps.key),
+    };
+    return this.props.selectImage(newCoverProps);
   }
   imageOuterStyle() {
     const { height, width } = this.props;

@@ -78,13 +78,28 @@ class ImageSelector extends Component { // eslint-disable-line
     this.handleCropChange = this.handleCropChange.bind(this);
     this.handlImageLoad = this.handlImageLoad.bind(this);
     this.handleThumbClick = this.handleThumbClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
 
     this.renderModalFixedFooter = this.renderModalFixedFooter.bind(this);
   }
+  componentWillMount() {
+    console.log('blah componentWillMount');
+  }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.coverProps.aspect !== this.state.crop.aspect) {
+    if (_.isEmpty(this.state.image) && _.get(nextProps, 'coverProps.image')) {
+      const image = nextProps.coverProps.image;
+      console.log('nexProps.image.crop', nextProps.coverProps.image.crop);
+      console.log('nexProps.image', image);
+      const crop = image.displayCrop;
+
+      this.setState({ crop, image });
+    } else if (nextProps.coverProps.aspect !== this.state.crop.aspect) {
+    // if (nextProps.coverProps.aspect !== this.state.crop.aspect) {
       this.setState({ crop: { ...this.state.crop, aspect: nextProps.coverProps.aspect } });
     }
+  }
+  componentWillUnmount() {
+    this.setState({ image: undefined });
   }
   addImage(image) {
     this.props.upload(image);
@@ -105,6 +120,7 @@ class ImageSelector extends Component { // eslint-disable-line
       imageId: this.state.image._id,
       selectedAt: (new Date()).getTime(),
       crop,
+      displayCrop: this.state.crop,
     };
 
     const metaData = {};
@@ -121,6 +137,10 @@ class ImageSelector extends Component { // eslint-disable-line
   handleThumbClick(image) {
     this.setState({ image });
   }
+  handleClose() {
+    this.setState({ image: undefined });
+    this.props.close();
+  }
   renderImage() {
     if (!_.isEmpty(this.state.image)) {
       const image = this.state.image;
@@ -129,6 +149,8 @@ class ImageSelector extends Component { // eslint-disable-line
         width: '100%',
         marginTop: '5px',
       };
+
+      console.log('blah this.state.crop', this.state.crop);
 
       return (<div className="image-selector-crop-wrapper">
         <img role="presentation" style={{ display: 'none' }} src={image.url} onLoad={this.handlImageLoad} />
@@ -144,13 +166,14 @@ class ImageSelector extends Component { // eslint-disable-line
   }
   renderActions() {
     return (<div className="text-right">
-      <span className="btn btn-danger" onClick={this.props.close}>Back</span>
+      <span className="btn btn-danger" onClick={this.handleClose}>Back</span>
       <span className="btn btn-success marginless-right" onClick={this.submitImage}>Submit</span>
     </div>);
   }
   renderImageThumb(image) {
-    console.log('blah image', image);
-    if (image.content) {
+    if (image.uploading) {
+      return <div className="loading"><Loading /></div>;
+    } else if (image.content) {
       const dataUriPrefix = `data:${image.contentType};base64,`;
       return <img role="presentation" src={dataUriPrefix + image.content} />;
     }
@@ -192,7 +215,7 @@ class ImageSelector extends Component { // eslint-disable-line
 
     return (<div>
       <Modal
-        close={this.props.close}
+        close={this.handleClose}
         renderFixedFooter={this.renderModalFixedFooter}
         showFixedFooter
       >

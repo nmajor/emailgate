@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ImageSelector from './ImageSelector';
 import Loading from './Loading';
 import covers from '../templates/covers';
+import _ from 'lodash';
 
 class CompilationTitleForm extends Component {
   constructor(props, context) {
@@ -38,7 +39,7 @@ class CompilationTitleForm extends Component {
     this.setState({ savable: true });
     this.props.submitForm({ coverMeta: data });
 
-    // this.closeImageSelector();
+    this.closeImageSelector();
   }
   addCompilationImage(data) {
     data = { ...data, uploading: true };
@@ -179,11 +180,18 @@ class CompilationTitleForm extends Component {
     }
   }
   render() {
-    const images = this.props.compilation.images || [];
+    const images = _.sortBy((this.props.compilation.images || []), (image) => { return -image.uploadedAt; });
     const newImages = this.props.compilation.newImages || [];
 
     return (<form onSubmit={this.handleSubmit}>
-      <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} upload={this.addCompilationImage} coverProps={this.state.coverProps} images={[...images, ...newImages]} />
+      <ImageSelector
+        isVisible={this.state.showImageSelector}
+        close={this.closeImageSelector}
+        submit={this.updateCompilationImage}
+        upload={this.addCompilationImage}
+        coverProps={this.state.coverProps}
+        images={[...newImages, ...images]}
+      />
       <div className="row">
         <div className="col-md-6">
           {this.renderTitleFormGroup()}

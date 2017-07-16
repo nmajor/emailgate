@@ -409,6 +409,7 @@ export function uploadImage(image, path) {
 
         const url = `${process.env.MANTA_APP_URL}/${fullPath}`;
         image.content = undefined;
+        image.uploading = undefined;
 
         resolve({
           ...image,

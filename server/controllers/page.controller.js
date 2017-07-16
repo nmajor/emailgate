@@ -2,7 +2,6 @@ import Page from '../models/page';
 import Compilation from '../models/compilation';
 
 export function getCompilationPages(req, res) {
-  console.log('blah getCompilationPages');
   Page.find({ _compilation: req.params.id })
   .then((pages) => {
     if (pages.length > 0) {
