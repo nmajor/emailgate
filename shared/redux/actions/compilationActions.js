@@ -97,7 +97,7 @@ export function createCompilation(props, cb) {
 
 export function updateCompilationFetch(compilationId, props, cb) {
   return (dispatch) => {
-    dispatch(setPropertiesForCompilation(compilationId, ...{ ...props, saving: true }));
+    dispatch(setPropertiesForCompilation(compilationId, { ...props, saving: true }));
 
     return fetch(`${baseURL}/api/compilations/${compilationId}`, {
       credentials: 'include',

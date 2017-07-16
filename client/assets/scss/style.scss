@@ -631,6 +631,10 @@ input {
 .selector-image-thumb {
   margin: 0 5px;
   display: inline-block;
+  min-height: 100px;
+  min-width: 50px;
+  background: #222;
+
   img {
     max-height: 100px;
   }
@@ -638,10 +642,6 @@ input {
     cursor: pointer;
   }
 }
-.selector-image-thumbs {
-  overflow-x: scroll;
-}
-
 .email-fetching {
   padding: 20px 0;
 }

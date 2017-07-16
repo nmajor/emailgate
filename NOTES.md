@@ -13,10 +13,6 @@ Show spinner when adding email with the plus button (with email open)
 On checkout discounts dont show on the confirm page (Maybe promo code doesnt persist)
 
 FROM BJ:
-- New domain with SSL
-- Make Add Emails socket event add emails 1 by 1 instead of Promise.all
-- Email preview and edit font needs to be bigger when viewing on website
-- Estimated page number
 - Make the Table of Contents font smaller
 - Greyify date and photo icon line in Table of Contents
 
@@ -27,6 +23,10 @@ STRETCH:
 - New Cover Designs
 
 DONE:
+- New domain with SSL
+- Make Add Emails socket event add emails 1 by 1 instead of Promise.all
+- Email preview and edit font needs to be bigger when viewing on website
+- Estimated page number
 - Add EXPAND down arrow icon to collapsed emails
 - Change icons to words (EDIT, SAVE, VIEW)
 - Add progress bar on top (Add Emails -> Edit Book (50 emails) -> Checkout)

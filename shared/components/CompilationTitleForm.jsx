@@ -180,9 +180,10 @@ class CompilationTitleForm extends Component {
   }
   render() {
     const images = this.props.compilation.images || [];
+    const newImages = this.props.compilation.newImages || [];
 
     return (<form onSubmit={this.handleSubmit}>
-      <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} upload={this.addCompilationImage} coverProps={this.state.coverProps} images={images} />
+      <ImageSelector isVisible={this.state.showImageSelector} close={this.closeImageSelector} submit={this.updateCompilationImage} upload={this.addCompilationImage} coverProps={this.state.coverProps} images={[...images, ...newImages]} />
       <div className="row">
         <div className="col-md-6">
           {this.renderTitleFormGroup()}

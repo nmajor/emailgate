@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import ReactCrop from 'react-image-crop';
 import Modal from '../components/Modal';
 import Dropzone from 'react-dropzone';
+import Loading from '../components/Loading';
 import _ from 'lodash';
 
 class ImageDropzone extends Component {
@@ -148,6 +149,7 @@ class ImageSelector extends Component { // eslint-disable-line
     </div>);
   }
   renderImageThumb(image) {
+    console.log('blah image', image);
     if (image.content) {
       const dataUriPrefix = `data:${image.contentType};base64,`;
       return <img role="presentation" src={dataUriPrefix + image.content} />;
@@ -196,8 +198,8 @@ class ImageSelector extends Component { // eslint-disable-line
       >
         <div className="image-selector">
           {this.renderHeader()}
-          {this.renderMain()}
           {this.renderSelector()}
+          {this.renderMain()}
         </div>
       </Modal>
     </div>);
