@@ -82,17 +82,13 @@ class ImageSelector extends Component { // eslint-disable-line
 
     this.renderModalFixedFooter = this.renderModalFixedFooter.bind(this);
   }
-  componentWillMount() {
-    console.log('blah componentWillMount');
-  }
   componentWillReceiveProps(nextProps) {
     if (_.isEmpty(this.state.image) && _.get(nextProps, 'coverProps.image')) {
       const image = nextProps.coverProps.image;
-      console.log('nexProps.image.crop', nextProps.coverProps.image.crop);
-      console.log('nexProps.image', image);
       const crop = image.displayCrop;
+      const pixelCrop = image.pixelCrop;
 
-      this.setState({ crop, image });
+      this.setState({ crop, pixelCrop, image });
     } else if (nextProps.coverProps.aspect !== this.state.crop.aspect) {
     // if (nextProps.coverProps.aspect !== this.state.crop.aspect) {
       this.setState({ crop: { ...this.state.crop, aspect: nextProps.coverProps.aspect } });
@@ -121,6 +117,7 @@ class ImageSelector extends Component { // eslint-disable-line
       selectedAt: (new Date()).getTime(),
       crop,
       displayCrop: this.state.crop,
+      pixelCrop: this.state.pixelCrop,
     };
 
     const metaData = {};
@@ -149,8 +146,6 @@ class ImageSelector extends Component { // eslint-disable-line
         width: '100%',
         marginTop: '5px',
       };
-
-      console.log('blah this.state.crop', this.state.crop);
 
       return (<div className="image-selector-crop-wrapper">
         <img role="presentation" style={{ display: 'none' }} src={image.url} onLoad={this.handlImageLoad} />
