@@ -14,7 +14,9 @@ class LowSquarePic extends CoverBase {
 
     super(props);
 
-    this.props.backgroundColor = '#fdfcf9';
+    // this.props.backgroundColor = '#fbf8ee'; // Slightly more more off white
+    this.props.backgroundColor = '#fcfaf3'; // Slightly more off white
+    // this.props.backgroundColor = '#fdfcf9'; // slightly off white
     this.props.textColor = '#333';
   }
   renderFrontCover() {

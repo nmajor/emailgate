@@ -74,6 +74,7 @@ app.use('/oath2', oath2);
 const renderFullPage = (html, renderedState) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
+  const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join();
   return `
     <!doctype html>
     <html>
@@ -88,11 +89,7 @@ const renderFullPage = (html, renderedState) => {
         <link href="/css/custom-animations.css" rel="stylesheet">
         <link href="/css/landing.css" rel="stylesheet">
         ${cssInclude}
-
-        <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+        ${fontIncludes}
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
@@ -143,7 +140,7 @@ const renderFullPage = (html, renderedState) => {
 const renderAdminPage = (html, renderedState) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
-  const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join;
+  const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join();
   return `
     <!doctype html>
     <html>

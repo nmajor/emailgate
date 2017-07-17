@@ -11,11 +11,13 @@ function Privacy() {
 
 SECTION 1 - WHAT DO WE DO WITH YOUR INFORMATION?
 
-When you purchase something from our store, as part of the buying and selling process, we collect the personal information you give us such as your name, address and email address.
+When you use our email book builder website and order an email book, as part of the building, printing, shipping process, we collect the personal information you give us such as your name, address and email address.
 
-When you browse our store, we also automatically receive your computer’s internet protocol (IP) address in order to provide us with information that helps us learn about your browser and operating system.
+We may ask you to give us access to your gmail account, or other email accounts, so we can help you compile the emails you want to be included in your email books.
 
-Email marketing (if applicable): With your permission, we may send you emails about our store, new products and other updates.
+When you use our website, we also automatically receive your computer’s internet protocol (IP) address in order to provide us with information that helps us learn about your browser and operating system.
+
+Email marketing: With your permission, we may send you emails about our store, new products and other updates.
 
 
 SECTION 2 - CONSENT
@@ -23,6 +25,8 @@ SECTION 2 - CONSENT
 How do you get my consent?
 
 When you provide us with personal information to complete a transaction, verify your credit card, place an order, arrange for a delivery or return a purchase, we imply that you consent to our collecting it and using it for that specific reason only.
+
+When you connect your gmail account to our app, or allow us to access your other email accounts through IMAP, we imply that you consent to us searching and collecting your emails in order to build an email book, and for that specific reason only.
 
 If we ask for your personal information for a secondary reason, like marketing, we will either ask you directly for your expressed consent, or provide you with an opportunity to say no.
 
@@ -37,22 +41,23 @@ SECTION 3 - DISCLOSURE
 We may disclose your personal information if we are required by law to do so or if you violate our Terms of Service.
 
 
-SECTION 4 - SHOPIFY
+SECTION 4 - USAGE
 
-Our store is hosted on Shopify Inc. They provide us with the online e-commerce platform that allows us to sell our products and services to you.
+We never store any Credit Card data, email passwords on our servers. All other data is stored on a secure server behind a firewall.
 
-Your data is stored through Shopify’s data storage, databases and the general Shopify application. They store your data on a secure server behind a firewall.
+All data and information we do collect is for the sole purpase of helping you build, purchse, and receive your email books. The email data, book data, and shipping information we collect is compiled into pdf form and sent to our printing service.
 
+We will not sell or distribute any of your emails, personal info, or browsing info to anyone else, nor will we use any info or data we collect for any purpose other then the purpose stated above.
+
+If you produce a particularly cool book, we may contact you about using your book in our marketing material but we will only do so with your permission.
 
 Payment:
 
-If you choose a direct payment gateway to complete your purchase, then Shopify stores your credit card data. It is encrypted through the Payment Card Industry Data Security Standard (PCI-DSS). Your purchase transaction data is stored only as long as is necessary to complete your purchase transaction. After that is complete, your purchase transaction information is deleted.
+If you choose to purchase something from our website, your transaction will be handled through Stripe. Please see their privacy policy for
 
-All direct payment gateways adhere to the standards set by PCI-DSS as managed by the PCI Security Standards Council, which is a joint effort of brands like Visa, MasterCard, American Express and Discover.
+If you choose to purchase something on our website, then we send your Credit Card data to stripe.
 
-PCI-DSS requirements help ensure the secure handling of credit card information by our store and its service providers.
-
-For more insight, you may also want to read Shopify’s Terms of Service here or Privacy Statement here.
+For more insight, you may also want to read Stripe’s Terms of Service here or Privacy Statement <a href="https://stripe.com/us/privacy">here</a>.
 
 
 SECTION 5 - THIRD-PARTY SERVICES
@@ -87,18 +92,17 @@ COOKIES
 
 Here is a list of cookies that we use. We’ve listed them here so you can choose if you want to opt-out of cookies or not.
 
-_session_id, unique token, sessional, Allows Shopify to store information about your session (referrer, landing page, etc).
+connect.sid, session cookie. This is how we keep you logged in so you dont have to sign in each time you come to the site. This allows us to store information about your session (referrer, landing page, etc).
 
-_shopify_visit, no data held, Persistent for 30 minutes from the last visit, Used by our website provider’s internal stats tracker to record the number of visits
+io, this is a different type of session cookie, and is used for sending updates to your browser when something changes on the server.
 
-_shopify_uniq, no data held, expires midnight (relative to the visitor) of the next day, Counts the number of visits to a store by a single customer.
+We also use the following services that may also include cookies when browsing our website:
 
-cart, unique token, persistent for 2 weeks, Stores information about the contents of your cart.
+Google Analytics: For traffic and behaviour analytics which we use to make your browsing experience better.
 
-_secure_session_id, unique token, sessional
+Tawk.io: This is a support chat service so we can assist our users should they require some customer or technical support
 
-storefront_digest, unique token, indefinite If the shop has a password, this is used to determine if the current visitor has access.
-
+Stripe: This is our payment provider.
 
 
 SECTION 7 - AGE OF CONSENT
