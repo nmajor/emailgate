@@ -74,7 +74,7 @@ app.use('/oath2', oath2);
 const renderFullPage = (html, renderedState) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
-  const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join();
+  const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join('\n');
   return `
     <!doctype html>
     <html>
@@ -140,7 +140,7 @@ const renderFullPage = (html, renderedState) => {
 const renderAdminPage = (html, renderedState) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
-  const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join();
+  const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join('\n');
   return `
     <!doctype html>
     <html>

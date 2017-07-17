@@ -14,6 +14,7 @@ class LowSquarePic extends CoverBase {
 
     super(props);
 
+    // http://encycolorpedia.com/f5eccd
     // this.props.backgroundColor = '#fbf8ee'; // Slightly more more off white
     this.props.backgroundColor = '#fcfaf3'; // Slightly more off white
     // this.props.backgroundColor = '#fdfcf9'; // slightly off white
