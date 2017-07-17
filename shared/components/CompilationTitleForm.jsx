@@ -85,7 +85,7 @@ class CompilationTitleForm extends Component {
     }
   }
   renderTemplateOption(option) {
-    return (<div className="col-md-2 col-sm-3 col-xs-4">
+    return (<div className="col-xs-2">
       <span
         className={`template-thumb ${this.state.coverTemplate === option ? 'active' : ''}`}
         onClick={() => { this.setState({ coverTemplate: option, savable: true }); }}
@@ -107,7 +107,7 @@ class CompilationTitleForm extends Component {
             <label htmlFor="compilation-title">Select a Cover Template</label>
           </div>
           <div className="row">
-            <div className="col-md-3 col-sm-1 col-xs-0"></div>
+            <div className="col-xs-1"></div>
             {this.renderTemplateOptions()}
           </div>
         </div>

@@ -15,58 +15,57 @@ class LowSquarePic extends CoverBase {
 
     super(props);
 
-    this.props.primaryFont = fonts.roboto;
-    this.props.secondaryFont = fonts.playfair;
-    this.props.backgroundColor = '#333';
-    this.props.textColor = '#FFF';
+    this.props.backgroundColor = '#fdfcf9';
+    this.props.textColor = '#333';
+    this.props.primaryFont = fonts.quicksand;
+    this.props.secondaryFont = fonts.lato;
   }
   renderFrontCover() {
     const {
       compilation,
       prettyStartDate,
       prettyEndDate,
-      boardHeightPx,
+      // boardHeightPx,
       boardWidthPx,
-      boardHeight,
-      boardWidth,
       selectImage,
-      primaryFont,
       secondaryFont,
+      primaryFont,
     } = this.props;
 
-    const aspect = (boardWidthPx / boardHeightPx);
-
-    const imageWidth = boardWidthPx;
-    const imageHeight = boardHeightPx;
+    const aspect = (5 / 6);
 
     const defaultImage = {
-      url: '/img/cover-images/field-standing.jpg',
+      url: '/img/cover-images/sister-on-pink.jpg',
       crop: {
-        height: 911,
+        height: 813,
         naturalHeight: 945,
         naturalWidth: 900,
-        width: 573,
-        x: 150,
-        y: 34,
+        width: 731,
+        x: 73,
+        y: 132,
       },
     };
 
-    const contentPad = 30;
-    const contentWidth = boardWidthPx - (contentPad * 2);
-
     const coverProps = {
       aspect,
-      key: 'full-image-overlay-front',
+      key: 'high-border-pic-front',
       defaultImage,
     };
 
+    const contentPad = 20;
+    const contentWidth = boardWidthPx - (contentPad * 2);
+    const imageWidth = contentWidth;
+    const imageHeight = imageWidth * (1 / aspect);
+    // Have to flip the aspect ratio because we want the longer length to be the
+    // height and aspect ratios always have the width as the first number
+
     return (<FrontCoverBase {...this.props}>
-      <div className="1" style={{
+      <div style={{
         position: 'absolute',
-        top: 0,
-        height: boardHeight,
-        width: boardWidth,
-        opacity: 0.6,
+        top: contentPad,
+        left: contentPad,
+        height: imageHeight,
+        width: imageWidth,
       }}>
         <CoverImage
           height={imageHeight}
@@ -78,32 +77,33 @@ class LowSquarePic extends CoverBase {
       </div>
       <div style={{
         position: 'absolute',
-        top: 40,
-        fontSize: '35px',
-        fontWeight: '600',
-        textTransform: 'uppercase',
-        textAlign: 'center',
+        top: imageHeight + (contentPad + 10),
         left: contentPad,
         width: `${contentWidth}px`,
+        textAlign: 'left',
+        height: '115px',
+        fontSize: '45px',
+        fontWeight: '200',
         fontFamily: primaryFont.family,
-      }}>{compilation.title}</div>
+        lineHeight: '50px',
+      }}>
+        <span>{compilation.title}</span>
+      </div>
       <div style={{
         position: 'absolute',
-        bottom: 40,
-        textAlign: 'center',
+        bottom: contentPad,
         left: contentPad,
         width: `${contentWidth}px`,
+        textAlign: 'right',
+        fontWeight: '400',
+        fontFamily: secondaryFont.family,
       }}>
         <div style={{
-          fontSize: '25px',
-          fontStyle: 'italic',
-          fontFamily: secondaryFont.family,
+          fontSize: '12px',
         }}>{compilation.subtitle}</div>
         <div style={{
-          marginTop: '15px',
-          fontSize: '18px',
-          fontWeight: '200',
-          fontFamily: primaryFont.family,
+          fontSize: '12px',
+          textTransform: 'uppercase',
         }}>{prettyStartDate} - {prettyEndDate}</div>
       </div>
     </FrontCoverBase>);

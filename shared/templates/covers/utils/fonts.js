@@ -27,6 +27,18 @@ const fonts = {
     link: '<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400i" rel="stylesheet">',
     family: '\'Playfair Display\', serif',
   },
+  average: {
+    link: '<link href="https://fonts.googleapis.com/css?family=Average" rel="stylesheet">',
+    family: '\'Average\', serif',
+  },
+  quicksand: {
+    link: '<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500" rel="stylesheet">',
+    family: '\'Quicksand\', sans-serif',
+  },
+  lato: {
+    link: '<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">',
+    family: '\'Lato\', sans-serif',
+  },
 };
 
 export default fonts;
