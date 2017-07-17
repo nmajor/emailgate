@@ -142,6 +142,7 @@ CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
       content: imgBuffer.toString('base64'),
       contentType: 'image/png',
       updatedAt: Date.now(),
+      _compilation: this._id,
     };
     return Promise.resolve(image);
   })

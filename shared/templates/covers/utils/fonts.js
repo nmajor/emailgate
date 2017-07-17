@@ -23,6 +23,10 @@ const fonts = {
     link: '<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">',
     family: '\'Roboto\', sans-serif',
   },
+  playfair: {
+    link: '<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400i" rel="stylesheet">',
+    family: '\'Playfair Display\', serif',
+  },
 };
 
 export default fonts;

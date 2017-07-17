@@ -1,5 +1,6 @@
+THUMB FOR FULL IMAGE OVERLAY ISNT CENTERING THE TEXT CORRECTLY1
+
 Weekend TODO:
-- Get the thumbnail working for the new cover
 - Add a banner for unsaved compilations with a link to the login modal
 - Add 2 more covers
 
@@ -17,6 +18,7 @@ STRETCH:
 - New Cover Designs
 
 DONE:
+- Get the thumbnail working for the new cover
 - Autoselect the currently selected image when re-opening the image selector
 - Persist the crop location when re-opening the image selector
 - Add a loader when images are uploading

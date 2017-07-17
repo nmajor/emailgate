@@ -1,6 +1,7 @@
 require('dotenv').config();
 if (process.env.NODE_ENV === 'production') { require('newrelic'); } // eslint-disable-line global-require
 
+import _ from 'lodash';
 import Express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -43,6 +44,8 @@ import webhook from './routes/webhook.routes';
 import oath2 from './routes/oath2.routes';
 import socketEvents from './events/index';
 import sessionMiddleware from './session-middleware';
+
+import coverFonts from '../shared/templates/covers/utils/fonts';
 
 import User from './models/user';
 passport.use(User.createStrategy());
@@ -140,6 +143,7 @@ const renderFullPage = (html, renderedState) => {
 const renderAdminPage = (html, renderedState) => {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
+  const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join;
   return `
     <!doctype html>
     <html>
@@ -152,14 +156,7 @@ const renderAdminPage = (html, renderedState) => {
         <link rel="stylesheet" href="/css/bootstrap.min.css" />
         <link href="/css/font-awesome.min.css" rel="stylesheet">
         ${cssInclude}
-        <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-
-        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:100,300,400,500" rel="stylesheet">
+        ${fontIncludes}
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>

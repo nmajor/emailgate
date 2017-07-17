@@ -7,6 +7,7 @@ import React from 'react';
 import CoverBase from './base/CoverBase';
 import FrontCoverBase from './base/FrontCoverBase';
 import CoverImage from './utils/CoverImage';
+import fonts from './utils/fonts';
 
 class LowSquarePic extends CoverBase {
   constructor(props) {
@@ -14,6 +15,8 @@ class LowSquarePic extends CoverBase {
 
     super(props);
 
+    this.props.primaryFont = fonts.roboto;
+    this.props.secondaryFont = fonts.playfair;
     this.props.backgroundColor = '#333';
     this.props.textColor = '#FFF';
   }
@@ -27,6 +30,8 @@ class LowSquarePic extends CoverBase {
       boardHeight,
       boardWidth,
       selectImage,
+      primaryFont,
+      secondaryFont,
     } = this.props;
 
     const aspect = (boardWidthPx / boardHeightPx);
@@ -45,6 +50,9 @@ class LowSquarePic extends CoverBase {
         y: 34,
       },
     };
+
+    const contentPad = 30;
+    const contentWidth = boardWidthPx - (contentPad * 2);
 
     const coverProps = {
       aspect,
@@ -75,23 +83,27 @@ class LowSquarePic extends CoverBase {
         fontWeight: '600',
         textTransform: 'uppercase',
         textAlign: 'center',
-        width: '100%',
-        padding: '0 40px',
+        left: contentPad,
+        width: `${contentWidth}px`,
+        fontFamily: primaryFont.family,
       }}>{compilation.title}</div>
       <div style={{
         position: 'absolute',
         bottom: 40,
         textAlign: 'center',
-        padding: '0 40px',
-        width: '100%',
+        left: contentPad,
+        width: `${contentWidth}px`,
       }}>
         <div style={{
           fontSize: '25px',
-          fontWeight: '400',
+          fontStyle: 'italic',
+          fontFamily: secondaryFont.family,
         }}>{compilation.subtitle}</div>
         <div style={{
-          fontSize: '25px',
-          fontWeight: '300',
+          marginTop: '25px',
+          fontSize: '18px',
+          fontWeight: '200',
+          fontFamily: primaryFont.family,
         }}>{prettyStartDate} - {prettyEndDate}</div>
       </div>
     </FrontCoverBase>);
