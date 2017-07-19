@@ -1,10 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import * as Actions from '../redux/actions/index';
 import Header from '../components/Header';
 import ShippingAddressContainer from './ShippingAddressContainer';
 import BillingAddressContainer from './BillingAddressContainer';
 import BillingInfoFormContainer from './BillingInfoFormContainer';
+import CartSummaryContainer from './CartSummaryContainer';
 
 class CheckoutContainer extends Component {
   addressExists(addressId) {
@@ -30,16 +32,13 @@ class CheckoutContainer extends Component {
       <div className="container">
         <h1>Checkout</h1>
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-8">
             {this.renderShippingAddress()}
-          </div>
-          <div className="col-md-6">
             {this.renderBillingAddress()}
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
             {this.renderBillingInfo()}
+          </div>
+          <div className="col-md-4">
+            <CartSummaryContainer compilations={this.props.compilations} />
           </div>
         </div>
       </div>
@@ -47,16 +46,24 @@ class CheckoutContainer extends Component {
   }
 }
 
+CheckoutContainer.need = [
+  (params, cookie) => {
+    return Actions.getCompilations.bind(null, cookie)();
+  },
+];
+
 function mapStateToProps(store) {
   return {
     checkout: store.checkout,
     addresses: store.addresses,
+    compilations: store.compilations,
   };
 }
 
 CheckoutContainer.propTypes = {
   checkout: PropTypes.object.isRequired,
   addresses: PropTypes.array.isRequired,
+  compilations: PropTypes.array.isRequired,
 };
 
 export default connect(mapStateToProps)(CheckoutContainer);

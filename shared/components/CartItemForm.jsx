@@ -29,10 +29,17 @@ class CartItemForm extends Component {
     }
   }
   renderProductDesc() {
-    return (<td>
-      <h4>{this.props.cartItem.props.compilationTitle}</h4>
-      <h5>{this.props.cartItem.props.compilationSubtitle}</h5>
-      <h6>{this.props.product.desc}</h6>
+    const { compilation } = this.props.cartItem.props; // eslint-disable-line
+
+    return (<td className="cart-product-desc">
+      <div className="compilation-thumb">
+        <img role="presentation" src={compilation.thumbnail.url} />
+      </div>
+      <div className="details">
+        <h4>{compilation.title} - about {compilation.meta.estimatedPagePdfPages} pages</h4>
+        <h5>{compilation.subtitle}</h5>
+        <h6>{this.props.product.desc}</h6>
+      </div>
     </td>);
   }
   renderProductPrice() {

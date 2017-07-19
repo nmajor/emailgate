@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import CartView from '../components/CartView';
+import { buffCart } from '../helpers';
 import _ from 'lodash';
 
 class CartViewContainer extends Component {
@@ -21,7 +22,7 @@ class CartViewContainer extends Component {
   renderCart() {
     if (!_.isEmpty(this.props.cart) && !_.isEmpty(this.props.config)) {
       return (<CartView
-        cart={this.props.cart}
+        cart={buffCart(this.props.cart, this.props.compilations)}
         products={this.props.config.products}
         removeItem={this.removeCartItem}
         updateItem={this.updateCartItem}
@@ -42,6 +43,7 @@ function mapStateToProps(store) {
     config: store.config,
     cart: store.cart,
     checkout: store.checkout,
+    compilations: store.compilations,
   };
 }
 
@@ -50,6 +52,7 @@ CartViewContainer.propTypes = {
   config: PropTypes.object.isRequired,
   cart: PropTypes.object.isRequired,
   checkout: PropTypes.object.isRequired,
+  compilations: PropTypes.array.isRequired,
   editable: PropTypes.bool,
 };
 

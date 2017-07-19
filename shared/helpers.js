@@ -253,3 +253,18 @@ export function getCoverImage(compilation, key) {
 
   return { ...image, ...imageMeta };
 }
+
+export function buffCart(cart, compilations, products) {
+  _.forEach(cart.items, (item) => {
+    item.props.compilation = _.find(compilations, (compilation) => { return compilation._id === item.props.compilationId; });
+  });
+  console.log('blah cart', cart);
+
+  if (products) {
+    _.forEach(cart.items, (item) => {
+      item.product = _.find(products, (product) => { return product._id === parseInt(item.productId, 10); });
+    });
+  }
+
+  return cart;
+}
