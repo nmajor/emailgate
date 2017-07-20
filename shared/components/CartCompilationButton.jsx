@@ -41,8 +41,7 @@ class CartCompilationButton extends Component {
   render() {
     return (<div className="btn btn-success btn-xs" onClick={this.showModal}>
       {this.renderModal()}
-      <span className="glyphicon glyphicon-shopping-cart right-bumper" aria-hidden="true"></span>
-      Add to Cart
+      Add to <span className="glyphicon glyphicon-shopping-cart right-bumper" aria-hidden="true"></span>
     </div>);
   }
 }

@@ -61,9 +61,12 @@ class ShippingAddressContainer extends Component {
 
     return 'Enter Shipping Address';
   }
+  renderHeader() {
+    return (<div>{this.renderHeaderText()} {this.renderSelectingAction()}</div>);
+  }
   render() {
-    return (<div>
-      <h3>{this.renderHeaderText()} {this.renderSelectingAction()}</h3>
+    return (<div className="shipping-address">
+      {this.renderHeader()}
       <SelectAddressContainer
         selectAddress={this.selectAddress}
         selectedAddressId={this.props.checkout.shippingAddressId}
@@ -85,6 +88,7 @@ ShippingAddressContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   checkout: PropTypes.object.isRequired,
   addresses: PropTypes.array.isRequired,
+  expanded: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(ShippingAddressContainer);

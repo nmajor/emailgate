@@ -254,17 +254,51 @@ export function getCoverImage(compilation, key) {
   return { ...image, ...imageMeta };
 }
 
+export function getCartTotal(cart) {
+  if (cart.amount) {
+    return cart.amount;
+  }
+
+  let amount = cartItemsTotal(cart.items);
+  if (cart.shipping) {
+    amount += cart.shipping;
+  } else if (cart.shippingEst) {
+    amount += cart.shippingEst;
+  }
+
+  if (cart.tax) {
+    amount += cart.tax;
+  }
+
+  if (cart._promoCode) {
+    amount -= getDiscountedAmount(cart._promoCode, cartItemsTotal(cart.items));
+  }
+
+  return amount;
+}
+
 export function buffCart(cart, compilations, products) {
   _.forEach(cart.items, (item) => {
     item.props.compilation = _.find(compilations, (compilation) => { return compilation._id === item.props.compilationId; });
   });
-  console.log('blah cart', cart);
 
   if (products) {
     _.forEach(cart.items, (item) => {
       item.product = _.find(products, (product) => { return product._id === parseInt(item.productId, 10); });
+      item.product.prettyPrice = prettyPrice(item.product.price);
     });
   }
+
+  cart.discountedAmount = getDiscountedAmount(cart._promoCode, cartItemsTotal(cart.items));
+  cart.prettyDiscountedAmount = prettyPrice(cart.discountedAmount);
+
+  cart.itemsTotal = cartItemsTotal(cart.items);
+  cart.prettyItemsTotal = prettyPrice(cart.itemsTotal);
+
+  cart.total = getCartTotal(cart);
+  cart.prettyTotal = prettyPrice(cart.total);
+
+  console.log('blah cart', cart);
 
   return cart;
 }

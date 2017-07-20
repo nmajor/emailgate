@@ -1,39 +1,15 @@
 import React, { PropTypes, Component } from 'react';
 import CartItemForm from './CartItemForm';
 import _ from 'lodash';
-import { cartItemsTotal, prettyPrice, getDiscountedAmount } from '../helpers';
+import { prettyPrice } from '../helpers';
 import Loading from './Loading';
 import { Link } from 'react-router';
 import PromoCodeFormContainer from '../container/PromoCodeFormContainer';
 
 class CartView extends Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.getCartTotal = this.getCartTotal.bind(this);
-  }
-  getCartTotal() {
-    if (this.props.cart.amount) {
-      return this.props.cart.amount;
-    }
-
-    let amount = cartItemsTotal(this.props.cart.items);
-    if (this.props.cart.shipping) {
-      amount += this.props.cart.shipping;
-    } else if (this.props.cart.shippingEst) {
-      amount += this.props.cart.shippingEst;
-    }
-
-    if (this.props.cart.tax) {
-      amount += this.props.cart.tax;
-    }
-
-    if (this.props.cart._promoCode) {
-      amount -= getDiscountedAmount(this.props.cart._promoCode, cartItemsTotal(this.props.cart.items));
-    }
-
-    return amount;
-  }
+  // constructor(props, context) {
+  //   super(props, context);
+  // }
   renderItemForms() {
     if (this.props.cart.items) {
       return this.props.cart.items.map((cartItem) => {
@@ -131,7 +107,7 @@ class CartView extends Component {
       return (<tr>
         <td colSpan="3" className="text-right text-bold">Discount:</td>
         <td className="text-right text-danger">
-          <span className="label label-danger" style={{ padding: '2px 4px' }}>%{this.props.cart._promoCode.discount}</span> -  ${prettyPrice(getDiscountedAmount(this.props.cart._promoCode, cartItemsTotal(this.props.cart.items)))}</td>
+          <span className="label label-danger" style={{ padding: '2px 4px' }}>%{this.props.cart._promoCode.discount}</span> -  ${this.props.cart.prettyDiscountedAmount}</td>
         {this.renderActionFooter()}
       </tr>);
     }
@@ -141,7 +117,7 @@ class CartView extends Component {
       <td></td>
       <td></td>
       <td colSpan="2" className={`text-bold ${this.props.editable ? 'text-center' : 'text-right'}`}>
-        Total: ${prettyPrice(this.getCartTotal())}
+        Total: ${this.props.cart.prettyTotal}
       </td>
       {this.renderActionFooter()}
     </tr>);

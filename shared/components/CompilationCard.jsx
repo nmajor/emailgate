@@ -4,7 +4,7 @@ import { compilationTotalPageCountEstimate } from '../helpers';
 import CompilationThumb from './CompilationThumb';
 import CartCompilationButtonContainer from '../container/CartCompilationButtonContainer';
 
-class CompilationCartCard extends Component { // eslint-disable-line
+class CompilationCard extends Component { // eslint-disable-line
   renderDeleteAction() {
     const { compilation } = this.props;
 
@@ -45,10 +45,10 @@ class CompilationCartCard extends Component { // eslint-disable-line
   }
 }
 
-CompilationCartCard.propTypes = {
+CompilationCard.propTypes = {
   compilation: PropTypes.object.isRequired,
-  viewable: PropTypes.bool.isRequired,
-  onDeleteClick: PropTypes.func.isRequired,
+  viewable: PropTypes.bool,
+  onDeleteClick: PropTypes.func,
 };
 
-export default CompilationCartCard;
+export default CompilationCard;
