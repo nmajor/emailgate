@@ -56,8 +56,9 @@ const routes = (
     <Route path="/forgot" component={ForgotPasswordContainer} />
     <Route path="/reset/:token" component={ResetPasswordContainer} />
     <Route path="/cart" component={CartContainer} />
-    <Route path="/checkout" component={CheckoutContainer} />
     <Route path="/checkout/confirm" component={CheckoutConfirmContainer} />
+    <Route path="/checkout" component={CheckoutContainer} />
+    <Route path="/checkout/:step" component={CheckoutContainer} />
     <Route path="/orders/:id" component={ViewOrderContainer} />
     <Route path="/addresses/new" component={NewAddressContainer} />
     <Route path="/addresses/:id/edit" component={EditAddressContainer} />

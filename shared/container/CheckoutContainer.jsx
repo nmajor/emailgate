@@ -9,6 +9,15 @@ import BillingInfoFormContainer from './BillingInfoFormContainer';
 import CartSummaryContainer from './CartSummaryContainer';
 
 class CheckoutContainer extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    console.log('blah params', props.params);
+
+    this.state = {
+      currentStep: 'shipping',
+    };
+  }
   addressExists(addressId) {
     if (!addressId) { return false; }
     return _.some(this.props.addresses, (address) => { return address._id === addressId; });
@@ -64,6 +73,7 @@ CheckoutContainer.propTypes = {
   checkout: PropTypes.object.isRequired,
   addresses: PropTypes.array.isRequired,
   compilations: PropTypes.array.isRequired,
+  params: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(CheckoutContainer);

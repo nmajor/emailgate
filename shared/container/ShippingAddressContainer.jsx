@@ -62,17 +62,26 @@ class ShippingAddressContainer extends Component {
     return 'Enter Shipping Address';
   }
   renderHeader() {
-    return (<div>{this.renderHeaderText()} {this.renderSelectingAction()}</div>);
+    return (<div className="header">Step 1 - {this.renderHeaderText()} {this.renderSelectingAction()}</div>);
   }
-  render() {
-    return (<div className="shipping-address">
-      {this.renderHeader()}
+  renderBody() {
+    if (this.props.expanded) {
+      return (<div className="body"></div>);
+    }
+
+    return (<div className="body">
       <SelectAddressContainer
         selectAddress={this.selectAddress}
         selectedAddressId={this.props.checkout.shippingAddressId}
         selecting={this.state.selecting}
         createAddress={this.createAddress}
       />
+    </div>);
+  }
+  render() {
+    return (<div className="checkout-address">
+      {this.renderHeader()}
+      {this.renderBody()}
     </div>);
   }
 }

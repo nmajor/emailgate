@@ -123,7 +123,7 @@ class AddressForm extends Component {
 AddressForm.propTypes = {
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  back: PropTypes.func.isRequired,
+  back: PropTypes.func,
   error: PropTypes.string,
   submitting: PropTypes.bool.isRequired,
   states: PropTypes.object.isRequired,
