@@ -12,8 +12,6 @@ class CheckoutContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    console.log('blah params', props.params);
-
     this.state = {
       currentStep: 'shipping',
     };

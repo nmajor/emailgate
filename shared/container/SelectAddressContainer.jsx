@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import SelectableAddressList from '../components/SelectableAddressList';
+import SelectAddressList from '../components/SelectAddressList';
 import AddressForm from '../components/AddressForm';
-import AddressListItem from '../components/AddressListItem';
+import SelectAddressListItem from '../components/SelectAddressListItem';
 import * as Actions from '../redux/actions/index';
 import Loading from '../components/Loading';
 import _ from 'lodash';
@@ -40,17 +40,19 @@ class SelectAddressContainer extends Component {
 
     if (this.selectedAddress && !this.props.selecting) {
       return (<div className="selected-address">
-        <AddressListItem
+        <SelectAddressListItem
           address={this.selectedAddress}
+          select={this.props.selectAddress}
+          deselect={this.props.deselectAddress}
           selected
         />
       </div>);
     }
 
-    return (<SelectableAddressList
+    return (<SelectAddressList
       addresses={this.props.addresses}
-      selectItem={this.props.selectAddress}
-      deleteItem={this.deleteAddress}
+      select={this.props.selectAddress}
+      deselect={this.props.deselectAddress}
       selectedAddressId={this.props.selectedAddressId}
       renderNewAddress={this.renderNewAddressForm}
     />);
@@ -78,6 +80,7 @@ SelectAddressContainer.propTypes = {
   fetching: PropTypes.object.isRequired,
   selecting: PropTypes.bool,
   selectAddress: PropTypes.func.isRequired,
+  deselectAddress: PropTypes.func.isRequired,
   selectedAddressId: PropTypes.string,
 };
 

@@ -8,24 +8,15 @@ class ShippingAddressContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      selecting: !(this.props.checkout.shippingAddressId),
-    };
-
     this.selectAddress = this.selectAddress.bind(this);
-    this.setSelecting = this.setSelecting.bind(this);
-    this.unsetSelecting = this.unsetSelecting.bind(this);
+    this.deselectAddress = this.deselectAddress.bind(this);
     this.createAddress = this.createAddress.bind(this);
-  }
-  setSelecting() {
-    this.setState({ selecting: true });
-  }
-  unsetSelecting() {
-    this.setState({ selecting: false });
   }
   selectAddress(address) {
     this.props.dispatch(Actions.setPropertyForCheckout('shippingAddressId', address._id));
-    this.setState({ selecting: false });
+  }
+  deselectAddress() {
+    this.props.dispatch(Actions.setPropertyForCheckout('shippingAddressId', undefined));
   }
   createAddress(props) {
     return new Promise((resolve, reject) => {
@@ -47,13 +38,6 @@ class ShippingAddressContainer extends Component {
       }));
     });
   }
-  renderSelectingAction() {
-    if (this.state.selecting === false) {
-      return <span className="btn btn-default btn-xs btn-h" onClick={this.setSelecting}>Change</span>;
-    } else if (this.props.checkout.shippingAddressId && this.state.selecting === true) {
-      return <span className="btn btn-danger btn-xs btn-h" onClick={this.unsetSelecting}>Cancel</span>;
-    }
-  }
   renderHeaderText() {
     if (this.props.addresses.length > 1) {
       return 'Select Shipping Address';
@@ -62,7 +46,7 @@ class ShippingAddressContainer extends Component {
     return 'Enter Shipping Address';
   }
   renderHeader() {
-    return (<div className="header">Step 1 - {this.renderHeaderText()} {this.renderSelectingAction()}</div>);
+    return (<div className="header">Step 1 - {this.renderHeaderText()}</div>);
   }
   renderBody() {
     if (this.props.expanded) {
@@ -72,8 +56,8 @@ class ShippingAddressContainer extends Component {
     return (<div className="body">
       <SelectAddressContainer
         selectAddress={this.selectAddress}
+        deselectAddress={this.deselectAddress}
         selectedAddressId={this.props.checkout.shippingAddressId}
-        selecting={this.state.selecting}
         createAddress={this.createAddress}
       />
     </div>);
