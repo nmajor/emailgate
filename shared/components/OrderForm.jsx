@@ -20,8 +20,9 @@ class OrderForm extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-
-    this.props.submit(this.state);
+    if (this.state.terms) {
+      this.props.submit(this.state);
+    }
   }
   renderSubmitting() {
     if (this.props.submitting) {
@@ -35,7 +36,7 @@ class OrderForm extends Component {
   }
   renderError() {
     if (this.props.error) {
-      return <div className="text-danger bottom-bumper">{this.props.error.base}</div>;
+      return <div className="text-danger bottom-bumper">{this.props.error.base || this.props.error.message}</div>;
     }
   }
   renderTerms() {
@@ -45,8 +46,7 @@ class OrderForm extends Component {
     </div>);
   }
   renderSubmitAction() {
-    return <div className="btn btn-success right-most" onClick={this.handleSubmit}>Submit</div>;
-    // return <div className="btn btn-success right-most" disabled={!this.state.terms || this.props.submitting} onClick={this.handleSubmit}>Submit</div>;
+    return <div className="btn btn-success right-most" disabled={!this.state.terms || this.props.submitting} onClick={this.handleSubmit}>Submit</div>;
   }
   render() {
     return (<div>
@@ -56,7 +56,6 @@ class OrderForm extends Component {
           {this.renderError()}
           {this.renderSubmitting()}
           {this.renderSubmitAction()}
-          {this.renderBackAction()}
         </div>
       </form>
     </div>);

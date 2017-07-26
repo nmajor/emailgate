@@ -41,7 +41,7 @@ class CartContainer extends Component {
       <Header hideCart />
       <div className="container">
         <div className="content-box top-bumper">
-          <h1>Cart</h1>
+          <h1 className="marginless-top">Cart</h1>
           <CartViewContainer />
         </div>
       </div>

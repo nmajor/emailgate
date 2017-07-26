@@ -6,9 +6,9 @@ import CartView from './CartView';
 // import _ from 'lodash';
 
 class OrderView extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
+  // constructor(props, context) {
+  //   super(props, context);
+  // }
   renderShippingAddress() {
     if (this.props.order.shippingAddress) {
       return (<div>

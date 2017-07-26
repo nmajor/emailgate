@@ -27,7 +27,7 @@ class CheckoutConfirmContainer extends Component {
     }
 
     this.submitOrder = this.submitOrder.bind(this);
-    this.submitPromoCode = this.submitPromoCode.bind(this);
+    // this.submitPromoCode = this.submitPromoCode.bind(this);
     this.back = this.back.bind(this);
     this.getOrderPreview = this.getOrderPreview.bind(this);
     this.orderProps = this.orderProps.bind(this);
@@ -37,6 +37,11 @@ class CheckoutConfirmContainer extends Component {
       this.context.router.push('/checkout');
     }
   }
+  componentDidMount() {
+    if (this.props.compilations.length < 1 && !this.props.fetching.compilations) {
+      this.props.dispatch(Actions.getCompilations());
+    }
+  }
   getOrderPreview() {
     this.props.dispatch(Actions.getOrderPreview(this.orderProps(), (res) => {
       if (res.error) {
@@ -44,11 +49,11 @@ class CheckoutConfirmContainer extends Component {
       }
     }));
   }
-  submitPromoCode(cart, code, cb) {
-    const orderPreview = this.props.checkout.orderPreview;
-    orderPreview.cartId = cart._id;
-    this.props.dispatch(Actions.applyPromoCodeToOrderPreview(orderPreview, code, cb));
-  }
+  // submitPromoCode(cart, code, cb) {
+  //   const orderPreview = this.props.checkout.orderPreview;
+  //   orderPreview.cartId = cart._id;
+  //   this.props.dispatch(Actions.applyPromoCodeToOrderPreview(orderPreview, code, cb));
+  // }
   orderProps() {
     return {
       cartId: this.props.cart._id,
@@ -74,6 +79,7 @@ class CheckoutConfirmContainer extends Component {
         this.props.dispatch(Actions.getCart());
         this.redirectToView(order);
       } else {
+        console.log('blah order.error', order.error);
         this.setState({ error: order.error });
       }
     }));
@@ -84,8 +90,7 @@ class CheckoutConfirmContainer extends Component {
   renderCartSummary() {
     if (this.props.checkout.orderPreview && !this.props.checkout.orderPreview.fetching) {
       return (<CartView
-        cart={buffCart(this.props.checkout.orderPreview)}
-        submitPromoCode={this.submitPromoCode}
+        cart={buffCart(this.props.checkout.orderPreview, this.props.compilations, this.props.config.products)}
         editable={false}
       />);
     }
@@ -122,30 +127,41 @@ class CheckoutConfirmContainer extends Component {
     return (<div>
       <Header hideCart />
       <div className="container">
-        <h1>Confirm Order</h1>
-        <div className="row">
-          <div className="col-md-6">
-            {this.renderShippingAddress()}
+        <div className="checkout-confirm">
+          <h1 className="marginless-top">Confirm Order</h1>
+          <div className="row">
+            <div className="col-md-6">
+              {this.renderShippingAddress()}
+            </div>
+            <div className="col-md-6">
+              {this.renderBillingInfoSummary()}
+            </div>
           </div>
-          <div className="col-md-6">
-            {this.renderBillingInfoSummary()}
+          <div>
+            <h3>Order Summary</h3>
+            {this.renderCartSummary()}
           </div>
+          {this.renderOrderForm()}
         </div>
-        <div>
-          <h3>Order Summary</h3>
-          {this.renderCartSummary()}
-        </div>
-        {this.renderOrderForm()}
       </div>
     </div>);
   }
 }
 
+CheckoutConfirmContainer.need = [
+  (params, cookie) => {
+    return Actions.getCompilations.bind(null, cookie)();
+  },
+];
+
 function mapStateToProps(store) {
   return {
+    compilations: store.compilations,
+    config: store.config,
     addresses: store.addresses,
     checkout: store.checkout,
     cart: store.cart,
+    fetching: store.fetching,
   };
 }
 
@@ -156,7 +172,10 @@ CheckoutConfirmContainer.contextTypes = {
 CheckoutConfirmContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   addresses: PropTypes.array.isRequired,
+  compilations: PropTypes.array.isRequired,
   checkout: PropTypes.object.isRequired,
+  config: PropTypes.object.isRequired,
+  fetching: PropTypes.object.isRequired,
   cart: PropTypes.object.isRequired,
 };
 

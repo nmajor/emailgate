@@ -105,6 +105,7 @@ OrderSchema.methods.syncCart = function syncCart() {
 
       return {
         product,
+        productId: item.productId,
         quantity: item.quantity,
         props: item.props,
       };
@@ -234,21 +235,26 @@ OrderSchema.methods.submitPayment = function submitPayment() {
   return new Promise((resolve) => {
     const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // eslint-disable-line global-require
 
-    stripe.charges.create({
-      amount: this.amount,
-      currency: 'usd',
-      source: this.data.stripeToken.id,
-      // description: '',
-      metadata: { orderId: this._id },
-    }, (err, charge) => {
-      if (err) {
-        this.error = err;
-      } else {
-        this.transaction = charge;
-      }
+    if (this.amount > 0) {
+      stripe.charges.create({
+        amount: this.amount,
+        currency: 'usd',
+        source: this.data.stripeToken.id,
+        // description: '',
+        metadata: { orderId: this._id },
+      }, (err, charge) => {
+        if (err) {
+          this.error = err;
+        } else {
+          this.transaction = charge;
+        }
 
+        resolve(this.save());
+      });
+    } else {
+      this.transaction = { amountZero: true };
       resolve(this.save());
-    });
+    }
   });
 };
 

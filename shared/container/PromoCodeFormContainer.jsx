@@ -15,15 +15,9 @@ class PromoCodeFormContainer extends Component {
     this.setState({ error: err.message });
   }
   submit() {
-    if (this.props.submitPromoCode) {
-      this.props.submitPromoCode(this.props.cart, this.refs.promo.value, (res) => {
-        this.handleError(res);
-      });
-    } else {
-      this.props.dispatch(Actions.applyPromoCodeToCart(this.props.cart, this.refs.promo.value, (res) => {
-        this.handleError(res);
-      }));
-    }
+    this.props.dispatch(Actions.applyPromoCodeToCart(this.props.cart, this.refs.promo.value, (res) => {
+      this.handleError(res);
+    }));
   }
   renderError() {
     if (this.state.error) {

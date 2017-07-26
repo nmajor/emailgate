@@ -5,6 +5,7 @@ import _ from 'lodash';
 import * as Actions from '../redux/actions/index';
 import Loading from '../components/Loading';
 import OrderView from '../components/OrderView';
+import { buffCart } from '../helpers';
 
 class ViewOrderContainer extends Component {
   constructor(props, context) {
@@ -24,7 +25,7 @@ class ViewOrderContainer extends Component {
     if (this.props.fetching.orders) {
       return <span className="alone-loading"><Loading /></span>;
     } else if (this.order) {
-      return <OrderView order={this.order} />;
+      return <OrderView order={buffCart(this.order, this.props.compilations, this.props.config.products)} />;
     }
   }
 
@@ -42,12 +43,17 @@ ViewOrderContainer.need = [
   (params, cookie) => {
     return Actions.getOrders.bind(null, cookie)();
   },
+  (params, cookie) => {
+    return Actions.getCompilations.bind(null, cookie)();
+  },
 ];
 
 function mapStateToProps(store) {
   return {
     orders: store.orders,
     fetching: store.fetching,
+    compilations: store.compilations,
+    config: store.config,
   };
 }
 
@@ -55,6 +61,8 @@ ViewOrderContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   orders: PropTypes.array.isRequired,
   fetching: PropTypes.object.isRequired,
+  compilations: PropTypes.array.isRequired,
+  config: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
 };
 

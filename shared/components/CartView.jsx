@@ -131,10 +131,10 @@ class CartView extends Component {
     </tfoot>);
   }
   renderPromoCodeForm() {
-    if (!_.get(this.props.cart, 'transaction.id')) {
+    if (this.props.showPromoCode) {
       return (<div className="row">
         <div className="col-sm-4 col-sm-offset-8">
-          <PromoCodeFormContainer submitPromoCode={this.props.submitPromoCode} />
+          <PromoCodeFormContainer />
         </div>
       </div>);
     }
@@ -159,7 +159,7 @@ CartView.propTypes = {
   products: PropTypes.array,
   removeItem: PropTypes.func,
   updateItem: PropTypes.func,
-  submitPromoCode: PropTypes.func,
+  showPromoCode: PropTypes.bool,
   editable: PropTypes.bool,
 };
 

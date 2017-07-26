@@ -30,7 +30,7 @@ class BillingInfoForm extends Component {
     }
   }
   renderRangedOptions(min, max) {
-    return _.map(_.range(min, max + 1), (num) => { return <option value={num}>{num}</option>; });
+    return _.map(_.range(min, max + 1), (num, index) => { return <option key={index} value={num}>{num}</option>; });
   }
   renderCardErrors() {
     let errors = [];

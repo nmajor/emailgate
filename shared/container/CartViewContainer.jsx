@@ -27,6 +27,7 @@ class CartViewContainer extends Component {
         removeItem={this.removeCartItem}
         updateItem={this.updateCartItem}
         editable={this.props.editable}
+        showPromoCode
       />);
     }
   }
