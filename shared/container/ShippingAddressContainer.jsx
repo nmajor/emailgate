@@ -14,6 +14,10 @@ class ShippingAddressContainer extends Component {
   }
   selectAddress(address) {
     this.props.dispatch(Actions.setPropertyForCheckout('shippingAddressId', address._id));
+
+    if (!this.props.checkout.billingAddressId) {
+      this.props.dispatch(Actions.setPropertyForCheckout('billingAddressId', address._id));
+    }
   }
   deselectAddress() {
     this.props.dispatch(Actions.setPropertyForCheckout('shippingAddressId', undefined));
@@ -32,27 +36,18 @@ class ShippingAddressContainer extends Component {
 
           reject(errors);
         } else {
-          this.props.dispatch(Actions.setPropertyForCheckout('shippingAddressId', res._id));
+          this.selectAddress(res);
           resolve();
         }
       }));
     });
   }
-  renderHeaderText() {
-    if (this.props.addresses.length > 1) {
-      return 'Select Shipping Address';
-    }
-
-    return 'Enter Shipping Address';
-  }
   renderHeader() {
-    return (<div className="header">Step 1 - {this.renderHeaderText()}</div>);
+    return (<div className="header">
+      Step 1 - Shipping Address
+    </div>);
   }
   renderBody() {
-    if (this.props.expanded) {
-      return (<div className="body"></div>);
-    }
-
     return (<div className="body">
       <SelectAddressContainer
         selectAddress={this.selectAddress}

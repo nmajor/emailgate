@@ -8,24 +8,16 @@ class BillingAddressContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      selecting: !this.props.checkout.billingAddressId,
-    };
-
     this.selectAddress = this.selectAddress.bind(this);
-    this.setSelecting = this.setSelecting.bind(this);
-    this.unsetSelecting = this.unsetSelecting.bind(this);
+    this.deselectAddress = this.deselectAddress.bind(this);
     this.createAddress = this.createAddress.bind(this);
-  }
-  setSelecting() {
-    this.setState({ selecting: true });
-  }
-  unsetSelecting() {
-    this.setState({ selecting: false });
+    this.handleSameClick = this.handleSameClick.bind(this);
   }
   selectAddress(address) {
     this.props.dispatch(Actions.setPropertyForCheckout('billingAddressId', address._id));
-    this.setState({ selecting: false });
+  }
+  deselectAddress() {
+    this.props.dispatch(Actions.setPropertyForCheckout('billingAddressId', undefined));
   }
   createAddress(props) {
     return new Promise((resolve, reject) => {
@@ -41,28 +33,58 @@ class BillingAddressContainer extends Component {
 
           reject(errors);
         } else {
-          this.props.dispatch(Actions.setPropertyForCheckout('shippingAddressId', res._id));
+          this.props.dispatch(Actions.setPropertyForCheckout('billingAddressId', res._id));
           resolve();
         }
       }));
     });
   }
-  renderSelectingAction() {
-    if (this.state.selecting === false) {
-      return <span className="btn btn-default btn-xs btn-h" onClick={this.setSelecting}>Change</span>;
-    } else if (this.props.checkout.billingAddressId && this.state.selecting === true) {
-      return <span className="btn btn-danger btn-xs btn-h" onClick={this.unsetSelecting}>Cancel</span>;
+  sameAsShipping() {
+    const { billingAddressId, shippingAddressId } = this.props.checkout;
+    return billingAddressId && billingAddressId === shippingAddressId;
+  }
+  handleSameClick() {
+    const { shippingAddressId } = this.props.checkout;
+
+    if (this.sameAsShipping()) {
+      this.props.dispatch(Actions.setPropertyForCheckout('billingAddressId', undefined));
+    } else {
+      this.props.dispatch(Actions.setPropertyForCheckout('billingAddressId', shippingAddressId));
     }
   }
-  render() {
+  renderHeader() {
+    return (<div className="header">Step 2 - Billing Address</div>);
+  }
+  renderSameCheckbox() {
+    return (<span className={`right-bumper my-checkbox ${this.sameAsShipping() ? 'checked' : ''}`} onClick={this.handleSameClick}>
+      {this.sameAsShipping() ? <span className="glyphicon glyphicon-ok" aria-hidden="true"></span> : null}
+    </span>);
+  }
+  renderSameOption() {
     return (<div>
-      <h3>Select Billing Address {this.renderSelectingAction()}</h3>
+      {this.renderSameCheckbox()} <span style={{ fontSize: '16px' }}>Same as Shipping Address</span>
+    </div>);
+  }
+  renderBody() {
+    if (this.sameAsShipping()) {
+      return <div className="body">{this.renderSameOption()}</div>;
+    }
+
+    return (<div className="body">
+      {this.renderSameOption()}
+      <hr style={{ marginBottom: '35px' }} />
       <SelectAddressContainer
         selectAddress={this.selectAddress}
+        deselectAddress={this.deselectAddress}
         selectedAddressId={this.props.checkout.billingAddressId}
-        selecting={this.state.selecting}
         createAddress={this.createAddress}
       />
+    </div>);
+  }
+  render() {
+    return (<div className="checkout-address top-bumper">
+      {this.renderHeader()}
+      {this.renderBody()}
     </div>);
   }
 }
@@ -76,6 +98,7 @@ function mapStateToProps(store) {
 BillingAddressContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   checkout: PropTypes.object.isRequired,
+  expanded: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(BillingAddressContainer);

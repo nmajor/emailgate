@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import Loading from './Loading';
-import Card from 'react-credit-card';
+// import Card from 'react-credit-card';
 import _ from 'lodash';
 
 class BillingInfoForm extends Component {
@@ -57,16 +57,16 @@ class BillingInfoForm extends Component {
       },
       submitting,
       handleSubmit,
-      billingAddress,
+      // billingAddress,
     } = this.props;
 
-    const activeField = _.find(this.props.fields, (field) => { return field.active === true; }) || {};
-    const billingName = (billingAddress.firstName && billingAddress.lastName) ? `${billingAddress.firstName} ${billingAddress.lastName}` : '';
+    // const activeField = _.find(this.props.fields, (field) => { return field.active === true; }) || {};
+    // const billingName = (billingAddress.firstName && billingAddress.lastName) ? `${billingAddress.firstName} ${billingAddress.lastName}` : '';
 
     /* eslint-disable camelcase */
     return (<div>
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-md-12">
           <form onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-sm-12">
@@ -96,7 +96,8 @@ class BillingInfoForm extends Component {
                   </select>
                 </div>
               </div>
-              <div className="col-sm-6">
+              <div className="col-md-3" />
+              <div className="col-sm-3">
                 <div className="form-group">
                   <label>CVC</label>
                   <input type="text" className="form-control" {...cvc} />
@@ -104,20 +105,11 @@ class BillingInfoForm extends Component {
               </div>
             </div>
             {this.renderCardErrors()}
-            <div className="form-group">
-              <button className="btn btn-success" type="submit" disabled={submitting}>Submit</button>
+            <div className="form-group text-right">
+              <button className="btn btn-success marginless-right" type="submit" disabled={submitting}>Submit</button>
               {this.renderSubmitting()}
             </div>
           </form>
-        </div>
-        <div className="col-sm-6 hidden-sm">
-          <Card
-            number={number.value}
-            expiry={`${exp_month.value}${exp_year.value}`}
-            cvc={cvc.value}
-            name={billingName}
-            focused={this.getFocusedFromActiveField(activeField)}
-          />
         </div>
       </div>
     </div>);
@@ -130,7 +122,7 @@ BillingInfoForm.propTypes = {
   cardErrors: PropTypes.object,
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
-  billingAddress: PropTypes.object.isRequired,
+  // billingAddress: PropTypes.object.isRequired,
 };
 
 BillingInfoForm = reduxForm({ // eslint-disable-line no-class-assign

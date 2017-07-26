@@ -20,19 +20,6 @@ class CheckoutContainer extends Component {
     if (!addressId) { return false; }
     return _.some(this.props.addresses, (address) => { return address._id === addressId; });
   }
-  renderShippingAddress() {
-    return <ShippingAddressContainer />;
-  }
-  renderBillingAddress() {
-    if (this.addressExists(this.props.checkout.shippingAddressId)) {
-      return <BillingAddressContainer />;
-    }
-  }
-  renderBillingInfo() {
-    if (this.addressExists(this.props.checkout.shippingAddressId) && this.addressExists(this.props.checkout.billingAddressId)) {
-      return <BillingInfoFormContainer />;
-    }
-  }
   render() {
     return (<div>
       <Header hideCart />
@@ -40,9 +27,9 @@ class CheckoutContainer extends Component {
         <h1>Checkout</h1>
         <div className="row">
           <div className="col-md-8">
-            {this.renderShippingAddress()}
-            {this.renderBillingAddress()}
-            {this.renderBillingInfo()}
+            <ShippingAddressContainer />
+            <BillingAddressContainer />
+            <BillingInfoFormContainer />
           </div>
           <div className="col-md-4">
             <CartSummaryContainer compilations={this.props.compilations} />

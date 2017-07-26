@@ -110,10 +110,10 @@ class AddressForm extends Component {
           </div>
         </div>
       </div>
-      <div className="form-group text-right">
+      <div className="text-right">
         {error && <div className="text-danger">{error}</div>}
-        <div className="btn btn-danger right-bumper" onClick={back}>Back</div>
-        <button className="btn btn-success marginless-right" type="submit">Submit</button>
+        {back && <div className="btn btn-danger right-bumper" onClick={back}>Back</div>}
+        <button className="btn btn-success marginless-right" type="submit">Save Address</button>
         {this.renderSubmitting()}
       </div>
     </form>);

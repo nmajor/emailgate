@@ -38,7 +38,7 @@ class BillingInfoFormContainer extends Component {
     });
   }
   redirectToNext() {
-    this.context.router.push(`/checkout/confirm`);
+    this.context.router.push('/checkout/confirm');
   }
   submitBillingForm(props) {
     const billingName = `${this.billingAddress.firstName} ${this.billingAddress.lastName}`;
@@ -59,16 +59,55 @@ class BillingInfoFormContainer extends Component {
     this.setState({ cardErrors: {} });
     return this.getStripeToken(paymentDetails);
   }
-
-  render() {
+  renderHeader() {
+    return (<div className="header">Step 3 - Payment Details</div>);
+  }
+  renderSslSeal() {
+    return (<span style={{ display: 'inline-block' }}>
+      <a href="https://ssl.comodo.com">
+        <img src="https://ssl.comodo.com/images/trusted-site-seal.png" alt="Comodo Trusted Site Seal" width="113" height="59" style={{ border: '0px' }} />
+      </a>
+      <br />
+    </span>);
+  }
+  renderStripeBadge() {
+    return (<span style={{ position: 'relative', top: 8 }}><a href="https://stripe.com"><img role="presentation" src="/img/powered_by_stripe.png" /></a></span>);
+  }
+  renderPaymentIcons() {
     return (<div>
-      <h3>Billing Info</h3>
-      <BillingInfoForm
-        billingAddress={this.billingAddress}
-        onSubmit={this.submitBillingForm}
-        cardErrors={this.state.cardErrors}
-        initialValues={{ exp_month: 1, exp_year: new Date().getFullYear() }}
-      />
+      <img className="right-bumper" role="presentation" height="30" src="/img/payment-icons/visa.png" />
+      <img className="right-bumper" role="presentation" height="30" src="/img/payment-icons/mastercard.png" />
+      <img className="right-bumper" role="presentation" height="30" src="/img/payment-icons/discover.png" />
+      <img className="right-bumper" role="presentation" height="30" src="/img/payment-icons/american-express.png" />
+    </div>);
+  }
+  renderBody() {
+    if (this.props.expanded) {
+      return (<div className="body"></div>);
+    }
+
+    return (<div className="body">
+      {this.renderPaymentIcons()}
+      <div className="padded-box bottom-bumper top-bumper">
+        <BillingInfoForm
+          billingAddress={this.billingAddress}
+          onSubmit={this.submitBillingForm}
+          cardErrors={this.state.cardErrors}
+          initialValues={{ exp_month: 1, exp_year: new Date().getFullYear() }}
+        />
+      </div>
+      <div className="row" style={{ position: 'relative', height: '59px' }}>
+        <div className="col-xs-12 text-left" style={{ height: 'inherit' }}>
+          {this.renderSslSeal()}
+          {this.renderStripeBadge()}
+        </div>
+      </div>
+    </div>);
+  }
+  render() {
+    return (<div className="checkout-address top-bumper">
+      {this.renderHeader()}
+      {this.renderBody()}
     </div>);
   }
 }
@@ -90,6 +129,7 @@ BillingInfoFormContainer.propTypes = {
   addresses: PropTypes.array.isRequired,
   fetching: PropTypes.object.isRequired,
   checkout: PropTypes.object.isRequired,
+  expanded: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(BillingInfoFormContainer);

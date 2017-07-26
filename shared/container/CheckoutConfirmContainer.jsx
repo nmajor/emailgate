@@ -7,6 +7,7 @@ import CartView from '../components/CartView';
 import BillingInfoSummary from '../components/BillingInfoSummary';
 import OrderForm from '../components/OrderForm';
 import Loading from '../components/Loading';
+import { buffCart } from '../helpers';
 import * as Actions from '../redux/actions/index';
 
 class CheckoutConfirmContainer extends Component {
@@ -83,7 +84,7 @@ class CheckoutConfirmContainer extends Component {
   renderCartSummary() {
     if (this.props.checkout.orderPreview && !this.props.checkout.orderPreview.fetching) {
       return (<CartView
-        cart={this.props.checkout.orderPreview}
+        cart={buffCart(this.props.checkout.orderPreview)}
         submitPromoCode={this.submitPromoCode}
         editable={false}
       />);

@@ -39,16 +39,17 @@ class CartContainer extends Component {
   render() {
     return (<div>
       <Header hideCart />
-      <div className="container top-bumper">
-        <div className="row">
-          {this.renderComilationCartCards()}
-          {this.renderViewAllAction()}
-        </div>
-      </div>
       <div className="container">
-        <div className="content-box bottom-bumper">
+        <div className="content-box top-bumper">
           <h1>Cart</h1>
           <CartViewContainer />
+        </div>
+      </div>
+      <div className="container top-bumper bottom-bumper">
+        <div className="row">
+          <div className="col-md-12"><h3>Missing something?</h3></div>
+          {this.renderComilationCartCards()}
+          {this.renderViewAllAction()}
         </div>
       </div>
       <Footer />

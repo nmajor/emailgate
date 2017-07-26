@@ -30,10 +30,36 @@ class SelectAddressContainer extends Component {
   deleteAddress(address) {
     this.props.dispatch(Actions.removeAddress(address._id));
   }
+  renderNewAddressHeader() {
+    return <h3 className="marginless-top">Or enter a New Address</h3>;
+  }
   renderNewAddressForm() {
-    return <AddressForm onSubmit={this.props.createAddress} submitting={false} states={this.props.config.staticData.states} />;
+    return (<div>
+      <hr style={{ margin: '43px 0' }} />
+      {this.renderNewAddressHeader()}
+      <div className="padded-box">
+        <AddressForm onSubmit={this.props.createAddress} submitting={false} states={this.props.config.staticData.states} />
+      </div>
+    </div>);
+  }
+  renderAddressListHeader() {
+    return <h3 className="marginless-top" style={{ marginBottom: '30px' }}>Use an existing Address</h3>;
   }
   renderAddressList() {
+    return (<div>
+      {this.renderAddressListHeader()}
+      <div className="bottom-bumper top-bumper">
+        <SelectAddressList
+          addresses={this.props.addresses}
+          select={this.props.selectAddress}
+          deselect={this.props.deselectAddress}
+          selectedAddressId={this.props.selectedAddressId}
+          renderNewAddress={this.renderNewAddressForm}
+        />
+      </div>
+    </div>);
+  }
+  render() {
     if (this.props.fetching.addresses) {
       return <span className="alone-loading"><Loading /></span>;
     }
@@ -49,17 +75,9 @@ class SelectAddressContainer extends Component {
       </div>);
     }
 
-    return (<SelectAddressList
-      addresses={this.props.addresses}
-      select={this.props.selectAddress}
-      deselect={this.props.deselectAddress}
-      selectedAddressId={this.props.selectedAddressId}
-      renderNewAddress={this.renderNewAddressForm}
-    />);
-  }
-  render() {
     return (<div>
       {this.renderAddressList()}
+      {this.renderNewAddressForm()}
     </div>);
   }
 }

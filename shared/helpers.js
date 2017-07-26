@@ -298,7 +298,5 @@ export function buffCart(cart, compilations, products) {
   cart.total = getCartTotal(cart);
   cart.prettyTotal = prettyPrice(cart.total);
 
-  console.log('blah cart', cart);
-
   return cart;
 }
