@@ -82,8 +82,8 @@ class BillingInfoFormContainer extends Component {
     </div>);
   }
   renderBody() {
-    if (this.props.expanded) {
-      return (<div className="body"></div>);
+    if (!this.props.show) {
+      return <div className="body disabled">Please complete the previous steps.</div>;
     }
 
     return (<div className="body">
@@ -93,7 +93,7 @@ class BillingInfoFormContainer extends Component {
           billingAddress={this.billingAddress}
           onSubmit={this.submitBillingForm}
           cardErrors={this.state.cardErrors}
-          initialValue={{ exp_month: 1, exp_year: new Date().getFullYear() }}
+          initialValues={{ exp_month: 1, exp_year: new Date().getFullYear() }}
         />
       </div>
       <div className="row" style={{ position: 'relative', height: '59px' }}>
@@ -129,7 +129,7 @@ BillingInfoFormContainer.propTypes = {
   addresses: PropTypes.array.isRequired,
   fetching: PropTypes.object.isRequired,
   checkout: PropTypes.object.isRequired,
-  expanded: PropTypes.bool,
+  show: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(BillingInfoFormContainer);

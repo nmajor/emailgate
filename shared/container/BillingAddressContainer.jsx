@@ -66,6 +66,10 @@ class BillingAddressContainer extends Component {
     </div>);
   }
   renderBody() {
+    if (!this.props.show) {
+      return <div className="body disabled">Please complete the previous steps.</div>;
+    }
+
     if (this.sameAsShipping()) {
       return <div className="body">{this.renderSameOption()}</div>;
     }
@@ -98,7 +102,7 @@ function mapStateToProps(store) {
 BillingAddressContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   checkout: PropTypes.object.isRequired,
-  expanded: PropTypes.bool,
+  show: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(BillingAddressContainer);

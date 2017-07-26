@@ -21,6 +21,10 @@ class CheckoutContainer extends Component {
     return _.some(this.props.addresses, (address) => { return address._id === addressId; });
   }
   render() {
+    const { billingAddressId, shippingAddressId } = this.props.checkout;
+    const showBillingAddress = !!(shippingAddressId);
+    const showBillingForm = !!(billingAddressId && shippingAddressId);
+
     return (<div>
       <Header hideCart />
       <div className="container">
@@ -28,8 +32,8 @@ class CheckoutContainer extends Component {
         <div className="row">
           <div className="col-md-8">
             <ShippingAddressContainer />
-            <BillingAddressContainer />
-            <BillingInfoFormContainer />
+            <BillingAddressContainer show={showBillingAddress} />
+            <BillingInfoFormContainer show={showBillingForm} />
           </div>
           <div className="col-md-4">
             <CartSummaryContainer compilations={this.props.compilations} />

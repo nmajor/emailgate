@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import PromoCodeFormContainer from '../container/PromoCodeFormContainer';
 
 class CartSummary extends Component {
   renderCartItem(item) {
@@ -47,6 +48,8 @@ class CartSummary extends Component {
   }
   renderTotals() {
     return (<div className="totals">
+      <PromoCodeFormContainer />
+      <hr />
       {this.renderSubtotal()}
       {this.renderDiscount()}
       {this.renderTotal()}
