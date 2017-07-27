@@ -81,7 +81,8 @@ OrderSchema.statics.findAndBuildItemProps = function findAndBuildItemProps(query
         return Promise.resolve(order);
       });
     }));
-  });
+  })
+  .catch((err) => { console.log('An error happpened when building item props', err); });
 };
 
 OrderSchema.methods.build = function build() {
@@ -94,7 +95,8 @@ OrderSchema.methods.build = function build() {
   })
   .then(() => {
     return this.getAmount();
-  });
+  })
+  .catch((err) => { console.log('An error happened when building an order', err); });
 };
 
 OrderSchema.methods.syncCart = function syncCart() {

@@ -16,6 +16,11 @@ class CheckoutContainer extends Component {
       currentStep: 'shipping',
     };
   }
+  componentWillMount() {
+    if (_.isEmpty(this.props.cart)) {
+      this.context.router.push('/dashboard');
+    }
+  }
   addressExists(addressId) {
     if (!addressId) { return false; }
     return _.some(this.props.addresses, (address) => { return address._id === addressId; });
@@ -55,14 +60,20 @@ function mapStateToProps(store) {
     checkout: store.checkout,
     addresses: store.addresses,
     compilations: store.compilations,
+    cart: store.cart,
   };
 }
+
+CheckoutContainer.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 
 CheckoutContainer.propTypes = {
   checkout: PropTypes.object.isRequired,
   addresses: PropTypes.array.isRequired,
   compilations: PropTypes.array.isRequired,
   params: PropTypes.object,
+  cart: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(CheckoutContainer);

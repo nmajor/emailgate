@@ -44,7 +44,7 @@ class CompilationAddToCart extends Component {
   renderProductOption(productId) {
     const product = _.find(this.props.products, (p) => { return p._id === productId; });
 
-    return (<div className="list-group bottom-bumper col-md-4">
+    return (<div className="list-group bottom-bumper col-sm-4">
       <div className={`list-group-item product-option ${productId === this.state.productId ? 'active' : ''}`} onClick={() => { this.setProductId(productId); }}>
         <h5>{product.desc}</h5>
         <div>Price: ${prettyPrice(product.price)}/each</div>
@@ -70,10 +70,10 @@ class CompilationAddToCart extends Component {
   }
   renderCompilationSummary() {
     return (<div className="row bottom-bumper">
-      <div className="col-md-3 relative">
+      <div className="col-sm-3 relative">
         <div className="summary-compilation-img-thumb">{this.renderCompilationThumb()}</div>
       </div>
-      <div className="col-md-9">
+      <div className="col-sm-9">
         <div className="padded-box compilation-summary-details">
           <h3 className="margin-topless">{this.props.compilation.title}</h3>
           <h5 className="margin-topless">{this.props.compilation.subtitle}</h5>

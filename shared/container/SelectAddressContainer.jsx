@@ -31,7 +31,7 @@ class SelectAddressContainer extends Component {
     this.props.dispatch(Actions.removeAddress(address._id));
   }
   renderNewAddressHeader() {
-    return <h3 className="marginless-top">Or enter a New Address</h3>;
+    return <h2 className="marginless-top">Or enter a New Address</h2>;
   }
   renderNewAddressForm() {
     return (<div>
@@ -43,7 +43,7 @@ class SelectAddressContainer extends Component {
     </div>);
   }
   renderAddressListHeader() {
-    return <h3 className="marginless-top" style={{ marginBottom: '30px' }}>Use an existing Address</h3>;
+    return <h2 className="marginless-top" style={{ marginBottom: '30px' }}>Use an existing Address</h2>;
   }
   renderAddressList() {
     return (<div>

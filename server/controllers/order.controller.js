@@ -15,7 +15,8 @@ export function getOrderPreview(req, res) {
   order.build()
   .then((order) => { // eslint-disable-line no-shadow
     res.json(order);
-  });
+  })
+  .catch((err) => { console.log('An error happened when getting an order preview', err); });
 }
 
 export function getOrders(req, res) {

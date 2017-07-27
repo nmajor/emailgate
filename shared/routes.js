@@ -33,6 +33,7 @@ import EditCompilationEmailContainer from './container/EditCompilationEmailConta
 import ViewCompilationPageContainer from './container/ViewCompilationPageContainer';
 import EditCompilationPageContainer from './container/EditCompilationPageContainer';
 import ViewOrderContainer from './container/ViewOrderContainer';
+import OrderThanksContainer from './container/OrderThanksContainer';
 import CompilationCheckoutContainer from './container/CompilationCheckoutContainer';
 import DashboardContainer from './container/DashboardContainer';
 import DashboardNavWrapper from './container/DashboardNavWrapper';
@@ -59,6 +60,7 @@ const routes = (
     <Route path="/checkout/confirm" component={CheckoutConfirmContainer} />
     <Route path="/checkout" component={CheckoutContainer} />
     <Route path="/checkout/:step" component={CheckoutContainer} />
+    <Route path="/orders/:id/thanks" component={OrderThanksContainer} />
     <Route path="/orders/:id" component={ViewOrderContainer} />
     <Route path="/addresses/new" component={NewAddressContainer} />
     <Route path="/addresses/:id/edit" component={EditAddressContainer} />

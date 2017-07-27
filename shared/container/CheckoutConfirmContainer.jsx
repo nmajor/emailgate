@@ -2,9 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import Header from '../components/Header';
-import AddressListItem from '../components/AddressListItem';
 import CartView from '../components/CartView';
-import BillingInfoSummary from '../components/BillingInfoSummary';
 import OrderForm from '../components/OrderForm';
 import Loading from '../components/Loading';
 import { buffCart } from '../helpers';
@@ -33,7 +31,9 @@ class CheckoutConfirmContainer extends Component {
     this.orderProps = this.orderProps.bind(this);
   }
   componentWillMount() {
-    if (!this.props.checkout.stripeToken) {
+    if (_.isEmpty(this.props.cart)) {
+      this.context.router.push('/dashboard');
+    } else if (!this.props.checkout.stripeToken) {
       this.context.router.push('/checkout');
     }
   }
@@ -79,7 +79,6 @@ class CheckoutConfirmContainer extends Component {
         this.props.dispatch(Actions.getCart());
         this.redirectToView(order);
       } else {
-        console.log('blah order.error', order.error);
         this.setState({ error: order.error });
       }
     }));
@@ -97,21 +96,27 @@ class CheckoutConfirmContainer extends Component {
 
     return <span className="alone-loading"><Loading /></span>;
   }
+  renderAddressSummary(address) {
+    return (<div>
+      <div>{address.firstName} {address.lastName}</div>
+      <div>{address.address1} {address.address2}</div>
+      <div>{address.city}, {address.region} {address.postalCode}</div>
+    </div>);
+  }
   renderShippingAddress() {
     if (this.shippingAddress) {
-      return (<div>
-        <h3>Ship To:</h3>
-        <div className="selected-address">
-          <AddressListItem address={this.shippingAddress} />
-        </div>
+      return (<div className="bottom-bumper">
+        <h4>Shipping Address:</h4>
+        {this.renderAddressSummary(this.shippingAddress)}
       </div>);
     }
   }
   renderBillingInfoSummary() {
     if (this.props.checkout.stripeToken) {
       return (<div>
-        <h3>Bill To:</h3>
-        <BillingInfoSummary billingInfo={this.props.checkout.stripeToken} />
+        <h4>Billing Address:</h4>
+        {this.renderAddressSummary(this.billingAddress)}
+        <div className="top-bumper">{this.props.checkout.stripeToken.card.brand} Card ending in: {this.props.checkout.stripeToken.card.last4}</div>
       </div>);
     }
   }
@@ -128,17 +133,17 @@ class CheckoutConfirmContainer extends Component {
       <Header hideCart />
       <div className="container">
         <div className="checkout-confirm">
-          <h1 className="marginless-top">Confirm Order</h1>
+          <h1 className="marginless-top bottom-bumper">Please confirm your order</h1>
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-sm-6">
               {this.renderShippingAddress()}
             </div>
-            <div className="col-md-6">
+            <div className="col-sm-6">
               {this.renderBillingInfoSummary()}
             </div>
           </div>
           <div>
-            <h3>Order Summary</h3>
+            <h2>Order Summary</h2>
             {this.renderCartSummary()}
           </div>
           {this.renderOrderForm()}

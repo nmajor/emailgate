@@ -831,6 +831,21 @@ input {
   border: 1px solid #CCC;
   margin-top: 30px;
 }
+.select-address-item {
+  margin: 20px 0;
+}
+
+.order-thanks {
+  background: #FFF;
+  padding: 22px;
+  border: 1px solid #CCC;
+  margin-top: 30px;
+  text-align: center;
+
+  h1 {
+    margin-top: 0;
+  }
+}
 
 #box:hover #overlay
 
