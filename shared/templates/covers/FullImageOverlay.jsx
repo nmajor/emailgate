@@ -23,8 +23,6 @@ class LowSquarePic extends CoverBase {
   renderFrontCover() {
     const {
       compilation,
-      prettyStartDate,
-      prettyEndDate,
       boardHeightPx,
       boardWidthPx,
       boardHeight,
@@ -104,7 +102,7 @@ class LowSquarePic extends CoverBase {
           fontSize: '18px',
           fontWeight: '200',
           fontFamily: primaryFont.family,
-        }}>{prettyStartDate} - {prettyEndDate}</div>
+        }}>{this.renderDateRange()}</div>
       </div>
     </FrontCoverBase>);
   }

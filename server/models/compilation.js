@@ -166,13 +166,11 @@ CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
 
 CompilationSchema.methods.buildCoverHtml = function buildCoverHtml() {
   return this.updateCoverDimentions()
-  .then(() => { return Email.find({ _compilation: this._id }); })
-  .then((emails) => {
-    const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
-    const firstEmail = sortedEmails[0] || {};
-    const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
-    this.meta.startingDate = firstEmail.date;
-    this.meta.endingDate = lastEmail.date;
+  // .then(() => { return Email.find({ _compilation: this._id }); })
+  .then(() => {
+    // const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+    // const firstEmail = sortedEmails[0] || {};
+    // const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
 
     const startDate = this.meta.startingDate;
     const endDate = this.meta.endingDate;
@@ -187,9 +185,9 @@ CompilationSchema.methods.updateEmails = function updateEmails() {
   return Email.find({ _compilation: this._id })
   .select('_id date estimatedPageCount')
   .then((emails) => {
-    const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
-    this.meta.startindDate = (sortedEmails[0] || {}).date;
-    this.meta.endingDate = (sortedEmails[(sortedEmails.length - 1)] || {}).date;
+    // const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+    // this.meta.startindDate = (sortedEmails[0] || {}).date;
+    // this.meta.endingDate = (sortedEmails[(sortedEmails.length - 1)] || {}).date;
     this.meta.estimatedEmailPdfPages = emails.map((e) => { return e.estimatedPageCount; }).reduce((pre, cur) => { return pre + cur; });
 
     this.emails = emails.map((email) => { return email._id; });

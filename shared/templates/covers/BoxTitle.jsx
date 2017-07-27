@@ -5,14 +5,15 @@ import patterns from './utils/patterns';
 import moment from 'moment';
 import fonts from './utils/fonts';
 import bleedMap from './utils/bleedMap';
+import _ from 'lodash';
 
 class CaseboundCoverTemplate {
   constructor(props) {
     this.compilation = props.compilation;
     this.bleedType = props.bleedType || 'casebound';
     this.templatePreview = false;
-    this.startDate = props.startDate;
-    this.endDate = props.endDate;
+    this.startDate = _.get(props.compilation, 'meta.startingDate');
+    this.endDate = _.get(props.compilation, 'meta.endingDate');
 
     this.patterns = patterns;
     this.pattern = this.patterns.arabesque;
@@ -131,8 +132,13 @@ class CaseboundCoverTemplate {
       fontWeight: '100',
     };
 
+    let date = '';
+    if (this.startDate && this.endDate) {
+      date = <span style={dateStyle}>{this.prettyStartDate} - {this.prettyEndDate}</span>;
+    }
+
     return (<div style={styles}>
-      <div style={textWrapper}>{this.compilation.title} &middot; <span style={dateStyle}>{this.prettyStartDate} - {this.prettyEndDate}</span></div>
+      <div style={textWrapper}>{this.compilation.title} &middot; {date}</div>
     </div>);
   }
   renderTitleRows() {
@@ -221,8 +227,10 @@ class CaseboundCoverTemplate {
       fontWeight: '100',
     };
 
-    const prettyStartDate = moment(this.startDate).format('MMM YYYY');
-    const prettyEndDate = moment(this.endDate).format('MMM YYYY');
+    let date = '';
+    if (this.startDate && this.endDate) {
+      date = <div style={footerStyles}>{this.prettyStartDate} - {this.prettyEndDate}</div>;
+    }
 
     // const prettyStartDate = moment(this.startDate).format('MMM DD, YYYY');
     // const prettyEndDate = moment(this.endDate).format('MMM DD, YYYY');
@@ -232,7 +240,7 @@ class CaseboundCoverTemplate {
         {this.renderTitleBox()}
       </div>
       <div style={subtitleStyles}>{this.compilation.subtitle}</div>
-      <div style={footerStyles}>{prettyStartDate} - {prettyEndDate}</div>
+      {date}
     </div>);
   }
   render() {

@@ -69,6 +69,11 @@ export class CoverBase {
   getCoverDimentions() {
     return { width: this.props.fullWidthPx, height: this.props.fullHeightPx };
   }
+  renderDateRange() {
+    if (this.props.startDate && this.props.endDate) {
+      return <span>{this.props.prettyStartDate} - {this.props.prettyEndDate}</span>;
+    }
+  }
   renderBackCover() {
     return (<BackCoverBase {...this.props}>
       <div style={{

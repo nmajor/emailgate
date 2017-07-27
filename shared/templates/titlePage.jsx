@@ -50,19 +50,21 @@ class TitlePageTemplate {
     return <div style={divStyle}>{subtitle}</div>;
   }
   renderDates() {
-    const prettyStartDate = moment(this.startDate).format('LL');
-    const prettyEndDate = moment(this.endDate).format('LL');
+    if (this.startDate && this.endDate) {
+      const prettyStartDate = moment(this.startDate).format('LL');
+      const prettyEndDate = moment(this.endDate).format('LL');
 
-    const divStyle = {
-      fontFamily: this.secondaryFont.family,
-      fontSize: '10px',
-      textAlign: 'center',
-      position: 'absolute',
-      bottom: 0,
-      width: '100%',
-    };
+      const divStyle = {
+        fontFamily: this.secondaryFont.family,
+        fontSize: '10px',
+        textAlign: 'center',
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+      };
 
-    return <div style={divStyle}>{prettyStartDate} - {prettyEndDate}</div>;
+      return <div style={divStyle}>{prettyStartDate} - {prettyEndDate}</div>;
+    }
   }
 
   render() {

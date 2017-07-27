@@ -3,6 +3,8 @@ import ImageSelector from './ImageSelector';
 import Loading from './Loading';
 import covers from '../templates/covers';
 import _ from 'lodash';
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
 
 class CompilationTitleForm extends Component {
   constructor(props, context) {
@@ -12,6 +14,8 @@ class CompilationTitleForm extends Component {
       coverTemplate: props.compilation.coverTemplate || covers.options[0],
       showImageSelector: false,
       coverProps: {},
+      startDate: props.compilation.meta.startingDate,
+      endDate: props.compilation.meta.endingDate,
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -21,6 +25,7 @@ class CompilationTitleForm extends Component {
     this.closeImageSelector = this.closeImageSelector.bind(this);
     this.updateCompilationImage = this.updateCompilationImage.bind(this);
     this.addCompilationImage = this.addCompilationImage.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
   }
   setSaveAbility() {
     if (this.formChanged()) {
@@ -49,6 +54,12 @@ class CompilationTitleForm extends Component {
       newImages,
     });
   }
+  handleDateChange(params, date) {
+    const newState = {};
+    newState[date] = params ? params.toDate() : '';
+    this.setState(newState);
+    this.setSaveAbility();
+  }
   formChanged() {
     const titleRef = this.refs.title || {};
     const subtitleRef = this.refs.subtitle || {};
@@ -58,6 +69,10 @@ class CompilationTitleForm extends Component {
     } else if (subtitleRef.value !== this.props.compilation.subtitle) {
       return true;
     } else if (this.state.coverTemplate !== this.props.compilation.coverTemplate) {
+      return true;
+    } else if (this.state.startDate !== _.get(this.props.compilation, 'meta.startingDate')) {
+      return true;
+    } else if (this.state.endDate !== _.get(this.props.compilation, 'meta.endingDate')) {
       return true;
     }
     return false;
@@ -73,6 +88,10 @@ class CompilationTitleForm extends Component {
       title: titleRef.value,
       subtitle: subtitleRef.value,
       coverTemplate: this.state.coverTemplate,
+      meta: {
+        startingDate: this.state.startDate,
+        endingDate: this.state.endDate,
+      },
     });
   }
   back(e) {
@@ -126,6 +145,7 @@ class CompilationTitleForm extends Component {
           defaultValue={this.props.compilation.title}
           placeholder="My Email Book"
           onChange={this.setSaveAbility}
+          onBlur={this.submitForm}
         />
       </div>
     );
@@ -142,7 +162,46 @@ class CompilationTitleForm extends Component {
           defaultValue={this.props.compilation.subtitle}
           placeholder="Optional"
           onChange={this.setSaveAbility}
+          onBlur={this.submitForm}
         />
+      </div>
+    );
+  }
+  renderDatesFormGroup() {
+    return (
+      <div className="row">
+        <div className="col-sm-6">
+          <div className="form-group">
+            <label htmlFor="compilation-subtitle">Start Date</label>
+            <DatePicker
+              style={{ display: 'inline-block' }}
+              className="inline-block form-control"
+              name="Start Date"
+              showYearDropdown
+              fixedHeight
+              dateFormat="LL"
+              selected={this.state.startDate ? moment(this.state.startDate, 'YYYY/M/D') : null}
+              onChange={(params) => { this.handleDateChange(params, 'startDate'); }}
+              onBlur={this.submitForm}
+            />
+          </div>
+        </div>
+        <div className="col-sm-6">
+          <div className="form-group">
+            <label htmlFor="compilation-subtitle">End Date</label>
+            <DatePicker
+              style={{ display: 'inline-block' }}
+              className="inline-block form-control"
+              name="End Date"
+              showYearDropdown
+              fixedHeight
+              dateFormat="LL"
+              selected={this.state.endDate ? moment(this.state.endDate, 'YYYY/M/D') : null}
+              onChange={(params) => { this.handleDateChange(params, 'endDate'); }}
+              onBlur={this.submitForm}
+            />
+          </div>
+        </div>
       </div>
     );
   }
@@ -162,22 +221,26 @@ class CompilationTitleForm extends Component {
     const titleRef = this.refs.title || {};
     const subtitleRef = this.refs.subtitle || {};
 
-    if (titleRef.value || this.props.compilation.title) {
-      const compilation = {
-        title: titleRef.value || this.props.compilation.title,
-        subtitle: subtitleRef.value || this.props.compilation.subtitle,
-        cover: this.props.compilation.cover,
-        images: this.props.compilation.images,
-      };
+    const compilation = {
+      title: titleRef.value || this.props.compilation.title,
+      subtitle: subtitleRef.value || this.props.compilation.subtitle,
+      cover: this.props.compilation.cover,
+      images: this.props.compilation.images,
+      meta: {
+        startingDate: this.state.startDate || _.get(this.props.compilation, 'meta.startingDate'),
+        endingDate: this.state.endDate || _.get(this.props.compilation, 'meta.endingDate'),
+      },
+    };
 
-      // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
-      // {coverTemplate.renderFrontCover()}
+    console.log('blah hey', compilation.meta);
 
-      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', selectImage: this.openImageSelector });
-      return (<div style={{ zoom: '100%' }}>
-        {coverTemplate.renderWrappedFrontCover()}
-      </div>);
-    }
+    // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
+    // {coverTemplate.renderFrontCover()}
+
+    const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', selectImage: this.openImageSelector });
+    return (<div style={{ zoom: '100%' }}>
+      {coverTemplate.renderWrappedFrontCover()}
+    </div>);
   }
   render() {
     const images = _.sortBy((this.props.compilation.images || []), (image) => { return -image.uploadedAt; });
@@ -196,6 +259,7 @@ class CompilationTitleForm extends Component {
         <div className="col-md-6">
           {this.renderTitleFormGroup()}
           {this.renderSubtitleFormGroup()}
+          {this.renderDatesFormGroup()}
           <hr />
           {this.renderTemplateFormGroup()}
           <hr />

@@ -36,11 +36,8 @@ class ViewCompilationPageContainer extends Component {
           return new covers[this.props.compilation.coverTemplate || 'BoxTitle']({ compilation: this.props.compilation, bleedType: 'bleedless' });
         }
         case 'title-page' : {
-          const sortedEmails = _.sortBy(this.props.compilationEmails, (email) => { return email.date; });
-          const firstEmail = sortedEmails[0] || {};
-          const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
-          const startDate = firstEmail.date;
-          const endDate = lastEmail.date;
+          const startDate = this.props.compilation.meta.startingDate;
+          const endDate = this.props.compilation.meta.endingDate;
           return new TitlePageTemplate(page, { startDate, endDate, compilation: this.props.compilation });
         }
         case 'message-page' : {
