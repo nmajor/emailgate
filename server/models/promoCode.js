@@ -37,14 +37,14 @@ PromoCodeSchema.statics.findByCode = function findByCode(code) {
 PromoCodeSchema.methods.isValid = function isValid() {
   return new Promise((resolve) => {
     const now = new Date();
-    if (now > this.expiresAt) {
+    if (this.expiresAt && now > this.expiresAt) {
       return resolve(false);
     }
 
     if (this.oneTimeUse) {
       return Order.count({ _promoCode: this._id })
       .then((count) => {
-        if (count >= 0) {
+        if (count > 0) {
           return resolve(false);
         }
 

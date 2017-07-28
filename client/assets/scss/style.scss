@@ -661,12 +661,15 @@ input {
 
     img {
       max-width: 100%;
-      opacity: 0.7;
+      opacity: 0.6;
       border: 1px solid #CCC;
     }
 
     &.active {
-      img { opacity: 1 }
+      img {
+        opacity: 1;
+        border-color: #888;
+      }
     }
   }
 }

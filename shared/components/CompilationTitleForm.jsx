@@ -232,8 +232,6 @@ class CompilationTitleForm extends Component {
       },
     };
 
-    console.log('blah hey', compilation.meta);
-
     // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
     // {coverTemplate.renderFrontCover()}
 

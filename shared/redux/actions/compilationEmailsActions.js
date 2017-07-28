@@ -125,7 +125,8 @@ export function removeEmailFromCompilationEmails(compilationId, email) {
 
 export function updateCompilationEmail(compilationId, email, newData) {
   return (dispatch) => {
-    dispatch(setPropertyForCompilationEmail(email, 'saving', true));
+    dispatch(updateEmailInCompilationEmails({ ...email, ...{ ...newData, saving: true } }));
+    // dispatch(setPropertyForCompilationEmail(email, 'saving', true));
     socket.emit('UPDATE_COMPILATION_EMAIL', {
       compilationId,
       emailId: email._id,

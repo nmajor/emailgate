@@ -435,7 +435,7 @@ export function uploadImage(image, path) {
       client.info(fullPath, (newErr, results) => {
         if (newErr) { return reject({ message: newErr.message, newErr, fullPath }); }
 
-        const url = `${process.env.MANTA_APP_URL}/${fullPath}`;
+        const url = `${process.env.MANTA_APP_URL}/${fullPath}?${uploadedAt}`;
         image.content = undefined;
         image.uploading = undefined;
 
