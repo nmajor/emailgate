@@ -60,7 +60,7 @@ class CompilationView extends Component { // eslint-disable-line
   renderCoverFile() {
     const { compilation } = this.props;
     if (compilation.cover) {
-      const template = new covers[compilation.coverTemplate]({ compilation });
+      const template = new covers[compilation.coverTemplate]({ compilation, showBleed: false });
 
       return (<div>
           {template.render()}

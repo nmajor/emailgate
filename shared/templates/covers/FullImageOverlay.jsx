@@ -11,13 +11,14 @@ import fonts from './utils/fonts';
 
 class LowSquarePic extends CoverBase {
   constructor(props) {
-    props.showBleed = props.showBleed || true;
-
     super(props);
 
     this.props.primaryFont = fonts.roboto;
     this.props.secondaryFont = fonts.playfair;
     this.props.backgroundColor = '#333';
+
+    this.props.outerBackgroundColor = this.props.showBleed ? this.props.opaqueBackgroundColor : this.props.backgroundColor;
+
     this.props.textColor = '#FFF';
   }
   renderFrontCover() {

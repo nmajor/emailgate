@@ -175,7 +175,7 @@ CompilationSchema.methods.buildCoverHtml = function buildCoverHtml() {
     const startDate = this.meta.startingDate;
     const endDate = this.meta.endingDate;
 
-    const template = new covers[this.coverTemplate]({ compilation: this, startDate, endDate });
+    const template = new covers[this.coverTemplate]({ compilation: this, startDate, endDate, showBleed: false });
 
     this.cover.html = template.toString();
   });

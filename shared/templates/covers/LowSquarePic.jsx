@@ -10,14 +10,15 @@ import CoverImage from './utils/CoverImage';
 
 class LowSquarePic extends CoverBase {
   constructor(props) {
-    props.showBleed = props.showBleed || true;
-
     super(props);
 
     // http://encycolorpedia.com/f5eccd
     // this.props.backgroundColor = '#fbf8ee'; // Slightly more more off white
     // this.props.backgroundColor = '#fcfaf3'; // Slightly more off white
     this.props.backgroundColor = '#fdfcf9'; // slightly off white
+
+    this.props.outerBackgroundColor = this.props.showBleed ? this.props.opaqueBackgroundColor : this.props.backgroundColor;
+
     this.props.textColor = '#333';
   }
   renderFrontCover() {

@@ -9,15 +9,16 @@ import FrontCoverBase from './base/FrontCoverBase';
 import CoverImage from './utils/CoverImage';
 import fonts from './utils/fonts';
 
-class LowSquarePic extends CoverBase {
+class HighBorderPic extends CoverBase {
   constructor(props) {
-    props.showBleed = props.showBleed || true;
-
     super(props);
 
     // this.props.backgroundColor = '#fbf8ee'; // Slightly more more off white
     // this.props.backgroundColor = '#fcfaf3'; // Slightly more off white
     this.props.backgroundColor = '#fdfcf9'; // slightly off white
+
+    this.props.outerBackgroundColor = this.props.showBleed ? this.props.opaqueBackgroundColor : this.props.backgroundColor;
+
     this.props.textColor = '#333';
     this.props.primaryFont = fonts.quicksand;
     this.props.secondaryFont = fonts.lato;
@@ -110,4 +111,4 @@ class LowSquarePic extends CoverBase {
   }
 }
 
-export default LowSquarePic;
+export default HighBorderPic;

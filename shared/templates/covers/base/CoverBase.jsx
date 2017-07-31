@@ -18,13 +18,15 @@ import SpineCoverBase from './SpineCoverBase';
 
 export class CoverBase {
   constructor(props) {
-    const showBleed = props.showBleed || true;
+    const showBleed = false;
+    // const showBleed = props.showBleed || false;
 
     const primerColor = props.primerColor || '#ff0c0c';
     const backgroundColor = props.backgroundColor || '#444';
     const textColor = props.textColor || '#FFF';
 
     this.props = {
+      showBleed,
       compilation: props.compilation,
       ...getDateProps(props),
       ...getMeasurementProps(props),
