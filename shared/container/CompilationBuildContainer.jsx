@@ -12,7 +12,6 @@ class CompilationBuildContainer extends Component {
     this.openChat = this.openChat.bind(this);
     this.addBlankEmail = this.addBlankEmail.bind(this);
     this.handleCheckoutClick = this.handleCheckoutClick.bind(this);
-    this.handleSaveClick = this.handleSaveClick.bind(this);
   }
   openChat() {
     const chatElm = document.getElementById('tawkchat-status-icon');
@@ -33,18 +32,6 @@ class CompilationBuildContainer extends Component {
       category: 'Compilation',
       action: 'Compiilation Checkout Clicked',
     });
-  }
-  handleSaveClick() {
-    const ReactGA = require('../ga').default; // eslint-disable-line
-    ReactGA.event({
-      category: 'Compilation',
-      action: 'Compiilation Save Clicked',
-    });
-  }
-  renderSaveAction() {
-    if (this.props.user.isTmp) {
-      return <Link to={`/compilations/${this.props.compilation._id}/build/register`} className="btn btn-default" onClick={this.handleSaveClick}><span className="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Finish Later</Link>;
-    }
   }
   renderStuckButton() {
     return (

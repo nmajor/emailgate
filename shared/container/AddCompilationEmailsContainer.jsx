@@ -24,11 +24,11 @@ class AddCompilationEmailsContainer extends Component {
     this.renderFixedFooterAlert = this.renderFixedFooterAlert.bind(this);
     this.addSelected = this.addSelected.bind(this);
   }
-  componentWillMount() {
-    if (this.props.accounts.length === 0) {
-      this.context.router.push(`/compilations/${this.props.compilation._id}/build/new-account`);
-    }
-  }
+  // componentWillMount() {
+  //   if (this.props.accounts.length === 0) {
+  //     this.context.router.push(`/compilations/${this.props.compilation._id}/build/new-account`);
+  //   }
+  // }
   componentWillReceiveProps(nextProps) {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.params.accountId });
   }
@@ -115,7 +115,11 @@ class AddCompilationEmailsContainer extends Component {
       return <h3 className="text-center">Find some emails to add to your Email Book</h3>;
     }
 
-    return <h3 className="text-center">Pick an email account to search</h3>;
+    if (this.props.accounts.length > 0) {
+      return <h3 className="text-center">Pick an email account to search</h3>;
+    }
+
+    return null;
   }
   render() {
     return (<div className="container compilation-container">

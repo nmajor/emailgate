@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import SelectAccountListItem from './SelectAccountListItem';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
 
 class SelectAccountList extends Component {

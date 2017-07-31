@@ -52,11 +52,15 @@ router.post('/register/tmp', (req, res) => {
         error: err,
       } });
     }
+
     req.user = user; // eslint-disable-line no-param-reassign
     req.body.password = password; // eslint-disable-line no-param-reassign
     req.body.email = user.email; // eslint-disable-line no-param-reassign
     passport.authenticate('local')(req, res, () => {
-      res.json(user);
+      User.findOne({ _id: user._id })
+      .then((freshUser) => {
+        res.json(freshUser);
+      });
     });
   });
 });

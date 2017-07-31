@@ -850,6 +850,50 @@ input {
   }
 }
 
+.save-notice {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  color: #FFF;
+  background: $loud-color;
+  border-top: 1px solid darken($loud-color, 5%);
+  border-bottom: 1px solid darken($loud-color, 5%);
+  span {
+    font-size: 18px;
+    font-weight: 300;
+    position: relative;
+    top: 2px;
+  }
+  .btn {
+    padding: 5px 10px;
+  }
+}
+
+.btn-transparent {
+  background-color: transparent;
+
+  &.light {
+    color: #EEE;
+    border-color: #EEE;
+
+    &:hover {
+      color: #FFF;
+      border-color: #FFF;
+      background-color: transparent;
+    }
+  }
+
+  &.dark {
+    color: #333;
+    border-color: #333;
+
+    &:hover {
+      color: #111;
+      border-color: #111;
+    }
+  }
+}
+
 #box:hover #overlay
 
 /* IE 6 */

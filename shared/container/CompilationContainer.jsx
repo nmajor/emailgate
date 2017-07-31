@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CompilationHeader from '../components/CompilationHeader';
@@ -14,6 +15,7 @@ class CompilationContainer extends Component {
 
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.compilationId }) || {};
     this.currentCompilationPath = this.getCurrentPath(this.props);
+    this.handleSaveClick = this.handleSaveClick.bind(this);
   }
   componentDidMount() {
     if (this.props.accounts.length < 1) {
@@ -49,11 +51,28 @@ class CompilationContainer extends Component {
   actionStatusMap() {
     return sharedHelpers.actionStatusMap(this.compilation, this.props.compilationEmails, this.props.compilationPages);
   }
+  handleSaveClick() {
+    const ReactGA = require('../ga').default; // eslint-disable-line
+    ReactGA.event({
+      category: 'Compilation',
+      action: 'Compiilation Save Clicked',
+    });
+  }
   renderChildren() {
     if (this.props.children && !_.isEmpty(this.compilation)) {
       return React.Children.map(this.props.children, (child) => {
         return React.cloneElement(child, { compilation: this.compilation });
       });
+    }
+  }
+  renderSaveNotice() {
+    if (this.props.user.isTmp) {
+      return (<div className="save-notice">
+        <div className="container">
+          <span className="right-bumper">Until you register, this book is temporary and could be lost:</span>
+          <Link to={`/compilations/${this.compilation._id}/build/register`} className="btn btn-default btn-transparent light" onClick={this.handleSaveClick}><span className="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Register And Save</Link>
+        </div>
+      </div>);
     }
   }
   renderCompilation() {
@@ -62,6 +81,7 @@ class CompilationContainer extends Component {
         <Header />
         <CompilationHeader compilation={this.compilation} compilationEmails={this.props.compilationEmails} addingFilteredEmailIds={this.props.addingFilteredEmailIds} />
         <CompilationProgressHeader compilation={this.compilation} currentPath={this.currentCompilationPath} />
+        {this.renderSaveNotice()}
         <div className="container-fluid compilation-wrapper">
           {this.renderChildren()}
         </div>
@@ -102,6 +122,7 @@ function mapStateToProps(store) {
     compilationEmails: store.compilationEmails,
     compilationPages: store.compilationPages,
     addingFilteredEmailIds: store.addingFilteredEmailIds,
+    user: store.user,
   };
 }
 
@@ -113,6 +134,7 @@ CompilationContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   children: PropTypes.object,
   accounts: PropTypes.array,
+  user: PropTypes.object,
   compilations: PropTypes.array,
   compilationEmails: PropTypes.array,
   compilationPages: PropTypes.array,

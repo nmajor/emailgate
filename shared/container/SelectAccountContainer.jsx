@@ -34,15 +34,6 @@ class SelectAccountContainer extends Component {
       <Link to={`/compilations/${this.props.compilation._id}/add-emails/new-account`} className="selected-account-list-item new-account-list-item" ><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new email account</Link>
     </div>);
   }
-  renderFooter() {
-    if (this.currentAccount) { return null; }
-
-    if (this.props.accounts.length > 0) {
-      return this.renderNewAccountAction();
-    }
-
-    return <NewAccountContainer />;
-  }
   renderSelectAccount() {
     if (this.currentAccount) {
       return (<SelectAccountListItem
@@ -54,19 +45,25 @@ class SelectAccountContainer extends Component {
       />);
     }
 
-    return (<SelectAccountList
-      accounts={this.props.accounts}
-      currentAccountId={this.props.currentAccountId}
-      selectAccount={this.selectAccount}
-      deselectAccount={this.deselectAccount}
-      onDeleteClick={this.handleDeleteClick}
-      googleAuthUrl={this.props.config.googleAuthUrl}
-    />);
+    if (this.props.accounts.length > 0) {
+      return (<div>
+        <SelectAccountList
+          accounts={this.props.accounts}
+          currentAccountId={this.props.currentAccountId}
+          selectAccount={this.selectAccount}
+          deselectAccount={this.deselectAccount}
+          onDeleteClick={this.handleDeleteClick}
+          googleAuthUrl={this.props.config.googleAuthUrl}
+        />
+        {this.renderNewAccountAction()}
+      </div>);
+    }
+
+    return <NewAccountContainer />;
   }
   render() {
     return (<div className="accounts-list-container">
       {this.renderSelectAccount()}
-      {this.renderFooter()}
     </div>);
   }
 }

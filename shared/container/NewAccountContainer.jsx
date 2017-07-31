@@ -37,11 +37,8 @@ class NewAccountContainer extends Component {
   render() {
     return (
       <div className="new-account-container">
-        <Header />
-        <div className="container">
-          <h1>Connect New Email Account</h1>
-          <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} />
-        </div>
+        <h1 className="marginless-top">Connect an Email Account</h1>
+        <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} />
       </div>
     );
   }

@@ -62,7 +62,6 @@ class AccountFormContainer extends Component {
     return (<div>
       {this.renderAccountKindOptions()}
       {this.renderImapForm()}
-      {this.renderBackButton()}
     </div>);
   }
 }

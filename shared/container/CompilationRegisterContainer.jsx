@@ -38,17 +38,13 @@ class CompilationRegisterContainer extends Component {
     return <Link to={link}>Already have an account? Click here to login and connect this Email Book.</Link>;
   }
   renderHeaderText() {
-    if (this.props.params.next === 'post') {
-      return 'Please register first so we know who this Email Book belongs to.';
-    }
-
-    return 'Just give us some info and we will save your Email Book for later.';
+    return 'Just give us some info and we will save your Email Book for you.';
   }
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
-      <Modal close={this.back}>
-        <div>
+      <Modal close={this.back} className="col-sm-8 col-sm-offset-2">
+        <div className="padded">
           <h3>{this.renderHeaderText()}</h3>
           <RegisterForm registerUser={this.register} errors={this.props.user.errors} user={this.props.user} />
           <div className="top-bumper">
