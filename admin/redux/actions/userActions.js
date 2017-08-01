@@ -1,6 +1,6 @@
 import * as ActionTypes from '../constants';
 import fetch from 'isomorphic-fetch';
-import socket from '../../../client/socket';
+import { refreshSocket } from '../../../client/socket';
 
 import baseURL from '../../../shared/baseURL';
 
@@ -117,7 +117,7 @@ export function registerUser(userData, cb) {
         throw new Error(res.error.message);
       }
       dispatch(setUser(res));
-      socket.connect(baseURL, { forceNew: true });
+      refreshSocket();
       cb(res);
     })
     .catch((err) => {
@@ -157,7 +157,7 @@ export function loginUser(userData, cb) {
         throw new Error(res.error.message);
       }
       dispatch(setUser(res));
-      socket.connect(baseURL, { forceNew: true });
+      refreshSocket();
       cb(res);
     })
     .catch((err) => {

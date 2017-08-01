@@ -17,6 +17,8 @@ require('./assets/scss/style.scss'); // eslint-disable-line
 function logPageView() {
   ReactGA.set({ page: window.location.pathname });
   ReactGA.pageview(window.location.pathname);
+
+  fbq('track', 'PageView'); // eslint-disable-line no-undef
 }
 
 function setGaUserId() {

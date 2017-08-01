@@ -16,6 +16,7 @@ class AccountKindOptions extends Component {
       category: 'Compilation',
       action: 'Connect Gmail Account Clicked',
     });
+    fbq('track', 'ConnectAccount'); // eslint-disable-line no-undef
   }
   renderImapKind() {
     return;

@@ -1,15 +1,20 @@
 import React, { PropTypes, Component } from 'react';
 import CartItemForm from './CartItemForm';
-import _ from 'lodash';
+// import _ from 'lodash';
 import { prettyPrice } from '../helpers';
 import Loading from './Loading';
 import { Link } from 'react-router';
 import PromoCodeFormContainer from '../container/PromoCodeFormContainer';
 
 class CartView extends Component {
-  // constructor(props, context) {
-  //   super(props, context);
-  // }
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleCheckoutClick = this.handleCheckoutClick.bind(this);
+  }
+  handleCheckoutClick() {
+    fbq('track', 'InitiateCheckout'); // eslint-disable-line no-undef
+  }
   renderItemForms() {
     if (this.props.cart.items) {
       return this.props.cart.items.map((cartItem) => {
@@ -59,7 +64,7 @@ class CartView extends Component {
   }
   renderCheckoutAction() {
     if (this.props.cart.items && this.props.cart.items.length > 0) {
-      return <Link to="/checkout" className="btn btn-success right-most">Checkout</Link>;
+      return <Link to="/checkout" className="btn btn-success right-most" onClick={this.handleCheckoutClick}>Checkout</Link>;
     }
   }
   renderLoading() {

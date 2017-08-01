@@ -122,8 +122,15 @@ export function createOrder(orderProps, cb) {
 
       const ReactGA = require('../../ga').default; // eslint-disable-line
       ReactGA.event({
-        category: 'Checkout',
+        category: 'Purchase',
         action: 'Order Created',
+      });
+
+      fbq('track', 'Purchase', {  // eslint-disable-line
+        value: res.amount / 100,
+        currency: 'USD',
+        content_type: 'product',
+        content_ids: res.items.map((item) => { return item.productId; }),
       });
 
       dispatch(addOrder(res));

@@ -86,6 +86,10 @@ export function createCompilation(props, cb) {
         action: 'Created a Compilation',
       });
 
+      fbq('track', 'Lead', { // eslint-disable-line no-undef
+        content_name: 'compilation',
+      });
+
       cb(res);
     })
     .catch((err) => {

@@ -252,3 +252,14 @@ https://stripe.com/docs/testing
  - http://stackoverflow.com/questions/13439102/duplicate-key-error-index-on-embedded-document-in-mongoose
 > db.purchaseorders.getIndexes()
 > db.purchaseorders.dropIndex('responses._id_1')
+
+
+### Facebook Pixel Events:
+PageView when page changes
+CompleteRegistration on registerUser action
+InitiateCheckout when user clicked checkout page when viewing the cart
+AddToCart on addCartItem action
+Lead on createCompilation action
+Search on getFilteredAccountEmails action
+Purchase on createOrder action
+ConnectAccount when user clicks button to connect a gmail account

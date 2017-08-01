@@ -3,6 +3,8 @@ import socket from '../../../client/socket';
 import fetch from 'isomorphic-fetch';
 import baseURL from '../../baseURL';
 import { setPropertyForFetching } from './fetchingActions';
+import _ from 'lodash';
+import products from '../../../server/products';
 
 export function setCart(val) {
   return {
@@ -34,6 +36,13 @@ export function addCartItem(productId, quantity, props) {
     ReactGA.event({
       category: 'Checkout',
       action: 'Adding Cart Item',
+    });
+
+    const product = _.find(products, (p) => { return p._id === productId; });
+    fbq('track', 'AddToCart', {  // eslint-disable-line
+      content_name: product.name,
+      content_type: 'product',
+      content_ids: [productId],
     });
 
     dispatch(setPropertyForCart('fetching', true));

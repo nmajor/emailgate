@@ -1,6 +1,6 @@
 import * as ActionTypes from '../constants';
 import fetch from 'isomorphic-fetch';
-import socket from '../../../client/socket';
+import socket, { refreshSocket } from '../../../client/socket';
 
 import baseURL from '../../baseURL';
 
@@ -87,10 +87,7 @@ export function logoutUser(cb) {
         throw new Error(res.error.message);
       }
       dispatch(clearUser());
-      socket.once('disconnect', () => {
-        socket.connect(baseURL, { forceNew: true });
-      });
-      socket.disconnect();
+      refreshSocket();
       cb();
     })
     .catch((err) => {
@@ -127,10 +124,8 @@ export function registerUser(userData, cb) {
         throw new Error(res.error.message);
       }
       dispatch(setUser(res));
-      socket.once('disconnect', () => {
-        socket.connect(baseURL, { forceNew: true });
-      });
-      socket.disconnect();
+      refreshSocket();
+      fbq('track', 'CompleteRegistration', { status: 'complete' }); // eslint-disable-line no-undef
       cb(res);
     })
     .catch((err) => {
@@ -162,10 +157,7 @@ export function registerTmpUser(cb) {
         throw new Error(res.error.message);
       }
       dispatch(setUser(res));
-      socket.once('disconnect', () => {
-        socket.connect(baseURL, { forceNew: true });
-      });
-      socket.disconnect();
+      refreshSocket();
       cb(res);
     })
     .catch((err) => {
@@ -203,10 +195,7 @@ export function loginUser(userData, cb) {
         throw new Error(res.error.message);
       }
       dispatch(setUser(res));
-      socket.once('disconnect', () => {
-        socket.connect(baseURL, { forceNew: true });
-      });
-      socket.disconnect();
+      refreshSocket();
       cb(res);
     })
     .catch((err) => {
