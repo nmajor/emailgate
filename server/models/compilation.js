@@ -30,7 +30,7 @@ const CompilationSchema = new Schema({
   title: String,
   subtitle: String,
   coverTemplate: String,
-  thumbnail: {},
+  thumbnail: { type: Object, default: { url: '/img/cover-thumbs/thumbnail-placeholder.png' } },
   images: [],
   cover: { type: CompilationCoverSchema, default: {} },
   emails: [{ type: String, ref: 'Email' }],

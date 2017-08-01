@@ -263,3 +263,4 @@ Lead on createCompilation action
 Search on getFilteredAccountEmails action
 Purchase on createOrder action
 ConnectAccount when user clicks button to connect a gmail account
+AddEmails on addEmailsToCompilationEmails

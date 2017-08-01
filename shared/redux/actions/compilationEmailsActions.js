@@ -95,6 +95,8 @@ export function addEmailsToCompilationEmailsById(compilationId, accountId, email
       value: emailIds.length,
     });
 
+    fbq('track', 'AddEmails'); // eslint-disable-line no-undef
+
     dispatch(addIdsToAddingFilteredEmailIds(emailIds));
     dispatch(setPropertyForSomeFilteredAccountEmailsById(emailIds, 'saving', true));
     socket.emit('ADD_COMPILATION_EMAILS_BY_ID', { compilationId, accountId, emailIds });
@@ -109,6 +111,8 @@ export function addEmailsToCompilationEmails(compilationId, emails) {
       action: 'Adding Compilation Emails',
       value: emails.length,
     });
+
+    fbq('track', 'AddEmails'); // eslint-disable-line no-undef
 
     dispatch(setPropertyForSomeFilteredAccountEmails(_.map(emails, (email) => { return email.mid; }), 'saving', true));
     socket.emit('ADD_COMPILATION_EMAILS', { compilationId, emails });

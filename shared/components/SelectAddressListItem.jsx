@@ -28,7 +28,7 @@ class SelectAddressListItem extends Component {
       <div>
         {this.renderCheckbox()}
         <span>{this.props.address.firstName} {this.props.address.lastName}</span>
-        <span> - {this.props.address.address1} {this.props.address.address2}</span>
+        <span> - {this.props.address.address1} {this.props.address.address2} </span>
         <span>{this.props.address.city}, {this.props.address.region} {this.props.address.postalCode}</span>
         {this.renderPhone()}
       </div>

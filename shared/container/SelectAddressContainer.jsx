@@ -31,11 +31,14 @@ class SelectAddressContainer extends Component {
     this.props.dispatch(Actions.removeAddress(address._id));
   }
   renderNewAddressHeader() {
-    return <h2 className="marginless-top">Or enter a New Address</h2>;
+    if (this.props.addresses.length > 0) {
+      return <h2 className="marginless-top">Or enter a New Address</h2>;
+    }
+
+    return <h2 className="marginless-top">Enter a New Address</h2>;
   }
   renderNewAddressForm() {
     return (<div>
-      <hr style={{ margin: '43px 0' }} />
       {this.renderNewAddressHeader()}
       <div className="padded-box">
         <AddressForm onSubmit={this.props.createAddress} submitting={false} states={this.props.config.staticData.states} />
@@ -46,6 +49,9 @@ class SelectAddressContainer extends Component {
     return <h2 className="marginless-top" style={{ marginBottom: '30px' }}>Use an existing Address</h2>;
   }
   renderAddressList() {
+    if (this.props.addresses.length === 0) {
+      return null;
+    }
     return (<div>
       {this.renderAddressListHeader()}
       <div className="bottom-bumper top-bumper">
@@ -57,6 +63,7 @@ class SelectAddressContainer extends Component {
           renderNewAddress={this.renderNewAddressForm}
         />
       </div>
+      <hr style={{ margin: '43px 0' }} />
     </div>);
   }
   render() {
