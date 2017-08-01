@@ -4,6 +4,7 @@ import _ from 'lodash';
 // Render Initial HTML
 export function mainPage(html, renderedState) {
   const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
+  const fbPixel = process.env.FB_PIXEL;
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
   const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join('\n');
   return `
@@ -44,7 +45,7 @@ export function mainPage(html, renderedState) {
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window,document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '472788659749885');
+        fbq('init', '${fbPixel}');
         fbq('track', 'PageView');
         </script>
 
