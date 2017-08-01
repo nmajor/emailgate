@@ -37,6 +37,8 @@ export class CoverBase {
 
       primaryFont: fonts.abril,
       secondaryFont: fonts.raleway,
+      spineFont: 'secondaryFont',
+      backCoverFont: 'secondaryFont',
 
       selectImage: props.selectImage,
     };

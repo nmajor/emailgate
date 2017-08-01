@@ -13,6 +13,7 @@ class BackCoverBase extends Component {
       style={{
         ...this.props.outerBoardBaseStyle,
         backgroundColor: this.props.outerBackgroundColor,
+        fontFamily: this.props[this.props.backCoverFont].family,
       }}
     >
       <div

@@ -1,12 +1,8 @@
-THUMB FOR FULL IMAGE OVERLAY ISNT CENTERING THE TEXT CORRECTLY1
-
-Weekend TODO:
-- Add a banner for unsaved compilations with a link to the login modal
-- Add 2 more covers
-
 TODO:
-Show spinner when adding email with the plus button (with email open)
-On checkout discounts dont show on the confirm page (Maybe promo code doesnt persist)
+Add logo to back covers
+Add new favicon
+Add FB pixel and events
+
 
 FROM BJ:
 - Make the Table of Contents font smaller
@@ -18,6 +14,8 @@ STRETCH:
 - New Cover Designs
 
 DONE:
+- Add a banner for unsaved compilations with a link to the login modal
+- Add 2 more covers
 - Get the thumbnail working for the new cover
 - Autoselect the currently selected image when re-opening the image selector
 - Persist the crop location when re-opening the image selector

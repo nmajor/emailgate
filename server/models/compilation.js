@@ -178,6 +178,7 @@ CompilationSchema.methods.buildCoverHtml = function buildCoverHtml() {
     const template = new covers[this.coverTemplate]({ compilation: this, startDate, endDate, showBleed: false });
 
     this.cover.html = template.toString();
+    console.log('blah coverHtml', this.cover.html);
   });
 };
 

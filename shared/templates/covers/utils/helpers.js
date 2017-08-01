@@ -76,6 +76,8 @@ export function toStringWrapper(props) {
       box-sizing: border-box;
     }
   </style>
+  <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
   ${props.primaryFont.link}
   ${props.primaryFont.link !== props.secondaryFont.link ? props.secondaryFont.link : ''}
 </head>

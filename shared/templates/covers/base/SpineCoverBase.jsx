@@ -16,6 +16,7 @@ class SpineCoverBase extends Component {
       height: this.props.fullHeight,
       fontSize: '20px',
       backgroundColor: this.props.outerBackgroundColor,
+      fontFamily: this.props[this.props.spineFont].family,
     };
   }
   spineInnerStyle() {
