@@ -84,7 +84,7 @@ class CheckoutConfirmContainer extends Component {
     }));
   }
   redirectToView(order) {
-    this.context.router.push(`/orders/${order._id}`);
+    this.context.router.push(`/orders/${order._id}/thanks`);
   }
   renderCartSummary() {
     if (this.props.checkout.orderPreview && !this.props.checkout.orderPreview.fetching) {
