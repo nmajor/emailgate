@@ -9,7 +9,7 @@ class Footer extends Component {
   }
   renderLinks() {
     return (<div className="links">
-      <Link to="/">Home</Link>-
+      <Link to="https://www.missionarymemoir.com">Home</Link>-
       <Link to="/about">About</Link>-
       <Link to="/terms">Terms and Conditions</Link>-
       <Link to="/privacy">Privacy Policy</Link>-

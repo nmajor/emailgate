@@ -46,7 +46,7 @@ class Header extends Component {
   }
   renderNavbarHeader() {
     return (<div className="navbar-header">
-      <Link className="navbar-brand" to="/">Missionary Memoir</Link>
+      <Link className="navbar-brand" to="/dashboard">Missionary Memoir</Link>
       <div className="navbar-toggle" onClick={this.toggleCollapsed}>{this.renderExpandIcon()}</div>
     </div>);
   }
