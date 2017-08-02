@@ -33,7 +33,7 @@ class LoginForm extends Component {
       <button className="btn btn-success btn-block" onClick={this.loginUser}>
         Login {this.renderLoading()}
       </button>
-      <div className="top-bumper">
+      <div className="top-bumper actions">
         <Link to="/forgot">Forgot password?</Link>
       </div>
     </form>);

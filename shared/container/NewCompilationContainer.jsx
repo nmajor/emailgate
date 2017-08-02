@@ -35,12 +35,17 @@ class NewCompilationContainer extends Component {
   render() {
     return (
       <div className="new-compilation-container">
+        <div className="field-bg" />
         <Header />
         <div className="container">
           <div className="row">
             <div className="col-md-6 col-md-offset-3">
-              <h3>Add a title to get started</h3>
-              <NewCompilationForm compilation={{}} submitForm={this.submitForm} fetching={this.props.fetching.newCompilation} />
+              <div className="user-card">
+                <div className="card-body">
+                  <h3>Add a title to get started</h3>
+                  <NewCompilationForm compilation={{}} submitForm={this.submitForm} fetching={this.props.fetching.newCompilation} />
+                </div>
+              </div>
             </div>
           </div>
         </div>

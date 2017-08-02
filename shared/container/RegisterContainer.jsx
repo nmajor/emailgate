@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import RegisterForm from '../components/RegisterForm';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
@@ -31,15 +33,24 @@ class RegisterContainer extends Component {
   render() {
     return (
       <div className="register-container">
+        <div className="field-bg" />
         <Header />
         <div className="container">
           <div className="row">
             <div className="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-              <h1>Register</h1>
-              <RegisterForm registerUser={this.register} errors={this.props.user.errors} user={this.props.user} />
+              <div className="user-card">
+                <div className="card-body">
+                  <h1>Register</h1>
+                  <RegisterForm registerUser={this.register} errors={this.props.user.errors} user={this.props.user} />
+                </div>
+                <div className="card-footer">
+                  Already have an account? <Link to="/login">Click here to login</Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
