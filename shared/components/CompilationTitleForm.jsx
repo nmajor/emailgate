@@ -260,15 +260,6 @@ class CompilationTitleForm extends Component {
           {this.renderDatesFormGroup()}
           <hr />
           {this.renderTemplateFormGroup()}
-          <hr />
-          {this.renderErrors('base')}
-          <div className="text-right hidden-sm hidden-xs">
-            {this.renderBackAction()}
-            <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
-              Submit
-              {this.renderLoading()}
-            </button>
-          </div>
         </div>
         <div className="col-md-6">
           <div className="cover-preview">
@@ -276,7 +267,12 @@ class CompilationTitleForm extends Component {
               {this.renderCoverPreview()}
             </div>
           </div>
-          <div className="text-right hidden-md hidden-lg">
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-12">
+          {this.renderErrors('base')}
+          <div className="text-right top-bumper">
             {this.renderBackAction()}
             <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
               Submit
