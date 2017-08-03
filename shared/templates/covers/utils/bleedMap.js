@@ -7,6 +7,10 @@ const bleedMap = {
     bleedWidth: 0,
     gutterWidth: 0,
   },
+  guttered: {
+    bleedWidth: 0,
+    gutterWidth: 0.5,
+  },
 };
 
 export default bleedMap;

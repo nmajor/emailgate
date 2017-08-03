@@ -19,6 +19,9 @@ class LowSquarePic extends CoverBase {
 
     this.props.outerBackgroundColor = this.props.showBleed ? this.props.opaqueBackgroundColor : this.props.backgroundColor;
 
+    this.props.frontCoverGutterMargin = '0px';
+    this.props.backCoverGutterMargin = '0px';
+
     this.props.textColor = '#FFF';
   }
   renderFrontCover() {
@@ -26,16 +29,20 @@ class LowSquarePic extends CoverBase {
       compilation,
       boardHeightPx,
       boardWidthPx,
-      boardHeight,
-      boardWidth,
+      // boardHeight,
+      // boardWidth,
       selectImage,
       primaryFont,
       secondaryFont,
+      coverWidthPx,
+      gutterWidth,
+      coverHeight,
+      coverWidth,
     } = this.props;
 
     const aspect = (boardWidthPx / boardHeightPx);
 
-    const imageWidth = boardWidthPx;
+    const imageWidth = coverWidthPx;
     const imageHeight = boardHeightPx;
 
     const defaultImage = {
@@ -63,8 +70,8 @@ class LowSquarePic extends CoverBase {
       <div className="1" style={{
         position: 'absolute',
         top: 0,
-        height: boardHeight,
-        width: boardWidth,
+        height: coverHeight,
+        width: coverWidth,
         opacity: 0.6,
       }}>
         <CoverImage
@@ -76,6 +83,7 @@ class LowSquarePic extends CoverBase {
         />
       </div>
       <div style={{
+        marginLeft: gutterWidth,
         position: 'absolute',
         top: 40,
         fontSize: '35px',
@@ -87,6 +95,7 @@ class LowSquarePic extends CoverBase {
         fontFamily: primaryFont.family,
       }}>{compilation.title}</div>
       <div style={{
+        marginLeft: gutterWidth,
         position: 'absolute',
         bottom: 40,
         textAlign: 'center',

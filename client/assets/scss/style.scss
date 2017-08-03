@@ -533,6 +533,7 @@ input {
   .body {
     position: absolute;
     height: 100%;
+    width: 100%;
   }
 
   .header {
@@ -552,6 +553,7 @@ input {
     height: 100%;
     position: relative;
     overflow: auto;
+    width: 100%;
   }
   .select {
     display: inline-block;

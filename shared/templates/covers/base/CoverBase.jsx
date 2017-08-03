@@ -139,6 +139,76 @@ export class CoverBase {
       {this.renderFrontCover()}
     </div>);
   }
+  renderGutterGuide() {
+    return (<div style={{
+      borderBottom: '1px solid #444',
+      width: this.props.gutterWidth,
+      position: 'relative',
+      display: 'inline-block',
+    }}>
+      <div style={{
+        MsTransform: 'rotate(-60deg)',
+        WebkitTransform: 'rotate(-60deg)',
+        transform: 'rotate(-60deg)',
+        position: 'relative',
+        top: '-10px',
+        left: '5px',
+      }}>
+        Gutter
+      </div>
+    </div>);
+  }
+  renderGuide(width, text) {
+    const guideMarks = (<div style={{
+      width: '100%',
+      borderLeft: '1px solid #444',
+      borderRight: '1px solid #444',
+      height: '20px',
+      position: 'absolute',
+      top: '10px',
+    }} />);
+
+    return (<div style={{
+      borderBottom: '1px solid #444',
+      width,
+      position: 'relative',
+      display: 'inline-block',
+    }}>
+      {guideMarks}
+      {text}
+    </div>);
+  }
+  renderGuides() {
+    return (<div
+      style={{
+        width: this.props.fullWidth,
+        margin: '12px auto',
+        position: 'relative',
+        left: '1px',
+      }}
+    >
+      {this.renderGuide(this.props.boardWidth, 'Back Cover')}
+      {this.renderGutterGuide()}
+      {this.renderGuide(this.props.spineWidth, 'Spine')}
+      {this.renderGutterGuide()}
+      {this.renderGuide(this.props.boardWidth, 'Front Cover')}
+    </div>);
+  }
+  renderWrapped() {
+    return (<div>
+      {this.renderGuides()}
+      <div
+        className="wrapper"
+        style={{
+          ...this.props.mainStyle,
+          width: this.props.fullWidth,
+          height: this.props.fullHeight,
+        }}
+      >
+        {this.render()}
+      </div>
+    </div>);
+  }
   toString() {
     return toStringWrapper({ render: this.render.bind(this), ...this.props });
   }

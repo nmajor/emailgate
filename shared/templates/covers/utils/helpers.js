@@ -31,16 +31,25 @@ export function getMeasurementProps(props) {
 
   return {
     boardWidth: getUnits(boardWidth),
-    boardHeight: getUnits(boardHeight),
-    spineWidth: getUnits(spineWidth),
     boardWidthPx: getPx(boardWidth),
+
+    boardHeight: getUnits(boardHeight),
     boardHeightPx: getPx(boardHeight),
 
+    spineWidth: getUnits(spineWidth),
+    spineWidthPx: getPx(spineWidth),
+
     bleedWidth: getUnits(bleedWidth),
+    bleedWidthPx: getPx(bleedWidth),
+
     gutterWidth: getUnits(gutterWidth),
+    gutterWidthPx: getPx(gutterWidth),
 
     coverWidth: getUnits(coverWidth),
+    coverWidthPx: getPx(coverWidth),
+
     coverHeight: getUnits(fullHeight),
+    coverHeightPx: getPx(fullHeight),
 
     fullWidth: getUnits(fullWidth),
     fullHeight: getUnits(fullHeight),

@@ -46,10 +46,16 @@
 .cover-preview {
   border: 1px solid #CCC;
   background: #EEE;
-  padding: 10px 0;
+
+  .helper {
+    background-color: #FFF;
+    border-bottom: 1px solid #BBB;
+    text-align: center;
+  }
 
   .template {
     text-align: center;
+    padding: 18px 0;
 
     .wrapper {
       border: 1px solid #CCC;

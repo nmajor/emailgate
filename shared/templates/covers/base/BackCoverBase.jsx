@@ -19,7 +19,7 @@ class BackCoverBase extends Component {
       <div
         style={{
           ...this.props.innerBoardBaseStyle,
-          marginRight: this.props.gutterWidth,
+          marginRight: this.props.backCoverGutterMargin || this.props.gutterWidth,
           marginLeft: this.props.bleedWidth,
           backgroundColor: this.props.backgroundColor,
           color: this.props.textColor,

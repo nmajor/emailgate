@@ -19,7 +19,7 @@ class FrontCoverBase extends Component {
         style={{
           ...this.props.innerBoardBaseStyle,
           marginRight: this.props.bleedWidth,
-          marginLeft: this.props.gutterWidth,
+          marginLeft: this.props.frontCoverGutterMargin || this.props.gutterWidth,
           backgroundColor: this.props.backgroundColor,
           color: this.props.textColor,
         }}

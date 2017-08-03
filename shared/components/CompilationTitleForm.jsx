@@ -235,9 +235,9 @@ class CompilationTitleForm extends Component {
     // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
     // {coverTemplate.renderFrontCover()}
 
-    const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', selectImage: this.openImageSelector });
+    const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'guttered', selectImage: this.openImageSelector });
     return (<div style={{ zoom: '100%' }}>
-      {coverTemplate.renderWrappedFrontCover()}
+      {coverTemplate.renderWrapped()}
     </div>);
   }
   render() {
@@ -258,11 +258,15 @@ class CompilationTitleForm extends Component {
           {this.renderTitleFormGroup()}
           {this.renderSubtitleFormGroup()}
           {this.renderDatesFormGroup()}
-          <hr />
-          {this.renderTemplateFormGroup()}
         </div>
         <div className="col-md-6">
+          {this.renderTemplateFormGroup()}
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-12">
           <div className="cover-preview">
+            <div className="helper">Click on any cover image to change it.</div>
             <div className="template">
               {this.renderCoverPreview()}
             </div>
