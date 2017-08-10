@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import * as Actions from '../redux/actions/index';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import CompilationComponentsListContainer from './CompilationComponentsListContainer';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -14,12 +14,7 @@ class CompilationBuildContainer extends Component {
     this.handleCheckoutClick = this.handleCheckoutClick.bind(this);
   }
   openChat() {
-    const chatElm = document.getElementById('tawkchat-status-icon');
-    if (chatElm) {
-      chatElm.click();
-    } else {
-      window.open('https://tawk.to/chat/591c6a9c76be7313d291d516/default/?$_tawk_popout=true');
-    }
+    window.open('https://missionarymemoir.freshdesk.com/support/tickets/new');
   }
   addBlankEmail() {
     this.props.dispatch(Actions.addBlankEmail(this.props.compilation._id, (email) => {

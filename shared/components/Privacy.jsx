@@ -100,7 +100,7 @@ We also use the following services that may also include cookies when browsing o
 
 Google Analytics: For traffic and behaviour analytics which we use to make your browsing experience better.
 
-Tawk.io: This is a support chat service so we can assist our users should they require some customer or technical support
+Facebook: For event tracking.
 
 Stripe: This is our payment provider.
 
