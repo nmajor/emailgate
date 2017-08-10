@@ -5,8 +5,8 @@ import CompilationsListItem from './CompilationsListItem';
 
 class CompilationsList extends Component {
   renderCompilationListItems(compilations) {
-    return compilations.map((compilation) => {
-      return <CompilationsListItem key={compilation._id} compilation={compilation} />;
+    return compilations.map((compilation, index) => {
+      return <CompilationsListItem key={compilation._id | index} compilation={compilation} />;
     });
   }
   renderCompilationsList() {
@@ -21,8 +21,8 @@ class CompilationsList extends Component {
       return { date: key, compilations: val };
     }), (compGroup) => { return new Date(compGroup.date); }).reverse();
 
-    return _.map(compDateGroupsArray, (compGroup) => {
-      return (<div>
+    return _.map(compDateGroupsArray, (compGroup, index) => {
+      return (<div key={index}>
         <h3>{moment(compGroup.date).format('LL')}</h3>
         {this.renderCompilationListItems(compGroup.compilations)}
       </div>);

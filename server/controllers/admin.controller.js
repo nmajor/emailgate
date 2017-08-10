@@ -14,7 +14,7 @@ export function getUsers(req, res) {
 
 export function getCompilations(req, res) {
   Compilation.find({})
-  .populate('pages')
+  .populate('pages _user')
   .then((compilations) => {
     res.json(compilations);
   });

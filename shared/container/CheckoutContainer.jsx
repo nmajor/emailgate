@@ -51,7 +51,7 @@ class CheckoutContainer extends Component {
 
 CheckoutContainer.need = [
   (params, cookie) => {
-    return Actions.getCompilations.bind(null, cookie)();
+    return Actions.getCompilations.bind(null, null, cookie)();
   },
 ];
 

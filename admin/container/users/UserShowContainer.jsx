@@ -4,7 +4,7 @@ import UserView from '../../components/users/UserView';
 class UserShowContainer extends Component { // eslint-disable-line
   render() {
     return (<div>
-      <h1>Users</h1>
+      <h1>{this.props.user.name}</h1>
       <UserView user={this.props.user} />
     </div>);
   }

@@ -127,7 +127,7 @@ router.get('/logout', (req, res) => {
 });
 
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() || userIsAdmin(req)) {
     next();
   } else {
     res.status(401);
@@ -135,13 +135,21 @@ function ensureAuthenticated(req, res, next) {
   }
 }
 
-function ensureAdmin(req, res, next) {
+export function userIsAdmin(req) {
   const admins = [
     'nick@nmajor.com',
     'king.benjamin012@gmail.com',
   ];
 
   if (req.user.isAdmin || admins.indexOf(req.user.email) > -1) {
+    return true;
+  }
+
+  return false;
+}
+
+function ensureAdmin(req, res, next) {
+  if (userIsAdmin(req)) {
     console.log('User is an admin.');
     next();
   } else {

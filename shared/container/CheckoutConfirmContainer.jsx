@@ -155,7 +155,7 @@ class CheckoutConfirmContainer extends Component {
 
 CheckoutConfirmContainer.need = [
   (params, cookie) => {
-    return Actions.getCompilations.bind(null, cookie)();
+    return Actions.getCompilations.bind(null, null, cookie)();
   },
 ];
 

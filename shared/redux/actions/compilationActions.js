@@ -2,6 +2,8 @@ import * as ActionTypes from '../constants';
 import fetch from 'isomorphic-fetch';
 import baseURL from '../../baseURL';
 import socket from '../../../client/socket';
+import _ from 'lodash';
+import { serializeQuery } from '../../helpers';
 
 import { setPropertyForFetching } from './fetchingActions';
 import { addCompilationEmail } from './compilationEmailsActions';
@@ -132,7 +134,7 @@ export function updateCompilationFetch(compilationId, props, cb) {
   };
 }
 
-export function getCompilations(cookie) {
+export function getCompilations(query, cookie) {
   return (dispatch) => {
     dispatch(setPropertyForFetching('compilations', true));
 
@@ -144,7 +146,13 @@ export function getCompilations(cookie) {
       fetchOptions.credentials = 'include';
     }
 
-    return fetch(`${baseURL}/api/compilations`, fetchOptions)
+    let url = `${baseURL}/api/compilations`;
+    if (!_.isEmpty(query)) { url = `${url}?${serializeQuery(query)}`; }
+
+    console.log('blah hey', url);
+    console.log('blah hey', query);
+
+    return fetch(url, fetchOptions)
     .then((res) => {
       if (res.status >= 400) {
         throw new Error(`Bad response from server ${res.status} ${res.statusText}`);

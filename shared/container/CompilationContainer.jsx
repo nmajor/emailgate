@@ -23,7 +23,7 @@ class CompilationContainer extends Component {
     }
 
     if (this.props.compilations.length < 1) {
-      this.props.dispatch(Actions.getCompilations());
+      this.props.dispatch(Actions.getCompilations({ compilationId: this.props.params.compilationId }));
     }
 
     if (this.props.compilationEmails.length < 1) {
@@ -104,7 +104,7 @@ CompilationContainer.need = [
     return Actions.getAccounts.bind(null, cookie)();
   },
   (params, cookie) => {
-    return Actions.getCompilations.bind(null, cookie)();
+    return Actions.getCompilations.bind(null, { compilationId: params.compilationId }, cookie)();
   },
   (params, cookie) => {
     return Actions.getCompilationPages.bind(null, params.compilationId, cookie)();

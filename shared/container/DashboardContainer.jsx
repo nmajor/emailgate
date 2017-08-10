@@ -63,7 +63,7 @@ DashboardContainer.need = [
     return Actions.getAccounts.bind(null, cookie)();
   },
   (params, cookie) => {
-    return Actions.getCompilations.bind(null, cookie)();
+    return Actions.getCompilations.bind(null, null, cookie)();
   },
   (params, cookie) => {
     return Actions.getOrders.bind(null, cookie)();

@@ -44,7 +44,7 @@ ViewOrderContainer.need = [
     return Actions.getOrders.bind(null, cookie)();
   },
   (params, cookie) => {
-    return Actions.getCompilations.bind(null, cookie)();
+    return Actions.getCompilations.bind(null, null, cookie)();
   },
 ];
 

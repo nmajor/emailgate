@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+// import { Link } from 'react-router';
 import _ from 'lodash';
 import moment from 'moment';
 import JsonViewer from '../JsonViewer';
@@ -105,10 +106,23 @@ class CompilationView extends Component { // eslint-disable-line
       {this.renderBuildCoverAction()}
     </div>);
   }
+  renderCompilationBuildLink() {
+    if (!window) { return null; }
+
+    let host = window.location.host.replace('admin.', '');
+
+    if (window.location.hostname === 'admin.missionarymemoir.com') {
+      host = window.location.host.replace('admin.', 'app.');
+    }
+
+
+    return <a className="btn btn-warning bottom-bumper" href={`${window.location.protocol}//${host}/compilations/${this.props.compilation._id}/build`}>Edit</a>;
+  }
   render() {
     return (<div>
       <h1>{this.props.compilation.title}</h1>
       <h3>{this.props.compilation.subtitle}</h3>
+      {this.renderCompilationBuildLink()}
       <div className="row">
         <div className="col-sm-6">
           <div className="padded-box bottom-bumper">

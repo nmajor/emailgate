@@ -2,6 +2,7 @@ import Compilation from '../models/compilation';
 import Page from '../models/page';
 import Email from '../models/email';
 import _ from 'lodash';
+import { userIsAdmin } from '../routes/api.routes';
 // import io from '../io';
 
 export function addBlankEmail(req, res) {
@@ -28,7 +29,14 @@ export function findOneCompilation(req, res) {
 export function getCompilations(req, res) {
   Compilation.find({ _user: req.user._id })
   .then((compilations) => {
-    res.json(compilations);
+    if (userIsAdmin(req) && req.query.compilationId) {
+      Compilation.find({ _id: req.query.compilationId })
+      .then((comps) => {
+        res.json(comps);
+      });
+    } else {
+      res.json(compilations);
+    }
   })
   .catch((err) => {
     console.log(`Error happened. ${err.message}`);
