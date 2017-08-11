@@ -9,17 +9,17 @@ import FrontCoverBase from './base/FrontCoverBase';
 import CoverImage from './utils/CoverImage';
 import fonts from './utils/fonts';
 
-class LowSquarePic extends CoverBase {
+class FullImageOverlay extends CoverBase {
   constructor(props) {
     super(props);
 
-    this.props.primaryFont = fonts.roboto;
-    this.props.secondaryFont = fonts.playfair;
     this.props.backgroundColor = '#333';
 
     this.props.outerBackgroundColor = this.props.showBleed ? this.props.opaqueBackgroundColor : this.props.backgroundColor;
 
     this.props.textColor = '#FFF';
+    this.props.primaryFont = fonts.quicksand;
+    this.props.secondaryFont = fonts.lato;
   }
   renderFrontCover() {
     const {
@@ -109,4 +109,4 @@ class LowSquarePic extends CoverBase {
   }
 }
 
-export default LowSquarePic;
+export default FullImageOverlay;

@@ -43,6 +43,7 @@ class SpineCoverBase extends Component {
   }
   render() {
     return (<div
+      className="spine"
       style={{
         ...this.spineOuterStyle(),
       }}

@@ -602,6 +602,10 @@ input {
       &:hover {
         cursor: pointer;
       }
+
+      &.active {
+        border: 1px solid #FFF;
+      }
     }
   }
 

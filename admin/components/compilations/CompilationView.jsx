@@ -118,6 +118,14 @@ class CompilationView extends Component { // eslint-disable-line
 
     return <a className="btn btn-warning bottom-bumper" href={`${window.location.protocol}//${host}/compilations/${this.props.compilation._id}/build`}>Edit</a>;
   }
+  renderCoverHtml() {
+    if (this.props.compilation.cover && this.props.compilation.cover.html) {
+      return (<div>
+        <h3>Literal Cover Html</h3>
+        <div dangerouslySetInnerHTML={{ __html: this.props.compilation.cover.html }} />
+      </div>);
+    }
+  }
   render() {
     return (<div>
       <h1>{this.props.compilation.title}</h1>
@@ -146,6 +154,7 @@ class CompilationView extends Component { // eslint-disable-line
       <div>
         {this.renderCoverFile()}
       </div>
+      {this.renderCoverHtml()}
     </div>);
   }
 }

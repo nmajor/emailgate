@@ -301,7 +301,7 @@ export function resizeAttachment(attachment) {
 }
 
 export function processCoverImage(image) {
-  const maxWidthIn = 3;
+  const maxWidthIn = 6;
   const pixelsPerInch = 300;
   const maxWidthPx = maxWidthIn * pixelsPerInch;
 

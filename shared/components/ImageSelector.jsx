@@ -178,7 +178,7 @@ class ImageSelector extends Component { // eslint-disable-line
   }
   renderImageThumbs() {
     return _.map(this.props.images, (image, id) => {
-      return (<div key={id} className="selector-image-thumb" onClick={() => { this.handleThumbClick(image); }}>
+      return (<div key={id} className={`selector-image-thumb ${image._id === this.state.image._id ? 'active' : ''}`} onClick={() => { this.handleThumbClick(image); }}>
         {this.renderImageThumb(image)}
       </div>);
     });

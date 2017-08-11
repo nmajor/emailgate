@@ -1,7 +1,11 @@
 TODO:
+Send out the rest of those customer Messages
+Submit the new cover demos
+Fix Image Rotation
+Add New Page Insert
+
 Add logo to back covers
 Add new favicon
-Add FB pixel and events
 
 
 FROM BJ:

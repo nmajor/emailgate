@@ -10,6 +10,7 @@ class BackCoverBase extends Component {
   }
   render() {
     return (<div
+      className="back-cover"
       style={{
         ...this.props.outerBoardBaseStyle,
         backgroundColor: this.props.outerBackgroundColor,
