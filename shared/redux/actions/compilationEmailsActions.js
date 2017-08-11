@@ -86,6 +86,41 @@ export function getCompilationEmails(compilationId, cookie) {
   };
 }
 
+export function rotateImageAttachment(compilationId, emailId, attachmentContentId) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilationEmail({ _id: emailId }, 'saving', true));
+
+    const url = `${baseURL}/compilations/${compilationId}/emails/${emailId}/attachments/${attachmentContentId}/rotate`;
+
+    return fetch(url, {
+      credentials: 'include',
+      method: 'put',
+      body: JSON.stringify({}),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(updateEmailInCompilationEmails(res));
+    })
+    .catch((err) => {
+      dispatch(setPropertyForCompilationEmail({ _id: emailId }, 'saving', false));
+      console.log(err);
+    });
+  };
+}
+
 export function addEmailsToCompilationEmailsById(compilationId, accountId, emailIds) {
   return (dispatch) => {
     const ReactGA = require('../../ga').default; // eslint-disable-line

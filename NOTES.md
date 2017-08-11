@@ -1,7 +1,7 @@
 TODO:
-Send out the rest of those customer Messages
+LATER - Send out the rest of those customer Messages
 Submit the new cover demos
-Fix Image Rotation
+Fix Image Rotation - Connect the redux action request to the controller
 Add New Page Insert
 
 Add logo to back covers
@@ -268,3 +268,15 @@ Search on getFilteredAccountEmails action
 Purchase on createOrder action
 ConnectAccount when user clicks button to connect a gmail account
 AddEmails on addEmailsToCompilationEmails
+
+### Started books:
+Joseph Higgins - higgjose@hotmail.com - August 3rd
+Susie Stroud - susie.bryan@sbcglobal.net - August 2nd
+Ann Bailey - baileybunch6@gmail.com - June 21st
+Suzee Anderson - suzeesews@gmail.com - June 14th
+Julie Wolf - juliewolff5@gmail.com - June 1
+Tanya Bowerbank - rbowerbank@digis.net - May 31
+Alicia Waterlyn - ah2olyn@msn.com - May 31
+Jordan Wouden - jekins1@gmail.com - May 28
+Letitia Powell - letitiapowell@gmail.com - May 25
+Gayla - gayla@lakemtn.com - May 25

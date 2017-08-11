@@ -9,6 +9,7 @@ class EditCompilationEmailContainer extends Component {
     super(props, context);
 
     this.save = this.save.bind(this);
+    this.rotateAttachment = this.rotateAttachment.bind(this);
     this.remove = this.remove.bind(this);
 
     if (this.props.params.emailId) {
@@ -25,6 +26,9 @@ class EditCompilationEmailContainer extends Component {
       remove: this.remove,
     };
   }
+  rotateAttachment(emailId, attachmentContentId) {
+    this.props.dispatch(Actions.rotateImageAttachment(this.props.compilation._id, emailId, attachmentContentId));
+  }
   save(emailProps) {
     this.props.dispatch(Actions.updateCompilationEmail(this.currentEmail._compilation, this.currentEmail, emailProps));
   }
@@ -35,7 +39,7 @@ class EditCompilationEmailContainer extends Component {
     }
   }
   render() {
-    return <CompilationBuildContainer compilation={this.props.compilation} currentEmail={this.currentEmail} edit={this.save} componentProps={this.getComponentProps()} />;
+    return <CompilationBuildContainer compilation={this.props.compilation} currentEmail={this.currentEmail} edit={this.save} rotateAttachment={this.rotateAttachment} componentProps={this.getComponentProps()} />;
   }
 }
 

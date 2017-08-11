@@ -115,7 +115,7 @@ class CompilationEmailsListItem extends Component {
           {this.renderRemoveAction()}
           {this.renderHideAction()}
         </div>
-        <CompilationEmailForm ref="form" email={this.props.email} submitForm={this.props.edit} />
+        <CompilationEmailForm ref="form" email={this.props.email} submitForm={this.props.edit} rotateAttachment={this.props.rotateAttachment} />
       </div>);
     }
 
@@ -135,6 +135,7 @@ CompilationEmailsListItem.propTypes = {
   view: PropTypes.bool,
   show: PropTypes.string,
   edit: PropTypes.func,
+  rotateAttachment: PropTypes.func,
   componentProps: PropTypes.object,
 };
 

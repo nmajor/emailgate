@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import CompilationEmailsListItem from './CompilationEmailsListItem';
 import CompilationPagesListItem from './CompilationPagesListItem';
 import * as sharedHelpers from '../helpers';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
 class CompilationComponentsList extends Component {
   constructor(props, context) {
@@ -31,6 +31,7 @@ class CompilationComponentsList extends Component {
         email={email}
         show={show}
         edit={this.props.edit}
+        rotateAttachment={this.props.rotateAttachment}
         componentProps={this.props.componentProps || {}}
       />);
     });
@@ -74,6 +75,7 @@ CompilationComponentsList.propTypes = {
   currentPageId: PropTypes.string,
   edit: PropTypes.func,
   componentProps: PropTypes.object,
+  rotateAttachment: PropTypes.func,
 };
 
 export default CompilationComponentsList;

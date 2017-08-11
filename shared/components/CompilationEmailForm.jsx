@@ -12,6 +12,7 @@ class CompilationEmailForm extends Component {
     this.setBodyState = this.setBodyState.bind(this);
     this.setFormState = this.setFormState.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.rotateAttachment = this.rotateAttachment.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     this.template = new EmailTemplate(nextProps.email);
@@ -32,6 +33,9 @@ class CompilationEmailForm extends Component {
     }
     this.setState(newState);
   }
+  rotateAttachment(attachmentContentId) {
+    this.props.rotateAttachment(this.props.email._id, attachmentContentId);
+  }
   submitForm(e) {
     if (e) { e.preventDefault(); }
 
@@ -39,7 +43,9 @@ class CompilationEmailForm extends Component {
   }
   renderForm() {
     if (this.template) {
-      return this.template.renderForm(this.setFormState, this.setBodyState);
+      return this.template.renderForm(this.setFormState, this.setBodyState, {
+        rotateAttachment: this.rotateAttachment,
+      });
     }
   }
   renderErrors(type) {
@@ -76,6 +82,7 @@ CompilationEmailForm.contextTypes = {
 CompilationEmailForm.propTypes = {
   email: PropTypes.object.isRequired,
   submitForm: PropTypes.func.isRequired,
+  rotateAttachment: PropTypes.func.isRequired,
 };
 
 export default CompilationEmailForm;

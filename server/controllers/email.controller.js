@@ -6,3 +6,7 @@ export function getCompilationEmails(req, res) {
     res.json(emails);
   });
 }
+
+export function rotateImageAttachment(req) {
+  console.log('blah hey working', req.params.compilationId, req.params.emailId, req.params.attachmentId);
+}

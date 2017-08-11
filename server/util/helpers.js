@@ -110,12 +110,14 @@ export function filteredAttachments(attachments) {
 export function processAttachments(attachments) {
   return filteredAttachments(attachments).map((a) => {
     const updatedAt = Date.now();
+    const id = shortid.generate();
 
     return {
+      id,
       contentType: a.contentType,
       fileName: `${shortid.generate()}-${a.fileName}`,
       contentDisposition: a.contentDisposition,
-      contentId: a.contentId,
+      contentId: a.contentId || id,
       checksum: a.checksum,
       length: a.length,
       content: a.content,
@@ -362,6 +364,27 @@ export function extractImage(image, extractOptions) {
       resolve(image);
     });
     // }
+  });
+}
+
+export function rotateImage(image, extractOptions) {
+  return new Promise((resolve) => {
+    const request = require('request').defaults({ encoding: null }); // eslint-disable-line
+    request.get(image, (err, res, contentBuffer) => {
+      console.log('blah body', contentBuffer);
+
+      sharp(contentBuffer)
+      .extract(extractOptions)
+      .toBuffer((errr, outputBuffer) => {
+        if (errr) { console.log('An error happened while rotating image', errr); }
+
+        image.content = outputBuffer.toString('base64'); // eslint-disable-line
+        // image.resizeInfo = info; // eslint-disable-line
+        image.updatedAt = Date.now(); // eslint-disable-line
+
+        resolve(image);
+      });
+    });
   });
 }
 

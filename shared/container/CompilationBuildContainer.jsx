@@ -69,6 +69,7 @@ class CompilationBuildContainer extends Component {
             currentPageId={_.get(this.props.currentPage, '_id')}
             compilation={this.props.compilation}
             edit={this.props.edit}
+            rotateAttachment={this.props.rotateAttachment}
             componentProps={this.props.componentProps}
           />
         </div>
@@ -93,6 +94,7 @@ CompilationBuildContainer.propTypes = {
   currentEmail: PropTypes.object,
   currentPage: PropTypes.object,
   edit: PropTypes.func,
+  rotateAttachment: PropTypes.func,
   componentProps: PropTypes.object,
   ffooter: PropTypes.bool,
   params: PropTypes.object,

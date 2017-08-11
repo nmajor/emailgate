@@ -156,34 +156,38 @@ class AttachmentInput extends Component { // eslint-disable-line
     ];
     this.props.setFormState(undefined, newState);
   }
-  rotateAttachment(index) {
-    const { attachments } = this.props.email;
-    const attachment = attachments[index];
-
-    const imageSrc = attachment.url ? `${attachment.url}?t=${attachment.updatedAt}` : `data:${attachment.contentType};base64,${attachment.content}`;
-
-    rotateImage(imageSrc, 90, (newImageString) => {
-      newImageString = newImageString.replace(/^data.*base64,/, '');
-
-      const newState = {};
-      const newAttachment = Object.assign({}, attachments[index]);
-      newAttachment.content = newImageString;
-      newAttachment.url = undefined;
-
-      newState.attachments = [
-        ...attachments.slice(0, index),
-        newAttachment,
-        ...attachments.slice(index + 1),
-      ];
-
-      this.props.setFormState(undefined, newState);
-    });
+  rotateAttachment(contentId) {
+    this.props.rotateAttachment(contentId);
+    // const { attachments } = this.props.email;
+    // const attachment = attachments[index];
+    //
+    // const imageSrc = attachment.url ? `${attachment.url}?t=${attachment.updatedAt}` : `data:${attachment.contentType};base64,${attachment.content}`;
+    //
+    // rotateImage(imageSrc, 90, (newImageString) => {
+    //   newImageString = newImageString.replace(/^data.*base64,/, '');
+    //
+    //   const newState = {};
+    //   const newAttachment = Object.assign({}, attachments[index]);
+    //   newAttachment.content = newImageString;
+    //
+    //   newAttachment.process = newAttachment.process || {};
+    //   newAttachment.process.rotate = newAttachment.process.rotate || 0;
+    //   newAttachment.process.rotate += 90;
+    //
+    //   newState.attachments = [
+    //     ...attachments.slice(0, index),
+    //     newAttachment,
+    //     ...attachments.slice(index + 1),
+    //   ];
+    //
+    //   this.props.setFormState(undefined, newState);
+    // });
   }
   renderAttachmentActions(attachment, index) {
     return (<div className="attachment-actions">
       <div
         className="btn btn-primary btn-xs-true"
-        onClick={() => { this.rotateAttachment(index); }}
+        onClick={() => { this.rotateAttachment(attachment.contentId); }}
       >
         <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
       </div>
@@ -241,6 +245,7 @@ class AttachmentInput extends Component { // eslint-disable-line
 AttachmentInput.propTypes = {
   email: PropTypes.object.isRequired,
   setFormState: PropTypes.func.isRequired,
+  rotateAttachment: PropTypes.func.isRequired,
 };
 
 class EmailDateInput extends Component { // eslint-disable-line
@@ -385,10 +390,11 @@ class EmailTemplate {
     </div>);
   }
 
-  renderForm(setFormState, setBodyState) {
+  renderForm(setFormState, setBodyState, props) {
     const bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
     const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;
     const fromInput = <EmailUserInput email={this.email} field="from" setFormState={setFormState} />;
+    console.log('blah bey ', props.rotateAttachment);
 
     return (<div style={{ fontSize: '20px' }}>
       <DatePicker
@@ -405,7 +411,7 @@ class EmailTemplate {
       {this.renderSubject(subjectInput)}
       {this.renderFrom(fromInput)}
       {this.renderBody(bodyInput)}
-      <AttachmentInput email={this.email} setFormState={setFormState} />
+      <AttachmentInput email={this.email} setFormState={setFormState} rotateAttachment={props.rotateAttachment} />
     </div>);
   }
 
