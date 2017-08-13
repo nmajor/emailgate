@@ -8,6 +8,7 @@ import {
   uploadAttachment,
   trimKnownBodyFluff,
   removeFile,
+  rotateImageAttachment,
 } from '../util/helpers';
 
 import EmailTemplate from '../../shared/templates/email';
@@ -113,6 +114,27 @@ EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {
     const html = template.toString();
     this.template = html;
     resolve(this);
+  });
+};
+
+EmailSchema.methods.rotateImageAttachment = function (attachmentContentId, angle) { // eslint-disable-line func-names
+  return new Promise((resolve) => {
+    const attachmentIndex = _.findIndex(this.attachments, (attachment) => { return attachment.contentId === attachmentContentId; });
+    const attachment = this.attachments[attachmentIndex];
+
+    rotateImageAttachment(attachment, angle)
+    .then((updatedAttachment) => {
+      return uploadAttachment(updatedAttachment);
+    })
+    .then((updatedAttachment) => {
+      this.attachments = [
+        ...this.attachments.slice(0, attachmentIndex),
+        updatedAttachment,
+        ...this.attachments.slice(attachmentIndex + 1),
+      ];
+      return this.save();
+    })
+    .then(() => { return resolve(this); });
   });
 };
 

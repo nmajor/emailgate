@@ -206,7 +206,7 @@ router.put('/compilations/:id/page', ensureAuthenticated, CompilationController.
 router.get('/compilations/:id/emails', ensureAuthenticated, EmailController.getCompilationEmails);
 router.get('/compilations/:id/email-page-map', ensureAuthenticated, getCompilationEmailPageMap);
 router.get('/compilations/:id/pages', ensureAuthenticated, PageController.getCompilationPages);
-router.put('/compilations/:compilationId/emails/:emailId/attachments/:attachmentContentId/rotate', ensureAuthenticated, EmailController.rotateImageAttachment);
+router.put('/compilations/:compilationId/emails/:emailId/rotate-attachment', ensureAuthenticated, EmailController.rotateImageAttachment);
 
 router.get('/admin/users', ensureAuthenticated, ensureAdmin, AdminController.getUsers);
 router.get('/admin/compilations', ensureAuthenticated, ensureAdmin, AdminController.getCompilations);

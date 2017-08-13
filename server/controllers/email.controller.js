@@ -7,6 +7,13 @@ export function getCompilationEmails(req, res) {
   });
 }
 
-export function rotateImageAttachment(req) {
-  console.log('blah hey working', req.params.compilationId, req.params.emailId, req.params.attachmentId);
+export function rotateImageAttachment(req, res) {
+  Email.findOne({ _compilation: req.params.compilationId, _id: req.params.emailId })
+  .then((email) => {
+    return email.rotateImageAttachment(req.body.attachmentContentId, req.body.angle || 90);
+  })
+  .then((email) => {
+    res.json(email);
+  })
+  .catch((err) => { console.log('An error happened when rotating an image attachment', err); });
 }

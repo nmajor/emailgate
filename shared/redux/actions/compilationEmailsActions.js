@@ -90,12 +90,12 @@ export function rotateImageAttachment(compilationId, emailId, attachmentContentI
   return (dispatch) => {
     dispatch(setPropertyForCompilationEmail({ _id: emailId }, 'saving', true));
 
-    const url = `${baseURL}/compilations/${compilationId}/emails/${emailId}/attachments/${attachmentContentId}/rotate`;
+    const url = `${baseURL}/api/compilations/${compilationId}/emails/${emailId}/rotate-attachment`;
 
     return fetch(url, {
       credentials: 'include',
       method: 'put',
-      body: JSON.stringify({}),
+      body: JSON.stringify({ attachmentContentId }),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),

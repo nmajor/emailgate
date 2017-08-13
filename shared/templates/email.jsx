@@ -5,7 +5,7 @@ import moment from 'moment';
 import ReactQuill from 'react-quill';
 import DatePicker from 'react-datepicker';
 import _ from 'lodash';
-import { rotateImage } from '../helpers';
+// import { rotateImage } from '../helpers';
 
 class AttachmentDropzone extends Component {
   constructor(props, context) {
@@ -157,7 +157,19 @@ class AttachmentInput extends Component { // eslint-disable-line
     this.props.setFormState(undefined, newState);
   }
   rotateAttachment(contentId) {
+    const { attachments } = this.props.email;
+    const newState = {};
+    const attachmentIndex = _.findIndex(attachments, (a) => { return a.contentId === contentId; });
+    const newAttachment = Object.assign({}, attachments[attachmentIndex]);
+    newAttachment.rotating = true;
     this.props.rotateAttachment(contentId);
+    newState.attachments = [
+      ...attachments.slice(0, attachmentIndex),
+      newAttachment,
+      ...attachments.slice(attachmentIndex + 1),
+    ];
+    this.props.setFormState(undefined, newState);
+
     // const { attachments } = this.props.email;
     // const attachment = attachments[index];
     //
@@ -207,22 +219,31 @@ class AttachmentInput extends Component { // eslint-disable-line
     };
 
     const wrapperStyle = {
+      position: 'relative',
       backgroundColor: '#f2f2f2',
       marginTop: '5px',
       border: '1px solid #ccc',
       textAlign: 'center',
     };
 
+
     const imageComponents = this.props.email.attachments.map((attachment, index) => {
+      let spinner = null;
+      if (attachment.rotating) {
+        spinner = (<div className="spinner">Rotating...</div>);
+      }
+
       if (attachment.url) {
-        return (<div style={wrapperStyle} key={index}>
+        return (<div className="attachment-wrapper" style={wrapperStyle} key={index}>
+          {spinner}
           {this.renderAttachmentActions(attachment, index)}
           <img role="presentation" style={divStyle} src={`${attachment.url}?t=${attachment.updatedAt}`} />
         </div>);
       } else if (attachment.content && ['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
 
-        return (<div style={wrapperStyle} key={index}>
+        return (<div className="attachment-wrapper" style={wrapperStyle} key={index}>
+        {spinner}
           {this.renderAttachmentActions(attachment, index)}
           <img role="presentation" style={divStyle} src={dataUriPrefix + attachment.content} />
         </div>);

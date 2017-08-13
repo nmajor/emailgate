@@ -367,22 +367,19 @@ export function extractImage(image, extractOptions) {
   });
 }
 
-export function rotateImage(image, extractOptions) {
+export function rotateImageAttachment(attachment, angle) {
   return new Promise((resolve) => {
     const request = require('request').defaults({ encoding: null }); // eslint-disable-line
-    request.get(image, (err, res, contentBuffer) => {
-      console.log('blah body', contentBuffer);
-
+    request.get(attachment.url, (err, res, contentBuffer) => {
       sharp(contentBuffer)
-      .extract(extractOptions)
+      .rotate(angle)
       .toBuffer((errr, outputBuffer) => {
         if (errr) { console.log('An error happened while rotating image', errr); }
 
-        image.content = outputBuffer.toString('base64'); // eslint-disable-line
-        // image.resizeInfo = info; // eslint-disable-line
-        image.updatedAt = Date.now(); // eslint-disable-line
+        attachment.content = outputBuffer.toString('base64'); // eslint-disable-line
+        attachment.updatedAt = Date.now(); // eslint-disable-line
 
-        resolve(image);
+        resolve(attachment);
       });
     });
   });
