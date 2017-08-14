@@ -6,6 +6,11 @@ const compilationOverwriteMap = {
   'rJa-cFHzW': 'https://us-east.manta.joyent.com//nmajor/public/emailgate/compilation-BJwbRWHRg-padded-with-blanks.pdf',
 };
 
+const compilationCoverOverwriteMap = {
+  ryK1ugr0x: 'https://us-east.manta.joyent.com/nmajor/public/emailgate/dev/compilations/rkDt4EEIZ/cover-BkePtVVVUW.pdf?1502729684398',
+  BJwbRWHRg: 'https://us-east.manta.joyent.com//nmajor/public/emailgate/dev/compilations/Hkd_hGdDb/cover-BJgu_nG_wW.pdf?1502730652883',
+};
+
 // function decPrice(price) {
 //   return price / 100;
 // }
@@ -27,6 +32,14 @@ function compilationUrl(compilation) {
   }
 
   return compilation.pdf.url;
+}
+
+function compilationCoverUrl(compilation) {
+  if (compilation._id in compilationCoverOverwriteMap) {
+    return compilationCoverOverwriteMap[compilation._id];
+  }
+
+  return compilation.cover.pdf.url;
 }
 
 const productBookTypeIdMap = {
@@ -151,7 +164,7 @@ export function requestItem(item) {
     },
     Cover: {
       FileVersion: moment(compilation.cover.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
-      Url: compilation.cover.pdf.url,
+      Url: compilationCoverUrl(compilation),
     },
     EndSheet: {
       Color: 'White',
