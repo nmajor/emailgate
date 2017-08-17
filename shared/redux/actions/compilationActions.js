@@ -251,6 +251,39 @@ export function addBlankEmail(compilationId, cb) {
   };
 }
 
+export function addCustomPage(compilationId, props, cb) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilation(compilationId, 'saving', true));
+
+    return fetch(`${baseURL}/api/compilations/${compilationId}/add-custom-page`, {
+      credentials: 'include',
+      method: 'post',
+      body: JSON.stringify({ type: props.type, afterType: props.afterType, afterId: props.afterId }),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(addCompilationEmail(res));
+      cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
 // export function addCompilationImage(compilationId, image, cb) {
 //   return (dispatch) => {
 //     dispatch(setPropertyForCompilation(compilationId, 'addingImage', true));

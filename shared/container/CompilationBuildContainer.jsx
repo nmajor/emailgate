@@ -63,7 +63,7 @@ class CompilationBuildContainer extends Component {
     return (<div className="container compilation-container">
       <div className="compilation-content-box">
         <div>
-          {this.renderActions}
+          {this.renderActions()}
           <CompilationComponentsListContainer
             currentEmailId={_.get(this.props.currentEmail, '_id')}
             currentPageId={_.get(this.props.currentPage, '_id')}

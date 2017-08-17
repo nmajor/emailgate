@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from 'react';
+import _ from 'lodash';
 import CompilationEmailsListItem from './CompilationEmailsListItem';
 import CompilationPagesListItem from './CompilationPagesListItem';
+import AddCustomPageContainer from '../container/AddCustomPageContainer';
 import * as sharedHelpers from '../helpers';
 // import { Link } from 'react-router';
 
@@ -37,7 +39,7 @@ class CompilationComponentsList extends Component {
     });
   }
   renderPages() {
-    return this.sortedPages().map((page) => {
+    return _.flatten(this.sortedPages().map((page) => {
       const current = page._id === this.props.currentPageId;
       let show = 'thumb';
       if (current && this.props.edit) {
@@ -46,14 +48,21 @@ class CompilationComponentsList extends Component {
         show = 'view';
       }
 
-      return (<CompilationPagesListItem
-        key={`${page._id}`}
-        page={page}
-        show={show}
-        edit={this.props.edit}
-        componentProps={this.props.componentProps || {}}
-      />);
-    });
+      return (<div key={`${page._id}`}>
+        <CompilationPagesListItem
+          page={page}
+          show={show}
+          edit={this.props.edit}
+          componentProps={this.props.componentProps || {}}
+        />
+        <AddCustomPageContainer
+          compilation={this.props.compilation}
+          afterObject={page}
+          afterType="page"
+          afterId={page._id}
+        />
+      </div>);
+    }));
   }
   render() {
     return (<div className="component-list">

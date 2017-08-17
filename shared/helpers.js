@@ -5,22 +5,22 @@ export function pageMeta(page) {
     cover: {
       desc: 'Cover',
       editable: true,
-      position: -4,
+      position: 1,
     },
     'title-page': {
       desc: 'Title Page',
       editable: true,
-      position: -3,
+      position: 2,
     },
     'message-page': {
       desc: 'Custom Message',
       editable: true,
-      position: -2,
+      position: 3,
     },
     'table-of-contents': {
       desc: 'Table of Contents',
       editable: false,
-      position: -1,
+      position: 4,
     },
   };
 
@@ -68,7 +68,7 @@ export function lastPdfUpdatedAt(pages, emails) {
 }
 
 export function sortedEmails(emails) {
-  return _.sortBy(emails, 'date');
+  return _.sortBy(emails, (email) => { return email.date; });
 }
 
 export function sortedPages(pages) {

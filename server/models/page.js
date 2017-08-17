@@ -9,6 +9,7 @@ const PageSchema = new Schema({
   type: String,
   html: String,
   content: {},
+  position: Number,
   pdf: {},
   estimatedPageCount: { type: Number, default: 1 },
 }, {
