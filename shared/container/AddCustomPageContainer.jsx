@@ -29,26 +29,29 @@ class AddCustomPageContainer extends Component {
       type,
       afterType,
       afterId,
+    }, () => {
+      this.hideModal();
     }));
   }
   renderModal() {
     if (this.state.showModal) {
       return (<Modal close={this.hideModal}>
         <div className="padded">
-          <div className="row">
+          <h3 className="text-center">Please select the type of page you want to add</h3>
+          <div className="row bottom-bumper top-bumper">
             <div className="col-md-6">
-              <div className="custom-page-option" onClick={() => { this.addPage('message'); }}>
+              <div className="custom-page-option" onClick={() => { this.addPage('message-page'); }}>
                 Message Page
               </div>
             </div>
             <div className="col-md-6">
-              <div className="custom-page-option" onClick={() => { this.addPage('image'); }}>
+              <div className="custom-page-option" onClick={() => { this.addPage('image-page'); }}>
                 Image Page
               </div>
             </div>
           </div>
           <div className="text-right actions">
-            <div onClick={this.hideModal} className="btn btn-danger">Back</div>
+            <div onClick={this.hideModal} className="btn btn-danger marginless-right">Back</div>
           </div>
         </div>
       </Modal>);

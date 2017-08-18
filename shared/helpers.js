@@ -24,7 +24,7 @@ export function pageMeta(page) {
     },
   };
 
-  return metaMap[page.type];
+  return metaMap[page.type] || {};
 }
 
 export function titleize(str) {
@@ -72,7 +72,7 @@ export function sortedEmails(emails) {
 }
 
 export function sortedPages(pages) {
-  return _.sortBy(pages, (page) => { return pageMeta(page).position; });
+  return _.sortBy(pages, (page) => { return page.position || pageMeta(page).position; });
 }
 
 export function sortedComponents(pages, emails) {

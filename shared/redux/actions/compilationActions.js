@@ -7,6 +7,7 @@ import { serializeQuery } from '../../helpers';
 
 import { setPropertyForFetching } from './fetchingActions';
 import { addCompilationEmail } from './compilationEmailsActions';
+import { setCompilationPages } from './compilationPagesActions';
 
 // ACTIONS
 export function addCompilation(compilation) {
@@ -275,7 +276,7 @@ export function addCustomPage(compilationId, props, cb) {
         throw new Error(res.error.message);
       }
 
-      dispatch(addCompilationEmail(res));
+      dispatch(setCompilationPages(res));
       cb(res);
     })
     .catch((err) => {

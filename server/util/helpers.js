@@ -249,14 +249,6 @@ export function pageTemplateFactory(page) {
           const startDate = compilation.meta.startingDate;
           const endDate = compilation.meta.endingDate;
           return resolve(new TitlePageTemplate(page, { startDate, endDate, compilation }));
-          // return Email.find({ _compilation: page._compilation })
-          // .then((emails) => {
-          //   const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
-          //   const firstEmail = sortedEmails[0] || {};
-          //   const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
-          //   const startDate = firstEmail.date;
-          //   const endDate = lastEmail.date;
-          // });
         }
         case 'message-page' :
           return resolve(new MessagePageTemplate(page));

@@ -19,6 +19,48 @@ export function addBlankEmail(req, res) {
   .catch((err) => { console.log(err); });
 }
 
+export function addCustomPage(req, res) {
+  Compilation.findOne({ _user: req.user._id, _id: req.params.id })
+  .then((compilation) => {
+    if (!compilation) { return res.statusCode(400); }
+
+    const newPage = new Page({
+      _compilation: compilation._id,
+      type: req.body.type,
+    });
+    return newPage.save()
+    .then((savedPage) => {
+      return Page.find({ _compilation: compilation._id })
+      .then((pages) => {
+        const afterPage = _.find(pages, (page) => { return page._id === req.body.afterId; });
+
+        let tasks = new Promise((resolve) => {
+          savedPage.position = afterPage.position + 1;
+          resolve(savedPage.save());
+        });
+
+        _.forEach(pages, (page) => {
+          if (page.position > afterPage.position) {
+            tasks = tasks.then(() => {
+              page.position = page.position + 1;
+              return page.save();
+            });
+          }
+        });
+
+        return tasks;
+      });
+    })
+    .then(() => {
+      return Page.find({ _compilation: compilation._id });
+    });
+  })
+  .then((pages) => {
+    res.json(pages);
+  })
+  .catch((err) => { console.log(err); });
+}
+
 export function findOneCompilation(req, res) {
   Compilation.findOne({ _user: req.user._id, _id: req.params.id })
   .then((compilation) => {

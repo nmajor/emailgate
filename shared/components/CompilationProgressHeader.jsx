@@ -71,7 +71,7 @@ class CompilationProgressHeader extends Component { // eslint-disable-line
           <div className="wizard">
             {this.renderStepItem('title', 'Design Cover', 'book')}
             {this.renderStepItem('add-emails', 'Add Emails', 'envelope')}
-            {this.renderStepItem('build', 'Finalize', 'pencil')}
+            {this.renderStepItem('build', 'Edit', 'pencil')}
             {this.renderStepItem('checkout', 'Checkout', 'shopping-cart')}
             <div className="spacer" />
           </div>

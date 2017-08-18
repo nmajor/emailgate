@@ -2,6 +2,7 @@ import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import _ from 'lodash';
 import { pageTemplateFactory, removeFile } from '../util/helpers';
+import { pageMeta } from '../../shared/helpers';
 
 const PageSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -26,6 +27,7 @@ PageSchema.statics.defaultPages = function defaultPages() {
 };
 
 PageSchema.post('init', function () {  // eslint-disable-line func-names
+  this.position = this.position || pageMeta(this).position;
   this._original = this.toObject();
 });
 
