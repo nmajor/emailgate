@@ -60,6 +60,23 @@ class CompilationPagesListItem extends Component {
       <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
     </span>);
   }
+  renderPageHelperText() {
+    const { page } = this.props;
+    if (page.type === 'message-page') {
+      let text = 'Edit this page to change its content.';
+
+      if (page.content) {
+        text = page.content.message.substring(0, 50);
+        if (page.content.message.length > text.length) {
+          text = `${text}...`;
+        }
+      }
+
+      return <span className="page-thumb-helper-text"> - {text}</span>;
+    }
+
+    return null;
+  }
   renderPageThumb() {
     return (<Link className="compilation-pages-list-item list-item" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
       <div className="list-item-actions page-thumb">
@@ -68,7 +85,7 @@ class CompilationPagesListItem extends Component {
       <div className="type">
         <span className="glyphicon glyphicon-file" aria-hidden="true"></span> Page
       </div>
-      {pageMeta(this.props.page).desc}
+      {pageMeta(this.props.page).desc}{this.renderPageHelperText()}
     </Link>);
   }
   renderPageListItem() {

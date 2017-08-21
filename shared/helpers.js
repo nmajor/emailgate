@@ -13,7 +13,12 @@ export function pageMeta(page) {
       position: 2,
     },
     'message-page': {
-      desc: 'Custom Message',
+      desc: 'Custom Message Page',
+      editable: true,
+      position: 3,
+    },
+    'image-page': {
+      desc: 'Full Image Page',
       editable: true,
       position: 3,
     },
