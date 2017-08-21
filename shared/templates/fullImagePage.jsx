@@ -44,13 +44,14 @@ class MessagePageTemplate {
       fontFamily: '\'Montserrat\', sans-serif !important',
       fontWeight: 'bold',
       fontSize: '18px',
-      marginBottom: '3px',
+      marginBottom: '10px',
     };
 
     return <div style={divStyle}>{this.content.header}</div>;
   }
   render() {
     return (<div style={{ fontSize: '20px', padding: '0 50px' }}>
+      {this.renderHeader()}
       {this.renderImage()}
     </div>);
   }

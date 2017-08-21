@@ -6,6 +6,7 @@ import * as Actions from '../redux/actions/index';
 import CoverTemplate from '../templates/cover';
 import TitlePageTemplate from '../templates/titlePage';
 import MessagePageTemplate from '../templates/messagePage';
+import FullImagePageTemplate from '../templates/fullImagePage';
 
 class EditCompilationPageContainer extends Component {
   constructor(props, context) {
@@ -48,6 +49,9 @@ class EditCompilationPageContainer extends Component {
         }
         case 'message-page' : {
           return new MessagePageTemplate(page);
+        }
+        case 'full-image-page' : {
+          return new FullImagePageTemplate(page);
         }
         case 'table-of-contents' : {
           // Cant edit table of contents page

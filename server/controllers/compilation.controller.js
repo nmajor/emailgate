@@ -31,7 +31,6 @@ export function addCustomPage(req, res) {
     });
     return newPage.save()
     .then((savedPage) => {
-      console.log(savedPage);
       return Page.find({ _compilation: compilation._id })
       .then((pages) => {
         const afterPage = _.find(pages, (page) => { return page._id === req.body.afterId; });

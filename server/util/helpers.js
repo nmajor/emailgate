@@ -13,6 +13,7 @@ import CoverTemplate from '../../shared/templates/cover';
 import TitlePageTemplate from '../../shared/templates/titlePage';
 import MessagePageTemplate from '../../shared/templates/messagePage';
 import TableOfContentsTemplate from '../../shared/templates/tableOfContents';
+import FullImagePageTemplate from '../../shared/templates/fullImagePage';
 
 const client = manta.createClient({
   sign: manta.privateKeySigner({
@@ -252,6 +253,8 @@ export function pageTemplateFactory(page) {
         }
         case 'message-page' :
           return resolve(new MessagePageTemplate(page));
+        case 'full-image-page' :
+          return resolve(new FullImagePageTemplate(page));
         case 'table-of-contents' :
           return Email.find({ _compilation: page._compilation })
           .then((emails) => {

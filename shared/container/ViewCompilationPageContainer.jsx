@@ -7,6 +7,7 @@ import * as Actions from '../redux/actions/index';
 import TitlePageTemplate from '../templates/titlePage';
 import MessagePageTemplate from '../templates/messagePage';
 import TableOfContentsTemplate from '../templates/tableOfContents';
+import FullImagePageTemplate from '../templates/fullImagePage';
 import CompilationBuildContainer from './CompilationBuildContainer';
 import covers from '../templates/covers';
 
@@ -51,6 +52,9 @@ class ViewCompilationPageContainer extends Component {
         }
         case 'message-page' : {
           return new MessagePageTemplate(page);
+        }
+        case 'full-image-page' : {
+          return new FullImagePageTemplate(page);
         }
         case 'table-of-contents' : {
           return new TableOfContentsTemplate(page, {
