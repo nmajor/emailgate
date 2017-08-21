@@ -27,9 +27,6 @@ class AccountFormContainer extends Component {
     let userReturnTo = window.location ? window.location.pathname : '/dashboard';
     userReturnTo = this.props.userReturnTo ? this.props.userReturnTo : userReturnTo;
 
-    console.log('blah hey userReturnTo', this.props.userReturnTo);
-    console.log('blah hey userReturnTo', userReturnTo);
-
     const stateParam = JSON.stringify({ userReturnTo });
 
     const stateString = base64.encode(stateParam);

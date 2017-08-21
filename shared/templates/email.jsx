@@ -415,7 +415,6 @@ class EmailTemplate {
     const bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
     const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;
     const fromInput = <EmailUserInput email={this.email} field="from" setFormState={setFormState} />;
-    console.log('blah bey ', props.rotateAttachment);
 
     return (<div style={{ fontSize: '20px' }}>
       <DatePicker

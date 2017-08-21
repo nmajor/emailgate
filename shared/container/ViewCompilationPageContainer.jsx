@@ -2,7 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { emailPageMap } from '../helpers';
-import CoverTemplate from '../templates/cover';
+import * as Actions from '../redux/actions/index';
+// import CoverTemplate from '../templates/cover';
 import TitlePageTemplate from '../templates/titlePage';
 import MessagePageTemplate from '../templates/messagePage';
 import TableOfContentsTemplate from '../templates/tableOfContents';
@@ -14,6 +15,7 @@ class ViewCompilationPageContainer extends Component {
     super(props, context);
 
     this.templateFactory = this.templateFactory.bind(this);
+    this.remove = this.remove.bind(this);
 
     if (this.props.params.pageId) {
       this.currentPage = _.find(this.props.compilationPages, { _id: this.props.params.pageId });
@@ -27,7 +29,14 @@ class ViewCompilationPageContainer extends Component {
   getComponentProps() {
     return {
       templateFactory: this.templateFactory,
+      remove: this.remove,
     };
+  }
+  remove() {
+    if (window.confirm('Are you sure you want to delete this page?')) { // eslint-disable-line no-alert
+      this.props.dispatch(Actions.removePageFromCompilationPages(this.props.compilation._id, this.currentPage));
+      this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
+    }
   }
   templateFactory(page) {
     if (page) {
@@ -68,6 +77,7 @@ function mapStateToProps(store) {
 }
 
 ViewCompilationPageContainer.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   compilationPages: PropTypes.array.isRequired,
   compilationEmails: PropTypes.array.isRequired,
   compilation: PropTypes.object.isRequired,

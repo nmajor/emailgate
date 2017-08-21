@@ -19,6 +19,13 @@ export function updatePageInCompilationPages(page) {
   };
 }
 
+export function removeCompilationPage(page) {
+  return {
+    type: ActionTypes.REMOVE_COMPILATION_PAGE,
+    page,
+  };
+}
+
 export function getCompilationPages(compilationId, cookie) {
   return (dispatch) => {
     dispatch(setPropertyForFetching('compilationPages', true));
@@ -71,6 +78,13 @@ export function updateCompilationPage(compilationId, page, newData) {
       pageId: page._id,
       newData,
     });
+  };
+}
+
+export function removePageFromCompilationPages(compilationId, page) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilationPage(page, 'saving', true));
+    socket.emit('REMOVE_COMPILATION_PAGE', { compilationId, pageId: page._id });
   };
 }
 

@@ -67,6 +67,11 @@ socket.on('REMOVED_COMPILATION_EMAIL', (email) => {
   store.dispatch(Actions.removeCompilationEmail(email));
 });
 
+socket.on('REMOVED_COMPILATION_PAGE', (page) => {
+  console.log('REMOVED_COMPILATION_PAGE');
+  store.dispatch(Actions.removeCompilationPage(page));
+});
+
 socket.on('UPDATED_COMPILATION_EMAIL', (email) => {
   console.log('event UPDATED_COMPILATION_EMAIL');
   store.dispatch(Actions.updateEmailInCompilationEmails(email));

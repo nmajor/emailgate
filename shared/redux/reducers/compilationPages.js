@@ -8,6 +8,17 @@ const compilationPages = (state = initialState.compilationPages, action) => {
       return action.pages;
     }
 
+    case ActionTypes.REMOVE_COMPILATION_PAGE : {
+      const pageIndex = _.findIndex(state, { _id: action.page._id });
+      if (pageIndex > -1) {
+        return [
+          ...state.slice(0, pageIndex),
+          ...state.slice(pageIndex + 1),
+        ];
+      }
+      return state;
+    }
+
     case ActionTypes.SET_PROPERTY_FOR_COMPILATION_PAGE : {
       const propPageIndex = _.findIndex(state, { _id: action.page._id });
       if (propPageIndex > -1) {

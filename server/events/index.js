@@ -9,6 +9,7 @@ import ss from 'socket.io-stream';
 ss.forceBase64 = true;
 
 import { processEmailStream } from '../util/helpers';
+import { isPageEditable } from '../../shared/helpers';
 
 function userIsAdmin(user) {
   if (user.isAdmin || user.email === 'nick@nmajor.com') {
@@ -234,6 +235,31 @@ export default (io) => {
       })
       .then((page) => {
         socket.emit('UPDATED_COMPILATION_PAGE', page);
+      });
+    });
+
+    socket.on('REMOVE_COMPILATION_PAGE', (data) => {
+      console.log('REMOVE_COMPILATION_PAGE');
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then((compilation) => {
+        return Page.findOne({ _compilation: compilation._id, _id: data.pageId })
+        .then((page) => {
+          if (isPageEditable(page)) {
+            return page.remove()
+            .then(() => {
+              socket.emit('REMOVED_COMPILATION_PAGE', page);
+            });
+          }
+
+          return Promise.reject('Tried to edit an uneditable page');
+        })
+        .then(() => {
+          return compilation.updatePages();
+        })
+        .then((compilation) => { // eslint-disable-line no-shadow
+          socket.emit('UPDATED_COMPILATION', compilation);
+        });
       });
     });
 

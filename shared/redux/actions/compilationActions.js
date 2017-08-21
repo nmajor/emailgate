@@ -150,9 +150,6 @@ export function getCompilations(query, cookie) {
     let url = `${baseURL}/api/compilations`;
     if (!_.isEmpty(query)) { url = `${url}?${serializeQuery(query)}`; }
 
-    console.log('blah hey', url);
-    console.log('blah hey', query);
-
     return fetch(url, fetchOptions)
     .then((res) => {
       if (res.status >= 400) {

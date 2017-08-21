@@ -47,7 +47,7 @@ EmailSchema.post('remove', (doc) => {
     removeFile(attachment.path);
   });
 
-  if (doc.pdf.path) {
+  if (doc.pdf && doc.pdf.path) {
     removeFile(doc.pdf.path);
   }
 });

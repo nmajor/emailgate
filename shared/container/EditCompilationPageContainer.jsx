@@ -12,6 +12,7 @@ class EditCompilationPageContainer extends Component {
     super(props, context);
 
     this.save = this.save.bind(this);
+    this.remove = this.remove.bind(this);
 
     if (this.props.params.pageId) {
       this.currentPage = _.find(this.props.compilationPages, { _id: this.props.params.pageId });
@@ -25,7 +26,14 @@ class EditCompilationPageContainer extends Component {
   getComponentProps() {
     return {
       templateFactory: this.templateFactory,
+      remove: this.remove,
     };
+  }
+  remove() {
+    if (window.confirm('Are you sure you want to delete this page?')) { // eslint-disable-line no-alert
+      this.props.dispatch(Actions.removePageFromCompilationPages(this.props.compilation._id, this.currentPage));
+      this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
+    }
   }
   templateFactory(page) {
     if (page) {

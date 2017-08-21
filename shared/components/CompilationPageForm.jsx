@@ -16,7 +16,7 @@ class CompilationPageForm extends Component {
     this.setState(newState);
   }
   submitForm(e) {
-    e.preventDefault();
+    if (e) { e.preventDefault(); }
 
     this.props.submitForm(this.state);
   }
@@ -31,14 +31,6 @@ class CompilationPageForm extends Component {
       return <span className="button-loading"><Loading /></span>;
     }
   }
-  // renderAction() {
-  //   if (this.props.submitForm) {
-  //     return (<FixedFooter>
-  //       <button className="btn btn-success" onClick={this.submitForm}>Save Page {this.renderSaving()}</button>
-  //       <Link to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`} className="btn btn-danger">Back</Link>
-  //     </FixedFooter>);
-  //   }
-  // }
   render() {
     return (<div>
       <div className="compilation-page">

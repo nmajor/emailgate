@@ -27,6 +27,19 @@ export function pageMeta(page) {
   return metaMap[page.type] || {};
 }
 
+export function isPageEditable(page) {
+  const nonEditable = [
+    'table-of-contents',
+    'cover',
+  ];
+
+  if (nonEditable.indexOf(page.type) > -1) {
+    return false;
+  }
+
+  return true;
+}
+
 export function titleize(str) {
   return str.replace(/\w\S*/g, (txt) => { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 }

@@ -38,7 +38,7 @@ PageSchema.pre('save', function (next) { // eslint-disable-line func-names
 });
 
 PageSchema.post('remove', (doc) => {
-  if (doc.pdf.path) {
+  if (doc.pdf && doc.pdf.path) {
     removeFile(doc.pdf.path);
   }
 });
