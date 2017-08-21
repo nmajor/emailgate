@@ -45,8 +45,8 @@ class AddCustomPageContainer extends Component {
               </div>
             </div>
             <div className="col-md-6">
-              <div className="custom-page-option" onClick={() => { this.addPage('image-page'); }}>
-                Image Page
+              <div className="custom-page-option" onClick={() => { this.addPage('full-image-page'); }}>
+                Full Image Page
               </div>
             </div>
           </div>

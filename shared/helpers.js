@@ -17,7 +17,7 @@ export function pageMeta(page) {
       editable: true,
       position: 3,
     },
-    'image-page': {
+    'full-image-page': {
       desc: 'Full Image Page',
       editable: true,
       position: 3,
