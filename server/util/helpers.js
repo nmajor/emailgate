@@ -302,36 +302,13 @@ export function processCoverImage(image) {
   const pixelsPerInch = 300;
   const maxWidthPx = maxWidthIn * pixelsPerInch;
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const contentBuffer = new Buffer(image.content, 'base64');
-    // const crop = image.crop;
 
-    // if (image.crop) {
-    //   sharp(contentBuffer)
-    //   .extract(() => {
-    //     if (image.crop) {
-    //       return { left: crop.x, top: crop.y, width: crop.width, height: crop.height };
-    //     }
-    //
-    //     return {};
-    //   })
-    //   .resize(maxWidthPx)
-    //   .toBuffer((err, outputBuffer, info) => {
-    //     if (err) { console.log('An error happened while resizing attachment image', err); }
-    //
-    //     image.content = outputBuffer.toString('base64'); // eslint-disable-line
-    //     image.resizeInfo = info; // eslint-disable-line
-    //     image.crop = undefined; // eslint-disable-line
-    //     image.length = undefined; // eslint-disable-line
-    //     image.updatedAt = Date.now(); // eslint-disable-line
-    //
-    //     resolve(image);
-    //   });
-    // } else {
     sharp(contentBuffer)
     .resize(maxWidthPx)
     .toBuffer((err, outputBuffer, info) => {
-      if (err) { console.log('An error happened while resizing attachment image', err); }
+      if (err) { reject('An error happened while resizing attachment image', err); }
 
       image.content = outputBuffer.toString('base64'); // eslint-disable-line
       image.resizeInfo = info; // eslint-disable-line
@@ -339,7 +316,6 @@ export function processCoverImage(image) {
 
       resolve(image);
     });
-    // }
   });
 }
 
@@ -414,6 +390,10 @@ export function uploadAttachment(attachment) {
 
 export function uploadCoverImage(image) {
   return uploadImage(image, `compilations/${image._compilation}/cover-image`);
+}
+
+export function uploadPageImage(image) {
+  return uploadImage(image, `compilations/${image._compilation}/page-images`);
 }
 
 export function uploadCoverThumbnailImage(image) {

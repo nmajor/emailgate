@@ -6,13 +6,25 @@ import Loading from './Loading';
 class CompilationPageForm extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = this.props.template.initialFormState();
+    this.template = props.templateFactory(props.page);
+    this.state = this.template.initialFormState();
     this.setFormState = this.setFormState.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
-  setFormState(event) {
-    const newState = {};
-    newState[event.target.getAttribute('name')] = event.target.innerHTML;
+  componentWillReceiveProps(nextProps) {
+    this.template = nextProps.templateFactory(nextProps.page);
+    this.state = this.template.initialFormState();
+  }
+  componentWillUpdate(nextProps, nextState) {
+    console.log('blah hey nextState', nextState);
+    this.template = nextProps.templateFactory(nextProps.page, nextState);
+    this.state = this.template.initialFormState();
+  }
+  setFormState(event, newState) {
+    if (event) {
+      newState = {}; // eslint-disable-line no-param-reassign
+      newState[event.target.getAttribute('name')] = event.target.innerHTML; // eslint-disable-line no-param-reassign
+    }
     this.setState(newState);
   }
   submitForm(e) {
@@ -22,8 +34,8 @@ class CompilationPageForm extends Component {
   }
 
   renderForm() {
-    if (this.props.template) {
-      return this.props.template.renderForm(this.setFormState);
+    if (this.template) {
+      return this.template.renderForm(this.setFormState);
     }
   }
   renderSaving() {
@@ -44,7 +56,7 @@ class CompilationPageForm extends Component {
 
 CompilationPageForm.propTypes = {
   page: PropTypes.object.isRequired,
-  template: PropTypes.object,
+  templateFactory: PropTypes.func,
   submitForm: PropTypes.func.isRequired,
 };
 

@@ -36,7 +36,7 @@ class EditCompilationPageContainer extends Component {
       this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
     }
   }
-  templateFactory(page) {
+  templateFactory(page, options) {
     if (page) {
       switch (page.type) {
         case 'cover' : {
@@ -51,7 +51,7 @@ class EditCompilationPageContainer extends Component {
           return new MessagePageTemplate(page);
         }
         case 'full-image-page' : {
-          return new FullImagePageTemplate(page);
+          return new FullImagePageTemplate(page, options);
         }
         case 'table-of-contents' : {
           // Cant edit table of contents page

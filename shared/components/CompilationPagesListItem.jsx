@@ -109,7 +109,7 @@ class CompilationPagesListItem extends Component {
         <CompilationPageForm
           ref="form"
           page={this.props.page}
-          template={this.props.componentProps.templateFactory(this.props.page)}
+          templateFactory={this.props.componentProps.templateFactory}
           submitForm={this.props.edit}
         />
       </div>);

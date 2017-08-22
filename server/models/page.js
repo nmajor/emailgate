@@ -1,7 +1,12 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import _ from 'lodash';
-import { pageTemplateFactory, removeFile } from '../util/helpers';
+import {
+  pageTemplateFactory,
+  removeFile,
+  processCoverImage,
+  uploadPageImage,
+} from '../util/helpers';
 import { pageMeta } from '../../shared/helpers';
 
 const PageSchema = new Schema({
@@ -33,7 +38,24 @@ PageSchema.post('init', function () {  // eslint-disable-line func-names
 
 PageSchema.pre('save', function (next) { // eslint-disable-line func-names
   let tasks = Promise.resolve();
+
+  if (this.content.image && this.content.image.content) {
+    tasks = tasks.then(() => {
+      return processCoverImage(this.content.image)
+      .then((resizedImage) => {
+        resizedImage._compilation = this._compilation;
+        return uploadPageImage(resizedImage)
+        .catch((err) => { console.log('An error happened uploading page image', err); });
+      })
+      .then((image) => {
+        this.content.image = image;
+        return Promise.resolve(this);
+      });
+    });
+  }
+
   tasks = tasks.then(() => { return this.getHtml(); });
+
   tasks.then(() => { next(); });
 });
 
