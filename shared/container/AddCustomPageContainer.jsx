@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import Modal from '../components/Modal';
@@ -29,28 +30,37 @@ class AddCustomPageContainer extends Component {
       type,
       afterType,
       afterId,
-    }, () => {
+    }, (pages) => {
       this.hideModal();
+      const sortedPages = _.sortBy(pages, (page) => { return page.createdAt; });
+      const page = sortedPages[sortedPages.length - 1];
+      this.context.router.push(`/compilations/${this.props.compilation._id}/build/pages/${page._id}/edit`);
     }));
+  }
+  renderThumbOption(type, text, thumb) {
+    return (<div className="custom-page-option" onClick={() => { this.addPage(type); }}>
+      <div className="bottom-bumper">
+        <img role="presentation" src={`/img/page-images/${thumb}`} />
+      </div>
+      <div className="description">
+        {text}
+      </div>
+    </div>);
   }
   renderModal() {
     if (this.state.showModal) {
       return (<Modal close={this.hideModal}>
-        <div className="padded">
+        <div className="padded custom-page-options">
           <h3 className="text-center">Please select the type of page you want to add</h3>
           <div className="row bottom-bumper top-bumper">
             <div className="col-md-6">
-              <div className="custom-page-option" onClick={() => { this.addPage('message-page'); }}>
-                Message Page
-              </div>
+              {this.renderThumbOption('message-page', 'Message Page', 'message-page-thumb.jpg')}
             </div>
             <div className="col-md-6">
-              <div className="custom-page-option" onClick={() => { this.addPage('full-image-page'); }}>
-                Full Image Page
-              </div>
+              {this.renderThumbOption('full-image-page', 'Full Image Page', 'full-image-page-thumb.jpg')}
             </div>
           </div>
-          <div className="text-right actions">
+          <div className="text-right actions top-bumper">
             <div onClick={this.hideModal} className="btn btn-danger marginless-right">Back</div>
           </div>
         </div>
@@ -71,6 +81,11 @@ function mapStateToProps(store) {
     fetching: store.fetching,
   };
 }
+
+AddCustomPageContainer.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
+
 
 AddCustomPageContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,

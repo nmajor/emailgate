@@ -32,7 +32,7 @@ class ImageInput extends Component {
           content: (new Buffer(this.response)).toString('base64'),
         };
 
-        setFormState(undefined, { image });
+        setFormState(undefined, { image }, true);
       };
       xhr.send();
     });
@@ -43,17 +43,29 @@ class ImageInput extends Component {
     this.props.setFormState(undefined, { image: newImage });
     this.props.rotateImage();
   }
+  renderRotateButton() {
+    if (this.props.imageSaved) {
+      return (<div
+        className="btn btn-primary btn-xs-true"
+        onClick={this.rotateImage}
+      >
+        <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span> Rotate Image
+      </div>);
+    }
+  }
+  renderHelperText() {
+    if (this.props.imageSaved) {
+      return <span>Click on the image to change it.</span>;
+    }
+
+    return <span>Click on the placeholder to add an image.</span>;
+  }
   render() {
     return (<div>
       <div className="row bottom-bumper">
-        <div className="col-sm-8">Click on the image to change it.</div>
+        <div className="col-sm-8">{this.renderHelperText()}</div>
         <div className="col-sm-4 text-right">
-          <div
-            className="btn btn-primary btn-xs-true"
-            onClick={this.rotateImage}
-          >
-            <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span> Rotate Image
-          </div>
+          {this.renderRotateButton()}
         </div>
       </div>
       <Dropzone className="pointer" style={{ height: '100%', width: '100%' }} onDrop={this.onDrop}>
@@ -80,6 +92,7 @@ ImageInput.propTypes = {
   setFormState: PropTypes.func.isRequired,
   rotateImage: PropTypes.func.isRequired,
   image: PropTypes.func.isRequired,
+  imageSaved: PropTypes.bool.isRequired,
 };
 
 class FullImagePageTemplate {
@@ -90,7 +103,7 @@ class FullImagePageTemplate {
       image: {
         url: 'http://via.placeholder.com/800x600',
       },
-      header: 'Edit Page to Change This Header',
+      header: 'Header Text - Delete this text if you want more room for a picture',
     };
 
     this.content = content || this.page.content || this.defaultContent;
@@ -154,7 +167,7 @@ class FullImagePageTemplate {
 
     return (<div>
       {this.renderHeader(headerInput)}
-      <ImageInput setFormState={setFormState} renderImage={this.renderImage} rotateImage={rotateImage} image={this.content.image} />
+      <ImageInput setFormState={setFormState} renderImage={this.renderImage} rotateImage={rotateImage} image={this.content.image} imageSaved={!!(_.get(this.page, 'content.image.url'))} />
     </div>);
   }
 

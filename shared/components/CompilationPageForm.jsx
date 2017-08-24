@@ -20,12 +20,16 @@ class CompilationPageForm extends Component {
     this.template = nextProps.templateFactory(nextProps.page, nextState);
     this.state = this.template.initialFormState();
   }
-  setFormState(event, newState) {
+  setFormState(event, newState, submitAfter) {
     if (event) {
       newState = {}; // eslint-disable-line no-param-reassign
       newState[event.target.getAttribute('name')] = event.target.innerHTML; // eslint-disable-line no-param-reassign
     }
     this.setState(newState);
+
+    if (submitAfter) {
+      this.props.submitForm({ ...this.state, ...newState });
+    }
   }
   submitForm(e) {
     if (e) { e.preventDefault(); }
