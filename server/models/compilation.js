@@ -205,6 +205,19 @@ CompilationSchema.methods.updatePages = function updatePages() {
   });
 };
 
+CompilationSchema.methods.updatePagePositions = function updatePages() {
+  return Page.find({ _compilation: this._id })
+  .then((pages) => {
+    return Promise.all(sharedHelpers.sortedPages(pages).map((page, index) => {
+      if (page.position !== (index + 1)) {
+        page.position = index + 1;
+        return page.save();
+      }
+      return Promise.resolve();
+    }));
+  });
+};
+
 CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
   return this.buildCoverHtml()
   .then(() => { return this.save(); })

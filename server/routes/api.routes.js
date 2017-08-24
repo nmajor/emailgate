@@ -204,6 +204,7 @@ router.post('/compilations/:id/add-custom-page', ensureAuthenticated, Compilatio
 
 router.patch('/compilations/:id/page', ensureAuthenticated, CompilationController.patchCompilationPage);
 router.put('/compilations/:id/page', ensureAuthenticated, CompilationController.patchCompilationPage);
+router.put('/compilations/:compilationId/pages/:pageId/rotate-image', ensureAuthenticated, PageController.rotateImage);
 
 router.get('/compilations/:id/emails', ensureAuthenticated, EmailController.getCompilationEmails);
 router.get('/compilations/:id/email-page-map', ensureAuthenticated, getCompilationEmailPageMap);

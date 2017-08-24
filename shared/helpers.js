@@ -35,6 +35,7 @@ export function pageMeta(page) {
 export function isPageEditable(page) {
   const nonEditable = [
     'table-of-contents',
+    'title-page',
     'cover',
   ];
 

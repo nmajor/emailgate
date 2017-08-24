@@ -241,7 +241,7 @@ class CompilationTitleForm extends Component {
     </div>);
   }
   renderCoverHelperText() {
-    return (<div className="alert alert-info" role="alert">Click on any image to change it.</div>);
+    return (<div className="alert alert-info" role="alert">Click on any cover image to change it.</div>);
   }
   render() {
     const images = _.sortBy((this.props.compilation.images || []), (image) => { return -image.uploadedAt; });

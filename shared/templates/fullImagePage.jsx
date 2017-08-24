@@ -3,11 +3,12 @@ import _ from 'lodash';
 import Dropzone from 'react-dropzone';
 import { renderToString } from 'react-dom/server';
 
-class ImageDropzone extends Component {
+class ImageInput extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.onDrop = this.onDrop.bind(this);
+    this.rotateImage = this.rotateImage.bind(this);
   }
   // onDrop(acceptedFiles, rejectedFiles) {
   onDrop(acceptedFiles) {
@@ -36,9 +37,25 @@ class ImageDropzone extends Component {
       xhr.send();
     });
   }
+  rotateImage() {
+    const newImage = Object.assign({}, this.props.image);
+    newImage.rotating = true;
+    this.props.setFormState(undefined, { image: newImage });
+    this.props.rotateImage();
+  }
   render() {
     return (<div>
-      <div>Click on the image to change it.</div>
+      <div className="row bottom-bumper">
+        <div className="col-sm-8">Click on the image to change it.</div>
+        <div className="col-sm-4 text-right">
+          <div
+            className="btn btn-primary btn-xs-true"
+            onClick={this.rotateImage}
+          >
+            <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span> Rotate Image
+          </div>
+        </div>
+      </div>
       <Dropzone className="pointer" style={{ height: '100%', width: '100%' }} onDrop={this.onDrop}>
         {this.props.renderImage()}
         {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => { // eslint-disable-line
@@ -58,9 +75,11 @@ class ImageDropzone extends Component {
   }
 }
 
-ImageDropzone.propTypes = {
+ImageInput.propTypes = {
   renderImage: PropTypes.func.isRequired,
   setFormState: PropTypes.func.isRequired,
+  rotateImage: PropTypes.func.isRequired,
+  image: PropTypes.func.isRequired,
 };
 
 class FullImagePageTemplate {
@@ -83,6 +102,11 @@ class FullImagePageTemplate {
   renderImage() {
     const image = this.content.image;
 
+    let spinner = null;
+    if (image.rotating) {
+      spinner = (<div className="spinner">Rotating...</div>);
+    }
+
     let src = '';
     if (image.url) {
       src = `${image.url}?t=${image.updatedAt}`;
@@ -92,6 +116,7 @@ class FullImagePageTemplate {
     }
 
     return (<div
+      className="image-wrapper"
       style={{
         position: 'relative',
         height: '100%',
@@ -102,6 +127,7 @@ class FullImagePageTemplate {
       }}
     >
       <img style={{ height: '100%', width: '100%' }} role="presentation" src={src} />
+      {spinner}
     </div>);
   }
   renderHeader(header) {
@@ -112,6 +138,8 @@ class FullImagePageTemplate {
       marginBottom: '10px',
     };
 
+    if (_.isEmpty(this.content.header)) { return null; }
+
     return <div style={divStyle}>{header || this.content.header}</div>;
   }
   render() {
@@ -120,13 +148,13 @@ class FullImagePageTemplate {
       {this.renderImage()}
     </div>);
   }
-  renderForm(setFormState) {
+  renderForm(setFormState, rotateImage) {
     this.setFormState = setFormState;
     const headerInput = <div className="editable" name="header" contentEditable onBlur={setFormState}>{this.content.header}</div>;
 
     return (<div>
       {this.renderHeader(headerInput)}
-      <ImageDropzone setFormState={setFormState} renderImage={this.renderImage} />
+      <ImageInput setFormState={setFormState} renderImage={this.renderImage} rotateImage={rotateImage} image={this.content.image} />
     </div>);
   }
 

@@ -22,3 +22,14 @@ export function getCompilationPages(req, res) {
   })
   .catch((err) => { console.log('An error happened when finding compilation pages', err); });
 }
+
+export function rotateImage(req, res) {
+  Page.findOne({ _compilation: req.params.compilationId, _id: req.params.pageId })
+  .then((page) => {
+    return page.rotateContentImage();
+  })
+  .then((page) => {
+    return res.json(page);
+  })
+  .catch((err) => { console.log('An error happened when rotating compilation page image', err); });
+}

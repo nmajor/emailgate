@@ -7,8 +7,8 @@ class MessagePageTemplate {
     this.page = page;
 
     this.defaultContent = {
-      message: 'Your custom message goes here',
-      signature: 'Your name goes here',
+      message: 'Your custom message goes here. You can add a quote, special message, or a forward for this book.',
+      signature: 'John Doe',
     };
 
     this.content = this.page.content || this.defaultContent;

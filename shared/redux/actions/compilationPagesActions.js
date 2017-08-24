@@ -120,3 +120,34 @@ export function updateCompilationPageFetch(compilationId, page, content, cb) {
     });
   };
 }
+
+export function rotateCompilationPageImage(compilationId, page) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilationPage(page, 'saving', true));
+
+    return fetch(`${baseURL}/api/compilations/${compilationId}/pages/${page._id}/rotate-image`, {
+      credentials: 'include',
+      method: 'put',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      dispatch(updatePageInCompilationPages(res));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}

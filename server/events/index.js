@@ -255,6 +255,9 @@ export default (io) => {
           return Promise.reject('Tried to edit an uneditable page');
         })
         .then(() => {
+          return compilation.updatePagePositions();
+        })
+        .then(() => {
           return compilation.updatePages();
         })
         .then((compilation) => { // eslint-disable-line no-shadow

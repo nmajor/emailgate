@@ -10,13 +10,13 @@ class CompilationPageForm extends Component {
     this.state = this.template.initialFormState();
     this.setFormState = this.setFormState.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.rotateImage = this.rotateImage.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     this.template = nextProps.templateFactory(nextProps.page);
     this.state = this.template.initialFormState();
   }
   componentWillUpdate(nextProps, nextState) {
-    console.log('blah hey nextState', nextState);
     this.template = nextProps.templateFactory(nextProps.page, nextState);
     this.state = this.template.initialFormState();
   }
@@ -32,10 +32,12 @@ class CompilationPageForm extends Component {
 
     this.props.submitForm(this.state);
   }
-
+  rotateImage() {
+    this.props.rotateImage(this.props.page);
+  }
   renderForm() {
     if (this.template) {
-      return this.template.renderForm(this.setFormState);
+      return this.template.renderForm(this.setFormState, this.rotateImage);
     }
   }
   renderSaving() {
@@ -58,6 +60,7 @@ CompilationPageForm.propTypes = {
   page: PropTypes.object.isRequired,
   templateFactory: PropTypes.func,
   submitForm: PropTypes.func.isRequired,
+  rotateImage: PropTypes.func.isRequired,
 };
 
 export default CompilationPageForm;

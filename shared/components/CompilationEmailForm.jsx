@@ -13,6 +13,7 @@ class CompilationEmailForm extends Component {
     this.setFormState = this.setFormState.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.rotateAttachment = this.rotateAttachment.bind(this);
+    this.addAttachment = this.addAttachment.bind(this);
   }
   componentWillReceiveProps(nextProps) {
     this.template = new EmailTemplate(nextProps.email);
@@ -36,6 +37,15 @@ class CompilationEmailForm extends Component {
   rotateAttachment(attachmentContentId) {
     this.props.rotateAttachment(this.props.email._id, attachmentContentId);
   }
+  addAttachment(attachment) {
+    const attachments = [
+      ...this.props.email.attachments,
+      attachment,
+    ];
+
+    this.setState({ attachments });
+    this.props.submitForm({ attachments });
+  }
   submitForm(e) {
     if (e) { e.preventDefault(); }
 
@@ -45,6 +55,7 @@ class CompilationEmailForm extends Component {
     if (this.template) {
       return this.template.renderForm(this.setFormState, this.setBodyState, {
         rotateAttachment: this.rotateAttachment,
+        addAttachment: this.addAttachment,
       });
     }
   }

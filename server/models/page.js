@@ -6,6 +6,7 @@ import {
   removeFile,
   processCoverImage,
   uploadPageImage,
+  rotateImageAttachment,
 } from '../util/helpers';
 import { pageMeta } from '../../shared/helpers';
 
@@ -39,7 +40,7 @@ PageSchema.post('init', function () {  // eslint-disable-line func-names
 PageSchema.pre('save', function (next) { // eslint-disable-line func-names
   let tasks = Promise.resolve();
 
-  if (this.content.image && this.content.image.content) {
+  if (_.get(this, 'content.image.content')) {
     tasks = tasks.then(() => {
       return processCoverImage(this.content.image)
       .then((resizedImage) => {
@@ -83,6 +84,24 @@ PageSchema.methods.propChanged = function propChanged(propsString) {
   const currentProp = _.get(current, propsString);
 
   return !_.isEqual(originalProp, currentProp);
+};
+
+PageSchema.methods.rotateContentImage = function rotateContentImage(angle) {
+  angle = angle || 90;
+
+  return new Promise((resolve) => {
+    const image = this.content.image;
+
+    return rotateImageAttachment(image, angle)
+    .then((updatedImage) => {
+      return uploadPageImage(updatedImage);
+    })
+    .then((updatedImage) => {
+      this.content.image = updatedImage;
+      return this.save();
+    })
+    .then(() => { return resolve(this); });
+  });
 };
 
 export default Mongoose.model('Page', PageSchema);

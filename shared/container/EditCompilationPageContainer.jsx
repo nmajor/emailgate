@@ -14,6 +14,7 @@ class EditCompilationPageContainer extends Component {
 
     this.save = this.save.bind(this);
     this.remove = this.remove.bind(this);
+    this.rotateImage = this.rotateImage.bind(this);
 
     if (this.props.params.pageId) {
       this.currentPage = _.find(this.props.compilationPages, { _id: this.props.params.pageId });
@@ -28,7 +29,11 @@ class EditCompilationPageContainer extends Component {
     return {
       templateFactory: this.templateFactory,
       remove: this.remove,
+      rotateImage: this.rotateImage,
     };
+  }
+  rotateImage() {
+    this.props.dispatch(Actions.rotateCompilationPageImage(this.props.compilation._id, this.currentPage));
   }
   remove() {
     if (window.confirm('Are you sure you want to delete this page?')) { // eslint-disable-line no-alert

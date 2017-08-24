@@ -34,14 +34,17 @@ export function addCustomPage(req, res) {
       return Page.find({ _compilation: compilation._id })
       .then((pages) => {
         const afterPage = _.find(pages, (page) => { return page._id === req.body.afterId; });
+        console.log('blah hey afterPage', afterPage);
 
-        let tasks = new Promise((resolve) => {
-          savedPage.position = afterPage.position + 1;
-          resolve(savedPage.save());
-        });
+        let tasks = Promise.resolve();
 
         _.forEach(pages, (page) => {
-          if (page.position > afterPage.position) {
+          if (page._id === savedPage._id) {
+            tasks = tasks.then(() => {
+              page.position = afterPage.position + 1;
+              return page.save();
+            });
+          } else if (page.position > afterPage.position) {
             tasks = tasks.then(() => {
               page.position = page.position + 1;
               return page.save();

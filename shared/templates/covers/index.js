@@ -12,7 +12,7 @@ export default {
   LowSquarePic,
   FullImageOverlay,
   HighBorderPic,
-  Default: BoxTitle,
+  Default: LowSquarePic,
   options: [
     'BoxTitle',
     'BlackSpine',

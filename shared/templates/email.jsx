@@ -141,12 +141,14 @@ class AttachmentInput extends Component { // eslint-disable-line
     this.addAttachment = this.addAttachment.bind(this);
   }
   addAttachment(attachment) {
-    const newState = {};
-    newState.attachments = [
-      ...this.props.email.attachments,
-      attachment,
-    ];
-    this.props.setFormState(undefined, newState);
+    // const newState = {};
+    attachment.saving = true;
+    this.props.addAttachment(attachment);
+    // newState.attachments = [
+    //   ...this.props.email.attachments,
+    //   attachment,
+    // ];
+    // this.props.setFormState(undefined, newState);
   }
   removeAttachment(index) {
     const newState = {};
@@ -267,6 +269,7 @@ AttachmentInput.propTypes = {
   email: PropTypes.object.isRequired,
   setFormState: PropTypes.func.isRequired,
   rotateAttachment: PropTypes.func.isRequired,
+  addAttachment: PropTypes.func.isRequired,
 };
 
 class EmailDateInput extends Component { // eslint-disable-line
@@ -431,7 +434,7 @@ class EmailTemplate {
       {this.renderSubject(subjectInput)}
       {this.renderFrom(fromInput)}
       {this.renderBody(bodyInput)}
-      <AttachmentInput email={this.email} setFormState={setFormState} rotateAttachment={props.rotateAttachment} />
+      <AttachmentInput email={this.email} setFormState={setFormState} rotateAttachment={props.rotateAttachment} addAttachment={props.addAttachment} />
     </div>);
   }
 

@@ -110,6 +110,7 @@ class CompilationPagesListItem extends Component {
           ref="form"
           page={this.props.page}
           templateFactory={this.props.componentProps.templateFactory}
+          rotateImage={this.props.componentProps.rotateImage}
           submitForm={this.props.edit}
         />
       </div>);

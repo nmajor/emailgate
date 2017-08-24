@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { renderToString } from 'react-dom/server';
 import moment from 'moment';
 import fonts from './covers/utils/fonts';
@@ -51,8 +52,12 @@ class TitlePageTemplate {
   }
   renderDates() {
     if (this.startDate && this.endDate) {
-      const prettyStartDate = moment(this.startDate).format('LL');
-      const prettyEndDate = moment(this.endDate).format('LL');
+      const startDate = _.get(this.compilation, 'meta.startingDate');
+      const endDate = _.get(this.compilation, 'meta.endingDate');
+      const prettyFormat = 'MMM YYYY';
+
+      const prettyStartDate = moment(startDate).format(prettyFormat);
+      const prettyEndDate = moment(endDate).format(prettyFormat);
 
       const divStyle = {
         fontFamily: this.secondaryFont.family,
