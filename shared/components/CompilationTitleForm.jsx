@@ -240,6 +240,9 @@ class CompilationTitleForm extends Component {
       {coverTemplate.renderWrappedFrontCover()}
     </div>);
   }
+  renderCoverHelperText() {
+    return (<div className="alert alert-info" role="alert">Click on any image to change it.</div>);
+  }
   render() {
     const images = _.sortBy((this.props.compilation.images || []), (image) => { return -image.uploadedAt; });
     const newImages = this.props.compilation.newImages || [];
@@ -271,6 +274,7 @@ class CompilationTitleForm extends Component {
           </div>
         </div>
         <div className="col-md-6">
+          {this.renderCoverHelperText()}
           <div className="cover-preview">
             <div className="template">
               {this.renderCoverPreview()}
