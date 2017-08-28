@@ -280,3 +280,12 @@ Alicia Waterlyn - ah2olyn@msn.com - May 31
 Jordan Wouden - jekins1@gmail.com - May 28
 Letitia Powell - letitiapowell@gmail.com - May 25
 Gayla - gayla@lakemtn.com - May 25
+
+New Sessions
+
+Page Views
+Visitors
+Compilations Created
+Compilations Edited
+Tmp Users Created
+Users Created

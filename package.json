@@ -70,6 +70,7 @@
     "newrelic": "^1.28.3",
     "node-ensure": "0.0.0",
     "node-sass": "^3.4.2",
+    "node-schedule": "^1.2.4",
     "npm": "^3.8.6",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

@@ -122,5 +122,8 @@ server.listen(process.env.PORT, (error) => {
   }
 });
 
+import schedule from 'node-schedule';
+import { activitySummary } from './jobs';
+schedule.scheduleJob('* * * * *', activitySummary);
 
 export default app;
