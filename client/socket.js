@@ -5,7 +5,7 @@ let socket = io(baseURL); // eslint-disable-line
 
 export function refreshSocket(cb) {
   socket.disconnect();
-  socket = io(baseURL);
+  socket = io.connect(baseURL);
 
   if (cb) {
     socket.on('connect', () => {

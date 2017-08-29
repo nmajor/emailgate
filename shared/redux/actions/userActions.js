@@ -156,8 +156,8 @@ export function registerTmpUser(cb) {
       if (res.error) {
         throw new Error(res.error.message);
       }
-      dispatch(setUser(res));
       refreshSocket(() => {
+        dispatch(setUser(res));
         cb(res);
       });
     })
