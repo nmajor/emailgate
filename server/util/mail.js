@@ -1,10 +1,10 @@
 const apiKey = process.env.MAILGUN_API_KEY;
-const domain = 'sandbox81435.mailgun.org';
+const domain = 'mg.missionarymemoir.com';
 import mailgunJs from 'mailgun-js';
 
 export function sendMail(data) {
   return new Promise((resolve, reject) => {
-    const from = 'Missionary Memoir <no-reply@missionarymemoir.com>';
+    const from = data.from || 'Missionary Memoir <no-reply@missionarymemoir.com>';
 
     const mailData = {
       from,

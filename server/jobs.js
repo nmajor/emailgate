@@ -1,21 +1,26 @@
-import Compilation from './models/compilation';
+import moment from 'moment';
+import { sendMail } from './util/mail';
+import { getActivitySummaryData } from './mailers/helper';
+import ActivitySummary from './mailers/ActivitySummary';
 
 export function test() {
   console.log('Running the test job!');
 }
 
 export function activitySummary() {
-  const day = new Date();
-  day.setDate(day.getDate() - 1);
+  getActivitySummaryData()
+  .then((props) => {
+    const mailer = new ActivitySummary(props);
 
-  const start = new Date(day.getTime());
-  start.setHours(0, 0, 0, 0);
+    const data = {
+      from: 'notify@missionarymemoir.com',
+      to: 'missionarymemoir@gmail.com',
+      subject: `Missionary Memoir - Activity Summary for ${moment(props.yesterday).format('dddd, MMM Do, YYYY')}`,
+      html: mailer.toString(),
+    };
 
-  const end = new Date(day.getTime());
-  end.setHours(23, 59, 59, 999);
-  Compilation.count({ createdAt: { $gte: start, $lt: end } })
-  .then((count) => {
-    console.log('blah hey', count);
+    console.log('blah sending');
+    sendMail(data);
   });
   console.log('Running activity summary job!');
 }
