@@ -39,7 +39,6 @@ class CompilationComponentsList extends Component {
     });
   }
   renderPages() {
-    console.log('blah page positions', this.sortedPages().map((page) => { return `${page.position} - ${page.type}`; }));
     return _.flatten(this.sortedPages().map((page) => {
       const current = page._id === this.props.currentPageId;
       let show = 'thumb';
