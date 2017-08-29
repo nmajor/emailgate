@@ -41,6 +41,7 @@ import index from './routes/index.routes';
 import api from './routes/api.routes';
 import webhook from './routes/webhook.routes';
 import oath2 from './routes/oath2.routes';
+import mailer from './routes/mailer.routes';
 import socketEvents from './events/index';
 import sessionMiddleware from './session-middleware';
 
@@ -68,6 +69,10 @@ app.use('/', index);
 app.use('/api', api);
 app.use('/webhook', webhook);
 app.use('/oath2', oath2);
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use('/mailer', mailer);
+}
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
@@ -124,6 +129,9 @@ server.listen(process.env.PORT, (error) => {
 
 import schedule from 'node-schedule';
 import { activitySummary } from './jobs';
-schedule.scheduleJob('* * * * *', activitySummary);
+
+if (process.env.NODE_ENV === 'production') {
+  schedule.scheduleJob('0 1 * * *', activitySummary);
+}
 
 export default app;
