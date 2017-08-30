@@ -32,6 +32,7 @@ class AccountFormContainer extends Component {
     const stateString = base64.encode(stateParam);
     return {
       googleAuthUrl: `${this.props.config.googleAuthUrl}&state=${stateString}`,
+      myldsmailAuthUrl: `${this.props.config.myldsmailAuthUrl}&state=${stateString}`,
     };
   }
   renderImapForm() {

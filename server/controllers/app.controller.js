@@ -1,4 +1,4 @@
-import { getGoogleAuthUrl } from '../util/googleAuth';
+import { getGoogleAuthUrl, getMyldsmailAuthUrl } from '../util/googleAuth';
 import Cart from '../models/cart';
 import User from '../models/user';
 import Account from '../models/account';
@@ -7,14 +7,16 @@ import PromoCode from '../models/promoCode';
 export function getAppConfig(req, res) {
   Promise.all([
     getGoogleAuthUrl(),
+    getMyldsmailAuthUrl(),
   ])
   .then((values) => {
-    const [googleAuthUrl] = values;
+    const [googleAuthUrl, myldsmailAuthUrl] = values;
     const products = require('../products'); // eslint-disable-line global-require
     const staticData = require('../staticData'); // eslint-disable-line global-require
 
     res.json({
       googleAuthUrl,
+      myldsmailAuthUrl,
       products,
       staticData,
     });

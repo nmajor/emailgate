@@ -19,7 +19,6 @@ class AccountKindOptions extends Component {
     fbq('track', 'ConnectAccount'); // eslint-disable-line no-undef
   }
   renderImapKind() {
-    return;
     // return (<div className="col-sm-3">
     //   <div className={`account-kind-option text-center ${this.props.account.kind === 'imap' ? 'selected' : ''}`} onClick={this.setKindToImap}>
     //     <span className="icon"><span className="fa fa-envelope-o"></span></span> <span>IMAP</span>
@@ -33,9 +32,22 @@ class AccountKindOptions extends Component {
       </a>
     </div>);
   }
+  renderMyldsmailKind() {
+    // return (<div className="col-sm-3">
+    //   <a className="account-kind-option" href={this.props.authUrls.myldsmailAuthUrl} onClick={this.handleGoogleKindClick}>
+    //     <img role="presentation" src="/img/gmail_logo.png" />
+    //   </a>
+    // </div>);
+  }
+  renderHelpLink() {
+    return (<span>
+      If you dont see your email provider listed here, <a href="https://missionarymemoir.freshdesk.com/support/tickets/new">please contact us so we can add it</a>.
+    </span>);
+  }
   renderKindOptions() {
     return (<div>
       {this.renderGoogleKind()}
+      {this.renderMyldsmailKind()}
       {this.renderImapKind()}
     </div>);
   }
@@ -46,6 +58,11 @@ class AccountKindOptions extends Component {
           <h5>Click below to connect your Gmail account</h5>
         </div>
         {this.renderKindOptions()}
+      </div>
+      <div className="row">
+        <div className="col-sm-12">
+          {this.renderHelpLink()}
+        </div>
       </div>
     </div>);
   }

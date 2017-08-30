@@ -27,7 +27,7 @@ class CompilationNewAccountContainer extends Component {
   }
   renderHeader() {
     if (this.props.accounts.length > 0) {
-      return <h3 className="text-center">Can connect an email account</h3>;
+      return <h3 className="text-center">Connect an email account</h3>;
     }
 
     return <h3 className="text-center">Connect an email account so you can start adding emails</h3>;
@@ -36,7 +36,7 @@ class CompilationNewAccountContainer extends Component {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
       <Modal close={this.back}>
-        <div>
+        <div className="padded">
           {this.renderHeader()}
           {this.renderHelperBox()}
           <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} userReturnTo={this.userReturnTo()} />

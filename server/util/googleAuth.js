@@ -10,9 +10,10 @@ import config from '../config';
 
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 
-function getAuthUrl(client) {
+function getAuthUrl(client, props) {
   return new Promise((resolve) => {
     const options = {
+      ...props,
       access_type: 'online',
       approval_prompt: 'auto',
       scope: SCOPES,
@@ -70,6 +71,11 @@ export function getGoogleProfile(token) {
 export function getGoogleAuthUrl() {
   const client = getClient();
   return getAuthUrl(client);
+}
+
+export function getMyldsmailAuthUrl() {
+  const client = getClient();
+  return getAuthUrl(client, { hq: 'myldsmail.net' });
 }
 
 export function getGoogleAuthToken(code) {
