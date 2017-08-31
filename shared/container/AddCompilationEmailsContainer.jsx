@@ -96,7 +96,7 @@ class AddCompilationEmailsContainer extends Component {
     if (this.currentAccount) {
       if (this.currentAccount.kind === 'imap' && !this.currentAccount.connectionValid) {
         return <ImapAccountPasswordFormContainer currentAccount={this.currentAccount} />;
-      } else if (this.currentAccount.kind === 'google' && (new Date).getTime() > _.get(this.currentAccount, 'authProps.token.expiry_date')) {
+      } else if (this.currentAccount.kind === 'google' && !_.get(this.currentAccount, 'authProps.token.refresh_token') && (new Date).getTime() > _.get(this.currentAccount, 'authProps.token.expiry_date')) {
         return <ReconnectGoogleAccount userReturnTo={this.userReturnTo()} account={this.currentAccount} googleAuthUrl={this.props.config.googleAuthUrl} />;
       }
       return <FilterContainer compilation={this.props.compilation} currentAccount={this.currentAccount} done={this.back} />;

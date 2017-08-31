@@ -14,7 +14,7 @@ function getAuthUrl(client, props) {
   return new Promise((resolve) => {
     const options = {
       ...props,
-      access_type: 'online',
+      access_type: 'offline',
       approval_prompt: 'auto',
       scope: SCOPES,
     };
