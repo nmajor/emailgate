@@ -13,6 +13,11 @@ class NewCompilationContainer extends Component {
     this.submitForm = this.submitForm.bind(this);
     this.back = this.back.bind(this);
   }
+  componentDidMount() {
+    fbq('track', 'New Compilation Page', { // eslint-disable-line no-undef
+      content_name: 'compilation',
+    });
+  }
 
   createCompilation(props) {
     this.props.dispatch(Actions.createCompilation(props, (compilation) => {
