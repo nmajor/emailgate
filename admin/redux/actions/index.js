@@ -12,3 +12,4 @@ export * from './promoCodesActions';
 export * from './userActions';
 export * from './emailActions';
 export * from './pageActions';
+export * from './settingsActions';

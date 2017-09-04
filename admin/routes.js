@@ -11,6 +11,8 @@ import UsersWrapper from './container/users/UsersWrapper';
 import UsersIndexContainer from './container/users/UsersIndexContainer';
 import UserShowContainer from './container/users/UserShowContainer';
 
+import SettingsContainer from './container/settings/SettingsContainer';
+
 import CompilationsWrapper from './container/compilations/CompilationsWrapper';
 import CompilationsIndexContainer from './container/compilations/CompilationsIndexContainer';
 import CompilationShowContainer from './container/compilations/CompilationShowContainer';
@@ -61,6 +63,7 @@ const routes = (
         <Route path="/promo-codes/:promoCodeId" component={PromoCodesShowContainer} />
         <Route path="/promo-codes" component={PromoCodesIndexContainer} />
       </Route>
+      <Route path="/settings" component={SettingsContainer} />
     </Route>
   </Route>
 );

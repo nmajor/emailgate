@@ -7,4 +7,5 @@ export default {
   promoCodes: [],
   email: {},
   page: {},
+  settings: [],
 };

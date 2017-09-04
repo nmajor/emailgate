@@ -19,8 +19,6 @@ export function activitySummary() {
       html: mailer.toString(),
     };
 
-    console.log('blah sending');
     sendMail(data);
   });
-  console.log('Running activity summary job!');
 }
