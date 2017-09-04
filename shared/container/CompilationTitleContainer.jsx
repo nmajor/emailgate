@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import _ from 'lodash';
 import CompilationTitleForm from '../components/CompilationTitleForm';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
@@ -12,6 +13,9 @@ class CompilationTitleContainer extends Component {
     this.hideHelp = this.hideHelp.bind(this);
     this.showHelp = this.showHelp.bind(this);
     // this.addImage = this.addImage.bind(this);
+
+    const setting = _.find(props.config.settings, (s) => { return s.name === 'designCoverScreencastHelp'; });
+    this.screencastUrl = _.get(setting, 'value.videoUrl');
   }
   update(props) {
     this.props.dispatch(Actions.updateCompilationFetch(this.props.compilation._id, props, () => {}));
@@ -25,14 +29,19 @@ class CompilationTitleContainer extends Component {
   // addImage(props) {
   //   this.props.dispatch(Actions.addCompilationImage(this.props.compilation._id, props, () => {}));
   // }
-  render() {
-    return (<div className="container compilation-container">
-      <ScreencastHelper videoUrl={'https://www.youtube.com/watch?v=KqFNbCcyFkk'} hide={this.hideHelp} show={this.showHelp} visible={this.props.user.appState.showCoverHelp}>
+  renderScreencastHelper() {
+    if (this.screencastUrl) {
+      return (<ScreencastHelper videoUrl={this.screencastUrl} hide={this.hideHelp} show={this.showHelp} visible={this.props.user.appState.showCoverHelp}>
         <h1>Welcome to the Design Cover page!</h1>
         <div className="flex-center">
           <p>In this page you can totally customize your cover! Make it unique and one of a kind. Select from several cover templates. Change the title, text, and images on any cover.</p>
         </div>
-      </ScreencastHelper>
+      </ScreencastHelper>);
+    }
+  }
+  render() {
+    return (<div className="container compilation-container">
+      {this.renderScreencastHelper()}
       <div className="compilation-content-box">
         <h1 className="text-center">Design Cover</h1>
         <CompilationTitleForm compilation={this.props.compilation} submitForm={this.update} fetching={this.props.compilation.saving} />
@@ -43,6 +52,7 @@ class CompilationTitleContainer extends Component {
 
 function mapStateToProps(store) {
   return {
+    config: store.config,
     user: store.user,
     compilationEmails: store.compilationEmails,
   };
@@ -57,6 +67,7 @@ CompilationTitleContainer.propTypes = {
   compilation: PropTypes.object.isRequired,
   params: PropTypes.object,
   user: PropTypes.object,
+  config: PropTypes.object,
   compilationEmails: PropTypes.array.isRequired,
 };
 

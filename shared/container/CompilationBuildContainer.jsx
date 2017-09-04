@@ -15,6 +15,9 @@ class CompilationBuildContainer extends Component {
     this.handleCheckoutClick = this.handleCheckoutClick.bind(this);
     this.hideHelp = this.hideHelp.bind(this);
     this.showHelp = this.showHelp.bind(this);
+
+    const setting = _.find(props.config.settings, (s) => { return s.name === 'editCompilationScreencastHelp'; });
+    this.screencastUrl = _.get(setting, 'value.videoUrl');
   }
   hideHelp() {
     this.props.dispatch(Actions.updateUserAppState({ showEditHelp: false }));
@@ -68,14 +71,19 @@ class CompilationBuildContainer extends Component {
       {this.renderAddBlankAction()}
     </div>);
   }
-  render() {
-    return (<div className="container compilation-container">
-      <ScreencastHelper videoUrl={'https://www.youtube.com/watch?v=KqFNbCcyFkk'} hide={this.hideHelp} show={this.showHelp} visible={this.props.user.appState.showEditHelp}>
+  renderScreencastHelper() {
+    if (this.screencastUrl) {
+      return (<ScreencastHelper videoUrl={this.screencastUrl} hide={this.hideHelp} show={this.showHelp} visible={this.props.user.appState.showEditHelp}>
         <h1>Welcome to the Edit page!</h1>
         <div className="flex-center">
           <p>Here you can really make your book your own. Edit and change any email. Add new picture attachments to any email. You can even add a custom image or message page!</p>
         </div>
-      </ScreencastHelper>
+      </ScreencastHelper>);
+    }
+  }
+  render() {
+    return (<div className="container compilation-container">
+      {this.renderScreencastHelper()}
       <div className="compilation-content-box">
         <div>
           {this.renderActions()}
@@ -96,6 +104,7 @@ class CompilationBuildContainer extends Component {
 function mapStateToProps(store) {
   return {
     user: store.user,
+    config: store.config,
   };
 }
 
@@ -105,6 +114,7 @@ CompilationBuildContainer.contextTypes = {
 
 CompilationBuildContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  config: PropTypes.object.isRequired,
   compilation: PropTypes.object.isRequired,
   currentEmail: PropTypes.object,
   currentPage: PropTypes.object,
