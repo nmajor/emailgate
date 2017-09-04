@@ -661,6 +661,22 @@ input {
 
 .cover-templates {
   text-align: center;
+  border-top: 1px solid #eee;
+  padding: 20px;
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid #eee;
+
+  &.attention {
+    border: 1px solid #d43f3a;
+    border-radius: 3px;
+  }
+
+  .select-compilation-template {
+    &.attention {
+      color: #d43f3a;
+    }
+  }
 
   .template-thumb {
     cursor: pointer;
@@ -968,6 +984,86 @@ input {
       &:hover, &:active, &:visited {
         color: #bbb;
       }
+    }
+  }
+}
+
+.videowrapper {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+}
+.videowrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.flex-center {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screencast-helper {
+  background: #FFF;
+  padding: 10px 22px 22px 22px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid #CCC;
+
+  .screencast-thumb-wrapper {
+    height: 100%;
+    width: 100%;
+
+    &:hover {
+      .play-icon {
+        color: #FFF;
+      }
+
+      cursor: pointer;
+    }
+
+    .play-icon {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      color: #CCC;
+      font-size: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .show-hide {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 10px;
+
+    .btn-link {
+      &:hover { cursor: pointer; }
+    }
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 22px;
+  }
+}
+
+.screencast-helper-actions {
+  text-align: right;
+  margin-bottom: 5px;
+
+  .btn-link {
+    &:hover {
+      cursor: pointer;
     }
   }
 }

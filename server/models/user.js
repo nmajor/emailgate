@@ -18,6 +18,11 @@ const UserSchema = new Schema({
   password: String,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
+  appState: {
+    showCoverHelp: { type: Boolean, default: true },
+    showAddHelp: { type: Boolean, default: true },
+    showEditHelp: { type: Boolean, default: true },
+  },
 }, {
   timestamps: true,
 });

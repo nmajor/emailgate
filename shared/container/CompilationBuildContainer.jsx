@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import * as Actions from '../redux/actions/index';
 // import { Link } from 'react-router';
 import CompilationComponentsListContainer from './CompilationComponentsListContainer';
+import ScreencastHelper from '../components/ScreencastHelper';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -12,6 +13,14 @@ class CompilationBuildContainer extends Component {
     this.openChat = this.openChat.bind(this);
     this.addBlankEmail = this.addBlankEmail.bind(this);
     this.handleCheckoutClick = this.handleCheckoutClick.bind(this);
+    this.hideHelp = this.hideHelp.bind(this);
+    this.showHelp = this.showHelp.bind(this);
+  }
+  hideHelp() {
+    this.props.dispatch(Actions.updateUserAppState({ showEditHelp: false }));
+  }
+  showHelp() {
+    this.props.dispatch(Actions.updateUserAppState({ showEditHelp: true }));
   }
   openChat() {
     window.open('https://missionarymemoir.freshdesk.com/support/tickets/new');
@@ -61,6 +70,12 @@ class CompilationBuildContainer extends Component {
   }
   render() {
     return (<div className="container compilation-container">
+      <ScreencastHelper videoUrl={'https://www.youtube.com/watch?v=KqFNbCcyFkk'} hide={this.hideHelp} show={this.showHelp} visible={this.props.user.appState.showEditHelp}>
+        <h1>Welcome to the Edit page!</h1>
+        <div className="flex-center">
+          <p>Here you can really make your book your own. Edit and change any email. Add new picture attachments to any email. You can even add a custom image or message page!</p>
+        </div>
+      </ScreencastHelper>
       <div className="compilation-content-box">
         <div>
           {this.renderActions()}

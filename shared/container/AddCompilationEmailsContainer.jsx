@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 // import { Link } from 'react-router';
 import * as Actions from '../redux/actions/index';
+import ScreencastHelper from '../components/ScreencastHelper';
 import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
@@ -23,6 +24,8 @@ class AddCompilationEmailsContainer extends Component {
     this.renderFixedFooter = this.renderFixedFooter.bind(this);
     this.renderFixedFooterAlert = this.renderFixedFooterAlert.bind(this);
     this.addSelected = this.addSelected.bind(this);
+    this.hideHelp = this.hideHelp.bind(this);
+    this.showHelp = this.showHelp.bind(this);
   }
   // componentWillMount() {
   //   if (this.props.accounts.length === 0) {
@@ -31,6 +34,12 @@ class AddCompilationEmailsContainer extends Component {
   // }
   componentWillReceiveProps(nextProps) {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.params.accountId });
+  }
+  hideHelp() {
+    this.props.dispatch(Actions.updateUserAppState({ showAddHelp: false }));
+  }
+  showHelp() {
+    this.props.dispatch(Actions.updateUserAppState({ showAddHelp: true }));
   }
   addSelected() {
     const nonCompilationSelectedEmailIds = _.filter(this.props.selectedFilteredEmailIds, (id) => {
@@ -123,6 +132,12 @@ class AddCompilationEmailsContainer extends Component {
   }
   render() {
     return (<div className="container compilation-container">
+      <ScreencastHelper videoUrl={'https://www.youtube.com/watch?v=KqFNbCcyFkk'} hide={this.hideHelp} show={this.showHelp} visible={this.props.user.appState.showAddHelp}>
+        <h1>Welcome to the Add Emails page!</h1>
+        <div className="flex-center">
+          <p>In this page you can connect your email accounts, and use our filtering tools to find the emails you want to include in your Email Book.</p>
+        </div>
+      </ScreencastHelper>
       <div className="compilation-content-box">
         {this.renderHeader()}
         {this.renderSelectAccount()}
@@ -136,6 +151,7 @@ class AddCompilationEmailsContainer extends Component {
 
 function mapStateToProps(store) {
   return {
+    user: store.user,
     config: store.config,
     accounts: store.accounts,
     compilationEmails: store.compilationEmails,
@@ -154,6 +170,7 @@ AddCompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   compilation: PropTypes.object.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
   filteredAccountEmailsResults: PropTypes.object.isRequired,

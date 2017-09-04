@@ -158,6 +158,7 @@ function ensureAdmin(req, res, next) {
   }
 }
 
+router.put('/users/app-state', AppController.updateUserAppState);
 router.get('/config', AppController.getAppConfig);
 router.get('/cart', AppController.getUserCart);
 router.post('/cart/:id/promo', AppController.applyPromoCodeToCart);

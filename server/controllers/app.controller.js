@@ -133,3 +133,14 @@ export function getFullEmail(req, res) {
     console.log('An error happened', err);
   });
 }
+
+export function updateUserAppState(req, res) {
+  return User.findOne({ _id: req.user._id, _order: null })
+  .then((user) => {
+    user.appState = req.body;
+    return user.save();
+  })
+  .then((user) => {
+    return res.json(user.appState);
+  });
+}
