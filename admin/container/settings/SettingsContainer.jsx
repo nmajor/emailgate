@@ -7,6 +7,11 @@ class SettingsContainer extends Component { // eslint-disable-line
   // constructor(props, context) {
   //   super(props, context);
   // }
+  componentDidMount() {
+    if (this.props.settings.length < 1) {
+      this.props.dispatch(Actions.getSettings());
+    }
+  }
   render() {
     return (<div>
       <ScreencastHelpFormContainer name="designCoverScreencastHelp" />

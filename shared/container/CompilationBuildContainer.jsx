@@ -75,9 +75,7 @@ class CompilationBuildContainer extends Component {
     if (this.screencastUrl) {
       return (<ScreencastHelper videoUrl={this.screencastUrl} hide={this.hideHelp} show={this.showHelp} visible={this.props.user.appState.showEditHelp}>
         <h1>Welcome to the Edit page!</h1>
-        <div className="flex-center">
-          <p>Here you can really make your book your own. Edit and change any email. Add new picture attachments to any email. You can even add a custom image or message page!</p>
-        </div>
+        <p>Here you can really make your book your own. Edit and change any email. Add new picture attachments to any email. You can even add a custom image or message page!</p>
       </ScreencastHelper>);
     }
   }

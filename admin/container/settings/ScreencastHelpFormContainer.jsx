@@ -14,6 +14,13 @@ class ScreencastHelpFormContainer extends Component { // eslint-disable-line
       this.setting = { ...this.setting, ...this.setting.value };
     }
   }
+  componentWillReceiveProps(nextProps) {
+    this.setting = _.find(nextProps.settings, (setting) => { return setting.name === nextProps.name; });
+
+    if (this.setting) {
+      this.setting = { ...this.setting, ...this.setting.value };
+    }
+  }
   update(props) {
     return new Promise((resolve) => {
       this.props.dispatch(Actions.updateSetting(this.props.name, props, () => {

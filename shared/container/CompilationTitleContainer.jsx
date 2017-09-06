@@ -33,9 +33,7 @@ class CompilationTitleContainer extends Component {
     if (this.screencastUrl) {
       return (<ScreencastHelper videoUrl={this.screencastUrl} hide={this.hideHelp} show={this.showHelp} visible={this.props.user.appState.showCoverHelp}>
         <h1>Welcome to the Design Cover page!</h1>
-        <div className="flex-center">
-          <p>In this page you can totally customize your cover! Make it unique and one of a kind. Select from several cover templates. Change the title, text, and images on any cover.</p>
-        </div>
+        <p>In this page you can customize your cover! Make it unique and one of a kind. Select from several cover templates. Change the title, text, and images on any cover.</p>
       </ScreencastHelper>);
     }
   }

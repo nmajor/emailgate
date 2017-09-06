@@ -137,9 +137,7 @@ class AddCompilationEmailsContainer extends Component {
     if (this.screencastUrl) {
       return (<ScreencastHelper videoUrl={this.screencastUrl} hide={this.hideHelp} show={this.showHelp} visible={this.props.user.appState.showAddHelp}>
         <h1>Welcome to the Add Emails page!</h1>
-        <div className="flex-center">
-          <p>In this page you can connect your email accounts, and use our filtering tools to find the emails you want to include in your Email Book.</p>
-        </div>
+        <p>In this page you can connect your email accounts, and use our filtering tools to find the emails you want to include in your Email Book.</p>
       </ScreencastHelper>);
     }
   }
