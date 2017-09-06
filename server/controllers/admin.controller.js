@@ -4,6 +4,7 @@ import Compilation from '../models/compilation';
 import Order from '../models/order';
 import Email from '../models/email';
 import Page from '../models/page';
+import Setting from '../models/setting';
 
 export function getUsers(req, res) {
   User.find({})
@@ -18,6 +19,31 @@ export function getCompilations(req, res) {
   .then((compilations) => {
     res.json(compilations);
   });
+}
+
+export function getSettings(req, res) {
+  Setting.find({})
+  .then((settings) => {
+    res.json(settings);
+  });
+}
+
+export function updateSetting(req, res) {
+  Setting.findOne({ name: req.params.name })
+  .then((setting) => {
+    if (!setting) {
+      setting = new Setting({ name: req.params.name });
+    }
+    setting.value = req.body;
+    return setting.save();
+  })
+  .then(() => {
+    return Setting.find({});
+  })
+  .then((settings) => {
+    res.json(settings);
+  })
+  .catch((err) => { console.log('An error happened when trying to update a setting', err); });
 }
 
 export function patchCompilation(req, res) {

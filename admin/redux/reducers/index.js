@@ -9,6 +9,7 @@ import promoCodes from './promoCodes';
 import user from './user';
 import email from './email';
 import page from './page';
+import settings from './settings';
 
 const appReducer = combineReducers({
   form: formReducer,
@@ -20,6 +21,7 @@ const appReducer = combineReducers({
   user,
   email,
   page,
+  settings,
 });
 
 export default appReducer;

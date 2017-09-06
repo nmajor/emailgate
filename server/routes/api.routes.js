@@ -158,6 +158,7 @@ function ensureAdmin(req, res, next) {
   }
 }
 
+router.put('/users/app-state', AppController.updateUserAppState);
 router.get('/config', AppController.getAppConfig);
 router.get('/cart', AppController.getUserCart);
 router.post('/cart/:id/promo', AppController.applyPromoCodeToCart);
@@ -211,6 +212,8 @@ router.get('/compilations/:id/email-page-map', ensureAuthenticated, getCompilati
 router.get('/compilations/:id/pages', ensureAuthenticated, PageController.getCompilationPages);
 router.put('/compilations/:compilationId/emails/:emailId/rotate-attachment', ensureAuthenticated, EmailController.rotateImageAttachment);
 
+router.get('/admin/settings', ensureAuthenticated, ensureAdmin, AdminController.getSettings);
+router.post('/admin/settings/:name', ensureAuthenticated, ensureAdmin, AdminController.updateSetting);
 router.get('/admin/users', ensureAuthenticated, ensureAdmin, AdminController.getUsers);
 router.get('/admin/compilations', ensureAuthenticated, ensureAdmin, AdminController.getCompilations);
 router.put('/admin/compilations/:id', ensureAuthenticated, ensureAdmin, AdminController.patchCompilation);

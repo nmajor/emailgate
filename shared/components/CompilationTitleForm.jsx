@@ -119,15 +119,22 @@ class CompilationTitleForm extends Component {
     });
   }
   renderTemplateFormGroup() {
-    return (<div className="row cover-templates">
+    const attention = !(this.props.compilation.coverTemplate);
+    const text = attention ? 'Now Select a Cover Template' : 'Select Cover Template';
+    const attentionClass = attention ? 'attention' : '';
+
+
+    return (<div className="row">
       <div className="col-md-12">
         <div className="form-group">
-          <div className="text-center">
-            <label htmlFor="compilation-title">Select a Cover Template</label>
-          </div>
-          <div className="row">
-            <div className="col-xs-1"></div>
-            {this.renderTemplateOptions()}
+          <div className={`cover-templates ${attentionClass}`}>
+            <div className="text-center">
+              <label className={`select-compilation-template ${attentionClass}`} htmlFor="compilation-title">{text}</label>
+            </div>
+            <div className="row">
+              <div className="col-xs-1"></div>
+              {this.renderTemplateOptions()}
+            </div>
           </div>
         </div>
       </div>
@@ -261,9 +268,7 @@ class CompilationTitleForm extends Component {
           {this.renderTitleFormGroup()}
           {this.renderSubtitleFormGroup()}
           {this.renderDatesFormGroup()}
-          <hr />
           {this.renderTemplateFormGroup()}
-          <hr />
           {this.renderErrors('base')}
           <div className="text-right hidden-sm hidden-xs">
             {this.renderBackAction()}

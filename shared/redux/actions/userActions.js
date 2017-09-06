@@ -14,10 +14,7 @@ export function setUser(user) {
 
   return {
     type: ActionTypes.SET_USER,
-    _id: user._id,
-    email: user.email,
-    name: user.name,
-    errors: user.errors,
+    user,
   };
 }
 
@@ -26,6 +23,13 @@ export function setUserErrors(errors, reset = false) {
     type: ActionTypes.SET_USER_ERRORS,
     errors,
     reset,
+  };
+}
+
+export function setUserAppState(appState) {
+  return {
+    type: ActionTypes.SET_USER_APP_STATE,
+    appState,
   };
 }
 
@@ -281,6 +285,34 @@ export function resetPassword(data, cb) {
     })
     .then((res) => {
       cb(res);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  };
+}
+
+export function updateUserAppState(data) {
+  return (dispatch) => {
+    dispatch(setUserAppState(data));
+
+    return fetch(`${baseURL}/api/users/app-state`, {
+      credentials: 'include',
+      method: 'put',
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+    })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      dispatch(setUserAppState(res));
     })
     .catch((err) => {
       console.log(err);

@@ -3,14 +3,16 @@ import Cart from '../models/cart';
 import User from '../models/user';
 import Account from '../models/account';
 import PromoCode from '../models/promoCode';
+import Setting from '../models/setting';
 
 export function getAppConfig(req, res) {
   Promise.all([
     getGoogleAuthUrl(),
     getMyldsmailAuthUrl(),
+    Setting.find({}),
   ])
   .then((values) => {
-    const [googleAuthUrl, myldsmailAuthUrl] = values;
+    const [googleAuthUrl, myldsmailAuthUrl, settings] = values;
     const products = require('../products'); // eslint-disable-line global-require
     const staticData = require('../staticData'); // eslint-disable-line global-require
 
@@ -19,6 +21,7 @@ export function getAppConfig(req, res) {
       myldsmailAuthUrl,
       products,
       staticData,
+      settings,
     });
   })
   .catch((err) => {
@@ -131,5 +134,16 @@ export function getFullEmail(req, res) {
   })
   .catch((err) => {
     console.log('An error happened', err);
+  });
+}
+
+export function updateUserAppState(req, res) {
+  return User.findOne({ _id: req.user._id, _order: null })
+  .then((user) => {
+    user.appState = req.body;
+    return user.save();
+  })
+  .then((user) => {
+    return res.json(user.appState);
   });
 }

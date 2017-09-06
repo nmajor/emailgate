@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 // import { Link } from 'react-router';
 import * as Actions from '../redux/actions/index';
+import ScreencastHelper from '../components/ScreencastHelper';
 import SelectAccountContainer from './SelectAccountContainer';
 import FilterContainer from './FilterContainer';
 import FilteredAccountEmailsContainer from './FilteredAccountEmailsContainer';
@@ -23,6 +24,11 @@ class AddCompilationEmailsContainer extends Component {
     this.renderFixedFooter = this.renderFixedFooter.bind(this);
     this.renderFixedFooterAlert = this.renderFixedFooterAlert.bind(this);
     this.addSelected = this.addSelected.bind(this);
+    this.hideHelp = this.hideHelp.bind(this);
+    this.showHelp = this.showHelp.bind(this);
+
+    const setting = _.find(props.config.settings, (s) => { return s.name === 'addEmailsScreencastHelp'; });
+    this.screencastUrl = _.get(setting, 'value.videoUrl');
   }
   // componentWillMount() {
   //   if (this.props.accounts.length === 0) {
@@ -31,6 +37,12 @@ class AddCompilationEmailsContainer extends Component {
   // }
   componentWillReceiveProps(nextProps) {
     this.currentAccount = _.find(nextProps.accounts, { _id: nextProps.params.accountId });
+  }
+  hideHelp() {
+    this.props.dispatch(Actions.updateUserAppState({ showAddHelp: false }));
+  }
+  showHelp() {
+    this.props.dispatch(Actions.updateUserAppState({ showAddHelp: true }));
   }
   addSelected() {
     const nonCompilationSelectedEmailIds = _.filter(this.props.selectedFilteredEmailIds, (id) => {
@@ -121,8 +133,17 @@ class AddCompilationEmailsContainer extends Component {
 
     return null;
   }
+  renderScreencastHelper() {
+    if (this.screencastUrl) {
+      return (<ScreencastHelper videoUrl={this.screencastUrl} hide={this.hideHelp} show={this.showHelp} visible={this.props.user.appState.showAddHelp}>
+        <h1>Welcome to the Add Emails page!</h1>
+        <p>In this page you can connect your email accounts, and use our filtering tools to find the emails you want to include in your Email Book.</p>
+      </ScreencastHelper>);
+    }
+  }
   render() {
     return (<div className="container compilation-container">
+      {this.renderScreencastHelper()}
       <div className="compilation-content-box">
         {this.renderHeader()}
         {this.renderSelectAccount()}
@@ -136,6 +157,7 @@ class AddCompilationEmailsContainer extends Component {
 
 function mapStateToProps(store) {
   return {
+    user: store.user,
     config: store.config,
     accounts: store.accounts,
     compilationEmails: store.compilationEmails,
@@ -154,6 +176,7 @@ AddCompilationEmailsContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   accounts: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   compilation: PropTypes.object.isRequired,
   filteredAccountEmails: PropTypes.array.isRequired,
   filteredAccountEmailsResults: PropTypes.object.isRequired,
