@@ -243,7 +243,7 @@ class CompilationTitleForm extends Component {
     // {coverTemplate.renderFrontCover()}
 
     const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', selectImage: this.openImageSelector });
-    return (<div style={{ zoom: '100%' }}>
+    return (<div className="cover-template-container">
       {coverTemplate.renderWrappedFrontCover()}
     </div>);
   }

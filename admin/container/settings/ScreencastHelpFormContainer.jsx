@@ -12,6 +12,8 @@ class ScreencastHelpFormContainer extends Component { // eslint-disable-line
 
     if (this.setting) {
       this.setting = { ...this.setting, ...this.setting.value };
+    } else {
+      this.setting = { name: `${(new Date).getTime()}` };
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -19,6 +21,8 @@ class ScreencastHelpFormContainer extends Component { // eslint-disable-line
 
     if (this.setting) {
       this.setting = { ...this.setting, ...this.setting.value };
+    } else {
+      this.setting = { name: `${(new Date).getTime()}` };
     }
   }
   update(props) {
@@ -39,7 +43,7 @@ class ScreencastHelpFormContainer extends Component { // eslint-disable-line
   render() {
     return (<div className="content-box top-bumper">
       {this.renderTitle()}
-      <ScreencastHelpForm setting={this.setting || {}} initialValues={this.setting || {}} onSubmit={this.update} />
+      <ScreencastHelpForm setting={this.setting} initialValues={this.setting} onSubmit={this.update} />
     </div>);
   }
 }

@@ -1,7 +1,7 @@
 .compilation-header {
   background: #FFF;
   padding: 10px 0;
-  height: 125px;
+  min-height: 125px;
 
   .thumb {
     margin-right: 10px;
@@ -20,6 +20,7 @@
     vertical-align: middle;
     text-align: center;
     width: 100%;
+    padding-left: 75px;
 
 
     h1 {
@@ -47,6 +48,7 @@
   border: 1px solid #CCC;
   background: #EEE;
   padding: 10px 0;
+  margin-bottom: 10px;
 
   .template {
     text-align: center;
@@ -55,6 +57,16 @@
       border: 1px solid #CCC;
       margin: auto;
     }
+  }
+}
+
+.cover-template-container {
+  zoom: 60%;
+}
+
+@media (min-width: 565px) {
+  .cover-template-container {
+    zoom: 100%;
   }
 }
 
