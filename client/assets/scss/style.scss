@@ -614,9 +614,18 @@ input {
 
   .welcome {
     position: relative;
-    padding: 100px 80px;
+    padding: 45px 15px;
 
     .image-dropzone {}
+  }
+
+  @media (min-width: 590px) {
+    .welcome {
+      position: relative;
+      padding: 100px 80px;
+
+      .image-dropzone {}
+    }
   }
 }
 

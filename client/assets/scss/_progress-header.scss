@@ -11,9 +11,9 @@
   .nav-icon {
     background: #fff;
     border-radius: 50%;
-    font-size: 20px;
+    font-size: 12px;
     border: 3px solid $primary-color;
-    padding: 10px 14px;
+    padding: 6px 8px;
     display: inline-block;
     margin-bottom: 7px;
 
@@ -27,7 +27,7 @@
     text-align: center;
     display: inline-block;
     .item {
-      width: 100px;
+      width: 60px;
     }
   }
 
@@ -52,9 +52,9 @@
     .icon {
       background: #fff;
       border-radius: 50%;
-      font-size: 20px;
+      font-size: 12px;
       border: 3px solid $primary-color;
-      padding: 10px 14px;
+      padding: 6px 8px;
       display: inline-block;
       margin-bottom: 7px;
       z-index: 1;
@@ -67,7 +67,7 @@
     }
 
     .text {
-      font-size: 16px;
+      font-size: 10px;
 
       &:hover {
         cursor: pointer;
@@ -77,15 +77,113 @@
   .spacer {
     border-bottom: 3px solid #4C8EFF;
     position: relative;
-    width: 305px;
+    width: 200px;
     margin: auto;
-    top: -56px;
+    top: -46px;
     z-index: 0;
   }
 
   .action-spacer {
     display: inline-block;
-    width: 74px;
+    width: 60px;
+  }
+
+  .item.disabled {
+    .nav-icon { color: #888; border-color: #888; }
+    .text { color: #888; }
+  }
+}
+
+@media (min-width: 565px) {
+  .progress-header {
+    background: #eee;
+    padding: 20px 0;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    box-shadow: inset 0 0px 20px rgba(0,0,0,.1);
+    -webkit-box-shadow: inset 0 0px 20px rgba(0,0,0,.1);
+    -moz-box-shadow: inset 0 0px 20px rgba(0,0,0,.1);
+    text-align: center;
+
+    .nav-icon {
+      background: #fff;
+      border-radius: 50%;
+      font-size: 20px;
+      border: 3px solid $primary-color;
+      padding: 10px 14px;
+      display: inline-block;
+      margin-bottom: 7px;
+
+      &:hover {
+        cursor: pointer;
+        color: darken($primary-color, 10%);
+      }
+    }
+
+    .wizard {
+      text-align: center;
+      display: inline-block;
+      .item {
+        width: 100px;
+      }
+    }
+
+    .item {
+      display: inline-block;
+      color: $primary-color;
+
+      &.active {
+        .icon {
+          background: $primary-color;
+          color: #fff;
+
+          &:hover {
+            cursor: pointer;
+            color: #fff;
+            background: darken($primary-color, 10%);
+            border: 3px solid darken($primary-color, 10%);;
+          }
+        }
+      }
+
+      .icon {
+        background: #fff;
+        border-radius: 50%;
+        font-size: 20px;
+        border: 3px solid $primary-color;
+        padding: 10px 14px;
+        display: inline-block;
+        margin-bottom: 7px;
+        z-index: 1;
+        position: relative;
+
+        &:hover {
+          cursor: pointer;
+          color: darken($primary-color, 10%);
+        }
+      }
+
+      .text {
+        font-size: 16px;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+    .spacer {
+      border-bottom: 3px solid #4C8EFF;
+      position: relative;
+      width: 305px;
+      margin: auto;
+      top: -56px;
+      z-index: 0;
+    }
+
+    .action-spacer {
+      display: inline-block;
+      width: 74px;
+    }
   }
 }
 

@@ -12,11 +12,24 @@ import { processEmailStream } from '../util/helpers';
 import { isPageEditable } from '../../shared/helpers';
 
 function userIsAdmin(user) {
-  if (user.isAdmin || user.email === 'nick@nmajor.com') {
+  const admins = [
+    'nick@nmajor.com',
+    'king.benjamin012@gmail.com',
+  ];
+
+  if (user.isAdmin || admins.indexOf(user.email) > -1) {
     return Promise.resolve(true);
   }
 
   return Promise.reject('User is not an admin');
+}
+
+function userIsAdminSafe(user) {
+  return new Promise((resolve) => {
+    return userIsAdmin(user)
+    .then((isAdmin) => { resolve(isAdmin); })
+    .catch(() => { resolve(false); });
+  });
 }
 
 export default (io) => {
@@ -27,12 +40,14 @@ export default (io) => {
 
     socket.on('JOIN_USER_ROOM', (data) => {
       console.log('JOIN_USER_ROOM', data);
-      User.findOne({ email: socket.request.session.passport.user })
-      .then((user) => {
-        if (_.isEqual(user._id, data.userId)) {
-          socket.join(`users/${user._id}`);
-        }
-      });
+      if (_.get(socket, 'request.session.passport.user')) {
+        User.findOne({ email: socket.request.session.passport.user })
+        .then((user) => {
+          if (_.isEqual(user._id, data.userId)) {
+            socket.join(`users/${user._id}`);
+          }
+        });
+      }
     });
 
     socket.on('CHECK_IMAP_ACCOUNT_CONNECTION', (data) => {
@@ -205,21 +220,28 @@ export default (io) => {
     });
 
     socket.on('UPDATE_COMPILATION_EMAIL', (data) => {
-      console.log('UPDATE_COMPILATION_EMAIL');
       User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
-      .then((email) => {
-        email.subject = data.newData.subject; // eslint-disable-line no-param-reassign
-        email.body = data.newData.body; // eslint-disable-line no-param-reassign
-        email.date = data.newData.date; // eslint-disable-line no-param-reassign
-        email.from = data.newData.from; // eslint-disable-line no-param-reassign
-        email.attachments = data.newData.attachments; // eslint-disable-line no-param-reassign
-        return email.save();
-      })
-      .then((email) => {
-        socket.emit('UPDATED_COMPILATION_EMAIL', email);
-        return Promise.resolve(email);
+      .then((user) => {
+        return userIsAdminSafe(user)
+        .then((isAdmin) => {
+          if (isAdmin) {
+            return Compilation.findOne({ _id: data.compilationId });
+          }
+          return Compilation.findOne({ _user: user._id, _id: data.compilationId });
+        })
+        .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
+        .then((email) => {
+          email.subject = data.newData.subject; // eslint-disable-line no-param-reassign
+          email.body = data.newData.body; // eslint-disable-line no-param-reassign
+          email.date = data.newData.date; // eslint-disable-line no-param-reassign
+          email.from = data.newData.from; // eslint-disable-line no-param-reassign
+          email.attachments = data.newData.attachments; // eslint-disable-line no-param-reassign
+          return email.save();
+        })
+        .then((email) => {
+          socket.emit('UPDATED_COMPILATION_EMAIL', email);
+          return Promise.resolve(email);
+        });
       })
       .catch((err) => { console.log('An error happened when updating a compilation email', err); });
     });

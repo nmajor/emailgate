@@ -50,7 +50,12 @@ class CompilationProgressHeader extends Component { // eslint-disable-line
       </div>);
     }
 
-    return <span className="action-spacer"></span>;
+    return (<div className="item disabled">
+      <span className="nav-icon">
+        <span className="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      </span>
+      <div><span className="text">Next</span></div>
+    </div>);
   }
   renderPrevAction() {
     const prevStep = this.getPrevStep();
@@ -61,7 +66,10 @@ class CompilationProgressHeader extends Component { // eslint-disable-line
       </div>);
     }
 
-    return <span className="action-spacer"></span>;
+    return (<div className="item disabled">
+      <span className="nav-icon"><span className="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></span>
+      <div><span className="text">Back</span></div>
+    </div>);
   }
   render() {
     return (<div className="progress-header">

@@ -98,7 +98,12 @@ export function createCompilation(req, res) {
 }
 
 export function patchCompilation(req, res) {
-  Compilation.findOne({ _user: req.user._id, _id: req.params.id })
+  let query = { _user: req.user._id, _id: req.params.id };
+
+  if (userIsAdmin(req)) {
+    query = { _id: req.params.id };
+  }
+  Compilation.findOne(query)
   .then((compilation) => {
     if (req.body.title) { compilation.title = req.body.title; }
     if (req.body.subtitle) { compilation.subtitle = req.body.subtitle; }
