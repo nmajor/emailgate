@@ -71,7 +71,7 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
         return Promise.all(resizedAttachments.map((attachment) => {
           return uploadAttachment(attachment);
         }))
-        .catch((err) => { console.log('An error happened uploading attachments', err); });
+        .catch((err) => { console.log('An error happened uploading attachments', err, err.stack); });
       })
       .then((newUploadedAttachments) => {
         this.attachments = [
@@ -104,7 +104,8 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   })
   .then(() => {
     next();
-  });
+  })
+  .catch((err) => { console.log('An error happened when saving an email', err); });
 });
 
 EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {

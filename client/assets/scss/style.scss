@@ -124,11 +124,18 @@ h1 > .loading {
   border: 1px solid #ccc;
 }
 .paper-like-container {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   background-color: white;
-  padding: 50px;
+  padding: 5px;
   border: 1px solid #ccc;
+}
+
+@media (min-width: 590px) {
+  .paper-like-container {
+    width: 80%;
+    padding: 50px;
+  }
 }
 
 .email-view {
@@ -717,7 +724,7 @@ input {
   }
 }
 .compilation-summary-details {
-  height: 19.7vw;
+  // height: 19.7vw;
 }
 .compilation-cart-card {
   height: 125px;

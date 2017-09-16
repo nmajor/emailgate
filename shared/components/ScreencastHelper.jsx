@@ -32,7 +32,7 @@ class ScreencastHelper extends Component { // eslint-disable-line
           </div>
         </div>
         <div className="clearfix" />
-        <div className="footer">
+        <div className="footer hidden-xs hidden-sm">
           <div className="btn btn-default" onClick={this.props.hide}>Hide This Help Box</div>
         </div>
       </div>);

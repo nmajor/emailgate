@@ -139,7 +139,7 @@ class FullImagePageTemplate {
         justifyContent: 'center',
       }}
     >
-      <img style={{ height: '100%', width: '100%' }} role="presentation" src={src} />
+      <img style={{ height: '100%', width: '100%', display: 'block' }} role="presentation" src={src} />
       {spinner}
     </div>);
   }

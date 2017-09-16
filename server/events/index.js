@@ -220,6 +220,7 @@ export default (io) => {
     });
 
     socket.on('UPDATE_COMPILATION_EMAIL', (data) => {
+      console.log('UPDATE_COMPILATION_EMAIL');
       User.findOne({ email: socket.request.session.passport.user })
       .then((user) => {
         return userIsAdminSafe(user)
@@ -231,11 +232,11 @@ export default (io) => {
         })
         .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
         .then((email) => {
-          email.subject = data.newData.subject; // eslint-disable-line no-param-reassign
-          email.body = data.newData.body; // eslint-disable-line no-param-reassign
-          email.date = data.newData.date; // eslint-disable-line no-param-reassign
-          email.from = data.newData.from; // eslint-disable-line no-param-reassign
-          email.attachments = data.newData.attachments; // eslint-disable-line no-param-reassign
+          if (data.newData.subject) { email.subject = data.newData.subject; } // eslint-disable-line no-param-reassign
+          if (data.newData.body) { email.body = data.newData.body; } // eslint-disable-line no-param-reassign
+          if (data.newData.date) { email.date = data.newData.date; } // eslint-disable-line no-param-reassign
+          if (data.newData.from) { email.from = data.newData.from; } // eslint-disable-line no-param-reassign
+          if (data.newData.attachments) { email.attachments = data.newData.attachments; } // eslint-disable-line no-param-reassign
           return email.save();
         })
         .then((email) => {
@@ -249,15 +250,24 @@ export default (io) => {
     socket.on('UPDATE_COMPILATION_PAGE', (data) => {
       console.log('UPDATE_COMPILATION_PAGE');
       User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
-      .then(compilation => Page.findOne({ _compilation: compilation._id, _id: data.pageId }))
-      .then((page) => {
-        page.content = data.newData; // eslint-disable-line no-param-reassign
-        return page.save();
+      .then((user) => {
+        return userIsAdminSafe(user)
+        .then((isAdmin) => {
+          if (isAdmin) {
+            return Compilation.findOne({ _id: data.compilationId });
+          }
+          return Compilation.findOne({ _user: user._id, _id: data.compilationId });
+        })
+        .then(compilation => Page.findOne({ _compilation: compilation._id, _id: data.pageId }))
+        .then((page) => {
+          page.content = data.newData; // eslint-disable-line no-param-reassign
+          return page.save();
+        })
+        .then((page) => {
+          socket.emit('UPDATED_COMPILATION_PAGE', page);
+        });
       })
-      .then((page) => {
-        socket.emit('UPDATED_COMPILATION_PAGE', page);
-      });
+      .catch((err) => { console.log('An error happend when updating compilation page', err, err.stack); });
     });
 
     socket.on('REMOVE_COMPILATION_PAGE', (data) => {

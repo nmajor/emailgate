@@ -217,7 +217,7 @@ class AttachmentInput extends Component { // eslint-disable-line
   renderAttachments() {
     const divStyle = {
       maxWidth: '100%',
-      maxHeight: '280px',
+      maxHeight: '275px',
     };
 
     const wrapperStyle = {
@@ -320,7 +320,7 @@ class EmailTemplate {
     const divStyle = {
       maxWidth: '100%',
       marginTop: '5px',
-      maxHeight: '280px',
+      maxHeight: '275px',
       marginLeft: '3px',
       marginRight: '3px',
     };

@@ -2,7 +2,7 @@ http://www.ingramcontent.com/Documents/CoverBleedDimensions.pdf
 
 \pagestyle{fancy} \fancyhf{} \rfoot{Page \thepage}
 
-pdfjam --outfile email-SJFzCKMbtW-blah.pdf --pagecommand '{\pagestyle{fancy} \fancyhf{} \rfoot{Page \thepage}}' email-SJFzCKMbtW.pdf
+pdfjam --outfile email-SJFzCKMbtW.pdf --pagecommand '{\pagestyle{fancy} \fancyhf{} \rfoot{Page \thepage}}' email-SJFzCKMbtW.pdf
 
 
 
