@@ -15,6 +15,8 @@ class CompilationView extends Component { // eslint-disable-line
     this.state = {
       compilationEmails: [],
     };
+
+    this.resaveAllComponents = this.resaveAllComponents.bind(this);
   }
   componentDidMount() {
     fetch(`${baseURL}/api/compilations/${this.props.compilation._id}/emails`, { credentials: 'include' })
@@ -32,6 +34,9 @@ class CompilationView extends Component { // eslint-disable-line
 
       this.setState({ compilationEmails: res });
     });
+  }
+  resaveAllComponents() {
+    this.props.resaveAllComponents();
   }
   renderEmailPreviews() {
     return this.state.compilationEmails.map((email) => {
@@ -68,11 +73,14 @@ class CompilationView extends Component { // eslint-disable-line
       </div>);
     }
   }
-  renderPdfActions() {
+  renderCompilationLogs() {
     if (this.props.compilation.logs) {
-      return <BuildLogs logs={this.props.compilation.logs} />;
+      return (<div className="padded-box bottom-bumper">
+        <BuildLogs header="Compilation Logs" logs={this.props.compilation.logs} clearLogs={this.props.clearCompilationLogs} />
+      </div>);
     }
-
+  }
+  renderPdfActions() {
     return (<div>
       {this.renderPdfLink()}
       <button className="btn btn-success right-bumper" onClick={this.props.buildPdf}>Build PDF</button>
@@ -97,10 +105,6 @@ class CompilationView extends Component { // eslint-disable-line
       return 'You must build the compilation pdf before you can build the cover';
     }
 
-    if (this.props.compilation.coverLogs) {
-      return <BuildLogs logs={this.props.compilation.coverLogs} />;
-    }
-
     return (<div>
       <CompilationSpineWidthForm compilation={this.props.compilation} submit={this.props.submitSpineWidth} />
       {this.renderBuildCoverAction()}
@@ -116,7 +120,10 @@ class CompilationView extends Component { // eslint-disable-line
     }
 
 
-    return <a className="btn btn-warning bottom-bumper" href={`${window.location.protocol}//${host}/compilations/${this.props.compilation._id}/build`}>Edit</a>;
+    return <a className="btn btn-warning bottom-bumper right-bumper" href={`${window.location.protocol}//${host}/compilations/${this.props.compilation._id}/build`}>Edit</a>;
+  }
+  renderResaveAllComponentsAction() {
+    return <div className="btn btn-success bottom-bumper" onClick={this.resaveAllComponents}>Resave All Components</div>;
   }
   renderCoverHtml() {
     if (this.props.compilation.cover && this.props.compilation.cover.html) {
@@ -130,24 +137,27 @@ class CompilationView extends Component { // eslint-disable-line
     return (<div>
       <h1>{this.props.compilation.title}</h1>
       <h3>{this.props.compilation.subtitle}</h3>
-      {this.renderCompilationBuildLink()}
+      <div>
+        {this.renderCompilationBuildLink()}
+        {this.renderResaveAllComponentsAction()}
+      </div>
       <div className="row">
         <div className="col-sm-6">
           <div className="padded-box bottom-bumper">
             {this.renderPdfActions()}
           </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-sm-6">
           <div className="padded-box bottom-bumper">
             {this.renderCoverActions()}
           </div>
+          <div className="padded-box bottom-bumper">
+            <JsonViewer obj={this.props.compilation} />
+          </div>
+        </div>
+        <div className="col-sm-6">
+          {this.renderCompilationLogs()}
         </div>
       </div>
-      <div>
-        <JsonViewer obj={this.props.compilation} />
-      </div>
+      <hr />
       <div>
         {this.renderEmailPreviews()}
       </div>
@@ -164,6 +174,8 @@ CompilationView.propTypes = {
   buildPdf: PropTypes.func.isRequired,
   buildCoverPdf: PropTypes.func.isRequired,
   submitSpineWidth: PropTypes.func.isRequired,
+  resaveAllComponents: PropTypes.func.isRequired,
+  clearCompilationLogs: PropTypes.func.isRequired,
 };
 
 export default CompilationView;

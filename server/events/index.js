@@ -380,7 +380,7 @@ export default (io) => {
       .then(() => Compilation.findOne({ _id: data.compilationId }))
       .then((compilation) => {
         return compilation.buildCoverPdf((info) => {
-          socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: compilation._id, entry: info });
+          socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: info });
         });
       })
       .then(() => {
@@ -390,8 +390,59 @@ export default (io) => {
         // socket.emit('UPDATED_COMPILATION', compilation);
       })
       .catch((err) => {
-        socket.emit('COMPILATION_COVER_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
+        socket.emit('COMPILATION_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
       });
+    });
+
+    socket.on('REBUILD_COMPILTION_EMAIL_PDF', (data) => {
+      console.log('REBUILD_COMPILTION_EMAIL_PDF', data);
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(userIsAdmin)
+      .then(() => Email.findOne({ _id: data.emailId }))
+      .then((email) => {
+        return email.buildPdf((info) => {
+          console.log(info.message);
+        });
+      })
+      .then((email) => {
+        socket.emit('UPDATED_COMPILATION_EMAIL', email);
+      })
+      .catch((err) => { console.log('An error happened when rebuilding an email pdf', err); });
+    });
+
+    socket.on('RESAVE_ALL_COMPILATION_COMPONENTS', (data) => {
+      console.log('RESAVE_ALL_COMPILATION_COMPONENTS', data);
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(userIsAdmin)
+      .then(() => Compilation.findOne({ _id: data.compilationId }))
+      .then((compilation) => {
+        socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: { type: 'status', message: 'Resaving all compilation components' } });
+
+        return Promise.all([
+          Page.find({ _compilation: compilation._id }),
+          Email.find({ _compilation: compilation._id }),
+        ])
+        .then((results) => {
+          const [pages, emails] = results;
+          const components = [...pages, ...emails];
+          let tasks = Promise.resolve();
+
+          _.forEach(components, (component, index) => {
+            tasks = tasks.then(() => {
+              return component.save();
+            })
+            .then(() => {
+              socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: { type: 'status', message: `Resaved ${index + 1} out of ${components.length}` } });
+            });
+          });
+
+          return tasks;
+        })
+        .then(() => {
+          socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: { type: 'status', message: 'Resave complete!!' } });
+        });
+      })
+      .catch((err) => { console.log('An error happened resaving all compilation components', err); });
     });
 
     socket.on('disconnect', () => {

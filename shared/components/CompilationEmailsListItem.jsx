@@ -11,6 +11,10 @@ class CompilationEmailsListItem extends Component {
     super(props, context);
 
     this.submitForm = this.submitForm.bind(this);
+    this.rebuildPdf = this.rebuildPdf.bind(this);
+  }
+  rebuildPdf() {
+    this.props.rebuildPdf('email', this.props.email._id);
   }
   submitForm() {
     this.refs.form.submitForm();
@@ -26,10 +30,19 @@ class CompilationEmailsListItem extends Component {
     </Link>);
   }
   renderPdfAction() {
-    if (_.get(this.props.email, 'pdf.url')) {
-      return (<a className="btn btn-primary" href={this.props.email.pdf.url}>
+    if (_.get(this.props.email, 'pdf.url') && this.props.user.isAdmin) {
+      return (<a target="_blank" className="btn btn-primary" href={this.props.email.pdf.url}>
         <span className="glyphicon glyphicon-file" aria-hidden="true"></span> PDF
       </a>);
+    }
+  }
+  renderRebuildPdfAction() {
+    if (_.get(this.props.email, 'pdf.url') && this.props.user.isAdmin) {
+      let text = <span><span className="glyphicon glyphicon-refresh" aria-hidden="true"></span> PDF</span>;
+      if (this.props.email.rebuilding) { text = <span>Rebuilding</span>; }
+      return (<span className="btn btn-success" onClick={this.rebuildPdf}>
+        {text}
+      </span>);
     }
   }
   renderRemoveAction() {
@@ -78,6 +91,7 @@ class CompilationEmailsListItem extends Component {
   }
   renderThumbActions() {
     return (<div className="email-thumb list-item-actions">
+      {this.renderRebuildPdfAction()}
       {this.renderPdfAction()}
       {this.renderShowAction()}
     </div>);
@@ -137,6 +151,8 @@ CompilationEmailsListItem.propTypes = {
   edit: PropTypes.func,
   rotateAttachment: PropTypes.func,
   componentProps: PropTypes.object,
+  user: PropTypes.object.isRequired,
+  rebuildPdf: PropTypes.func,
 };
 
 export default CompilationEmailsListItem;

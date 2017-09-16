@@ -43,8 +43,3 @@ socket.on('COMPILATION_LOG_ENTRY', (data) => {
   console.log('event COMPILATION_LOG_ENTRY');
   store.dispatch(Actions.appendToCompilationLog(data.compilationId, data.entry));
 });
-
-socket.on('COMPILATION_COVER_LOG_ENTRY', (data) => {
-  console.log('event COMPILATION_COVER_LOG_ENTRY');
-  store.dispatch(Actions.appendToCompilationCoverLog(data.compilationId, data.entry));
-});

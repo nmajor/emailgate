@@ -2,8 +2,21 @@ import React, { PropTypes, Component } from 'react';
 import CompilationComponentsList from '../components/CompilationComponentsList';
 import { connect } from 'react-redux';
 import Loading from '../components/Loading';
+import * as Actions from '../redux/actions/index';
 
 class CompilationComponentsListContainer extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.rebuildPdf = this.rebuildPdf.bind(this);
+  }
+  rebuildPdf(type, id) {
+    if (type === 'email') {
+      this.props.dispatch(Actions.rebuildEmailPdf(id));
+    } else if (type === 'page') {
+      console.log('Not implemented yet');
+    }
+  }
   renderCompilationComponentsList() {
     if (this.props.fetching.compilationEmails || this.props.fetching.compilationPages) {
       return <div className="top-bumper text-center"><span className="alone-loading"><Loading /></span></div>;
@@ -18,6 +31,8 @@ class CompilationComponentsListContainer extends Component {
       edit={this.props.edit}
       rotateAttachment={this.props.rotateAttachment}
       componentProps={this.props.componentProps}
+      user={this.props.user}
+      rebuildPdf={this.rebuildPdf}
     />);
   }
   render() {
@@ -30,6 +45,7 @@ function mapStateToProps(store) {
     compilationEmails: store.compilationEmails,
     compilationPages: store.compilationPages,
     fetching: store.fetching,
+    user: store.user,
   };
 }
 
@@ -44,6 +60,7 @@ CompilationComponentsListContainer.propTypes = {
   rotateAttachment: PropTypes.func,
   componentProps: PropTypes.object,
   fetching: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(CompilationComponentsListContainer);

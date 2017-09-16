@@ -19,6 +19,20 @@ const compilations = (state = initialState.compilations, action) => {
       return state;
     }
 
+    case ActionTypes.SET_PROPERTY_FOR_COMPILATION : {
+      const propCompilationIndex = _.findIndex(state, { _id: action.compilationId });
+      if (propCompilationIndex > -1) {
+        const compilation = Object.assign({}, state[propCompilationIndex]);
+        compilation[action.prop] = action.val;
+        return [
+          ...state.slice(0, propCompilationIndex),
+          compilation,
+          ...state.slice(propCompilationIndex + 1),
+        ];
+      }
+      return state;
+    }
+
     case ActionTypes.APPEND_TO_COMPILATION_LOG : {
       const loggedCompilationIndex = _.findIndex(state, { _id: action.compilationId });
       if (loggedCompilationIndex > -1) {
@@ -29,21 +43,6 @@ const compilations = (state = initialState.compilations, action) => {
           ...state.slice(0, loggedCompilationIndex),
           compilation,
           ...state.slice(loggedCompilationIndex + 1),
-        ];
-      }
-      return state;
-    }
-
-    case ActionTypes.APPEND_TO_COMPILATION_COVER_LOG : {
-      const loggedCompilationCoverIndex = _.findIndex(state, { _id: action.compilationId });
-      if (loggedCompilationCoverIndex > -1) {
-        const compilation = Object.assign({}, state[loggedCompilationCoverIndex]);
-        compilation.coverLogs = compilation.coverLogs || [];
-        compilation.coverLogs.push(action.entry);
-        return [
-          ...state.slice(0, loggedCompilationCoverIndex),
-          compilation,
-          ...state.slice(loggedCompilationCoverIndex + 1),
         ];
       }
       return state;

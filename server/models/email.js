@@ -10,6 +10,7 @@ import {
   removeFile,
   rotateImageAttachment,
 } from '../util/helpers';
+import { startWorker } from '../util/docker';
 
 import EmailTemplate from '../../shared/templates/email';
 import _ from 'lodash';
@@ -147,6 +148,15 @@ EmailSchema.methods.propChanged = function propChanged(propsString) {
   const currentProp = _.get(current, propsString);
 
   return !_.isEqual(originalProp, currentProp);
+};
+
+EmailSchema.methods.buildPdf = function buildPdf(statusCb) {
+  statusCb = statusCb || function() {}; // eslint-disable-line
+  return this.save()
+  .then(() => {
+    return startWorker({ compilationId: this._compilation, emailId: this._id, kind: 'email-pdf' }, statusCb);
+  })
+  .then(() => { return this; });
 };
 
 export default Mongoose.model('Email', EmailSchema);

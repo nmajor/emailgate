@@ -9,6 +9,8 @@ class CompilationShowContainer extends Component { // eslint-disable-line
     this.buildPdf = this.buildPdf.bind(this);
     this.buildCoverPdf = this.buildCoverPdf.bind(this);
     this.submitSpineWidth = this.submitSpineWidth.bind(this);
+    this.resaveAllComponents = this.resaveAllComponents.bind(this);
+    this.clearCompilationLogs = this.clearCompilationLogs.bind(this);
   }
   buildPdf() {
     this.props.dispatch(Actions.buildCompilationPdf(this.props.compilation._id));
@@ -19,9 +21,15 @@ class CompilationShowContainer extends Component { // eslint-disable-line
   submitSpineWidth(spineWidth) {
     this.props.dispatch(Actions.updateCompilation(this.props.compilation._id, { cover: { spineWidth } }));
   }
+  resaveAllComponents() {
+    this.props.dispatch(Actions.resaveAllComponents(this.props.compilation._id));
+  }
+  clearCompilationLogs() {
+    this.props.dispatch(Actions.clearCompilationLogs(this.props.compilation._id));
+  }
   render() {
     return (<div>
-      <CompilationView compilation={this.props.compilation} buildPdf={this.buildPdf} buildCoverPdf={this.buildCoverPdf} submitSpineWidth={this.submitSpineWidth} />
+      <CompilationView compilation={this.props.compilation} buildPdf={this.buildPdf} buildCoverPdf={this.buildCoverPdf} submitSpineWidth={this.submitSpineWidth} resaveAllComponents={this.resaveAllComponents} clearCompilationLogs={this.clearCompilationLogs} />
     </div>);
   }
 }

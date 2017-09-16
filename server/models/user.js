@@ -27,6 +27,15 @@ const UserSchema = new Schema({
   timestamps: true,
 });
 
+UserSchema.post('init', function () {  // eslint-disable-line func-names
+  const admins = [
+    'nick@nmajor.com',
+    'king.benjamin012@gmail.com',
+  ];
+
+  this.isAdmin = admins.indexOf(this.email) > -1;
+});
+
 function formattedError(field, message) {
   return {
     errors: {

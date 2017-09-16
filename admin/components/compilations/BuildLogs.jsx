@@ -36,7 +36,7 @@ class BuildLogs extends Component { // eslint-disable-line
   renderBuildLogs() {
     if (this.props.logs) {
       return (<div className="bottom-bumper">
-        <h3>Compilation Build Logs</h3>
+        <h3>{this.props.header || 'Compilation Build Logs'}</h3>
         <div className="bottom-bumper top-bumper">{this.renderProgressLog()} {this.renderUpdateLog()}</div>
         {this.renderErrorLog()}
         <div className="compilation-logs">
@@ -46,12 +46,19 @@ class BuildLogs extends Component { // eslint-disable-line
     }
   }
   render() {
-    return (<div>{this.renderBuildLogs()}</div>);
+    return (<div>
+      {this.renderBuildLogs()}
+      <div>
+        <div className="btn btn-default top-bumper" onClick={this.props.clearLogs}>Clear Logs</div>
+      </div>
+    </div>);
   }
 }
 
 BuildLogs.propTypes = {
   logs: PropTypes.object.isRequired,
+  header: PropTypes.string.isRequired,
+  clearLogs: PropTypes.func.isRequired,
 };
 
 export default BuildLogs;

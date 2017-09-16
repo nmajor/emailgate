@@ -18,18 +18,19 @@ export function appendToCompilationLog(compilationId, entry) {
   };
 }
 
-export function appendToCompilationCoverLog(compilationId, entry) {
-  return {
-    type: ActionTypes.APPEND_TO_COMPILATION_COVER_LOG,
-    compilationId,
-    entry,
-  };
-}
-
 export function updateCompilationInCompilations(compilation) {
   return {
     type: ActionTypes.UPDATE_COMPILATION_IN_COMPILATIONS,
     compilation,
+  };
+}
+
+export function setPropertyForCompilation(compilationId, prop, val) {
+  return {
+    type: ActionTypes.SET_PROPERTY_FOR_COMPILATION,
+    compilationId,
+    prop,
+    val,
   };
 }
 
@@ -107,5 +108,18 @@ export function buildCompilationPdf(compilationId) {
 export function buildCompilationCoverPdf(compilationId) {
   return () => {
     socket.emit('BUILD_COMPILATION_COVER_PDF', { compilationId });
+  };
+}
+
+export function resaveAllComponents(compilationId) {
+  return () => {
+    socket.emit('RESAVE_ALL_COMPILATION_COMPONENTS', { compilationId });
+  };
+}
+
+export function clearCompilationLogs(compilationId) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilation(compilationId, 'logs', undefined));
+    dispatch(setPropertyForCompilation(compilationId, 'coverLogs', undefined));
   };
 }

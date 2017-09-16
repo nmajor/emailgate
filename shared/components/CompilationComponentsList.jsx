@@ -35,6 +35,8 @@ class CompilationComponentsList extends Component {
         edit={this.props.edit}
         rotateAttachment={this.props.rotateAttachment}
         componentProps={this.props.componentProps || {}}
+        user={this.props.user}
+        rebuildPdf={this.props.rebuildPdf}
       />);
     });
   }
@@ -89,6 +91,8 @@ CompilationComponentsList.propTypes = {
   edit: PropTypes.func,
   componentProps: PropTypes.object,
   rotateAttachment: PropTypes.func,
+  rebuildPdf: PropTypes.func,
+  user: PropTypes.object.isRequired,
 };
 
 export default CompilationComponentsList;
