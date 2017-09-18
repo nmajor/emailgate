@@ -91,6 +91,7 @@ export function getCompilations(req, res) {
 export function createCompilation(req, res) {
   const newCompilation = new Compilation(req.body);
   newCompilation._user = req.user._id;
+  newCompilation.meta.creatingUserAgent = req.headers['user-agent'];
   newCompilation.save()
   .then((compilation) => {
     res.json(compilation);
@@ -105,9 +106,9 @@ export function patchCompilation(req, res) {
   }
   Compilation.findOne(query)
   .then((compilation) => {
-    if (req.body.title) { compilation.title = req.body.title; }
-    if (req.body.subtitle) { compilation.subtitle = req.body.subtitle; }
-    if (req.body.coverTemplate) { compilation.coverTemplate = req.body.coverTemplate; }
+    if (req.body.title) { compilation.title = req.body.title || req.body.title; }
+    if (req.body.subtitle) { compilation.subtitle = req.body.subtitle || req.body.subtitle; }
+    if (req.body.coverTemplate) { compilation.coverTemplate = req.body.coverTemplate || req.body.coverTemplate; }
     if (!_.isEmpty(req.body.newImages)) { compilation.newImages = req.body.newImages; }
     if (!_.isEmpty(req.body.meta)) {
       compilation.meta = { ...compilation.meta, ...req.body.meta };
@@ -120,14 +121,15 @@ export function patchCompilation(req, res) {
   })
   .then((compilation) => {
     res.json(compilation);
-
-    return compilation.buildThumbnail();
-  })
-  .then((compilation) => {
-    return compilation.save();
-  })
-  .then((compilation) => {
-    compilation.broadcast();
+    if (req.body.buildThumbnail) {
+      return compilation.buildThumbnail()
+      .then((comp) => {
+        return comp.save();
+      })
+      .then((comp) => {
+        comp.broadcast();
+      });
+    }
   })
   .catch((err) => { console.log('An error happened when updating a compilation', err); });
 }

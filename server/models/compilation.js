@@ -40,6 +40,7 @@ const CompilationSchema = new Schema({
     endingDate: { type: Date, default: new Date },
     estimatedEmailPdfPages: Number,
     estimatedPagePdfPages: Number,
+    creatingUserAgent: String,
   },
   pdf: {},
 }, {
@@ -124,6 +125,8 @@ CompilationSchema.methods.publicFolderBase = function publicFolderBase() {
 };
 
 CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
+  if (!this.coverTemplate) { return Promise.resolve(this); }
+
   const thumbnailOptions = {
     type: 'png',             // allowed file types: png, jpeg, pdf
     quality: '75',

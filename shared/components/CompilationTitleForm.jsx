@@ -11,7 +11,7 @@ class CompilationTitleForm extends Component {
     super(props, context);
     this.state = {
       savable: false,
-      coverTemplate: props.compilation.coverTemplate || covers.options[0],
+      coverTemplate: props.compilation.coverTemplate,
       showImageSelector: false,
       coverProps: {},
       startDate: props.compilation.meta.startingDate,
@@ -19,6 +19,8 @@ class CompilationTitleForm extends Component {
     };
 
     this.submitForm = this.submitForm.bind(this);
+    this.submitIfFormChanged = this.submitIfFormChanged.bind(this);
+    this.submitFormBuildThumbnail = this.submitFormBuildThumbnail.bind(this);
     this.back = this.back.bind(this);
     this.setSaveAbility = this.setSaveAbility.bind(this);
     this.openImageSelector = this.openImageSelector.bind(this);
@@ -26,6 +28,11 @@ class CompilationTitleForm extends Component {
     this.updateCompilationImage = this.updateCompilationImage.bind(this);
     this.addCompilationImage = this.addCompilationImage.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+  }
+  componentWillUnmount() {
+    if (!_.get(this.props.compilation, 'thumbnail.updatedAt') || new Date(this.props.compilation.updatedAt).getTime() > _.get(this.props.compilation, 'thumbnail.updatedAt')) {
+      this.submitFormBuildThumbnail();
+    }
   }
   setSaveAbility() {
     if (this.formChanged()) {
@@ -51,6 +58,7 @@ class CompilationTitleForm extends Component {
 
     const newImages = [data];
     this.props.submitForm({
+      buildThumbnail: true,
       newImages,
     });
   }
@@ -77,8 +85,33 @@ class CompilationTitleForm extends Component {
     }
     return false;
   }
+  submitFormBuildThumbnail(e) {
+    if (e && e.preventDefault) { e.preventDefault(); }
+    if (!this.state.savable) { return; }
+
+    const titleRef = this.refs.title || {};
+    const subtitleRef = this.refs.subtitle || {};
+
+    this.props.submitForm({
+      buildThumbnail: true,
+      title: titleRef.value,
+      subtitle: subtitleRef.value,
+      coverTemplate: this.state.coverTemplate,
+      meta: {
+        startingDate: this.state.startDate,
+        endingDate: this.state.endDate,
+      },
+    });
+  }
+  submitIfFormChanged(e) {
+    if (e && e.preventDefault) { e.preventDefault(); }
+
+    if (this.formChanged()) {
+      this.submitForm();
+    }
+  }
   submitForm(e) {
-    e.preventDefault();
+    if (e && e.preventDefault) { e.preventDefault(); }
     if (!this.state.savable) { return; }
 
     const titleRef = this.refs.title || {};
@@ -107,7 +140,7 @@ class CompilationTitleForm extends Component {
     return (<div className="col-xs-2">
       <span
         className={`template-thumb ${this.state.coverTemplate === option ? 'active' : ''}`}
-        onClick={() => { this.setState({ coverTemplate: option, savable: true }); }}
+        onClick={() => { this.setState({ coverTemplate: option, savable: true }); this.props.submitForm({ coverTemplate: option }); }}
       >
         <img role="presentation" className="img-responsive" src={`/img/cover-thumbs/${option}.png`} />
       </span>
@@ -152,7 +185,7 @@ class CompilationTitleForm extends Component {
           defaultValue={this.props.compilation.title}
           placeholder="My Email Book"
           onChange={this.setSaveAbility}
-          onBlur={this.submitForm}
+          onBlur={this.submitIfFormChanged}
         />
       </div>
     );
@@ -169,7 +202,7 @@ class CompilationTitleForm extends Component {
           defaultValue={this.props.compilation.subtitle}
           placeholder="Optional"
           onChange={this.setSaveAbility}
-          onBlur={this.submitForm}
+          onBlur={this.submitIfFormChanged}
         />
       </div>
     );
@@ -189,7 +222,7 @@ class CompilationTitleForm extends Component {
               dateFormat="LL"
               selected={this.state.startDate ? moment(this.state.startDate, 'YYYY/M/D') : null}
               onChange={(params) => { this.handleDateChange(params, 'startDate'); }}
-              onBlur={this.submitForm}
+              onBlur={this.submitIfFormChanged}
             />
           </div>
         </div>
@@ -205,7 +238,7 @@ class CompilationTitleForm extends Component {
               dateFormat="LL"
               selected={this.state.endDate ? moment(this.state.endDate, 'YYYY/M/D') : null}
               onChange={(params) => { this.handleDateChange(params, 'endDate'); }}
-              onBlur={this.submitForm}
+              onBlur={this.submitIfFormChanged}
             />
           </div>
         </div>
@@ -225,27 +258,36 @@ class CompilationTitleForm extends Component {
     }
   }
   renderCoverPreview() {
-    const titleRef = this.refs.title || {};
-    const subtitleRef = this.refs.subtitle || {};
+    if (this.state.coverTemplate) {
+      const titleRef = this.refs.title || {};
+      const subtitleRef = this.refs.subtitle || {};
 
-    const compilation = {
-      title: titleRef.value || this.props.compilation.title,
-      subtitle: subtitleRef.value || this.props.compilation.subtitle,
-      cover: this.props.compilation.cover,
-      images: this.props.compilation.images,
-      meta: {
-        startingDate: this.state.startDate || _.get(this.props.compilation, 'meta.startingDate'),
-        endingDate: this.state.endDate || _.get(this.props.compilation, 'meta.endingDate'),
-      },
-    };
+      const compilation = {
+        title: titleRef.value || this.props.compilation.title,
+        subtitle: subtitleRef.value || this.props.compilation.subtitle,
+        cover: this.props.compilation.cover,
+        images: this.props.compilation.images,
+        meta: {
+          startingDate: this.state.startDate || _.get(this.props.compilation, 'meta.startingDate'),
+          endingDate: this.state.endDate || _.get(this.props.compilation, 'meta.endingDate'),
+        },
+      };
 
-    // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
-    // {coverTemplate.renderFrontCover()}
+      // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;
+      // {coverTemplate.renderFrontCover()}
 
-    const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', selectImage: this.openImageSelector });
-    return (<div className="cover-template-container">
-      {coverTemplate.renderWrappedFrontCover()}
-    </div>);
+      const coverTemplate = new covers[this.state.coverTemplate]({ compilation, bleedType: 'bleedless', selectImage: this.openImageSelector });
+      return (<div>
+        {this.renderCoverHelperText()}
+        <div className="cover-preview">
+          <div className="template">
+            <div className="cover-template-container">
+              {coverTemplate.renderWrappedFrontCover()}
+            </div>
+          </div>
+        </div>
+      </div>);
+    }
   }
   renderCoverHelperText() {
     return (<div className="alert alert-info" role="alert">Click on any cover image to change it.</div>);
@@ -272,22 +314,17 @@ class CompilationTitleForm extends Component {
           {this.renderErrors('base')}
           <div className="text-right hidden-sm hidden-xs">
             {this.renderBackAction()}
-            <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
+            <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitFormBuildThumbnail}>
               Submit
               {this.renderLoading()}
             </button>
           </div>
         </div>
         <div className="col-md-6">
-          {this.renderCoverHelperText()}
-          <div className="cover-preview">
-            <div className="template">
-              {this.renderCoverPreview()}
-            </div>
-          </div>
+          {this.renderCoverPreview()}
           <div className="text-right hidden-md hidden-lg">
             {this.renderBackAction()}
-            <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitForm}>
+            <button className={`marginless-right btn btn-success ${this.state.savable ? '' : 'disabled'}`} onClick={this.submitFormBuildThumbnail}>
               Submit
               {this.renderLoading()}
             </button>

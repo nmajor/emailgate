@@ -748,6 +748,7 @@ input {
     height: 80px;
     display: inline-block;
     margin-left: 60px;
+
     .actions {
       margin-top: 6px;
       .label {
@@ -755,6 +756,22 @@ input {
       }
       .btn {
         padding: 6px 10px;
+      }
+    }
+
+    @media (max-width: 590px) {
+      .actions {
+        .label {
+          padding: 2px 5px;
+          margin-right: 3px;
+          margin-bottom: 3px;
+          &.right-bumper { margin-right: 3px; }
+        }
+        .btn {
+          padding: 2px 5px;
+          margin-right: 3px;
+          &.right-bumper { margin-right: 3px; }
+        }
       }
     }
   }

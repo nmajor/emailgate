@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import moment from 'moment';
+// import moment from 'moment';
 import _ from 'lodash';
 import AddedOrdersList from './AddedOrdersList';
 import AddOrderOptionsList from './AddOrderOptionsList';
