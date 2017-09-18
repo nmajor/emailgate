@@ -141,7 +141,7 @@ export function userIsAdmin(req) {
     'king.benjamin012@gmail.com',
   ];
 
-  if (req.user.isAdmin || admins.indexOf(req.user.email) > -1) {
+  if (req.user && (req.user.isAdmin || admins.indexOf(req.user.email) > -1)) {
     return true;
   }
 

@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import CompilationHeader from '../components/CompilationHeader';
 import CompilationProgressHeader from '../components/CompilationProgressHeader';
+import MobileGreetingContainer from './MobileGreetingContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import * as sharedHelpers from '../helpers';
@@ -79,6 +80,7 @@ class CompilationContainer extends Component {
     if (!_.isEmpty(this.compilation)) {
       return (<div className="allheight">
         <Header />
+        <MobileGreetingContainer />
         <CompilationHeader compilation={this.compilation} compilationEmails={this.props.compilationEmails} addingFilteredEmailIds={this.props.addingFilteredEmailIds} />
         <CompilationProgressHeader compilation={this.compilation} currentPath={this.currentCompilationPath} />
         {this.renderSaveNotice()}

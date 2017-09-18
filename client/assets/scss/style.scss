@@ -1090,6 +1090,17 @@ input {
   }
 }
 
+.mobile-greeting {
+  position: relative;
+
+  .actions {
+    width: 100%;
+    padding-right: 44px;
+    text-align: right;
+    position: absolute;
+  }
+}
+
 .screencast-helper-actions {
   text-align: right;
   margin-bottom: 5px;

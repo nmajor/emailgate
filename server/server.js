@@ -111,8 +111,11 @@ app.use((req, res) => {
 
         res.status(200).end(renderPage(initialView, finalState));
       })
-      .catch(() => { // eslint-disable-line no-shadow
-        res.end(mainPage('Error', {}));
+      .catch((err) => { // eslint-disable-line no-shadow
+        console.log('An error when rendering page', err);
+        initialState.user = req.user || {};
+
+        res.end(mainPage('Error', initialState));
       });
   });
 });

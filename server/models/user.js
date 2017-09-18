@@ -22,6 +22,7 @@ const UserSchema = new Schema({
     showCoverHelp: { type: Boolean, default: true },
     showAddHelp: { type: Boolean, default: true },
     showEditHelp: { type: Boolean, default: true },
+    showMobileGreeting: { type: Boolean, default: true },
   },
 }, {
   timestamps: true,
