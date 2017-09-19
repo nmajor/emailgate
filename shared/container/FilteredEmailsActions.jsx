@@ -124,10 +124,10 @@ class FilteredEmailsActions extends Component {
   }
   render() {
     return (<div className="row">
-      <div className="col-sm-8">
+      <div className="col-sm-6 col-xs-4">
         {this.renderActions()}
       </div>
-      <div className="col-sm-4">
+      <div className="col-sm-6 col-xs-8">
         {this.renderNavResults()}
       </div>
     </div>);
