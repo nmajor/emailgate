@@ -76,6 +76,7 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "nmajor/passport-local-mongoose",
     "pdfjs-dist": "^1.5.285",
+    "phantomjs-prebuilt": "^2.1.15",
     "rc-progress": "^1.0.4",
     "react": "^15.4.2",
     "react-credit-card": "^0.10.0",
