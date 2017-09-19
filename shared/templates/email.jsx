@@ -198,21 +198,23 @@ class AttachmentInput extends Component { // eslint-disable-line
     // });
   }
   renderAttachmentActions(attachment, index) {
-    return (<div className="attachment-actions">
-      <div
-        className="btn btn-primary btn-xs-true"
-        onClick={() => { this.rotateAttachment(attachment.contentId); }}
-      >
-        <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-      </div>
+    if (attachment.url) {
+      return (<div className="attachment-actions">
+        <div
+          className="btn btn-primary btn-xs-true"
+          onClick={() => { this.rotateAttachment(attachment.contentId); }}
+        >
+          <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+        </div>
 
-      <div
-        className="btn btn-danger left-bumper btn-xs-true"
-        onClick={() => { this.removeAttachment(index); }}
-      >
-        <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
-      </div>
-    </div>);
+        <div
+          className="btn btn-danger left-bumper btn-xs-true"
+          onClick={() => { this.removeAttachment(index); }}
+        >
+          <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </div>
+      </div>);
+    }
   }
   renderAttachments() {
     const divStyle = {
@@ -233,6 +235,8 @@ class AttachmentInput extends Component { // eslint-disable-line
       let spinner = null;
       if (attachment.rotating) {
         spinner = (<div className="spinner">Rotating...</div>);
+      } else if (attachment.saving) {
+        spinner = (<div className="spinner">Saving...</div>);
       }
 
       if (attachment.url) {

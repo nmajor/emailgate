@@ -53,10 +53,10 @@ class AddCustomPageContainer extends Component {
         <div className="padded custom-page-options">
           <h3 className="text-center">Please select the type of page you want to add</h3>
           <div className="row bottom-bumper top-bumper">
-            <div className="col-md-6">
+            <div className="col-xs-6">
               {this.renderThumbOption('message-page', 'Message Page', 'message-page-thumb.jpg')}
             </div>
-            <div className="col-md-6">
+            <div className="col-xs-6">
               {this.renderThumbOption('full-image-page', 'Full Image Page', 'full-image-page-thumb.jpg')}
             </div>
           </div>
