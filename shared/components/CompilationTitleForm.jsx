@@ -49,7 +49,7 @@ class CompilationTitleForm extends Component {
   }
   updateCompilationImage(data) {
     this.setState({ savable: true });
-    this.props.submitForm({ coverMeta: data });
+    this.props.submitForm({ buildThumbnail: true, coverMeta: data });
 
     this.closeImageSelector();
   }
@@ -58,7 +58,6 @@ class CompilationTitleForm extends Component {
 
     const newImages = [data];
     this.props.submitForm({
-      buildThumbnail: true,
       newImages,
     });
   }
