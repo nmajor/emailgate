@@ -2,7 +2,7 @@
 // import * as ActionTypes from '../constants';
 // import baseURL from '../../baseURL';
 
-// import socket from '../../../client/socket';
+import socket from '../../../client/socket';
 
 export * from './compilationsActions';
 export * from './usersActions';
@@ -13,3 +13,9 @@ export * from './userActions';
 export * from './emailActions';
 export * from './pageActions';
 export * from './settingsActions';
+
+export function runAdminTask() {
+  return () => {
+    socket.emit('RUN_ADMIN_TASK', {});
+  };
+}
