@@ -1099,6 +1099,16 @@ input {
   }
 }
 
+.sitewide-discount-banner {
+  text-align: center;
+  padding: 5px 0;
+  background: #F0C569;
+  color: white;
+  font-weight: 300;
+  font-size: 18px;
+  border-bottom: 1px solid darken(#F0C569, 5%);
+}
+
 .mobile-greeting {
   position: relative;
 

@@ -1,7 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/index';
-import ScreencastHelpFormContainer from './ScreencastHelpFormContainer';
+import SettingFormContainer from './SettingFormContainer';
+import ScreencastHelpForm from '../../components/settings/ScreencastHelpForm';
+import SitewideDiscountForm from '../../components/settings/SitewideDiscountForm';
 
 class SettingsContainer extends Component { // eslint-disable-line
   // constructor(props, context) {
@@ -14,9 +16,10 @@ class SettingsContainer extends Component { // eslint-disable-line
   }
   render() {
     return (<div>
-      <ScreencastHelpFormContainer name="designCoverScreencastHelp" />
-      <ScreencastHelpFormContainer name="addEmailsScreencastHelp" />
-      <ScreencastHelpFormContainer name="editCompilationScreencastHelp" />
+      <SettingFormContainer name="designCoverScreencastHelp" form={ScreencastHelpForm} />
+      <SettingFormContainer name="addEmailsScreencastHelp" form={ScreencastHelpForm} />
+      <SettingFormContainer name="editCompilationScreencastHelp" form={ScreencastHelpForm} />
+      <SettingFormContainer name="sitewideDiscount" form={SitewideDiscountForm} />
     </div>);
   }
 }

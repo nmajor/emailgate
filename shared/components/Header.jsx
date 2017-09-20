@@ -12,6 +12,7 @@ class Header extends Component {
       collapsed: true,
     };
 
+    this.discountSetting = _.find(props.config.settings, (setting) => { return setting.name === 'sitewideDiscount'; });
     this.logout = this.logout.bind(this);
     this.forceCollapse = this.forceCollapse.bind(this);
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
@@ -121,10 +122,20 @@ class Header extends Component {
       </div>
     </div>);
   }
+  renderSitewideDiscountBanner() {
+    if (_.get(this.discountSetting, 'value.discount') && _.get(this.discountSetting, 'value.desc')) {
+      return (<div className="sitewide-discount-banner">
+        {this.discountSetting.value.desc}
+      </div>);
+    }
+  }
   render() {
-    return (<div className="header">
-      {this.renderNormalNav()}
-      {this.renderCollapsibleNav()}
+    return (<div>
+      <div className="header">
+        {this.renderNormalNav()}
+        {this.renderCollapsibleNav()}
+      </div>
+      {this.renderSitewideDiscountBanner()}
     </div>);
   }
 }
@@ -133,6 +144,7 @@ function mapStateToProps(store) {
   return {
     user: store.user,
     cart: store.cart,
+    config: store.config,
   };
 }
 
@@ -144,6 +156,7 @@ Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   cart: PropTypes.object.isRequired,
+  config: PropTypes.object.isRequired,
   hideCart: PropTypes.bool,
   currentPath: PropTypes.string,
 };
