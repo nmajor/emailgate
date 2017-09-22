@@ -214,6 +214,17 @@ h1 > .loading {
   padding: 30px;
   line-height: 1.9em;
   font-size: 1.9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .inner {
+    height: 60px;
+    width: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   .icon {
     line-height: 1.25em;

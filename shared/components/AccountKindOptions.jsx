@@ -5,10 +5,14 @@ class AccountKindOptions extends Component {
     super(props, context);
 
     this.setKindToImap = this.setKindToImap.bind(this);
+    this.setKindToBlog = this.setKindToBlog.bind(this);
     this.handleGoogleKindClick = this.handleGoogleKindClick.bind(this);
   }
   setKindToImap() {
     this.props.setKind('imap');
+  }
+  setKindToBlog() {
+    this.props.setKind('blog');
   }
   handleGoogleKindClick() {
     const ReactGA = require('../ga').default; // eslint-disable-line
@@ -26,9 +30,11 @@ class AccountKindOptions extends Component {
     // </div>);
   }
   renderGoogleKind() {
-    return (<div className="col-sm-3">
+    return (<div>
       <a className="account-kind-option" href={this.props.authUrls.googleAuthUrl} onClick={this.handleGoogleKindClick}>
-        <img role="presentation" src="/img/gmail_logo.png" />
+        <div className="inner">
+          <img role="presentation" src="/img/gmail_logo.png" />
+        </div>
       </a>
     </div>);
   }
@@ -39,6 +45,15 @@ class AccountKindOptions extends Component {
     //   </a>
     // </div>);
   }
+  renderBlogKind() {
+    return (<div>
+      <div className={`account-kind-option text-center ${this.props.account.kind === 'blog' ? 'selected' : ''}`} onClick={this.setKindToBlog}>
+        <div className="inner">
+          <span className="icon right-bumper"><span className="fa fa-rss"></span></span> <span> Blog</span>
+        </div>
+      </div>
+    </div>);
+  }
   renderHelpLink() {
     return (<span>
       If you dont see your email provider listed here, <a href="https://missionarymemoir.freshdesk.com/support/tickets/new">please contact us so we can add it</a>.
@@ -46,22 +61,32 @@ class AccountKindOptions extends Component {
   }
   renderKindOptions() {
     return (<div>
-      {this.renderGoogleKind()}
-      {this.renderMyldsmailKind()}
-      {this.renderImapKind()}
+
+
     </div>);
   }
   render() {
-    return (<div className="account-kind-options bottom-bumper">
-      <div className="row">
-        <div className="col-sm-12">
-          <h5>Click below to connect your Gmail account</h5>
+    return (<div>
+      <h2 className="marginless-top text-center">Connect an Account</h2>
+      <h3 className="marginless-top text-center bottom-bumper">Where would you like to add emails from?</h3>
+      <div className="account-kind-options bottom-bumper">
+        <div className="row">
+          <div className="col-sm-6">
+            <h3>Connect an Email account</h3>
+              {this.renderGoogleKind()}
+              {this.renderMyldsmailKind()}
+              {this.renderImapKind()}
+          </div>
+          <div className="col-sm-6">
+            <h3>Connect a blog</h3>
+            {this.renderBlogKind()}
+          </div>
         </div>
-        {this.renderKindOptions()}
-      </div>
-      <div className="row">
-        <div className="col-sm-12">
-          {this.renderHelpLink()}
+        <hr />
+        <div className="row">
+          <div className="col-sm-12">
+            {this.renderHelpLink()}
+          </div>
         </div>
       </div>
     </div>);

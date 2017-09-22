@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Header from '../components/Header';
+// import Header from '../components/Header';
 import AccountFormContainer from './AccountFormContainer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
@@ -13,17 +13,34 @@ class NewAccountContainer extends Component {
   }
 
   create(props) {
-    this.props.dispatch(Actions.createAccount({
-      email: props.email,
-      kind: props.kind,
-      authProps: {
-        host: props.host,
-        port: props.port,
-      },
-    }, (account) => {
-      this.redirectToEdit(account);
-      this.props.dispatch(Actions.setPasswordInAccountPasswordMap(account, props.password));
-    }));
+    console.log('blah props', props);
+    if (props.kind === 'blog') {
+      this.props.dispatch(Actions.createAccount({
+        email: props.email,
+        kind: props.kind,
+        authProps: {
+          host: props.host,
+          port: props.port,
+        },
+      }, (account) => {
+        this.redirectToEdit(account);
+        this.props.dispatch(Actions.setPasswordInAccountPasswordMap(account, props.password));
+      }));
+    }
+
+    // if (props.kind === 'imap') {
+    //   this.props.dispatch(Actions.createAccount({
+    //     email: props.email,
+    //     kind: props.kind,
+    //     authProps: {
+    //       host: props.host,
+    //       port: props.port,
+    //     },
+    //   }, (account) => {
+    //     this.redirectToEdit(account);
+    //     this.props.dispatch(Actions.setPasswordInAccountPasswordMap(account, props.password));
+    //   }));
+    // }
   }
 
   redirectToEdit(account) {
@@ -37,7 +54,6 @@ class NewAccountContainer extends Component {
   render() {
     return (
       <div className="new-account-container">
-        <h1 className="marginless-top">Connect an Email Account</h1>
         <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} />
       </div>
     );

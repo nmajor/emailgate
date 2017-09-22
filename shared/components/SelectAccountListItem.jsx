@@ -22,7 +22,7 @@ class SelectAccountListItem extends Component {
   }
   renderChangeLink() {
     if (this.props.selected) {
-      return <span className="btn-link text-danger pointer" onClick={this.props.deselectAccount}>change</span>;
+      return <span className="btn-link text-danger pointer" onClick={this.props.deselectAccount}>Use a different account</span>;
     }
   }
   renderRemoveLink() { // eslint-disable-line consistent-return

@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import AccountImapForm from '../components/AccountImapForm';
+// import AccountImapForm from '../components/AccountImapForm';
 import AccountKindOptions from '../components/AccountKindOptions';
+import AccountBlogForm from '../components/AccountBlogForm';
 
 import base64 from 'base64url';
 
@@ -35,35 +36,42 @@ class AccountFormContainer extends Component {
       myldsmailAuthUrl: `${this.props.config.myldsmailAuthUrl}&state=${stateString}`,
     };
   }
-  renderImapForm() {
-    if (this.state.account.kind === 'imap') {
-      return (<AccountImapForm
-        account={this.state.account}
-        accountPassword={this.props.accountPasswordMap[this.state.account._id] || ''}
-        submitForm={this.props.submitForm}
-        back={this.props.back}
-        checkConnection={this.props.checkConnection}
-      />);
-    }
-  }
-  renderAccountKindOptions() {
-    if (this.props.new) {
-      return (<AccountKindOptions
-        account={this.state.account}
-        authUrls={this.authUrls()}
-        setKind={this.setAccountKind}
-      />);
-    }
-  }
+  // renderImapForm() {
+  //   if (this.state.account.kind === 'imap') {
+  //     return (<AccountImapForm
+  //       account={this.state.account}
+  //       accountPassword={this.props.accountPasswordMap[this.state.account._id] || ''}
+  //       submitForm={this.props.submitForm}
+  //       back={this.props.back}
+  //       checkConnection={this.props.checkConnection}
+  //     />);
+  //   }
+  // }
   renderBackButton() {
     if (this.state.account.kind !== 'imap') {
       return <div className="btn btn-danger" onClick={this.props.back}>Back</div>;
     }
   }
+  renderMain() {
+    if (this.state.account.kind === 'blog') {
+      return (<div>
+        <h1 className="marginless-top bottom-bumper text-center">Connect a Blog</h1>
+        <AccountBlogForm
+          back={() => { this.setAccountKind(undefined); }}
+          onSubmit={this.props.submitForm}
+        />
+      </div>);
+    }
+
+    return (<AccountKindOptions
+      account={this.state.account}
+      authUrls={this.authUrls()}
+      setKind={this.setAccountKind}
+    />);
+  }
   render() {
     return (<div>
-      {this.renderAccountKindOptions()}
-      {this.renderImapForm()}
+      {this.renderMain()}
     </div>);
   }
 }
