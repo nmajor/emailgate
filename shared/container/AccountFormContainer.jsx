@@ -24,8 +24,12 @@ class AccountFormContainer extends Component {
   }
 
   authUrls() {
+    let userReturnTo = '/dashboard';
+    try {
+      if (window.location) { userReturnTo = window.location.pathname; }
+    } catch (e) {} // eslint-disable-line
+
     // let userReturnTo = window.previousLocation ? window.previousLocation.pathname : '/dashboard';
-    let userReturnTo = window.location ? window.location.pathname : '/dashboard';
     userReturnTo = this.props.userReturnTo ? this.props.userReturnTo : userReturnTo;
 
     const stateParam = JSON.stringify({ userReturnTo });
