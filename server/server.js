@@ -1,6 +1,10 @@
 require('dotenv').config();
 if (process.env.NODE_ENV === 'production') { require('newrelic'); } // eslint-disable-line global-require
 
+// if (typeof window === 'undefined') {
+//   global.window = {};
+// }
+
 import Express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -112,7 +116,7 @@ app.use((req, res) => {
         res.status(200).end(renderPage(initialView, finalState));
       })
       .catch((err) => { // eslint-disable-line no-shadow
-        console.log('An error when rendering page', err);
+        console.log('An error when rendering page', err, err.stack);
         initialState.user = req.user || {};
 
         res.end(mainPage('Error', initialState));
