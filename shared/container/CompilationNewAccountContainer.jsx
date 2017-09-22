@@ -15,8 +15,8 @@ class CompilationNewAccountContainer extends Component {
   back() {
     this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
-  create() {
-    console.log('create function goes here');
+  create(props) {
+    console.log('create function goes here', props);
   }
   userReturnTo() {
     return `/compilations/${this.props.compilation._id}/add-emails`;
@@ -25,19 +25,13 @@ class CompilationNewAccountContainer extends Component {
     const body = (<span>You can remove Missionary Memoir's access to your emails at any time by deleting the email account in your dashboard. We will never use your data for any other purpose than to build your email book. For more info you can read our site <Link to="/terms">terms of use</Link>, or our <Link to="/privacy">privacy policy</Link>.</span>);
     return <HelperBox type="warning" body={body} />;
   }
-  renderHeader() {
-    if (this.props.accounts.length > 0) {
-      return <h3 className="text-center">Connect an email account</h3>;
-    }
-
-    return <h3 className="text-center">Connect an email account so you can start adding emails</h3>;
-  }
   render() {
     return (<div>
       <CompilationBuildContainer compilation={this.props.compilation} ffooter={false} />;
       <Modal close={this.back}>
         <div className="padded">
-          {this.renderHeader()}
+          <h2 className="marginless-top text-center">Connect an Account</h2>
+          <h3 className="marginless-top text-center bottom-bumper">Where would you like to add emails from?</h3>
           {this.renderHelperBox()}
           <AccountFormContainer new account={{}} submitForm={this.create} back={this.back} userReturnTo={this.userReturnTo()} />
         </div>
@@ -57,7 +51,7 @@ CompilationNewAccountContainer.contextTypes = {
 };
 
 CompilationNewAccountContainer.propTypes = {
-  compilation: PropTypes.array.isRequired,
+  compilation: PropTypes.object.isRequired,
   accounts: PropTypes.array.isRequired,
 };
 

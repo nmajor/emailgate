@@ -13,20 +13,21 @@ class NewAccountContainer extends Component {
   }
 
   create(props) {
-    console.log('blah props', props);
-    if (props.kind === 'blog') {
-      this.props.dispatch(Actions.createAccount({
-        email: props.email,
-        kind: props.kind,
-        authProps: {
-          host: props.host,
-          port: props.port,
-        },
-      }, (account) => {
-        this.redirectToEdit(account);
-        this.props.dispatch(Actions.setPasswordInAccountPasswordMap(account, props.password));
-      }));
-    }
+    return new Promise((resolve, reject) => {
+      if (props.kind === 'blog') {
+        this.props.dispatch(Actions.createAccount({
+          email: props.url,
+          kind: props.kind,
+        }, (response) => {
+          if (response.error) {
+            return reject({ _error: response.error });
+          }
+
+          return resolve();
+        }));
+      }
+    });
+
 
     // if (props.kind === 'imap') {
     //   this.props.dispatch(Actions.createAccount({

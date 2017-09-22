@@ -6,6 +6,7 @@ import stream from 'stream';
 import { MailParser } from 'mailparser';
 import shortid from 'shortid';
 import { imapifyFilter } from '../util/helpers';
+import { findFeedPath } from '../util/blog';
 import config from '../config';
 
 const AccountSchema = new Schema({
@@ -13,7 +14,7 @@ const AccountSchema = new Schema({
   _user: { type: String, ref: 'User' },
   email: String,
   kind: { type: String, default: 'imap' },
-  authProps: {},
+  props: {},
 }, {
   timestamps: true,
 });
@@ -39,6 +40,25 @@ AccountSchema.set('toObject', {
 AccountSchema.set('toJSON', {
   getters: true,
   virtuals: true,
+});
+
+AccountSchema.pre('save', function (next) { // eslint-disable-line func-names
+  if (this.kind === 'blog') {
+    findFeedPath(this)
+    .then((results) => {
+      if (results.length > 0) {
+        this.props = this.props || {};
+        this.props.feedUrls = results;
+        return next();
+      }
+
+      const err = new Error('Could not find a valid rss feed');
+      return next(err);
+    })
+    .catch((err) => { console.log('an error happened when saving an account', err); });
+  } else {
+    next();
+  }
 });
 
 AccountSchema.methods.checkImapConnection = function checkImapConnection(password) {

@@ -20,6 +20,9 @@ export function createAccount(req, res) {
   newAccount.save()
   .then((account) => {
     res.json(account);
+  })
+  .catch((err) => {
+    res.json({ error: err.message });
   });
 }
 

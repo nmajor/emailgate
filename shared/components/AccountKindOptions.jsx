@@ -67,8 +67,6 @@ class AccountKindOptions extends Component {
   }
   render() {
     return (<div>
-      <h2 className="marginless-top text-center">Connect an Account</h2>
-      <h3 className="marginless-top text-center bottom-bumper">Where would you like to add emails from?</h3>
       <div className="account-kind-options bottom-bumper">
         <div className="row">
           <div className="col-sm-6">

@@ -126,11 +126,10 @@ export function createAccount(accountProps, cb) {
       return res.json();
     })
     .then((res) => {
-      if (res.error) {
-        throw new Error(res.error.message);
+      if (!res.error) {
+        dispatch(addAccount(res));
       }
 
-      dispatch(addAccount(res));
       cb(res);
     })
     .catch((err) => {
