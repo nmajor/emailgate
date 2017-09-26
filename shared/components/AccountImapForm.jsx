@@ -4,7 +4,7 @@ class AccountImapForm extends Component {
   constructor(props, context) {
     super(props, context);
 
-    const authProps = this.props.account.authProps || {};
+    const authProps = this.props.account.props || {};
     this.state = {
       email: this.props.account.email,
       password: this.props.accountPassword,

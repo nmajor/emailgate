@@ -18,6 +18,7 @@ import _ from 'lodash';
 const EmailSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _compilation: { type: String, ref: 'Compilation' },
+  source: String,
   remote_id: String,
   date: { type: Date, default: new Date(0) },
   mid: String,
@@ -56,34 +57,11 @@ EmailSchema.post('remove', (doc) => {
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   Promise.resolve()
   .then(() => {
-    const oldAttachments = _.filter(this.attachments, (a) => { return a.url && !a.content; });
-    let newAttachments = _.filter(this.attachments, (a) => { return a.content && !a.url; });
-
-    newAttachments = _.map(newAttachments, (a) => {
-      a._compilation = this._id;
-      return a;
-    });
-
-    if (newAttachments.length > 0) {
-      return Promise.all(newAttachments.map((attachment) => {
-        return resizeAttachment(attachment);
-      }))
-      .then((resizedAttachments) => {
-        return Promise.all(resizedAttachments.map((attachment) => {
-          return uploadAttachment(attachment);
-        }))
-        .catch((err) => { console.log('An error happened uploading attachments', err, err.stack); });
-      })
-      .then((newUploadedAttachments) => {
-        this.attachments = [
-          ...oldAttachments,
-          ...newUploadedAttachments,
-        ];
-        return Promise.resolve(this);
-      });
+    if (this.source === 'blogger') {
+      this.processEmbeddedImages();
     }
 
-    return Promise.resolve(this);
+    return this.processEmailAttachments();
   })
   .then(() => {
     if (this.propChanged('body') && !_.isEmpty(this.body)) {
@@ -158,5 +136,43 @@ EmailSchema.methods.buildPdf = function buildPdf(statusCb) {
   })
   .then(() => { return this; });
 };
+
+EmailSchema.methods.processEmailAttachments = function processEmailAttachments() {
+  const oldAttachments = _.filter(this.attachments, (a) => { return a.url && !a.content; });
+  let newAttachments = _.filter(this.attachments, (a) => { return a.content && !a.url; });
+
+  newAttachments = _.map(newAttachments, (a) => {
+    a._compilation = this._id;
+    return a;
+  });
+
+  if (newAttachments.length > 0) {
+    return Promise.all(newAttachments.map((attachment) => {
+      return resizeAttachment(attachment);
+    }))
+    .then((resizedAttachments) => {
+      return Promise.all(resizedAttachments.map((attachment) => {
+        return uploadAttachment(attachment);
+      }))
+      .catch((err) => { console.log('An error happened uploading attachments', err, err.stack); });
+    })
+    .then((newUploadedAttachments) => {
+      this.attachments = [
+        ...oldAttachments,
+        ...newUploadedAttachments,
+      ];
+      return Promise.resolve(this);
+    });
+  }
+
+  return Promise.resolve(this);
+};
+
+EmailSchema.methods.processEmbeddedImages = function processEmbeddedImages() {
+  console.log('blah hey processEmbeddedImages');
+
+  return Promise.resolve();
+};
+
 
 export default Mongoose.model('Email', EmailSchema);

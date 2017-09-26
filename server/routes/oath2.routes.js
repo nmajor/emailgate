@@ -22,7 +22,7 @@ router.get('/google', (req, res) => {
         email: profile.emailAddress,
       })
       .then((account) => {
-        account.authProps = { token }; // eslint-disable-line no-param-reassign
+        account.props = { token }; // eslint-disable-line no-param-reassign
         return account.save();
       })
       .then((account) => {

@@ -194,7 +194,7 @@ class ImapFilterForm extends Component {
     </div>);
   }
   renderMailboxOptions() {
-    const mailboxes = this.props.currentAccount.authProps.mailboxes || [];
+    const mailboxes = this.props.currentAccount.props.mailboxes || [];
     return mailboxes.map((mailbox, index) => {
       return <option value={mailbox} key={index}>{mailbox}</option>;
     });

@@ -29,7 +29,7 @@ export function createAccount(req, res) {
 export function patchAccount(req, res) {
   Account.findOne({ _user: req.user._id, _id: req.params.id })
   .then((account) => {
-    account.authProps = req.body.authProps; // eslint-disable-line no-param-reassign
+    account.props = req.body.props; // eslint-disable-line no-param-reassign
 
     return account.save();
   })

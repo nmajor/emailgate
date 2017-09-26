@@ -40,12 +40,17 @@ class SelectAccountListItem extends Component {
     }
   }
   renderEmail() { // eslint-disable-line consistent-return
-    return <span>{this.props.account.email}</span>;
+    let icon = <span className="glyphicon glyphicon-envelope text-grey" aria-hidden="true"></span>;
+
+    if (this.props.account.kind === 'blog') {
+      icon = <span className="fa fa-rss text-grey"></span>;
+    }
+    return <span>{icon} {this.props.account.email}</span>;
   }
   // renderConnectionStatus() {
   //   if (this.props.account.connectionValid === true
   //   && (
-  //     (new Date).getTime() < _.get(this.props.account, 'authProps.token.expiry_date'))
+  //     (new Date).getTime() < _.get(this.props.account, 'props.token.expiry_date'))
   //     || this.props.account.kind === 'imap'
   //   ) {
   //     return (<span className="label label-success right-bumper">

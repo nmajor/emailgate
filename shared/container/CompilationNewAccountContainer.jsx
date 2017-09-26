@@ -5,6 +5,7 @@ import CompilationBuildContainer from './CompilationBuildContainer';
 import AccountFormContainer from './AccountFormContainer';
 import { connect } from 'react-redux';
 import HelperBox from '../components/HelperBox';
+import * as Actions from '../redux/actions/index';
 
 class CompilationNewAccountContainer extends Component {
   constructor(props, context) {
@@ -16,7 +17,21 @@ class CompilationNewAccountContainer extends Component {
     this.context.router.push(`/compilations/${this.props.compilation._id}/build`);
   }
   create(props) {
-    console.log('create function goes here', props);
+    return new Promise((resolve, reject) => {
+      if (props.kind === 'blog') {
+        this.props.dispatch(Actions.createAccount({
+          email: props.url,
+          kind: props.kind,
+        }, (response) => {
+          if (response.error) {
+            reject({ _error: response.error });
+          } else {
+            resolve();
+            this.context.router.push(`/compilations/${this.props.compilation._id}/add-emails`);
+          }
+        }));
+      }
+    });
   }
   userReturnTo() {
     return `/compilations/${this.props.compilation._id}/add-emails`;
@@ -51,6 +66,7 @@ CompilationNewAccountContainer.contextTypes = {
 };
 
 CompilationNewAccountContainer.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   compilation: PropTypes.object.isRequired,
   accounts: PropTypes.array.isRequired,
 };

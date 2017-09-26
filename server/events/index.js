@@ -93,6 +93,8 @@ export default (io) => {
         socket.emit('FILTERED_ACCOUNT_EMAILS', results);
       })
       .catch((err) => {
+        console.log(err);
+        console.log(err.stack);
         socket.emit('FILTERED_ACCOUNT_EMAILS_ERROR', err);
       });
     });

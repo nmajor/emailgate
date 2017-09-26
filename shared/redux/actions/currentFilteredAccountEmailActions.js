@@ -20,6 +20,8 @@ export function fetchCurrentFilteredAccountEmail(accountId, emailId) {
         throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
       }
 
+      console.log('blah hey', res);
+
       return res.json();
     })
     .then((res) => {

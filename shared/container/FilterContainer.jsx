@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import ImapFilterFormContainer from './ImapFilterFormContainer';
 import GoogleFilterFormContainer from './GoogleFilterFormContainer';
+import BlogFilterFormContainer from './BlogFilterFormContainer';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
 import Loading from '../components/Loading';
@@ -79,6 +80,11 @@ class FilterContainer extends Component {
   renderFilterForm() {
     if (this.props.currentAccount.kind === 'imap') {
       return (<ImapFilterFormContainer
+        currentAccount={this.props.currentAccount}
+        selectAll={this.selectAll}
+      />);
+    } else if (this.props.currentAccount.kind === 'blog') {
+      return (<BlogFilterFormContainer
         currentAccount={this.props.currentAccount}
         selectAll={this.selectAll}
       />);

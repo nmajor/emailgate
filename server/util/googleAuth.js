@@ -155,7 +155,7 @@ function queryResults(client, q) {
 
 export function searchMessages(account, searchOptions) {
   return new Promise((resolve, reject) => {
-    const client = getClient(account.authProps.token);
+    const client = getClient(account.props.token);
     const gmail = google.gmail('v1');
     const q = googlifyFilter(searchOptions);
 
@@ -200,7 +200,7 @@ export function searchMessages(account, searchOptions) {
 
 export function searchMessagesStream(account, searchOptions, countCb, errCb) {
   const messageStream = stream.PassThrough(); // eslint-disable-line new-cap
-  const client = getClient(account.authProps.token);
+  const client = getClient(account.props.token);
   const gmail = google.gmail('v1');
   const q = googlifyFilter(searchOptions);
 

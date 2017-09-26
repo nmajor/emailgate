@@ -134,6 +134,7 @@ export function processEmail(email, options = {}) {
     const body = email.html ? sanitizeEmailBody(email.html) : cleanEmailTextBody(email.text);
 
     const processedEmail = {
+      source: email.source,
       date: email.date,
       id: email.id,
       remote_id: email.id,

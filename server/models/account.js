@@ -6,7 +6,7 @@ import stream from 'stream';
 import { MailParser } from 'mailparser';
 import shortid from 'shortid';
 import { imapifyFilter } from '../util/helpers';
-import { findFeedPath } from '../util/blog';
+import * as blog from '../util/blog';
 import config from '../config';
 
 const AccountSchema = new Schema({
@@ -20,7 +20,7 @@ const AccountSchema = new Schema({
 });
 
 AccountSchema.virtual('connectionValid').get(function getConnectionValid() {
-  if (this.kind === 'google') {
+  if (this.kind === 'google' || this.kind === 'blog') {
     return true;
   }
 
@@ -44,16 +44,23 @@ AccountSchema.set('toJSON', {
 
 AccountSchema.pre('save', function (next) { // eslint-disable-line func-names
   if (this.kind === 'blog') {
-    findFeedPath(this)
+    blog.findFeedPath(this)
     .then((results) => {
       if (results.length > 0) {
         this.props = this.props || {};
         this.props.feedUrls = results;
-        return next();
+        return Promise.resolve(this);
       }
 
       const err = new Error('Could not find a valid rss feed');
       return next(err);
+    })
+    .then(() => {
+      return blog.findBloggerId(this);
+    })
+    .then((id) => {
+      this.props.bloggerId = id;
+      next();
     })
     .catch((err) => { console.log('an error happened when saving an account', err); });
   } else {
@@ -67,8 +74,8 @@ AccountSchema.methods.checkImapConnection = function checkImapConnection(passwor
       const imap = initImap({
         email: this.email,
         password,
-        host: this.authProps.host,
-        port: this.authProps.port,
+        host: this.props.host,
+        port: this.props.port,
       });
 
       imap.connect();
@@ -91,7 +98,7 @@ AccountSchema.methods.checkImapConnection = function checkImapConnection(passwor
             }
           });
 
-          this.authProps.mailboxes = mailboxes;
+          this.props.mailboxes = mailboxes;
           this.update();
           imap.end();
           this.set('connectionValid', true);
@@ -117,9 +124,15 @@ AccountSchema.methods.checkImapConnection = function checkImapConnection(passwor
 AccountSchema.methods.filteredEmails = function filteredEmails(options) {
   if (this.kind === 'google') {
     return this.googlefilteredEmails(options.filter);
+  } else if (this.kind === 'blog') {
+    return this.blogFilteredEmails(options.filter);
   }
 
   // return this.imapfilteredEmailsStream(options.filter, options.password, options.countCb, options.errCb);
+};
+
+AccountSchema.methods.blogFilteredEmails = function blogFilteredEmails(options) { // eslint-disable-line
+  return blog.requestFeed(this);
 };
 
 AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(options) {
@@ -147,8 +160,8 @@ AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStre
   const imap = initImap({
     email: this.email,
     password,
-    host: this.authProps.host,
-    port: this.authProps.port,
+    host: this.props.host,
+    port: this.props.port,
   });
 
   imap.connect();
@@ -227,8 +240,10 @@ AccountSchema.methods.imapfilteredEmailsStream = function imapfilteredEmailsStre
 
 AccountSchema.methods.getEmailsById = function getEmailsById(ids) {
   if (this.kind === 'google') {
-    const client = googleAuth.getClient(this.authProps.token);
+    const client = googleAuth.getClient(this.props.token);
     return googleAuth.getMessagesById(client, ids, { includeAttachments: true });
+  } else if (this.kind === 'blog') {
+    return blog.getPostsById(this, ids);
   }
 
   // return this.imapfilteredEmailsStream(options.filter, options.password, options.countCb, options.errCb);
@@ -236,8 +251,10 @@ AccountSchema.methods.getEmailsById = function getEmailsById(ids) {
 
 AccountSchema.methods.getEmailById = function getEmailById(id) {
   if (this.kind === 'google') {
-    const client = googleAuth.getClient(this.authProps.token);
+    const client = googleAuth.getClient(this.props.token);
     return googleAuth.getMessageById(client, id, { includeAttachments: true, resizeAttachments: true });
+  } else if (this.kind === 'blog') {
+    return blog.getPostById(this, id);
   }
 
   // return this.imapfilteredEmailsStream(options.filter, options.password, options.countCb, options.errCb);

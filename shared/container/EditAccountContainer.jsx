@@ -27,7 +27,7 @@ class EditAccountContainer extends Component {
     this.props.dispatch(Actions.updateAccount(this.props.params.id, {
       email: props.email,
       kind: props.kind,
-      authProps: {
+      props: {
         host: props.host,
         port: props.port,
       },

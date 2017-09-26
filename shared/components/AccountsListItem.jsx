@@ -40,7 +40,7 @@ class AccountListItem extends Component {
   renderConnectionStatus() {
     if (this.props.account.connectionValid === true
     && (
-      (new Date).getTime() < _.get(this.props.account, 'authProps.token.expiry_date'))
+      (new Date).getTime() < _.get(this.props.account, 'props.token.expiry_date'))
       || this.props.account.kind === 'imap'
     ) {
       return (<span className="label label-success right-bumper">
@@ -49,12 +49,12 @@ class AccountListItem extends Component {
     }
 
     // if (this.props.account.connectionValid === false
-    // || (new Date).getTime() > _.get(this.props.account, 'authProps.token.expiry_date')) {
+    // || (new Date).getTime() > _.get(this.props.account, 'props.token.expiry_date')) {
     //   return (<span className="label label-warning">
     //     <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
     //   </span>);
     // } else if (this.props.account.connectionValid === true
-    // && (new Date).getTime() < _.get(this.props.account, 'authProps.token.expiry_date')) {
+    // && (new Date).getTime() < _.get(this.props.account, 'props.token.expiry_date')) {
     //   return (<span className="label label-success">
     //     <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
     //   </span>);
