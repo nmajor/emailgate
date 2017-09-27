@@ -1,8 +1,9 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 import feedFinder from 'feed-finder';
 import request from 'request';
 import { parseString } from 'xml2js';
 import { sanitizeEmailBodyPreview } from './helpers';
+import { serializeQuery } from '../../shared/helpers';
 
 // https://developers.google.com/blogger/docs/2.0/json/reference/
 // FEED - https://developers.google.com/blogger/docs/2.0/developers_guide_protocol
@@ -34,8 +35,16 @@ export function getBloggerFeedUrl(account) {
   return `https://www.blogger.com/feeds/${account.props.bloggerId}/posts/default`;
 }
 
-export function requestFeed(account) {
-  const feedUrl = getBloggerFeedUrl(account) || account.props.feedUrls[0];
+export function requestFeed(account, options) {
+  let feedUrl = getBloggerFeedUrl(account) || account.props.feedUrls[0];
+  const queryParams = {};
+
+  if (options.pageToken) { queryParams['start-index'] = options.pageToken; }
+
+  if (!_.isEmpty(queryParams)) {
+    feedUrl = `${feedUrl}?${serializeQuery(queryParams)}`;
+  }
+
   return readFeed(feedUrl)
   .then((result) => {
     return new Promise((resolve) => {
@@ -45,11 +54,12 @@ export function requestFeed(account) {
       const resultsPerPage = parseInt(result.feed['openSearch:itemsPerPage'][0], 10);
       const startIndex = parseInt(result.feed['openSearch:startIndex'], 10);
       const nextPageStartIndex = parseInt(startIndex + resultsPerPage, 10);
+      const nextPageToken = nextPageStartIndex >= totalResults ? undefined : nextPageStartIndex;
 
       const processedEmails = entry.map(processEmailFromBloggerEntry);
 
       resolve({
-        nextPageToken: nextPageStartIndex,
+        nextPageToken,
         messages: processedEmails,
         totalResults,
         moreThanTotalResults: false,

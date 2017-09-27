@@ -132,7 +132,8 @@ AccountSchema.methods.filteredEmails = function filteredEmails(options) {
 };
 
 AccountSchema.methods.blogFilteredEmails = function blogFilteredEmails(options) { // eslint-disable-line
-  return blog.requestFeed(this);
+  console.log('blah options', options);
+  return blog.requestFeed(this, options);
 };
 
 AccountSchema.methods.filteredEmailsStream = function filteredEmailsStream(options) {
