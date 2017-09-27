@@ -7,6 +7,46 @@ import DatePicker from 'react-datepicker';
 import _ from 'lodash';
 // import { rotateImage } from '../helpers';
 
+export function addEmbeddedAttachmentsToEmailBody(email) {
+  const placeholderMap = _.fromPairs(email.attachments.map((att, index) => { return [_.escapeRegExp(att.tagPlaceholder), renderToString(renderAttachment(att, index, { centered: true }))]; }));
+
+  const regexp = RegExp(`(${Object.keys(placeholderMap).join('|')})`, 'g');
+
+  email.embeddedBody = email.body.replace(regexp, (__, word) => {
+    return placeholderMap[_.escapeRegExp(word)];
+  });
+
+  return email;
+}
+
+function renderAttachment(attachment, index, options) {
+  const divStyle = {
+    maxWidth: '100%',
+    marginTop: '5px',
+    maxHeight: '275px',
+    marginLeft: '3px',
+    marginRight: '3px',
+  };
+
+  let imageTag = null;
+
+  if (attachment.url) {
+    imageTag = (<img role="presentation" style={divStyle} key={attachment._id || attachment.id || index} src={`${attachment.url}?t=${attachment.updatedAt}`} />);
+  } else if (attachment.content && ['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
+    const dataUriPrefix = `data:${attachment.contentType};base64,`;
+    // const imageString = (new Buffer(attachment.content)).toString('base64');
+    imageTag = (<img role="presentation" styfvle={divStyle} key={attachment._id || attachment.id || index} src={dataUriPrefix + attachment.content} />);
+  }
+
+  if (options.centered) {
+    return (<div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+      {imageTag}
+    </div>);
+  }
+
+  return imageTag;
+}
+
 class AttachmentDropzone extends Component {
   constructor(props, context) {
     super(props, context);
@@ -295,7 +335,6 @@ class EmailDateInput extends Component { // eslint-disable-line
 class EmailTemplate {
   constructor(email) {
     this.email = email;
-
     // this.email.subject = this.email.subject || '';
     // this.email.body = this.email.body || '';
 
@@ -306,7 +345,6 @@ class EmailTemplate {
   initialFormState() {
     return this.email;
   }
-
   mapEmailUser(user, index, array) {
     let text = user.name || user.address;
 
@@ -321,24 +359,9 @@ class EmailTemplate {
     return typeof(userValues) === 'string' ? userValues : userValues.map(this.mapEmailUser);
   }
   renderAttachments(attachments) {
-    const divStyle = {
-      maxWidth: '100%',
-      marginTop: '5px',
-      maxHeight: '275px',
-      marginLeft: '3px',
-      marginRight: '3px',
-    };
+    if (this.email.attachmentStyle === 'embedded') return null;
 
-    const imageComponents = attachments.map((attachment, index) => {
-      if (attachment.url) {
-        return (<img role="presentation" style={divStyle} key={index} src={`${attachment.url}?t=${attachment.updatedAt}`} />);
-      } else if (attachment.content && ['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
-        const dataUriPrefix = `data:${attachment.contentType};base64,`;
-        // const imageString = (new Buffer(attachment.content)).toString('base64');
-        return (<img role="presentation" style={divStyle} key={index} src={dataUriPrefix + attachment.content} />);
-      }
-      return null;
-    });
+    const imageComponents = attachments.map(renderAttachment);
 
     return <div style={{ textAlign: 'center' }}>{imageComponents}</div>;
   }
@@ -408,12 +431,14 @@ class EmailTemplate {
 
   render() {
     const email = this.email;
+    let emailBody = email.embeddedBody || email.body;
+    emailBody = _.isEmpty(email.bodyPreview) ? 'No email body' : emailBody;
 
     return (<div style={{ fontSize: '20px' }}>
       {this.renderDate(moment(email.date).format('LL'))}
       {this.renderSubject(email.subject || 'No subject')}
       {this.renderFrom(this.processEmailUser(email.from))}
-      {this.renderBodyDangerously(_.isEmpty(email.bodyPreview) ? 'No email body' : email.body)}
+      {this.renderBodyDangerously(emailBody)}
       {this.renderAttachments(email.attachments)}
     </div>);
   }

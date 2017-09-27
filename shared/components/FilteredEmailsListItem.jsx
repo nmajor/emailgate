@@ -89,8 +89,14 @@ class FilteredEmailsListItem extends Component {
     return (<span className="my-checkbox" onClick={this.select}></span>);
   }
   renderDate() {
+    let icon = <span className="glyphicon glyphicon-envelope" aria-hidden="true"></span>;
+
+    if (this.props.email.source === 'blogger') {
+      icon = <span className="fa fa-rss"></span>;
+    }
+
     return (<div className="type">
-      <span className="glyphicon glyphicon-envelope" aria-hidden="true"></span> <span className="date">{moment(this.props.email.date).format('LL')}</span> {this.props.disabled ? <span> - Already added to Email Book</span> : ''}
+      {icon} <span className="date">{moment(this.props.email.date).format('LL')}</span> {this.props.disabled ? <span> - Already added to Email Book</span> : ''}
     </div>);
   }
   renderSubject() {

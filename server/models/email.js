@@ -9,16 +9,18 @@ import {
   trimKnownBodyFluff,
   removeFile,
   rotateImageAttachment,
+  getAllImageSources,
+  downloadFile,
+  replaceImgTag,
 } from '../util/helpers';
 import { startWorker } from '../util/docker';
 
-import EmailTemplate from '../../shared/templates/email';
+import EmailTemplate, { addEmbeddedAttachmentsToEmailBody } from '../../shared/templates/email';
 import _ from 'lodash';
 
 const EmailSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _compilation: { type: String, ref: 'Compilation' },
-  source: String,
   remote_id: String,
   date: { type: Date, default: new Date(0) },
   mid: String,
@@ -29,8 +31,10 @@ const EmailSchema = new Schema({
   bodyPreview: String,
   template: String,
   attachments: [],
+  attachmentStyle: { type: String, default: 'default' },
   estimatedPageCount: { type: Number, default: 3 },
   pdf: {},
+  source: { type: String, default: 'gmail' },
 }, {
   timestamps: true,
 });
@@ -57,16 +61,17 @@ EmailSchema.post('remove', (doc) => {
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   Promise.resolve()
   .then(() => {
-    if (this.source === 'blogger') {
-      this.processEmbeddedImages();
+    if (this.source === 'blogger' && !this._original) {
+      this.attachmentStyle = 'embedded';
+      return this.processEmbeddedImages();
     }
 
     return this.processEmailAttachments();
   })
   .then(() => {
     if (this.propChanged('body') && !_.isEmpty(this.body)) {
-      this.body = trimKnownBodyFluff(this.body);
       this.body = sanitizeEmailBody(this.body);
+      this.body = trimKnownBodyFluff(this.body);
     }
 
     return Promise.resolve(this);
@@ -90,7 +95,7 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
 EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {
   return new Promise((resolve) => {
     const email = Object.assign({}, this.toObject(), { body: '[[BODY]]' });
-    const template = new EmailTemplate(email);
+    const template = new EmailTemplate(addEmbeddedAttachmentsToEmailBody(email));
     const html = template.toString();
     this.template = html;
     resolve(this);
@@ -142,7 +147,7 @@ EmailSchema.methods.processEmailAttachments = function processEmailAttachments()
   let newAttachments = _.filter(this.attachments, (a) => { return a.content && !a.url; });
 
   newAttachments = _.map(newAttachments, (a) => {
-    a._compilation = this._id;
+    a._compilation = this._compilation;
     return a;
   });
 
@@ -168,10 +173,42 @@ EmailSchema.methods.processEmailAttachments = function processEmailAttachments()
   return Promise.resolve(this);
 };
 
-EmailSchema.methods.processEmbeddedImages = function processEmbeddedImages() {
-  console.log('blah hey processEmbeddedImages');
+EmailSchema.methods.hasUnprocessedEmbeddedImages = function hasUnprocessedEmbeddedImages() {
+  return this.body.indexOf('<img') > -1;
+};
 
-  return Promise.resolve();
+EmailSchema.methods.processEmbeddedImages = function processEmbeddedImages() {
+  const imageUrls = getAllImageSources(this.body);
+  let tasks = Promise.resolve();
+
+  _.forEach(imageUrls, (imageUrl) => {
+    tasks = tasks.then(() => {
+      return downloadFile(imageUrl)
+      .then((attachment) => {
+        attachment._id = shortid.generate();
+        attachment._compilation = this._compilation;
+        return resizeAttachment(attachment);
+      })
+      .then((attachment) => {
+        return uploadAttachment(attachment);
+      })
+      .then((attachment) => {
+        attachment.originalSrc = imageUrl;
+        attachment.tagPlaceholder = `ATTACHMENT-PLACEHOLDER-${attachment._id}`;
+
+        this.attachments = [
+          ...this.attachments,
+          attachment,
+        ];
+
+        this.body = replaceImgTag(this.body, attachment.originalSrc, attachment.tagPlaceholder);
+        return Promise.resolve(this);
+      })
+      .catch((err) => { console.log('an error happened when processing embedded images', err); });
+    });
+  });
+
+  return tasks;
 };
 
 

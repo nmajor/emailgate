@@ -29,11 +29,11 @@ class BlogFilterForm extends Component { // eslint-disable-line
       onSubmit={handleSubmit}
     >
       <div className="row">
-        <div className="col-md-6 col-md-offset-3">
+        <div className="col-md-12">
           <div className="form-group text-right">
             {this.renderError()}
-            <div>
-              <button className="btn btn-success marginless-right" type="submit">Submit {this.renderSubmitting()}</button>
+            <div className="text-right">
+              <button className="btn btn-success marginless-right" type="submit">Find Posts {this.renderSubmitting()}</button>
             </div>
           </div>
         </div>

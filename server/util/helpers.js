@@ -1,5 +1,6 @@
 import stream from 'stream';
 import moment from 'moment';
+// import request from 'request';
 import Email from '../models/email';
 import Compilation from '../models/compilation';
 import * as sharedHelpers from '../../shared/helpers';
@@ -453,4 +454,48 @@ export function uploadImage(image, path) {
       });
     });
   });
+}
+
+export function downloadFile(url) {
+  const request = require('request').defaults({ encoding: null }); // eslint-disable-line
+
+  return new Promise((resolve, reject) => {
+    request(url, (err, res, buffer) => {
+      if (err) return reject(err);
+
+      const fileName = url.match(/\/([^\/]*?)$/)[1].replace(/\?.*$/, '');
+
+      return resolve({
+        fileName,
+        content: buffer,
+        contentType: res.headers['content-type'],
+        length: res.headers['content-length'],
+      });
+
+      // id,
+      // contentType: a.contentType,
+      // fileName: `${shortid.generate()}-${a.fileName}`,
+      // contentDisposition: a.contentDisposition,
+      // contentId: a.contentId || id,
+      // checksum: a.checksum,
+      // length: a.length,
+      // content: a.content,
+      // updatedAt,
+    });
+  });
+}
+
+export function getAllImageSources(str) {
+  const reg = /img.*?src="(.*?)"/g;
+  let matches = [];
+  const output = [];
+  while (matches = reg.exec(str)) { // eslint-disable-line
+    output.push(matches[1]);
+  }
+  return _.uniq(output);
+}
+
+export function replaceImgTag(str, imgSrc, replacement) {
+  const reg = new RegExp(`(<a[^>]*>)?<img[^>]*src="${_.escapeRegExp(imgSrc)}".*?>(</a>)?`);
+  return str.replace(reg, replacement);
 }
