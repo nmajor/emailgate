@@ -435,7 +435,6 @@ class EmailTemplate {
     const email = this.email;
     let emailBody = email.embeddedBody || email.body;
     emailBody = _.isEmpty(email.bodyPreview) ? 'No email body' : emailBody;
-    console.log('blah yoda', email);
 
     return (<div style={{ fontSize: '20px' }}>
       {this.renderDate(moment(email.date).format('LL'))}

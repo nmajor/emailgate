@@ -39,31 +39,27 @@ class AccountKindOptions extends Component {
     </div>);
   }
   renderMyldsmailKind() {
-    // return (<div className="col-sm-3">
-    //   <a className="account-kind-option" href={this.props.authUrls.myldsmailAuthUrl} onClick={this.handleGoogleKindClick}>
-    //     <img role="presentation" src="/img/gmail_logo.png" />
-    //   </a>
-    // </div>);
+    return (<div>
+      <a className="account-kind-option" href={this.props.authUrls.myldsmailAuthUrl} onClick={this.handleGoogleKindClick}>
+        <div className="inner">
+          <span className="icon right-bumper"><span className="fa fa-envelope-o"></span></span> <span> MyLdsMail</span>
+        </div>
+      </a>
+    </div>);
   }
   renderBlogKind() {
     return (<div>
       <div className={`account-kind-option text-center ${this.props.account.kind === 'blog' ? 'selected' : ''}`} onClick={this.setKindToBlog}>
         <div className="inner">
-          <span className="icon right-bumper"><span className="fa fa-rss"></span></span> <span> Blog</span>
+          <img role="presentation" src="/img/blogger_logo.png" />
         </div>
       </div>
     </div>);
   }
   renderHelpLink() {
     return (<span>
-      If you dont see your email provider listed here, <a href="https://missionarymemoir.freshdesk.com/support/tickets/new">please contact us so we can add it</a>.
+      If you dont see your email or blog provider listed here, <a href="https://missionarymemoir.freshdesk.com/support/tickets/new">please contact us so we can add it</a>.
     </span>);
-  }
-  renderKindOptions() {
-    return (<div>
-
-
-    </div>);
   }
   render() {
     return (<div>

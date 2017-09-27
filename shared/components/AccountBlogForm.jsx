@@ -60,7 +60,10 @@ class AccountBlogForm extends Component { // eslint-disable-line
               <div className="form-group">
                 <label className="control-label">Blog URL</label>
                 <input type="text" className="form-control" {...url} />
-                <div className="help-block">Please enter the URL of the blog you want to connect</div>
+                <div className="help-block">
+                  <div>Please enter the URL of the blog you want to connect</div>
+                  <div>example: eldersmithmission.blogspot.com</div>
+                </div>
               </div>
             </div>
           </div>
