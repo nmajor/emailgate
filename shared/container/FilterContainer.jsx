@@ -86,7 +86,13 @@ class FilterContainer extends Component {
     } else if (this.props.currentAccount.kind === 'blog') {
       return (<BlogFilterFormContainer
         currentAccount={this.props.currentAccount}
+        addSelected={this.addSelected}
         selectAll={this.selectAll}
+        deselectAll={this.deselectAll}
+        selectEverything={this.selectEverything}
+        allSelected={this.allSelected()}
+        addSelected={this.addSelected}
+        done={this.props.done}
       />);
     } else if (this.props.currentAccount.kind === 'google') {
       return (<GoogleFilterFormContainer

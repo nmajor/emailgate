@@ -61,6 +61,7 @@ class FilteredEmailsActions extends Component {
     return this.pageTokens().length > 0;
   }
   renderNavResults() {
+    console.log('blah count', this.props.filteredAccountEmailsResults.count);
     if (this.props.filteredAccountEmailsResults.count) {
       const resultInfo = <div className="filter-result-info">{this.getResultRange()} of {this.props.filteredAccountEmailsResults.count}{this.props.filteredAccountEmailsResults.moreThanTotalResults ? '+' : ''}</div>;
 

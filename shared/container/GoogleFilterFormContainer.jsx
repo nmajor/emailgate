@@ -43,6 +43,7 @@ class GoogleFilterFormContainer extends Component {
         allSelected={this.props.allSelected}
         addSelected={this.props.addSelected}
         done={this.props.done}
+        totalEstimate
       />
     </div>);
   }

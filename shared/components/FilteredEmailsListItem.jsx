@@ -132,7 +132,8 @@ class FilteredEmailsListItem extends Component {
       </div>);
     }
 
-    return <EmailView email={this.props.email} disabled={this.props.disabled} />;
+    console.log('blah hey', this.props.email);
+    return <EmailView email={this.props.email} disabled={this.props.disabled} dontEmbed />;
   }
   renderEmailListItem() {
     if (this.props.previewing) {

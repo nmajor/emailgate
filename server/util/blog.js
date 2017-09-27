@@ -41,11 +41,10 @@ export function requestFeed(account) {
     return new Promise((resolve) => {
       const { feed } = result;
       const { entry } = feed;
-      const totalResults = result.feed['openSearch:totalResults'];
-      const resultsPerPage = result.feed['openSearch:itemsPerPage'];
-      const startIndex = result.feed['openSearch:startIndex'];
-      const nextPageStartIndex = startIndex + resultsPerPage;
-      const moreResults = nextPageStartIndex > totalResults;
+      const totalResults = parseInt(result.feed['openSearch:totalResults'][0], 10);
+      const resultsPerPage = parseInt(result.feed['openSearch:itemsPerPage'][0], 10);
+      const startIndex = parseInt(result.feed['openSearch:startIndex'], 10);
+      const nextPageStartIndex = parseInt(startIndex + resultsPerPage, 10);
 
       const processedEmails = entry.map(processEmailFromBloggerEntry);
 
@@ -53,7 +52,7 @@ export function requestFeed(account) {
         nextPageToken: nextPageStartIndex,
         messages: processedEmails,
         totalResults,
-        moreThanTotalResults: moreResults,
+        moreThanTotalResults: false,
         resultsPerPage,
         resultsCount: processedEmails.length,
       });

@@ -8,6 +8,8 @@ import _ from 'lodash';
 // import { rotateImage } from '../helpers';
 
 export function addEmbeddedAttachmentsToEmailBody(email) {
+  if (!email.attachments || email.attachments.length === 0) return email;
+
   const placeholderMap = _.fromPairs(email.attachments.map((att, index) => { return [_.escapeRegExp(att.tagPlaceholder), renderToString(renderAttachment(att, index, { centered: true }))]; }));
 
   const regexp = RegExp(`(${Object.keys(placeholderMap).join('|')})`, 'g');
@@ -22,7 +24,7 @@ export function addEmbeddedAttachmentsToEmailBody(email) {
 function renderAttachment(attachment, index, options) {
   const divStyle = {
     maxWidth: '100%',
-    marginTop: '5px',
+    marginTop: options.centered ? '0px' : '5px',
     maxHeight: '275px',
     marginLeft: '3px',
     marginRight: '3px',
@@ -433,6 +435,7 @@ class EmailTemplate {
     const email = this.email;
     let emailBody = email.embeddedBody || email.body;
     emailBody = _.isEmpty(email.bodyPreview) ? 'No email body' : emailBody;
+    console.log('blah yoda', email);
 
     return (<div style={{ fontSize: '20px' }}>
       {this.renderDate(moment(email.date).format('LL'))}
