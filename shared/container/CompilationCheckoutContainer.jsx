@@ -42,6 +42,7 @@ class CompilationCheckoutContainer extends Component {
         <div className="col-md-8 col-md-offset-2">
           <div className="compilation-content-box">
             <h1 className="text-center">Add To Cart</h1>
+            {this.renderSaleBanner()}
             <CompilationAddToCart
               compilation={this.props.compilation}
               compilationEmailsCount={this.props.compilationEmails.length}

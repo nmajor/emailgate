@@ -1143,6 +1143,22 @@ input {
   }
 }
 
+.checkout-sale-message {
+  background-color: #F0C569;
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  font-weight: 300;
+  font-size: 16px;
+
+  .code {
+    font-weight: 400;
+  }
+}
+
 .field-bg {
   background: url("/img/wheatfield.jpg") no-repeat center center fixed;
 

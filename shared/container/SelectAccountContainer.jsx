@@ -31,7 +31,7 @@ class SelectAccountContainer extends Component {
   }
   renderNewAccountAction() {
     return (<div className="account-list">
-      <Link to={`/compilations/${this.props.compilation._id}/add-emails/new-account`} className="selected-account-list-item new-account-list-item" ><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new email account</Link>
+      <Link to={`/compilations/${this.props.compilation._id}/add-emails/new-account`} className="selected-account-list-item new-account-list-item" ><span className="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new email account or blog</Link>
     </div>);
   }
   renderSelectAccount() {

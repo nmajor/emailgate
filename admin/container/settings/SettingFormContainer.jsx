@@ -41,10 +41,6 @@ class SettingFormContainer extends Component { // eslint-disable-line
   }
   render() {
     const Form = this.props.form;
-    if (this.props.name === 'sitewideDiscount') {
-      console.log('blah', this.setting);
-    }
-
     return (<div className="content-box top-bumper">
       {this.renderTitle()}
       <Form setting={this.setting} initialValues={this.setting} onSubmit={this.update} />

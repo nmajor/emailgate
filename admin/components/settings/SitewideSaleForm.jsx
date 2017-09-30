@@ -4,12 +4,13 @@ import { compose } from 'redux';
 import { reduxForm } from 'redux-form';
 // import _ from 'lodash';
 
-class SitewideDiscountForm extends Component { // eslint-disable-line
+class SitewideSaleForm extends Component { // eslint-disable-line
   render() {
     const {
       fields: {
-        discount,
+        code,
         desc,
+        discount,
       },
       error,
       submitting,
@@ -20,7 +21,15 @@ class SitewideDiscountForm extends Component { // eslint-disable-line
       <div className="row">
         <div className="col-md-12">
           <div className="form-group">
-            <label className="control-label">Discount Percentage</label>
+            <label className="control-label">Promo Code</label>
+            <input type="text" className="form-control" {...code} />
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-12">
+          <div className="form-group">
+            <label className="control-label">Discount</label>
             <input type="number" className="form-control" {...discount} />
           </div>
         </div>
@@ -42,7 +51,7 @@ class SitewideDiscountForm extends Component { // eslint-disable-line
   }
 }
 
-SitewideDiscountForm.propTypes = {
+SitewideSaleForm.propTypes = {
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   error: PropTypes.string,
@@ -54,10 +63,11 @@ const form = compose(
   reduxForm({ // eslint-disable-line no-class-assign
     form: 'screencastHelp',
     fields: [
-      'discount',
+      'code',
       'desc',
+      'discount',
     ],
   })
-)(SitewideDiscountForm);
+)(SitewideSaleForm);
 
 export default form;

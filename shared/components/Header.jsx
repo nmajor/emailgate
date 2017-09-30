@@ -12,7 +12,7 @@ class Header extends Component {
       collapsed: true,
     };
 
-    this.discountSetting = _.find(props.config.settings, (setting) => { return setting.name === 'sitewideDiscount'; });
+    this.sitewideSaleSetting = _.find(props.config.settings, (setting) => { return setting.name === 'sitewideSale'; });
     this.logout = this.logout.bind(this);
     this.forceCollapse = this.forceCollapse.bind(this);
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
@@ -122,10 +122,10 @@ class Header extends Component {
       </div>
     </div>);
   }
-  renderSitewideDiscountBanner() {
-    if (_.get(this.discountSetting, 'value.discount') && _.get(this.discountSetting, 'value.desc')) {
+  renderSitewideSaleBanner() {
+    if (_.get(this.sitewideSaleSetting, 'value.desc')) {
       return (<div className="sitewide-discount-banner">
-        {this.discountSetting.value.desc}
+        {this.sitewideSaleSetting.value.desc}
       </div>);
     }
   }
@@ -135,7 +135,7 @@ class Header extends Component {
         {this.renderNormalNav()}
         {this.renderCollapsibleNav()}
       </div>
-      {this.renderSitewideDiscountBanner()}
+      {this.renderSitewideSaleBanner()}
     </div>);
   }
 }

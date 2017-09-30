@@ -5,7 +5,7 @@ const allowedSettings = [
   'designCoverScreencastHelp',
   'addEmailsScreencastHelp',
   'editCompilationScreencastHelp',
-  'sitewideDiscount',
+  'sitewideSale',
 ];
 
 const SettingSchema = new Schema({

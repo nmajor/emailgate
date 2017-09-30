@@ -94,34 +94,48 @@ export function resetPassword(req, res) {
 }
 
 export function applyPromoCodeToCart(req, res) {
-  PromoCode.findByCode(req.body.code)
-  .then((promoCode) => {
-    if (!promoCode) {
-      return res.json({ error: { message: 'Invalid promo code' } });
-    }
-
-    return promoCode.isValid()
-    .then((isValid) => {
-      if (isValid) {
-        return Cart.findOne({ _id: req.params.id })
-        .then((cart) => {
-          cart._promoCode = promoCode._id; // eslint-disable-line no-param-reassign
-          return cart.save();
-        })
-        .then((cart) => {
-          return Cart.findOne({ _id: cart._id }).populate('_promoCode');
-        })
-        .then((cart) => {
-          res.json(cart);
-        });
+  if (req.body.code === '') {
+    Cart.findOne({ _id: req.params.id })
+    .then((cart) => {
+      cart._promoCode = undefined; // eslint-disable-line no-param-reassign
+      return cart.save();
+    })
+    .then((cart) => {
+      return Cart.findOne({ _id: cart._id }).populate('_promoCode');
+    })
+    .then((cart) => {
+      res.json(cart);
+    });
+  } else {
+    PromoCode.findByCode(req.body.code)
+    .then((promoCode) => {
+      if (!promoCode) {
+        return res.json({ error: { message: 'Invalid promo code' } });
       }
 
-      return res.json({ error: { message: 'Invalid promo code' } });
-    })
-    .catch((err) => {
-      console.log('An error happened', err);
+      return promoCode.isValid()
+      .then((isValid) => {
+        if (isValid) {
+          return Cart.findOne({ _id: req.params.id })
+          .then((cart) => {
+            cart._promoCode = promoCode._id; // eslint-disable-line no-param-reassign
+            return cart.save();
+          })
+          .then((cart) => {
+            return Cart.findOne({ _id: cart._id }).populate('_promoCode');
+          })
+          .then((cart) => {
+            res.json(cart);
+          });
+        }
+
+        return res.json({ error: { message: 'Invalid promo code' } });
+      })
+      .catch((err) => {
+        console.log('An error happened', err);
+      });
     });
-  });
+  }
 }
 
 export function getFullEmail(req, res) {

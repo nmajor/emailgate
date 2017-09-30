@@ -13,9 +13,11 @@ class Home extends Component { // eslint-disable-line
     this.props.dispatch(Actions.runAdminTask());
   }
   renderSuperButton() {
-    if (window && window.location.hostname === 'admin.localhost') {
-      return (<div className="btn btn-danger" onClick={this.handleSuperButtonClick}>SUPER BUTTON!</div>);
-    }
+    try {
+      if (window && window.location.hostname === 'admin.localhost') {
+        return (<div className="btn btn-danger" onClick={this.handleSuperButtonClick}>SUPER BUTTON!</div>);
+      }
+    } catch (err) {} // eslint-disable-line
   }
   render() {
     return (<DashboardWrapper>

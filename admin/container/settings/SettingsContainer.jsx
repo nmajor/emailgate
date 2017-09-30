@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../../redux/actions/index';
 import SettingFormContainer from './SettingFormContainer';
 import ScreencastHelpForm from '../../components/settings/ScreencastHelpForm';
-import SitewideDiscountForm from '../../components/settings/SitewideDiscountForm';
+import SitewideSaleForm from '../../components/settings/SitewideSaleForm';
 
 class SettingsContainer extends Component { // eslint-disable-line
   // constructor(props, context) {
@@ -19,7 +19,7 @@ class SettingsContainer extends Component { // eslint-disable-line
       <SettingFormContainer name="designCoverScreencastHelp" form={ScreencastHelpForm} />
       <SettingFormContainer name="addEmailsScreencastHelp" form={ScreencastHelpForm} />
       <SettingFormContainer name="editCompilationScreencastHelp" form={ScreencastHelpForm} />
-      <SettingFormContainer name="sitewideDiscount" form={SitewideDiscountForm} />
+      <SettingFormContainer name="sitewideSale" form={SitewideSaleForm} />
     </div>);
   }
 }
