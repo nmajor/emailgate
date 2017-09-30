@@ -42,7 +42,7 @@ class AccountKindOptions extends Component {
     return (<div>
       <a className="account-kind-option" href={this.props.authUrls.myldsmailAuthUrl} onClick={this.handleGoogleKindClick}>
         <div className="inner">
-          <span className="icon right-bumper"><span className="fa fa-envelope-o"></span></span> <span> MyLdsMail</span>
+          <span className="icon right-bumper"><span className="glyphicon glyphicon-envelope" aria-hidden="true"></span></span> <span style={{ fontFamily: '"Times New Roman", Georgia, Serif' }}> MyLdsMail</span>
         </div>
       </a>
     </div>);
