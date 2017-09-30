@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { prettyPrice } from '../helpers';
 import Loading from './Loading';
+import _ from 'lodash';
 
 class CartItemForm extends Component {
   constructor(props, context) {
@@ -10,6 +11,11 @@ class CartItemForm extends Component {
     this.remove = this.remove.bind(this);
     this.addQuantity = this.addQuantity.bind(this);
     this.removeQuantity = this.removeQuantity.bind(this);
+  }
+  componentWillMount() {
+    if (!_.get(this.props.cartItem, 'props.compilation')) {
+      this.props.remove(this.props.cartItem);
+    }
   }
   // setFormState(event) {
   //   const newState = {};
