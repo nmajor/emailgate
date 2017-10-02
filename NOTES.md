@@ -289,3 +289,23 @@ Compilations Created
 Compilations Edited
 Tmp Users Created
 Users Created
+
+--- Email Account bug
+
+[TypeError: Cannot read property 'token' of undefined]
+TypeError: Cannot read property 'token' of undefined
+    at /var/app/server/util/googleAuth.js:158:30
+    at new wrappedPromise (/tmp/node_modules/newrelic/lib/instrumentation/promise.js:156:20)
+    at Object.searchMessages (/var/app/server/util/googleAuth.js:157:10)
+    at model.googlefilteredEmails (/var/app/server/models/account.js:151:21)
+    at model.filteredEmails (/var/app/server/models/account.js:126:17)
+    at /var/app/server/events/index.js:90:24
+    at wrapped (/tmp/node_modules/newrelic/lib/transaction/tracer/index.js:184:28)
+    at Promise.linkTransaction (/tmp/node_modules/newrelic/lib/instrumentation/promise.js:295:65)
+    at Promise.wrapped (/tmp/node_modules/newrelic/lib/transaction/tracer/index.js:184:28)
+    at __NR_wrappedThenHandler (/tmp/node_modules/newrelic/lib/instrumentation/promise.js:471:26)
+    at run (/tmp/node_modules/babel-polyfill/node_modules/core-js/modules/es6.promise.js:66:22)
+    at /tmp/node_modules/babel-polyfill/node_modules/core-js/modules/es6.promise.js:79:30
+    at flush (/tmp/node_modules/babel-polyfill/node_modules/core-js/modules/_microtask.js:18:9)
+    at nextTickCallbackWith0Args (node.js:419:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:389:13)

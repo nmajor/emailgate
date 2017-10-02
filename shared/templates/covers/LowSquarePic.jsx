@@ -67,7 +67,8 @@ class LowSquarePic extends CoverBase {
           position: 'relative',
           letterSpacing: '5px',
           fontWeight: '600',
-          fontSize: '35px',
+          fontSize: '33px',
+          lineHeight: '40px',
         }}>
           <span style={{ position: 'absolute', bottom: 0 }}>{compilation.title}</span>
         </div>
