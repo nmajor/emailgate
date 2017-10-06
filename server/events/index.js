@@ -93,8 +93,6 @@ export default (io) => {
         socket.emit('FILTERED_ACCOUNT_EMAILS', results);
       })
       .catch((err) => {
-        console.log(err);
-        console.log(err.stack);
         socket.emit('FILTERED_ACCOUNT_EMAILS_ERROR', err);
       });
     });
@@ -170,6 +168,9 @@ export default (io) => {
         })
         .then((compilation) => { // eslint-disable-line no-shadow
           socket.emit('UPDATED_COMPILATION', compilation);
+        })
+        .catch((err) => {
+          console.log('An error happened when trying to add an email by id', err, err.stack);
         });
       });
     });

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import FilterForm from '../components/GoogleFilterForm';
 import FilteredEmailsActions from './FilteredEmailsActions';
+import ReconnectGoogleAccount from '../components/ReconnectGoogleAccount';
 // import _ from 'lodash';
 
 class GoogleFilterFormContainer extends Component {
@@ -15,10 +16,15 @@ class GoogleFilterFormContainer extends Component {
     };
 
     this.submitForm = this.submitForm.bind(this);
+    this.userReturnTo = this.userReturnTo.bind(this);
     this.currentAccount = this.props.currentAccount;
+    this.renderReconnect = this.renderReconnect.bind(this);
   }
   componentWillUnmount() {
     this.props.dispatch(Actions.setFilteredAccountEmailsResults({}));
+  }
+  userReturnTo() {
+    return `/compilations/${this.props.compilation._id}/add-emails`;
   }
   submitForm(props) {
     this.state.filter = {
@@ -28,12 +34,16 @@ class GoogleFilterFormContainer extends Component {
 
     this.props.dispatch(Actions.getFilteredAccountEmails(this.currentAccount, this.state.filter));
   }
+  renderReconnect() {
+    return <ReconnectGoogleAccount userReturnTo={this.userReturnTo()} account={this.currentAccount} googleAuthUrl={this.props.config.googleAuthUrl} />;
+  }
   render() {
     return (<div>
       <FilterForm
         submitForm={this.submitForm}
         fetching={this.props.fetching.filteredAccountEmails}
         errors={this.props.filteredAccountEmailsResults.errors}
+        renderReconnect={this.renderReconnect}
       />
       <FilteredEmailsActions
         submitForm={this.submitForm}
@@ -51,6 +61,7 @@ class GoogleFilterFormContainer extends Component {
 
 function mapStateToProps(store) {
   return {
+    config: store.config,
     fetching: store.fetching,
     filteredAccountEmailsResults: store.filteredAccountEmailsResults,
     filteredAccountEmails: store.filteredAccountEmails,
@@ -69,6 +80,8 @@ GoogleFilterFormContainer.propTypes = {
   allSelected: PropTypes.bool.isRequired,
   addSelected: PropTypes.func.isRequired,
   done: PropTypes.func.isRequired,
+  config: PropTypes.object,
+  compilation: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(GoogleFilterFormContainer);
