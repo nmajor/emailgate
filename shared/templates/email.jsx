@@ -10,7 +10,15 @@ import _ from 'lodash';
 export function addEmbeddedAttachmentsToEmailBody(email) {
   if (!email.attachments || email.attachments.length === 0) return email;
 
-  const placeholderMap = _.fromPairs(email.attachments.map((att, index) => { return [_.escapeRegExp(att.tagPlaceholder), renderToString(renderAttachment(att, index, { centered: true }))]; }));
+  const placeholderedAttachments = _.find(email.attachments, (att) => {
+    return att.tagPlaceholder;
+  });
+
+  if (placeholderedAttachments.length === 0) { return email; }
+
+  const placeholderMap = _.fromPairs(placeholderedAttachments.map((att, index) => {
+    return [_.escapeRegExp(att.tagPlaceholder), renderToString(renderAttachment(att, index, { centered: true }))];
+  }));
 
   const regexp = RegExp(`(${Object.keys(placeholderMap).join('|')})`, 'g');
 
