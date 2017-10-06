@@ -73,7 +73,7 @@ class CoverImage extends Component {
     const yScaleRatio = height / image.crop.height;
 
     const imageInnerStyles = {
-      width: `${image.crop.naturalWidth * xScaleRatio}px`,
+      width: `${(image.crop.relativeWidth || image.crop.naturalWidth) * xScaleRatio}px`,
       position: 'relative',
       left: `-${image.crop.x * xScaleRatio}px`,
       top: `-${(image.crop.y) * yScaleRatio}px`,
