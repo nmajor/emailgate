@@ -14,7 +14,7 @@ export function addEmbeddedAttachmentsToEmailBody(email) {
     return att.tagPlaceholder;
   });
 
-  if (placeholderedAttachments.length === 0) { return email; }
+  if (!placeholderedAttachments || placeholderedAttachments.length === 0) { return email; }
 
   const placeholderMap = _.fromPairs(placeholderedAttachments.map((att, index) => {
     return [_.escapeRegExp(att.tagPlaceholder), renderToString(renderAttachment(att, index, { centered: true }))];
