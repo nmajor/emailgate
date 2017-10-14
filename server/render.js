@@ -1,5 +1,7 @@
 import coverFonts from '../shared/templates/covers/utils/fonts';
 import _ from 'lodash';
+// import fs from 'fs';
+// import hasha from 'hasha';
 
 // Render Initial HTML
 export function mainPage(html, renderedState) {
@@ -7,6 +9,13 @@ export function mainPage(html, renderedState) {
   const fbPixel = process.env.FB_PIXEL;
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
   const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join('\n');
+  const mainJsPath = '/js/app.bundle.js';
+
+  // if (fs.existsSync('/public/js/app.bundle.js')) {
+  //   const hash = hasha.fromFileSync('/public/js/app.bundle.js', { algorithm: 'md5' });
+  //   mainJsPath = `${mainJsPath}?${hash}`;
+  // }
+
   return `
     <!doctype html>
     <html>
@@ -50,7 +59,7 @@ export function mainPage(html, renderedState) {
         </script>
 
         <script>var GA_TRACKING_ID='${process.env.GA_TRACKING_ID}'</script>
-        <script src="/js/app.bundle.js"></script>
+        <script src="${mainJsPath}"></script>
 
         <!-- Theme Javascript Files -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

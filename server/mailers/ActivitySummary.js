@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import moment from 'moment';
-import { prettyPrice, buffCart } from '../../shared/helpers';
+import { prettyPrice, cartItemsTotal } from '../../shared/helpers';
 // import _ from 'lodash';
 
 class ActivitySummary {
@@ -10,8 +10,6 @@ class ActivitySummary {
   }
   renderOrderCardList() {
     return this.props.orders.map((order) => {
-      const newOrder = buffCart(order);
-      console.log('blah hey', newOrder);
       return (<div
         style={{
           background: '#FFF',
@@ -21,10 +19,11 @@ class ActivitySummary {
           marginBottom: '10px',
         }}
       >
-        Amount: ${prettyPrice(order.amount)}
-        Tax: ${prettyPrice(order.tax)}
-        Shipping: ${prettyPrice(order.shipping)}
-        Discount: ${prettyPrice(order.discount)} from promo code {order._promoCode}
+        <div>Items Total: ${prettyPrice(cartItemsTotal(order.items))}</div>
+        <div>Tax: ${prettyPrice(order.tax)}</div>
+        <div>Shipping: ${prettyPrice(order.shipping)}</div>
+        <div>Discount: -${prettyPrice(order.discount)} from promo code {order._promoCode}</div>
+        <div>Amount: ${prettyPrice(order.amount)}</div>
       </div>);
     });
   }
