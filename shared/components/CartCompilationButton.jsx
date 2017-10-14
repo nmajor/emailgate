@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import CompilationAddToCart from './CompilationAddToCart';
+import CompilationAddToCartContainer from '../container/CompilationAddToCartContainer';
 import Modal from './Modal';
 
 class CartCompilationButton extends Component {
@@ -29,7 +29,7 @@ class CartCompilationButton extends Component {
       return (<Modal close={this.hideModal}>
         <div className="padded">
           <h1 className="text-center">Add To Cart</h1>
-          <CompilationAddToCart
+          <CompilationAddToCartContainer
             compilation={this.props.compilation}
             submitForm={this.addCompilation}
             products={this.props.products}

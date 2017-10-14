@@ -85,6 +85,14 @@ class CompilationAddToCart extends Component {
       </div>
     </div>);
   }
+  renderSaleBanner() {
+    return (<div>
+      <div className="clearfix" />
+      <div className="checkout-sale-message">
+        <div>Your promotional discount of <span className="code">{_.get(this.props.saleSetting, 'value.discount')}%</span> will automatiacally be applied at checkout!</div>
+      </div>
+    </div>);
+  }
   render() {
     return (<div>
       <div className="row">
@@ -92,6 +100,7 @@ class CompilationAddToCart extends Component {
           {this.renderCompilationSummary()}
           <hr />
           {this.renderProductOptions()}
+          {this.renderSaleBanner()}
           {this.renderAddToCartForm()}
         </div>
       </div>
@@ -104,6 +113,7 @@ CompilationAddToCart.propTypes = {
   compilationEmailsCount: PropTypes.number,
   products: PropTypes.array.isRequired,
   submitForm: PropTypes.func.isRequired,
+  saleSetting: PropTypes.object.isRequired,
 };
 
 export default CompilationAddToCart;
