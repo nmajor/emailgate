@@ -10,7 +10,7 @@ import _ from 'lodash';
 export function addEmbeddedAttachmentsToEmailBody(email) {
   if (!email.attachments || email.attachments.length === 0) return email;
 
-  const placeholderedAttachments = _.find(email.attachments, (att) => {
+  const placeholderedAttachments = _.filter(email.attachments, (att) => {
     return att.tagPlaceholder;
   });
 

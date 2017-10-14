@@ -86,8 +86,9 @@ export class CoverBase {
         bottom: 0,
         marginBottom: '60px',
         width: '100%',
+        fontSize: '12px',
       }}>
-        missionarymemoir.com
+        <div>www.missionarymemoir.com</div>
       </div>
     </BackCoverBase>);
   }
