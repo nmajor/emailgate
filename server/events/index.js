@@ -204,7 +204,15 @@ export default (io) => {
     socket.on('REMOVE_COMPILATION_EMAIL', (data) => {
       console.log('REMOVE_COMPILATION_EMAIL');
       User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then((user) => {
+        return userIsAdminSafe(user)
+        .then((isAdmin) => {
+          if (isAdmin) {
+            return Compilation.findOne({ _id: data.compilationId });
+          }
+          return Compilation.findOne({ _user: user._id, _id: data.compilationId });
+        });
+      })
       .then((compilation) => {
         return Email.findOneAndRemove({ _compilation: compilation._id, _id: data.emailId })
         .then((email) => {
@@ -219,7 +227,8 @@ export default (io) => {
         .then((compilation) => { // eslint-disable-line no-shadow
           socket.emit('UPDATED_COMPILATION', compilation);
         });
-      });
+      })
+      .catch((err) => { console.log('An error happened when removing compilation email', err, err.stack); });
     });
 
     socket.on('UPDATE_COMPILATION_EMAIL', (data) => {

@@ -86,12 +86,14 @@ class CompilationAddToCart extends Component {
     </div>);
   }
   renderSaleBanner() {
-    return (<div>
-      <div className="clearfix" />
-      <div className="checkout-sale-message">
-        <div>Your promotional discount of <span className="code">{_.get(this.props.saleSetting, 'value.discount')}%</span> will automatiacally be applied at checkout!</div>
-      </div>
-    </div>);
+    if (_.get(this.props.saleSetting, 'value.discount')) {
+      return (<div>
+        <div className="clearfix" />
+        <div className="checkout-sale-message">
+          <div>Your promotional discount of <span className="code">{_.get(this.props.saleSetting, 'value.discount')}%</span> will automatiacally be applied at checkout!</div>
+        </div>
+      </div>);
+    }
   }
   render() {
     return (<div>

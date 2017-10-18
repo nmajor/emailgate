@@ -36,11 +36,16 @@ class CartItemForm extends Component {
   }
   renderProductDesc() {
     const { compilation } = this.props.cartItem.props; // eslint-disable-line
+    let thumbnail = null;
+
+    if (compilation.thumbnail) {
+      thumbnail = (<div className="compilation-thumb">
+        <img role="presentation" src={compilation.thumbnail.url} />
+      </div>);
+    }
 
     return (<td className="cart-product-desc">
-      <div className="compilation-thumb">
-        <img role="presentation" src={compilation.thumbnail.url} />
-      </div>
+      {thumbnail}
       <div className="details">
         <h4>{compilation.title} - about {compilation.meta.estimatedPagePdfPages} pages</h4>
         <h5>{compilation.subtitle}</h5>

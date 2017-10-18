@@ -15,8 +15,17 @@ export function orderStatusResponse(req, res) {
         status = _.get(req.body, 'information.orderStatus');
       }
 
+      let body = req.body;
+
+      try {
+        JSON.parse(body);
+      } catch (err) {
+        console.log('Response not is valid json format');
+        body = encodeURIComponent(body);
+      }
+
       purchaseOrder.status = status; // eslint-disable-line no-param-reassign
-      purchaseOrder.responses.push({ status, body: req.body });
+      purchaseOrder.responses.push({ status, body });
       return purchaseOrder.save();
     });
   }))
