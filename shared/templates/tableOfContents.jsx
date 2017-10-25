@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import moment from 'moment';
+import twemoji from 'twemoji';
 // import _ from 'lodash';
 
 class TableOfContentsTemplate {
@@ -51,7 +52,7 @@ class TableOfContentsTemplate {
 
     return (
       <div className="unbreakable" key={index} style={entryStyle}>
-        <div style={subjectStyle}>{subject}</div>
+        <div style={subjectStyle} dangerouslySetInnerHTML={{ __html: twemoji.parse(subject) }} />
         <div style={{ lineHeight: '8px', marginBottom: '4px' }}>
           <div style={dateStyle}>{prettyDate}{this.renderAttachmentIcons(email)}</div>
           <div style={pageStyle}>{pageNum}</div>

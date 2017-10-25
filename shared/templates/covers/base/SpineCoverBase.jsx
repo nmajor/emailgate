@@ -38,7 +38,7 @@ class SpineCoverBase extends Component {
 
       lineHeight: this.props.spineWidth,
       textAlign: 'center',
-      fontWeight: '100',
+      fontWeight: this.props.spineFontWeight,
     };
   }
   render() {

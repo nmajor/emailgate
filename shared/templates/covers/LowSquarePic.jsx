@@ -7,6 +7,7 @@ import React from 'react';
 import CoverBase from './base/CoverBase';
 import FrontCoverBase from './base/FrontCoverBase';
 import CoverImage from './utils/CoverImage';
+import fonts from './utils/fonts';
 
 class LowSquarePic extends CoverBase {
   constructor(props) {
@@ -20,6 +21,8 @@ class LowSquarePic extends CoverBase {
     this.props.outerBackgroundColor = this.props.showBleed ? this.props.opaqueBackgroundColor : this.props.backgroundColor;
 
     this.props.textColor = '#333';
+    this.props.primaryFont = fonts.helvetica;
+    this.props.secondaryFont = fonts.raleway;
   }
   renderFrontCover() {
     const {
@@ -27,6 +30,8 @@ class LowSquarePic extends CoverBase {
       // boardHeightPx,
       boardWidthPx,
       selectImage,
+      primaryFont,
+      secondaryFont,
     } = this.props;
 
     const aspect = (9 / 10);
@@ -69,15 +74,18 @@ class LowSquarePic extends CoverBase {
           fontWeight: '600',
           fontSize: '33px',
           lineHeight: '40px',
+          fontFamily: primaryFont.family,
         }}>
           <span style={{ position: 'absolute', bottom: 0 }}>{compilation.title}</span>
         </div>
         <hr style={{ margin: '10px 0', borderColor: '#EEE' }} />
         <div style={{
           fontSize: '12px',
+          fontFamily: secondaryFont.family,
         }}>{compilation.subtitle}</div>
         <div style={{
           fontSize: '12px',
+          fontFamily: secondaryFont.family,
         }}>{this.renderDateRange()}</div>
       </div>
       <div style={{

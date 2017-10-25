@@ -1,5 +1,6 @@
 import stream from 'stream';
 import moment from 'moment';
+import twemoji from 'twemoji';
 // import request from 'request';
 import Email from '../models/email';
 import Compilation from '../models/compilation';
@@ -64,6 +65,10 @@ export function trimKnownBodyFluff(text) {
   .replace(/NOTICE:.?This.?email.?message.*original.?message.?/, '');
 }
 
+export function emojify(text) {
+  return twemoji.parse(text);
+}
+
 export function sanitizeEmailBody(text) {
   return sanitizeHtml(text, {
     allowedTags: [
@@ -73,6 +78,17 @@ export function sanitizeEmailBody(text) {
     ],
     allowedAttributes: {
       a: [],
+    },
+  });
+}
+
+export function sanitizeEmailSubject(text) {
+  return sanitizeHtml(text, {
+    allowedTags: [
+      'img',
+    ],
+    allowedAttributes: {
+      img: ['class', 'draggable', 'alt', 'src'],
     },
   });
 }

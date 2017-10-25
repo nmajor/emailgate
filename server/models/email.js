@@ -27,6 +27,7 @@ const EmailSchema = new Schema({
   to: [],
   from: [],
   subject: String,
+  subjectHtml: String,
   body: String,
   bodyPreview: String,
   template: String,

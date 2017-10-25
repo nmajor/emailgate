@@ -39,6 +39,10 @@ const fonts = {
     link: '<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">',
     family: '\'Lato\', sans-serif',
   },
+  helvetica: {
+    link: '',
+    family: '\'Helvetica Neue\',Helvetica,Arial,sans-serif',
+  },
 };
 
 export default fonts;

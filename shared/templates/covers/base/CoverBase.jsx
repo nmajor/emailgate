@@ -39,6 +39,8 @@ export class CoverBase {
       secondaryFont: fonts.raleway,
       spineFont: 'secondaryFont',
       backCoverFont: 'secondaryFont',
+      spineFontWeight: 100,
+      backCoverFontWeight: 100,
 
       selectImage: props.selectImage,
     };
@@ -93,10 +95,14 @@ export class CoverBase {
     </BackCoverBase>);
   }
   renderSpine() {
-    const { compilation, prettyStartDate, prettyEndDate } = this.props;
+    const {
+      compilation,
+      prettyStartDateSmall,
+      prettyEndDateSmall,
+    } = this.props;
 
     return (<SpineCoverBase {...this.props}>
-      {compilation.title} &middot; {prettyStartDate} - {prettyEndDate}
+      {compilation.title} &middot; {prettyStartDateSmall} - {prettyEndDateSmall}
     </SpineCoverBase>);
   }
   renderFrontCover() {

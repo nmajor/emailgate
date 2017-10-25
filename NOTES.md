@@ -1,11 +1,7 @@
-TODO:
-LATER - Send out the rest of those customer Messages
-Submit the new cover demos
-Fix Image Rotation - Connect the redux action request to the controller
-Add New Page Insert
-
-Add logo to back covers
-Add new favicon
+TOP TODOS:
+- Cropping issue, when you dont touch the cropping area after upload it gets really small
+- Its possible for blogger blogs to not connect at all (maybe due to finding the rss feed, maybe add a redo on that if anything fails)
+- Still having a checkout issue with some customers
 
 
 FROM BJ:
