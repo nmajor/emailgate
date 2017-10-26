@@ -32,6 +32,9 @@ export function setPropertyForCartItem(cartItemId, prop, val) {
 
 export function addCartItem(productId, quantity, props) {
   return dispatch => {
+    dispatch(setPropertyForCart('fetching', true));
+    socket.emit('ADD_CART_ITEM', { productId, quantity, props });
+
     const ReactGA = require('../../ga').default; // eslint-disable-line
     ReactGA.event({
       category: 'Checkout',
@@ -44,9 +47,6 @@ export function addCartItem(productId, quantity, props) {
       content_type: 'product',
       content_ids: [productId],
     });
-
-    dispatch(setPropertyForCart('fetching', true));
-    socket.emit('ADD_CART_ITEM', { productId, quantity, props });
   };
 }
 

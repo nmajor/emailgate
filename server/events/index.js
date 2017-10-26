@@ -332,6 +332,9 @@ export default (io) => {
       })
       .then((cart) => {
         socket.emit('UPDATED_CART', cart);
+      })
+      .catch((err) => {
+        console.log(`An error happened while adding cart item ${err}`);
       });
     });
 
@@ -347,7 +350,7 @@ export default (io) => {
         socket.emit('UPDATED_CART', cart);
       })
       .catch((err) => {
-        console.log(`An error happened yo. ${err}`);
+        console.log(`An error happened while removing cart item ${err}`);
       });
     });
 

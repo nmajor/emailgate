@@ -104,6 +104,10 @@ router.post('/login', (req, res) => {
         });
       });
     } else if (user) {
+      // return passport.authenticate('local')(req, res, () => {
+      //   return res.json(user);
+      // });
+
       return user.authenticate(req.body.password, (err, result) => {
         if (result) {
           return passport.authenticate('local')(req, res, () => {

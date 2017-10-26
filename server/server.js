@@ -52,7 +52,21 @@ import sessionMiddleware from './session-middleware';
 import { mainPage, adminPage } from './render';
 
 import User from './models/user';
+
 passport.use(User.createStrategy());
+
+// import LocalStrategy from 'passport-local';
+// passport.use(new LocalStrategy({
+//   usernameField: 'email',
+// },
+// (email, password, done) => {
+//   User.findOne({ email }, (err, user) => {
+//     if (err) { return done(err); }
+//     return done(null, user);
+//   });
+// }
+// ));
+
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
