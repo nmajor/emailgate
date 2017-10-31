@@ -27,14 +27,14 @@ class TableOfContentsTemplate {
       textAlign: 'left',
       fontWeight: 'bold',
       marginBottom: '0',
-      maxWidth: '80%',
+      maxWidth: '90%',
     };
 
     const dateStyle = {
       fontSize: '9px',
       fontFamily: '\'Montserrat\', sans-serif',
       display: 'inline-block',
-      width: '50%',
+      width: '90%',
       textAlign: 'left',
       color: '#666',
     };
@@ -43,7 +43,7 @@ class TableOfContentsTemplate {
       fontSize: '13px',
       fontFamily: '\'Montserrat\', sans-serif',
       display: 'inline-block',
-      width: '50%',
+      width: '10%',
       textAlign: 'right',
     };
 
@@ -62,11 +62,11 @@ class TableOfContentsTemplate {
   }
   renderAttachmentIcons(email) {
     if (email.attachments.length > 0) {
-      const attachments = email.attachments.map(() => {
-        return (<span style={{ marginRight: '3px' }} className="glyphicon glyphicon-picture" aria-hidden="true"></span>);
-      });
+      // const attachments = email.attachments.map(() => {
+      //   return (<span style={{ marginRight: '3px' }} className="glyphicon glyphicon-picture" aria-hidden="true"></span>);
+      // });
 
-      return <span><span style={{ margin: '0 10px' }}>-</span>{attachments}</span>;
+      return <span><span style={{ margin: '0 10px' }}>-</span><span style={{ marginRight: '3px' }} className="glyphicon glyphicon-picture" aria-hidden="true"></span> x {email.attachments.length}</span>;
     }
   }
   renderEntries() {

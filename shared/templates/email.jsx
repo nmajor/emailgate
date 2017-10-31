@@ -19,6 +19,7 @@ export function addEmbeddedAttachmentsToEmailBody(email) {
   if (!placeholderedAttachments || placeholderedAttachments.length === 0) { return email; }
 
   const placeholderMap = _.fromPairs(placeholderedAttachments.map((att, index) => {
+    att.url = att.originalSrc;
     return [_.escapeRegExp(att.tagPlaceholder), renderToString(renderAttachment(att, index, { centered: true }))];
   }));
 
@@ -34,11 +35,14 @@ export function addEmbeddedAttachmentsToEmailBody(email) {
 function renderAttachment(attachment, index, options) {
   const divStyle = {
     maxWidth: '100%',
-    marginTop: options.centered ? '0px' : '5px',
+    marginTop: options.centered ? '3px' : '5px',
     maxHeight: '275px',
-    marginLeft: '3px',
-    marginRight: '3px',
+    // maxHeight: '170px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   };
+
+  // 550
 
   let imageTag = null;
 

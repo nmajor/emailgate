@@ -84,11 +84,11 @@ class CompilationEmailsListItem extends Component {
   }
   renderAttachmentIcons() {
     if (this.props.email.attachments.length > 0) {
-      const attachments = this.props.email.attachments.map((attachment, index) => {
-        return (<span key={index} className="attachment-icon glyphicon glyphicon-picture" aria-hidden="true"></span>);
-      });
+      // const attachments = this.props.email.attachments.map((attachment, index) => {
+      //   return (<span key={index} className="attachment-icon glyphicon glyphicon-picture" aria-hidden="true"></span>);
+      // });
 
-      return <span><span className="left-bumper right-bumper">-</span>{attachments}</span>;
+      return <span><span className="left-bumper right-bumper">-</span><span className="attachment-icon glyphicon glyphicon-picture" aria-hidden="true"></span> x {this.props.email.attachments.length}</span>;
     }
   }
   renderThumbActions() {

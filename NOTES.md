@@ -1,8 +1,17 @@
 TOP TODOS:
 - Cropping issue, when you dont touch the cropping area after upload it gets really small
+ - also for full size image for the full size image
 - Its possible for blogger blogs to not connect at all (maybe due to finding the rss feed, maybe add a redo on that if anything fails)
 - Still having a checkout issue with some customers
+- Build the voucher promo code feature
+- build a webhook for woocommerce
+- Change the text for "Add custom page here" - make it bigger
 
+
+Before thanksgiving:
+Prebuy
+Get some user feedback regarding bugs ()
+Design christmas ad
 
 FROM BJ:
 - Make the Table of Contents font smaller
