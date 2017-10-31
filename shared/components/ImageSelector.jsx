@@ -69,15 +69,16 @@ class ImageSelector extends Component { // eslint-disable-line
       naturalWidth: undefined,
       pixelCrop: undefined,
       crop: {
-        width: 30,
+        width: undefined,
         aspect: props.coverProps.aspect || 1,
       },
+      imageRef: undefined,
     };
 
     this.addImage = this.addImage.bind(this);
     this.submitImage = this.submitImage.bind(this);
     this.handleCropChange = this.handleCropChange.bind(this);
-    this.handlImageLoad = this.handlImageLoad.bind(this);
+    this.handleImageLoad = this.handleImageLoad.bind(this);
     this.handleThumbClick = this.handleThumbClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
 
@@ -107,6 +108,9 @@ class ImageSelector extends Component { // eslint-disable-line
     crop.naturalWidth = this.state.naturalWidth;
     crop.relativeHeight = this.state.relativeHeight;
     crop.relativeWidth = this.state.relativeWidth;
+    console.log('blah hey width', this.state.crop.width, Math.round(this.state.imageRef.naturalWidth * (this.state.crop.width / 100)));
+    crop.width = crop.width || Math.round(crop.relativeWidth * (this.state.crop.width / 100));
+    // crop.height = Math.round(crop.naturalHeight * (this.state.crop.height / 100));
 
     // Renaming things here since the pixelCrop is what I use I changed the name to crop
     // And the crop property is now display crop
@@ -118,13 +122,16 @@ class ImageSelector extends Component { // eslint-disable-line
       displayCrop: this.state.crop,
     };
 
+    console.log('blah submitImage', imageData);
+
     const metaData = {};
     metaData[this.props.coverProps.key] = imageData;
 
     this.props.submit(metaData);
   }
-  handlImageLoad(image) {
-    this.setState({
+  handleImageLoad(image) {
+    // Original
+    const newState = {
       crop: makeAspectCrop({
         x: this.state.crop.x || 0,
         y: this.state.crop.y || 0,
@@ -135,14 +142,21 @@ class ImageSelector extends Component { // eslint-disable-line
       naturalWidth: image.naturalWidth,
       relativeHeight: image.height,
       relativeWidth: image.width,
-    });
+      imageRef: image,
+    };
+
+    console.log('blah handleImageLoad', newState);
+
+    this.setState(newState);
 
     // this.setState({ naturalHeight: target.naturalHeight, naturalWidth: target.naturalWidth });
   }
   handleCropChange(crop, pixelCrop) {
+    console.log('blah handleCropChange', { crop, pixelCrop });
     this.setState({ crop, pixelCrop });
   }
   handleThumbClick(image) {
+    console.log('blah handleThumbClick', image);
     this.setState({ image });
   }
   handleClose() {
@@ -160,7 +174,7 @@ class ImageSelector extends Component { // eslint-disable-line
 
       return (<div className="image-selector-crop-wrapper">
         <ReactCrop
-          onImageLoaded={this.handlImageLoad}
+          onImageLoaded={this.handleImageLoad}
           style={divStyle}
           crop={this.state.crop}
           keepSelection
