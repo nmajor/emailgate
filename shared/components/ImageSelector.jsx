@@ -108,7 +108,6 @@ class ImageSelector extends Component { // eslint-disable-line
     crop.naturalWidth = this.state.naturalWidth;
     crop.relativeHeight = this.state.relativeHeight;
     crop.relativeWidth = this.state.relativeWidth;
-    console.log('blah hey width', this.state.crop.width, Math.round(this.state.imageRef.naturalWidth * (this.state.crop.width / 100)));
     crop.width = crop.width || Math.round(crop.relativeWidth * (this.state.crop.width / 100));
     // crop.height = Math.round(crop.naturalHeight * (this.state.crop.height / 100));
 
@@ -121,8 +120,6 @@ class ImageSelector extends Component { // eslint-disable-line
       crop,
       displayCrop: this.state.crop,
     };
-
-    console.log('blah submitImage', imageData);
 
     const metaData = {};
     metaData[this.props.coverProps.key] = imageData;
@@ -145,18 +142,14 @@ class ImageSelector extends Component { // eslint-disable-line
       imageRef: image,
     };
 
-    console.log('blah handleImageLoad', newState);
-
     this.setState(newState);
 
     // this.setState({ naturalHeight: target.naturalHeight, naturalWidth: target.naturalWidth });
   }
   handleCropChange(crop, pixelCrop) {
-    console.log('blah handleCropChange', { crop, pixelCrop });
     this.setState({ crop, pixelCrop });
   }
   handleThumbClick(image) {
-    console.log('blah handleThumbClick', image);
     this.setState({ image });
   }
   handleClose() {
