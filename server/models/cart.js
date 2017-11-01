@@ -5,7 +5,7 @@ import { getProductById, calculateShipping } from '../util/helpers';
 import _ from 'lodash';
 
 const CartItemSchema = new Schema({
-  _id: { type: String, unique: true, default: shortid.generate },
+  _id: { type: String, unique: true, sparse: true, default: shortid.generate },
   productId: {
     type: String,
     validate: {

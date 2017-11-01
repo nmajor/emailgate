@@ -7,6 +7,13 @@ export function mainPage(html, renderedState) {
   const fbPixel = process.env.FB_PIXEL;
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
   const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join('\n');
+  let mainJsPath = '/js/app.bundle.js';
+
+  if (process.env.NODE_ENV === 'production' && process.env.BUNDLE_VERSION) {
+  // if (fs.existsSync('/public/js/app.bundle.js') && process.env.NODE_ENV !== 'production') {
+    mainJsPath = `${mainJsPath}?${process.env.BUNDLE_VERSION || 0}`;
+  }
+
   return `
     <!doctype html>
     <html>
@@ -28,6 +35,9 @@ export function mainPage(html, renderedState) {
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+        <!-- Include emoji -->
+        <script src="//twemoji.maxcdn.com/2/twemoji.min.js?2.3.0"></script>
       </head>
       <body>
         <div id="root">${html}</div>
@@ -50,7 +60,7 @@ export function mainPage(html, renderedState) {
         </script>
 
         <script>var GA_TRACKING_ID='${process.env.GA_TRACKING_ID}'</script>
-        <script src="/js/app.bundle.js"></script>
+        <script src="${mainJsPath}"></script>
 
         <!-- Theme Javascript Files -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

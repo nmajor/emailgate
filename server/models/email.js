@@ -27,6 +27,7 @@ const EmailSchema = new Schema({
   to: [],
   from: [],
   subject: String,
+  subjectHtml: String,
   body: String,
   bodyPreview: String,
   template: String,
@@ -94,8 +95,8 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
 
 EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {
   return new Promise((resolve) => {
-    const email = Object.assign({}, this.toObject(), { body: '[[BODY]]' });
-    const template = new EmailTemplate(addEmbeddedAttachmentsToEmailBody(email));
+    // const email = Object.assign({}, this.toObject(), { body: '[[BODY]]' });
+    const template = new EmailTemplate(addEmbeddedAttachmentsToEmailBody(this));
     const html = template.toString();
     this.template = html;
     resolve(this);

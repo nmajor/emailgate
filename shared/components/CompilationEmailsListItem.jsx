@@ -4,6 +4,7 @@ import moment from 'moment';
 import EmailView from './EmailView';
 import CompilationEmailForm from './CompilationEmailForm';
 import Loading from './Loading';
+import twemoji from 'twemoji';
 import _ from 'lodash';
 
 class CompilationEmailsListItem extends Component {
@@ -75,18 +76,19 @@ class CompilationEmailsListItem extends Component {
     </div>);
   }
   renderSubject() {
-    return <div className="subject">{this.props.email.subject || 'No subject'}</div>;
+    const subject = this.props.email.subject || 'No subject';
+    return <div className="subject" dangerouslySetInnerHTML={{ __html: twemoji.parse(subject) }}></div>;
   }
   renderBodyPreview() {
     return <div>{_.isEmpty(this.props.email.bodyPreview) ? 'No email body' : this.props.email.bodyPreview}</div>;
   }
   renderAttachmentIcons() {
     if (this.props.email.attachments.length > 0) {
-      const attachments = this.props.email.attachments.map((attachment, index) => {
-        return (<span key={index} className="attachment-icon glyphicon glyphicon-picture" aria-hidden="true"></span>);
-      });
+      // const attachments = this.props.email.attachments.map((attachment, index) => {
+      //   return (<span key={index} className="attachment-icon glyphicon glyphicon-picture" aria-hidden="true"></span>);
+      // });
 
-      return <span><span className="left-bumper right-bumper">-</span>{attachments}</span>;
+      return <span><span className="left-bumper right-bumper">-</span><span className="attachment-icon glyphicon glyphicon-picture" aria-hidden="true"></span> x {this.props.email.attachments.length}</span>;
     }
   }
   renderThumbActions() {

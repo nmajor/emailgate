@@ -5,12 +5,23 @@ import moment from 'moment';
 import ReactQuill from 'react-quill';
 import DatePicker from 'react-datepicker';
 import _ from 'lodash';
+import twemoji from 'twemoji';
+
 // import { rotateImage } from '../helpers';
 
 export function addEmbeddedAttachmentsToEmailBody(email) {
   if (!email.attachments || email.attachments.length === 0) return email;
 
-  const placeholderMap = _.fromPairs(email.attachments.map((att, index) => { return [_.escapeRegExp(att.tagPlaceholder), renderToString(renderAttachment(att, index, { centered: true }))]; }));
+  const placeholderedAttachments = _.filter(email.attachments, (att) => {
+    return att.tagPlaceholder;
+  });
+
+  if (!placeholderedAttachments || placeholderedAttachments.length === 0) { return email; }
+
+  const placeholderMap = _.fromPairs(placeholderedAttachments.map((att, index) => {
+    att.url = att.originalSrc;
+    return [_.escapeRegExp(att.tagPlaceholder), renderToString(renderAttachment(att, index, { centered: true }))];
+  }));
 
   const regexp = RegExp(`(${Object.keys(placeholderMap).join('|')})`, 'g');
 
@@ -24,11 +35,14 @@ export function addEmbeddedAttachmentsToEmailBody(email) {
 function renderAttachment(attachment, index, options) {
   const divStyle = {
     maxWidth: '100%',
-    marginTop: options.centered ? '0px' : '5px',
+    marginTop: options.centered ? '3px' : '5px',
     maxHeight: '275px',
-    marginLeft: '3px',
-    marginRight: '3px',
+    // maxHeight: '170px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   };
+
+  // 550
 
   let imageTag = null;
 
@@ -367,18 +381,6 @@ class EmailTemplate {
 
     return <div style={{ textAlign: 'center' }}>{imageComponents}</div>;
   }
-
-  renderSubject(subject) {
-    const divStyle = {
-      fontFamily: '\'Montserrat\', sans-serif !important',
-      fontWeight: 'bold',
-      fontSize: '18px',
-      marginBottom: '3px',
-    };
-
-    return <div style={divStyle}>{subject}</div>;
-  }
-
   renderDate(date) {
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
@@ -420,10 +422,31 @@ class EmailTemplate {
       marginTop: '20px',
     };
   }
+  renderSubject(subject) {
+    const divStyle = {
+      fontFamily: '\'Montserrat\', sans-serif !important',
+      fontWeight: 'bold',
+      fontSize: '18px',
+      marginBottom: '3px',
+    };
+
+    return <div style={divStyle}>{subject}</div>;
+  }
+  renderSubjectDangerously(subject) {
+    // IMPORTANT if you change the fontSize here, also change it in the style of renderToString and the css for the class rendered-email-subject
+    const divStyle = {
+      fontFamily: '\'Montserrat\', sans-serif !important',
+      fontWeight: 'bold',
+      fontSize: '18px',
+      marginBottom: '3px',
+    };
+
+    return <div className="rendered-email-subject" style={divStyle} dangerouslySetInnerHTML={{ __html: twemoji.parse(subject) }} />;
+  }
   renderBodyDangerously(body) {
     const divStyle = this.bodyStyles();
 
-    return <div style={divStyle} dangerouslySetInnerHTML={{ __html: body }} />;
+    return <div className="rendered-email-body" style={divStyle} dangerouslySetInnerHTML={{ __html: twemoji.parse(body) }} />;
   }
   renderBody(body) {
     const divStyle = this.bodyStyles();
@@ -438,7 +461,7 @@ class EmailTemplate {
 
     return (<div style={{ fontSize: '20px' }}>
       {this.renderDate(moment(email.date).format('LL'))}
-      {this.renderSubject(email.subject || 'No subject')}
+      {this.renderSubjectDangerously(email.subject || 'No subject')}
       {this.renderFrom(this.processEmailUser(email.from))}
       {this.renderBodyDangerously(emailBody)}
       {this.renderAttachments(email.attachments)}
@@ -480,6 +503,12 @@ class EmailTemplate {
         padding: 0;
         -webkit-print-color-adjust: exact;
         box-sizing: border-box;
+      }
+      img.emoji {
+        height: 1em;
+        width: 1em;
+        margin: 0 .05em 0 .1em;
+        vertical-align: -0.1em;
       }
     </style>
     <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>

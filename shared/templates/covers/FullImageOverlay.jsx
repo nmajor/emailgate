@@ -18,7 +18,7 @@ class FullImageOverlay extends CoverBase {
     this.props.outerBackgroundColor = this.props.showBleed ? this.props.opaqueBackgroundColor : this.props.backgroundColor;
 
     this.props.textColor = '#FFF';
-    this.props.primaryFont = fonts.quicksand;
+    this.props.primaryFont = fonts.raleway;
     this.props.secondaryFont = fonts.lato;
   }
   renderFrontCover() {
@@ -84,6 +84,7 @@ class FullImageOverlay extends CoverBase {
         textAlign: 'center',
         left: contentPad,
         width: `${contentWidth}px`,
+        letterSpacing: '3px',
         fontFamily: primaryFont.family,
       }}>{compilation.title}</div>
       <div style={{

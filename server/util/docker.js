@@ -149,6 +149,7 @@ function createContainer(config) {
 function findOrCreateContainer(config, task) {
   return new Promise((resolve, reject) => {
     config.Env.push(`TASK=${encodeTask(task)}`);
+    console.log(config.Env);
 
     findContainer(config.name)
     .then((container) => {

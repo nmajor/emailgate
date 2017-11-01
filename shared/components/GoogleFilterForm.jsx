@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 // import Loading from './Loading';
+import _ from 'lodash';
 import GoogleAdvancedFilterForm from './GoogleAdvancedFilterForm';
 
 function buildFilterOperators(params) {
@@ -133,6 +134,11 @@ class GoogleFilterForm extends Component {
       });
     }
   }
+  renderReconnect() {
+    if (_.get(this.props, 'errors.reauth')) {
+      return this.props.renderReconnect();
+    }
+  }
   renderAdvancedForm() {
     if (this.state.showAdvanced) {
       return <GoogleAdvancedFilterForm initialValues={this.advancedValuesFromQuery()} onSubmit={this.submitAdvanced} toggleAdvanced={this.toggleAdvanced} />;
@@ -149,6 +155,7 @@ class GoogleFilterForm extends Component {
           {this.renderForm()}
           {this.renderAdvancedForm()}
           {this.renderErrors('base')}
+          {this.renderReconnect()}
         </div>
       </div>
     );
@@ -159,6 +166,7 @@ GoogleFilterForm.propTypes = {
   submitForm: PropTypes.func.isRequired,
   errors: PropTypes.object,
   fetching: PropTypes.bool,
+  renderReconnect: PropTypes.func,
 };
 
 export default GoogleFilterForm;

@@ -1,11 +1,31 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import moment from 'moment';
+import { prettyPrice, cartItemsTotal } from '../../shared/helpers';
 // import _ from 'lodash';
 
 class ActivitySummary {
   constructor(props) {
     this.props = props;
+  }
+  renderOrderCardList() {
+    return this.props.orders.map((order) => {
+      return (<div
+        style={{
+          background: '#FFF',
+          padding: '22px',
+          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+          border: '1px solid #CCC',
+          marginBottom: '10px',
+        }}
+      >
+        <div>Items Total: ${prettyPrice(cartItemsTotal(order.items))}</div>
+        <div>Tax: ${prettyPrice(order.tax)}</div>
+        <div>Shipping: ${prettyPrice(order.shipping)}</div>
+        <div>Discount: -${prettyPrice(order.discount)} from promo code {order._promoCode}</div>
+        <div>Amount: ${prettyPrice(order.amount)}</div>
+      </div>);
+    });
   }
   renderCompilationCardList() {
     return this.props.compilations.map((compilation) => {
@@ -66,14 +86,15 @@ class ActivitySummary {
   renderOrderSummary() {
     return (<div>
       <h3>Orders Created: {this.props.orders.length}</h3>
+      {this.renderOrderCardList()}
     </div>);
   }
   render() {
     return (<div style={{ padding: '40px' }}>
       <h1>Activity Summary for {moment(this.props.yesterday).format('dddd MMM Do, YYYY')}</h1>
+      {this.renderOrderSummary()}
       {this.renderCompilationSummary()}
       {this.renderUserSummary()}
-      {this.renderOrderSummary()}
     </div>);
   }
   toString() {

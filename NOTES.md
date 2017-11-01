@@ -1,15 +1,17 @@
-
 TOP TODOS:
+- Cropping issue, when you dont touch the cropping area after upload it gets really small
+ - also for full size image for the full size image
 - Its possible for blogger blogs to not connect at all (maybe due to finding the rss feed, maybe add a redo on that if anything fails)
 - Still having a checkout issue with some customers
 - Build the voucher promo code feature
 - build a webhook for woocommerce
 - Change the text for "Add custom page here" - make it bigger
->>>>>>> Stashed changes
 
-Add logo to back covers
-Add new favicon
 
+Before thanksgiving:
+Prebuy
+Get some user feedback regarding bugs ()
+Design christmas ad
 
 FROM BJ:
 - Make the Table of Contents font smaller
@@ -292,3 +294,23 @@ Compilations Created
 Compilations Edited
 Tmp Users Created
 Users Created
+
+--- Email Account bug
+
+[TypeError: Cannot read property 'token' of undefined]
+TypeError: Cannot read property 'token' of undefined
+    at /var/app/server/util/googleAuth.js:158:30
+    at new wrappedPromise (/tmp/node_modules/newrelic/lib/instrumentation/promise.js:156:20)
+    at Object.searchMessages (/var/app/server/util/googleAuth.js:157:10)
+    at model.googlefilteredEmails (/var/app/server/models/account.js:151:21)
+    at model.filteredEmails (/var/app/server/models/account.js:126:17)
+    at /var/app/server/events/index.js:90:24
+    at wrapped (/tmp/node_modules/newrelic/lib/transaction/tracer/index.js:184:28)
+    at Promise.linkTransaction (/tmp/node_modules/newrelic/lib/instrumentation/promise.js:295:65)
+    at Promise.wrapped (/tmp/node_modules/newrelic/lib/transaction/tracer/index.js:184:28)
+    at __NR_wrappedThenHandler (/tmp/node_modules/newrelic/lib/instrumentation/promise.js:471:26)
+    at run (/tmp/node_modules/babel-polyfill/node_modules/core-js/modules/es6.promise.js:66:22)
+    at /tmp/node_modules/babel-polyfill/node_modules/core-js/modules/es6.promise.js:79:30
+    at flush (/tmp/node_modules/babel-polyfill/node_modules/core-js/modules/_microtask.js:18:9)
+    at nextTickCallbackWith0Args (node.js:419:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:389:13)

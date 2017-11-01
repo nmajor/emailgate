@@ -113,7 +113,7 @@ class CartView extends Component {
     }
   }
   renderVoucherNotice() {
-    if (this.props.cart._promoCode.kind === 'voucher') {
+    if (this.props.cart._promoCode && this.props.cart._promoCode.kind === 'voucher') {
       let unclaimedVoucherNotice = 'You have claimed all the items for this Voucher Code';
 
       const productVouchers = this.props.cart._promoCode.productVouchers.map((voucher, index) => {
@@ -141,7 +141,7 @@ class CartView extends Component {
   }
   renderDiscount() {
     if (!this.props.cart._promoCode) return null;
-    if (this.props.cart._promoCode.kind === 'voucher') return null;
+    if (this.props.cart._promoCode && this.props.cart._promoCode.kind === 'voucher') return null;
 
     return (<tr>
       <td colSpan="3" className="text-right text-bold">Discount:</td>

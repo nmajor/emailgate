@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import CompilationAddToCart from '../components/CompilationAddToCart';
+import CompilationAddToCartContainer from './CompilationAddToCartContainer';
 // import CartViewContainer from './CartViewContainer';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
@@ -42,8 +42,7 @@ class CompilationCheckoutContainer extends Component {
         <div className="col-md-8 col-md-offset-2">
           <div className="compilation-content-box">
             <h1 className="text-center">Add To Cart</h1>
-            {this.renderSaleBanner()}
-            <CompilationAddToCart
+            <CompilationAddToCartContainer
               compilation={this.props.compilation}
               compilationEmailsCount={this.props.compilationEmails.length}
               submitForm={this.addToCart}

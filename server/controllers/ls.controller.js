@@ -15,8 +15,10 @@ export function orderStatusResponse(req, res) {
         status = _.get(req.body, 'information.orderStatus');
       }
 
+      const body = req.body;
+
       purchaseOrder.status = status; // eslint-disable-line no-param-reassign
-      purchaseOrder.responses.push({ status, body: req.body });
+      purchaseOrder.responses.push({ status, body });
       return purchaseOrder.save();
     });
   }))

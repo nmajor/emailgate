@@ -42,11 +42,11 @@ class PromoCodeFormContainer extends Component {
         <div>{_.get(this.sitewideSaleSetting, 'value.desc')}</div>
         <div className="top-bumper">Use promo code {'"'}<span className="code">{_.get(this.sitewideSaleSetting, 'value.code')}</span>{'"'} for {_.get(this.sitewideSaleSetting, 'value.discount')}% OFF!</div>
       </div>);
+    } else if (_.get(this.sitewideSaleSetting, 'value.code')) {
+      return (<div className="checkout-sale-message">
+        <div>We have automatically applied the promo code {'"'}<span className="code">{_.get(this.sitewideSaleSetting, 'value.code')}</span>{'"'} to give you {_.get(this.sitewideSaleSetting, 'value.discount')}% OFF!</div>
+      </div>);
     }
-
-    return (<div className="checkout-sale-message">
-      <div>We have automatically applied the promo code {'"'}<span className="code">{_.get(this.sitewideSaleSetting, 'value.code')}</span>{'"'} to give you {_.get(this.sitewideSaleSetting, 'value.discount')}% OFF!</div>
-    </div>);
   }
   render() {
     return (<div>

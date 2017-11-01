@@ -6,7 +6,7 @@ import base64 from 'base64url';
 import { googlifyFilter, processEmail, processEmailFromMetadata } from './helpers';
 import stream from 'stream';
 import config from '../config';
-// import _ from 'lodash';
+import _ from 'lodash';
 
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 
@@ -155,6 +155,9 @@ function queryResults(client, q) {
 
 export function searchMessages(account, searchOptions) {
   return new Promise((resolve, reject) => {
+    // May god have mercy on my soul for this hack
+    if (!_.get(account, 'props.token')) return reject({ reauth: ['reconnect'] });
+
     const client = getClient(account.props.token);
     const gmail = google.gmail('v1');
     const q = googlifyFilter(searchOptions);

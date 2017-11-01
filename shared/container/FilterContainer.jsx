@@ -71,7 +71,9 @@ class FilterContainer extends Component {
     this.props.dispatch(Actions.addEmailsToCompilationEmailsById(this.props.compilation._id, this.props.currentAccount._id, nonCompilationSelectedEmailIds));
   }
   renderFetching() {
-    if (this.props.fetching.filteredAccountEmails) {
+    if (_.get(this.props.filteredAccountEmailsResults, 'errors.reauth')) {
+      return null;
+    } else if (this.props.fetching.filteredAccountEmails) {
       return <div className="text-center"><span className="outside-button-loading"><Loading /></span> loading...</div>;
     } else if (this.props.filteredAccountEmailsResults.count === 0) {
       return <div className="text-center">Oh no, 0 results! Try changing your search.</div>;
@@ -104,6 +106,7 @@ class FilterContainer extends Component {
         allSelected={this.allSelected()}
         addSelected={this.addSelected}
         done={this.props.done}
+        compilation={this.props.compilation}
       />);
     }
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import moment from 'moment';
+import twemoji from 'twemoji';
 // import _ from 'lodash';
 
 class TableOfContentsTemplate {
@@ -26,14 +27,14 @@ class TableOfContentsTemplate {
       textAlign: 'left',
       fontWeight: 'bold',
       marginBottom: '0',
-      maxWidth: '80%',
+      maxWidth: '90%',
     };
 
     const dateStyle = {
       fontSize: '9px',
       fontFamily: '\'Montserrat\', sans-serif',
       display: 'inline-block',
-      width: '50%',
+      width: '90%',
       textAlign: 'left',
       color: '#666',
     };
@@ -42,7 +43,7 @@ class TableOfContentsTemplate {
       fontSize: '13px',
       fontFamily: '\'Montserrat\', sans-serif',
       display: 'inline-block',
-      width: '50%',
+      width: '10%',
       textAlign: 'right',
     };
 
@@ -51,7 +52,7 @@ class TableOfContentsTemplate {
 
     return (
       <div className="unbreakable" key={index} style={entryStyle}>
-        <div style={subjectStyle}>{subject}</div>
+        <div style={subjectStyle} dangerouslySetInnerHTML={{ __html: twemoji.parse(subject) }} />
         <div style={{ lineHeight: '8px', marginBottom: '4px' }}>
           <div style={dateStyle}>{prettyDate}{this.renderAttachmentIcons(email)}</div>
           <div style={pageStyle}>{pageNum}</div>
@@ -61,11 +62,11 @@ class TableOfContentsTemplate {
   }
   renderAttachmentIcons(email) {
     if (email.attachments.length > 0) {
-      const attachments = email.attachments.map(() => {
-        return (<span style={{ marginRight: '3px' }} className="glyphicon glyphicon-picture" aria-hidden="true"></span>);
-      });
+      // const attachments = email.attachments.map(() => {
+      //   return (<span style={{ marginRight: '3px' }} className="glyphicon glyphicon-picture" aria-hidden="true"></span>);
+      // });
 
-      return <span><span style={{ margin: '0 10px' }}>-</span>{attachments}</span>;
+      return <span><span style={{ margin: '0 10px' }}>-</span><span style={{ marginRight: '3px' }} className="glyphicon glyphicon-picture" aria-hidden="true"></span> x {email.attachments.length}</span>;
     }
   }
   renderEntries() {
@@ -107,6 +108,12 @@ class TableOfContentsTemplate {
       }
       .unbreakable {
         page-break-inside: avoid !important;
+      }
+      img.emoji {
+        height: 1em;
+        width: 1em;
+        margin: 0 .05em 0 .1em;
+        vertical-align: -0.1em;
       }
     </style>
     <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>

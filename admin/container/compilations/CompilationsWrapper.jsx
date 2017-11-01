@@ -9,7 +9,7 @@ class CompilationsWrapper extends Component { // eslint-disable-line
 
     this.compilation = _.find(this.props.compilations, { _id: this.props.params.compilationId });
   }
-  componentDidMount() {
+  componentWillMount() {
     if (this.props.compilations.length === 0) {
       this.props.dispatch(Actions.getCompilations());
     }

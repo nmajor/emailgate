@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
+import moment from 'moment';
 
 class PurchaseOrdersListItem extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -18,7 +19,7 @@ class PurchaseOrdersListItem extends Component { // eslint-disable-line
   render() {
     return (<div className="list-item">
       <span className="right-bumper label label-default">{this.props.purchaseOrder.status}</span>
-      <Link to={`/purchase-orders/${this.props.purchaseOrder._id}`}>
+      {moment(this.props.purchaseOrder.createdAt).fromNow()} - <Link to={`/purchase-orders/${this.props.purchaseOrder._id}`}>
         {this.props.purchaseOrder._id}
       </Link>
       <span className="left-bumper">{this.props.purchaseOrder.orders.length} Orders</span>

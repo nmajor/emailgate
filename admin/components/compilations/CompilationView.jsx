@@ -111,7 +111,9 @@ class CompilationView extends Component { // eslint-disable-line
     </div>);
   }
   renderCompilationBuildLink() {
-    if (!window) { return null; }
+    try {
+      if (!window) { return null; }
+    } catch (err) { return null; } // eslint-disable-line
 
     let host = window.location.host.replace('admin.', '');
 

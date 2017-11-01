@@ -93,8 +93,6 @@ export default (io) => {
         socket.emit('FILTERED_ACCOUNT_EMAILS', results);
       })
       .catch((err) => {
-        console.log(err);
-        console.log(err.stack);
         socket.emit('FILTERED_ACCOUNT_EMAILS_ERROR', err);
       });
     });
@@ -170,6 +168,9 @@ export default (io) => {
         })
         .then((compilation) => { // eslint-disable-line no-shadow
           socket.emit('UPDATED_COMPILATION', compilation);
+        })
+        .catch((err) => {
+          console.log('An error happened when trying to add an email by id', err, err.stack);
         });
       });
     });
@@ -203,7 +204,15 @@ export default (io) => {
     socket.on('REMOVE_COMPILATION_EMAIL', (data) => {
       console.log('REMOVE_COMPILATION_EMAIL');
       User.findOne({ email: socket.request.session.passport.user })
-      .then(user => Compilation.findOne({ _user: user._id, _id: data.compilationId }))
+      .then((user) => {
+        return userIsAdminSafe(user)
+        .then((isAdmin) => {
+          if (isAdmin) {
+            return Compilation.findOne({ _id: data.compilationId });
+          }
+          return Compilation.findOne({ _user: user._id, _id: data.compilationId });
+        });
+      })
       .then((compilation) => {
         return Email.findOneAndRemove({ _compilation: compilation._id, _id: data.emailId })
         .then((email) => {
@@ -218,7 +227,8 @@ export default (io) => {
         .then((compilation) => { // eslint-disable-line no-shadow
           socket.emit('UPDATED_COMPILATION', compilation);
         });
-      });
+      })
+      .catch((err) => { console.log('An error happened when removing compilation email', err, err.stack); });
     });
 
     socket.on('UPDATE_COMPILATION_EMAIL', (data) => {
@@ -322,6 +332,9 @@ export default (io) => {
       })
       .then((cart) => {
         socket.emit('UPDATED_CART', cart);
+      })
+      .catch((err) => {
+        console.log(`An error happened while adding cart item ${err}`);
       });
     });
 
@@ -337,7 +350,7 @@ export default (io) => {
         socket.emit('UPDATED_CART', cart);
       })
       .catch((err) => {
-        console.log(`An error happened yo. ${err}`);
+        console.log(`An error happened while removing cart item ${err}`);
       });
     });
 

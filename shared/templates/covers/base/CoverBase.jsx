@@ -39,6 +39,8 @@ export class CoverBase {
       secondaryFont: fonts.raleway,
       spineFont: 'secondaryFont',
       backCoverFont: 'secondaryFont',
+      spineFontWeight: 100,
+      backCoverFontWeight: 100,
 
       selectImage: props.selectImage,
     };
@@ -86,16 +88,21 @@ export class CoverBase {
         bottom: 0,
         marginBottom: '60px',
         width: '100%',
+        fontSize: '12px',
       }}>
-        missionarymemoir.com
+        <div>www.missionarymemoir.com</div>
       </div>
     </BackCoverBase>);
   }
   renderSpine() {
-    const { compilation, prettyStartDate, prettyEndDate } = this.props;
+    const {
+      compilation,
+      prettyStartDateSmall,
+      prettyEndDateSmall,
+    } = this.props;
 
     return (<SpineCoverBase {...this.props}>
-      {compilation.title} &middot; {prettyStartDate} - {prettyEndDate}
+      {compilation.title} &middot; {prettyStartDateSmall} - {prettyEndDateSmall}
     </SpineCoverBase>);
   }
   renderFrontCover() {

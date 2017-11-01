@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
 import EmailView from './EmailView';
 import Loading from './Loading';
+import twemoji from 'twemoji';
 
 class FilteredEmailsListItem extends Component {
   constructor(props, context) {
@@ -100,7 +101,8 @@ class FilteredEmailsListItem extends Component {
     </div>);
   }
   renderSubject() {
-    return <div className="subject">{this.props.email.subject || 'No subject'}</div>;
+    const subject = this.props.email.subject || 'No subject';
+    return <div className="subject" dangerouslySetInnerHTML={{ __html: twemoji.parse(subject) }}></div>;
   }
   renderBodyPreview() {
     return <div>{this.props.email.bodyPreview || 'There is nothing in this email...'}</div>;
