@@ -47,7 +47,7 @@ CartSchema.methods.getEstimatedShipping = function getEstimatedShipping() {
       .then((promoCode) => {
         return promoCode.isValid()
         .then((isValid) => {
-          if (isValid && promoCode.freeShipping) {
+          if (isValid && (promoCode.freeShipping || promoCode.kind === 'voucher')) {
             this.shippingEst = 0;
             this._promoCode = promoCode;
             return resolve(this);

@@ -31,10 +31,12 @@ html, body {
 .bottom-bumper { margin-bottom: 10px; }
 .marginless-right { margin-right: 0; }
 .marginless-top { margin-top: 0; }
+.marginless-bottom { margin-bottom: 0; }
 .text-bold { font-weight: bold; }
 .no-margin { margin: 0; }
 .padded { padding: 20px; }
 .text-grey { color: #AAA; }
+.text-bold { font-weight: bold; }
 .padded-box {
   padding: 20px;
   border: 1px solid #CCC;
@@ -1157,6 +1159,24 @@ input {
   .code {
     font-weight: 400;
   }
+}
+
+.voucher-notice {
+  padding: 15px;
+  background-color: #d9edf7;
+  color: darken(#d9edf7, 50%);
+  margin: 10px 0 20px;
+  border-radius: 4px;
+  border: 1px solid darken(#d9edf7, 20%);
+  font-size: 15px;
+  line-height: 20px;
+}
+.voucher-tag {
+  padding: 2px 4px;
+  background-color: #d9edf7;
+  color: darken(#d9edf7, 50%);
+  border-radius: 4px;
+  border: 1px solid darken(#d9edf7, 20%);
 }
 
 .field-bg {

@@ -1,8 +1,11 @@
-TODO:
-LATER - Send out the rest of those customer Messages
-Submit the new cover demos
-Fix Image Rotation - Connect the redux action request to the controller
-Add New Page Insert
+
+TOP TODOS:
+- Its possible for blogger blogs to not connect at all (maybe due to finding the rss feed, maybe add a redo on that if anything fails)
+- Still having a checkout issue with some customers
+- Build the voucher promo code feature
+- build a webhook for woocommerce
+- Change the text for "Add custom page here" - make it bigger
+>>>>>>> Stashed changes
 
 Add logo to back covers
 Add new favicon

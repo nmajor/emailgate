@@ -52,7 +52,7 @@ class PromoCodeFormContainer extends Component {
     return (<div>
       {this.renderSaleBanner()}
       <div className="input-group">
-        <input type="text" ref="promo" className="form-control" defaultValue={_.get(this.props.cart, '_promoCode.code')} placeholder="Promo Code" />
+        <input type="text" ref="promo" className="form-control" defaultValue={_.get(this.props.cart, '_promoCode.code')} placeholder="Promo/Voucher Code" />
         <span className="input-group-btn">
           <button onClick={this.handleSubmitClick} className="btn btn-primary marginless-right" type="button">Apply</button>
         </span>

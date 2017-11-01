@@ -113,7 +113,16 @@ export function prettyIntegerPrice(price) {
 }
 
 export function cartItemsTotal(items) {
-  const itemAmounts = _.map(items, (item) => { return (item.product.price * item.quantity); });
+  const itemAmounts = _.map(items, (item) => {
+    let quantity = item.quantity;
+
+    if (item.voucher && item.voucher > 0) {
+      quantity = quantity - item.voucher;
+    }
+
+    return (item.product.price * quantity);
+  });
+
   return _.reduce(itemAmounts, (sum, amount) => { return sum + amount; });
 }
 
@@ -236,6 +245,7 @@ export function serializeQuery(obj) {
 
 export function getDiscountedAmount(promoCode, amount) {
   if (!promoCode) { return 0; }
+  if (promoCode.kind === 'voucher') { return 0; }
 
   return amount * (promoCode.discount / 100);
 }
@@ -308,10 +318,32 @@ export function buffCart(cart, compilations, products) {
     });
   }
 
+  if (cart._promoCode && cart._promoCode.kind === 'voucher' && cart._promoCode.productVouchers.length > 0) {
+    const vouchers = [...cart._promoCode.productVouchers];
+
+    _.forEach(cart.items, (item) => {
+      const productVoucher = _.remove(vouchers, { productId: item.productId });
+      if (productVoucher.length > 0) {
+        if (productVoucher[0].quantity > item.quantity) {
+          // Add voucher to item
+          item.voucher = item.quantity;
+          // Add back the unused quantity voucher
+          vouchers.push({ productId: item.productId, quantity: productVoucher[0].quantity - item.quantity });
+        } else if (productVoucher[0].quantity <= item.quantity) {
+          // Add voucher to item
+          item.voucher = productVoucher[0].quantity;
+        }
+      }
+    });
+
+    cart.unusedProductVouchers = vouchers;
+  }
+
   cart.discountedAmount = getDiscountedAmount(cart._promoCode, cartItemsTotal(cart.items));
   cart.prettyDiscountedAmount = prettyPrice(cart.discountedAmount);
 
   cart.itemsTotal = cartItemsTotal(cart.items);
+  cart.prettyItemsTotal = prettyPrice(cart.itemsTotal);
   cart.prettyItemsTotal = prettyPrice(cart.itemsTotal);
 
   cart.total = getCartTotal(cart);

@@ -4,9 +4,8 @@ import SelectAddressListItem from './SelectAddressListItem';
 class SelectAddressList extends Component {
   renderSelectAddressList() {
     return this.props.addresses.map((address) => {
-      return (<div className="select-address-item">
+      return (<div key={address._id} className="select-address-item">
         <SelectAddressListItem
-          key={address._id}
           address={address}
           selected={this.props.selectedAddressId === address._id}
           select={this.props.select}

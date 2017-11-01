@@ -16,6 +16,15 @@ function generateCode() {
 const PromoCodeSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   code: { type: String, unique: true, default: generateCode },
+  kind: {
+    type: String,
+    validate: {
+      validator: (v) => {
+        return ['discount', 'voucher'].indexOf(v) > -1;
+      },
+    },
+  },
+  productVouchers: [{ productId: String, quantity: Number }],
   discount: { type: Number },
   expiresAt: { type: Date },
   oneTimeUse: { type: Boolean, default: false },

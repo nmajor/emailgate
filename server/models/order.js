@@ -28,6 +28,7 @@ const OrderItemSchema = new Schema({
       required: true,
     },
   },
+  voucher: Number,
   quantity: { type: Number, required: true },
   props: {},
 });
@@ -129,7 +130,7 @@ OrderSchema.methods.getShipping = function getShipping() {
         .then((promoCode) => {
           return promoCode.isValid()
           .then((isValid) => {
-            if (isValid && promoCode.freeShipping) {
+            if (isValid && (promoCode.freeShipping || promoCode.kind === 'voucher')) {
               this.shipping = 0;
               this._promoCode = promoCode;
               return resolve(this);
@@ -153,6 +154,11 @@ OrderSchema.methods.getTax = function getTax() {
   .then(() => { return this.getSubtotal(); })
   .then(() => { return (!this.shipping ? this.getShipping() : Promise.resolve(this)); })
   .then(() => {
+    if (this.subtotal === 0) {
+      this.tax = 0;
+      return Promise.resolve(this);
+    }
+
     const taxjar = require('taxjar')(process.env.TAXJAR_API_KEY); // eslint-disable-line global-require
 
     const lineItems = this.items.map((item) => {
@@ -198,13 +204,41 @@ OrderSchema.methods.getAmount = function getAmount() {
 };
 
 OrderSchema.methods.getSubtotal = function getSubtotal() {
+  if (this._promoCode && this._promoCode.kind === 'voucher' && this._promoCode.productVouchers.length > 0) {
+    const vouchers = [...this._promoCode.productVouchers];
+
+    _.forEach(this.items, (item) => {
+      const productVoucher = _.remove(vouchers, { productId: item.productId });
+      if (productVoucher.length > 0) {
+        if (productVoucher[0].quantity > item.quantity) {
+          // Add voucher to item
+          item.voucher = item.quantity;
+          // Add back the unused quantity voucher
+          vouchers.push({ productId: item.productId, quantity: productVoucher[0].quantity - item.quantity });
+        } else if (productVoucher[0].quantity <= item.quantity) {
+          // Add voucher to item
+          item.voucher = productVoucher[0].quantity;
+        }
+      }
+    });
+  }
+
   const itemTotal = this.getItemTotal();
   this.subtotal = itemTotal - this.discount;
   return Promise.resolve(this);
 };
 
 OrderSchema.methods.getItemTotal = function getItemTotal() {
-  const itemAmounts = _.map(this.items, (item) => { return (item.product.price * item.quantity); });
+  const itemAmounts = _.map(this.items, (item) => {
+    let quantity = item.quantity;
+
+    if (item.voucher && item.voucher > 0) {
+      quantity = quantity - item.voucher;
+    }
+
+    return (item.product.price * quantity);
+  });
+
   return _.reduce(itemAmounts, (sum, amount) => { return sum + amount; });
 };
 
@@ -220,7 +254,7 @@ OrderSchema.methods.getDiscount = function getDiscount() {
     .then((promoCode) => {
       return promoCode.isValid()
       .then((isValid) => {
-        if (isValid) {
+        if (isValid && promoCode.kind !== 'voucher') {
           this.discount = getDiscountedAmount(this._promoCode, itemTotal);
           this._promoCode = promoCode;
           return resolve(this);

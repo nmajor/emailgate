@@ -18,7 +18,13 @@ export function get(req, res) {
 }
 
 export function create(req, res) {
-  const newPromoCode = new PromoCode(req.body);
+  const attributes = req.body;
+  if (attributes.kind === 'voucher') {
+    attributes.oneTimeUse = true;
+    attributes.freeShipping = true;
+  }
+
+  const newPromoCode = new PromoCode(attributes);
   newPromoCode.save()
   .then((promoCode) => {
     res.json(promoCode);

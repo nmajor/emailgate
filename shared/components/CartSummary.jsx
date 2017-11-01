@@ -1,9 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import PromoCodeFormContainer from '../container/PromoCodeFormContainer';
+import _ from 'lodash';
 
 class CartSummary extends Component {
   renderCartItem(item) {
     const { compilation } = item.props;
+
+    let voucher = null;
+    if (item.voucher && item.voucher > 0) {
+      voucher = <span className="voucher-tag top-bumper">voucher item ( x {item.voucher})</span>;
+    }
 
     return (<div className="item">
       <div className="image">
@@ -13,6 +19,7 @@ class CartSummary extends Component {
         <div className="title">{compilation.title}</div>
         <div className="desc">{item.product.shortDesc}</div>
         <div className="price">${item.product.prettyPrice} x {item.quantity}</div>
+        {voucher}
       </div>
     </div>);
   }
@@ -29,8 +36,35 @@ class CartSummary extends Component {
       </div>);
     }
   }
+  renderVoucherNotice() {
+    if (this.props.cart._promoCode.kind === 'voucher') {
+      let unclaimedVoucherNotice = 'You have claimed all voucher items';
+
+      const productVouchers = this.props.cart._promoCode.productVouchers.map((voucher, index) => {
+        const product = _.find(this.props.products, { _id: parseInt(voucher.productId, 10) });
+
+        return <span key={index}>{voucher.quantity} x {product.shortDesc}</span>;
+      });
+
+      if (this.props.cart.unusedProductVouchers && this.props.cart.unusedProductVouchers.length > 0) {
+        const unusedVouchers = this.props.cart.unusedProductVouchers.map((unusedVoucher, index) => {
+          const product = _.find(this.props.products, { _id: parseInt(unusedVoucher.productId, 10) });
+
+          return <span key={index}>{unusedVoucher.quantity} x {product.shortDesc}</span>;
+        });
+
+        unclaimedVoucherNotice = (<div>Unclaimed voucher items: {unusedVouchers}</div>);
+      }
+
+      return (<div className="text-center voucher-notice" colSpan={4}>
+        <div>Voucher items:</div>
+        <div>{productVouchers}</div>
+        <div>{unclaimedVoucherNotice}</div>
+      </div>);
+    }
+  }
   renderDiscount() {
-    if (this.props.cart._promoCode) {
+    if (this.props.cart._promoCode && this.props.cart._promoCode.kind !== 'voucher') {
       return (<div>
         <span className="desc">Discount:</span>
         <span className="text-danger amount">
@@ -48,6 +82,7 @@ class CartSummary extends Component {
   }
   renderTotals() {
     return (<div className="totals">
+      {this.renderVoucherNotice()}
       <PromoCodeFormContainer />
       <hr />
       {this.renderSubtotal()}
@@ -67,6 +102,7 @@ class CartSummary extends Component {
 
 CartSummary.propTypes = {
   cart: PropTypes.object.isRequired,
+  products: PropTypes.array.isRequired,
 };
 
 export default CartSummary;

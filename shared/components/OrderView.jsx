@@ -32,6 +32,7 @@ class OrderView extends Component {
       <h3>Order Summary</h3>
       <CartView
         cart={this.props.order}
+        products={this.props.products}
         editable={false}
       />
     </div>);
@@ -59,6 +60,7 @@ class OrderView extends Component {
 
 OrderView.propTypes = {
   order: PropTypes.object.isRequired,
+  products: PropTypes.array.isRequired,
 };
 
 export default OrderView;

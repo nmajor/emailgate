@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import CartItemForm from './CartItemForm';
-// import _ from 'lodash';
+import _ from 'lodash';
 import { prettyPrice } from '../helpers';
 import Loading from './Loading';
 import { Link } from 'react-router';
@@ -41,7 +41,7 @@ class CartView extends Component {
           <th style={{ width: '52%' }}>Product</th>
           <th style={{ width: '10%' }} >Price</th>
           <th style={{ width: '10%' }} className="text-center">Quantity</th>
-          <th style={{ width: '23%' }} className={this.props.editable ? 'text-center' : 'text-right'}>Subtotal</th>
+          <th style={{ width: '23%' }} className={this.props.editable ? 'text-center' : 'text-right'}>Item Total</th>
           {this.renderActionsHeader()}
         </tr>
       </thead>);
@@ -63,7 +63,12 @@ class CartView extends Component {
     // }
   }
   renderCheckoutAction() {
-    if (this.props.cart.items && this.props.cart.items.length > 0) {
+    if (this.props.cart._promoCode && this.props.cart._promoCode.kind === 'voucher' && this.props.cart.unusedProductVouchers && this.props.cart.unusedProductVouchers.length > 0) {
+      return (<div>
+        <div className="btn btn-success right-most disabled">Checkout</div>
+        <div className="helper-text text-danger">Please claim all of your voucher items to continue</div>
+      </div>);
+    } else if (this.props.cart.items && this.props.cart.items.length > 0) {
       return <Link to="/checkout" className="btn btn-success right-most" onClick={this.handleCheckoutClick}>Checkout</Link>;
     }
   }
@@ -107,15 +112,52 @@ class CartView extends Component {
       </tr>);
     }
   }
-  renderDiscount() {
-    if (this.props.cart._promoCode) {
-      return (<tr>
-        <td colSpan="3" className="text-right text-bold">Discount:</td>
-        <td className="text-right text-danger">
-          <span className="label label-danger" style={{ padding: '2px 4px' }}>%{this.props.cart._promoCode.discount}</span> -  ${this.props.cart.prettyDiscountedAmount}</td>
-        {this.renderActionFooter()}
-      </tr>);
+  renderVoucherNotice() {
+    if (this.props.cart._promoCode.kind === 'voucher') {
+      let unclaimedVoucherNotice = 'You have claimed all the items for this Voucher Code';
+
+      const productVouchers = this.props.cart._promoCode.productVouchers.map((voucher, index) => {
+        const product = _.find(this.props.products, { _id: parseInt(voucher.productId, 10) });
+
+        return <span key={index}>{voucher.quantity} x {product.desc}</span>;
+      });
+
+      if (this.props.cart.unusedProductVouchers && this.props.cart.unusedProductVouchers.length > 0) {
+        const unusedVouchers = this.props.cart.unusedProductVouchers.map((unusedVoucher, index) => {
+          const product = _.find(this.props.products, { _id: parseInt(unusedVoucher.productId, 10) });
+
+          return <span key={index}>{unusedVoucher.quantity} x {product.desc}</span>;
+        });
+
+        unclaimedVoucherNotice = (<div>Unclaimed voucher items: {unusedVouchers}</div>);
+      }
+
+      return (<div className="text-center voucher-notice" colSpan={4}>
+        <div>Your voucher code "<span className="text-bold">{this.props.cart._promoCode.code}</span>" is good for the following items:</div>
+        <div>{productVouchers}</div>
+        <div>{unclaimedVoucherNotice}</div>
+      </div>);
     }
+  }
+  renderDiscount() {
+    if (!this.props.cart._promoCode) return null;
+    if (this.props.cart._promoCode.kind === 'voucher') return null;
+
+    return (<tr>
+      <td colSpan="3" className="text-right text-bold">Discount:</td>
+      <td className="text-right text-danger">
+        <span className="label label-danger" style={{ padding: '2px 4px' }}>%{this.props.cart._promoCode.discount}</span> -  ${this.props.cart.prettyDiscountedAmount}</td>
+      {this.renderActionFooter()}
+    </tr>);
+  }
+  renderItemTotal() {
+    return (<tr>
+      <td colSpan="3" className="text-right text-bold">Subtotal:</td>
+      <td className={`text-bold ${this.props.editable ? 'text-center' : 'text-right'}`}>
+        ${this.props.cart.prettyItemsTotal}
+      </td>
+      {this.renderActionFooter()}
+    </tr>);
   }
   renderTotal() {
     return (<tr>
@@ -129,6 +171,7 @@ class CartView extends Component {
   }
   renderTableFooter() {
     return (<tfoot>
+      {this.renderItemTotal()}
       {this.renderDiscount()}
       {this.renderShipping()}
       {this.renderTax()}
@@ -146,13 +189,14 @@ class CartView extends Component {
   }
   render() {
     return (<div>
-      <table id="cart" className={`table ${this.props.editable ? 'table-hover' : ''} table-condensed`}>
+      <table id="cart" className={`table ${this.props.editable ? 'table-hover' : ''} table-condensed marginless-bottom`}>
         {this.renderTableHeader()}
         <tbody>
           {this.renderItemForms()}
         </tbody>
         {this.renderTableFooter()}
       </table>
+      {this.renderVoucherNotice()}
       {this.renderPromoCodeForm()}
       {this.renderActions()}
     </div>);

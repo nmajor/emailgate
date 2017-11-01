@@ -91,6 +91,7 @@ class CheckoutConfirmContainer extends Component {
       return (<CartView
         cart={buffCart(this.props.checkout.orderPreview, this.props.compilations, this.props.config.products)}
         editable={false}
+        products={this.props.config.products}
       />);
     }
 

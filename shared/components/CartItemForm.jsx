@@ -65,9 +65,16 @@ class CartItemForm extends Component {
     </td>);
   }
   renderSubtotal() {
-    const subtotal = prettyPrice(this.props.product.price * this.props.cartItem.quantity);
+    let quantity = this.props.cartItem.quantity;
+    let voucher = null;
+    if (this.props.cartItem.voucher && this.props.cartItem.voucher > 0) {
+      quantity = quantity - this.props.cartItem.voucher;
+      voucher = <span className="voucher-tag">voucher item ( x {this.props.cartItem.voucher})</span>;
+    }
+    const subtotal = prettyPrice(this.props.product.price * quantity);
     return (<td className={this.props.editable ? 'text-center' : 'text-right'}>
-      ${subtotal}
+      <div>${subtotal}</div>
+      {voucher}
     </td>);
   }
   renderRemoveAction() {

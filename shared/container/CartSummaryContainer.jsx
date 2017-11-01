@@ -13,6 +13,7 @@ class CartSummaryContainer extends Component { // eslint-disable-line
     return (<div className="cart-summary">
       <CartSummary
         cart={buffCart(this.props.cart, this.props.compilations, this.props.config.products)}
+        products={this.props.config.products}
       />
     </div>);
   }
