@@ -12,29 +12,41 @@ class CheckoutConfirmContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
+    console.log('blah 1');
+
     this.state = {
       submitting: false,
       error: null,
     };
+    console.log('blah 2');
 
     this.shippingAddress = _.find(this.props.addresses, (address) => { return address._id === this.props.checkout.shippingAddressId; });
+    console.log('blah 3');
     this.billingAddress = _.find(this.props.addresses, (address) => { return address._id === this.props.checkout.billingAddressId; });
 
-    if (!this.props.checkout.orderPreview) {
-      this.getOrderPreview();
-    }
-
+    console.log('blah 4');
     this.submitOrder = this.submitOrder.bind(this);
     // this.submitPromoCode = this.submitPromoCode.bind(this);
     this.back = this.back.bind(this);
     this.getOrderPreview = this.getOrderPreview.bind(this);
     this.orderProps = this.orderProps.bind(this);
+    console.log('blah 5');
+
+    if (!this.props.checkout.orderPreview) {
+      console.log('blah 6');
+      this.getOrderPreview();
+    }
   }
   componentWillMount() {
+    console.log('blah hey componentWillMount');
     if (_.isEmpty(this.props.cart)) {
       this.context.router.push('/dashboard');
-    } else if (!this.props.checkout.stripeToken) {
-      this.context.router.push('/checkout');
+    } else {
+      const cart = buffCart(this.props.cart);
+
+      if (cart.total > 0 && !this.props.checkout.stripeToken) {
+        this.context.router.push('/checkout');
+      }
     }
   }
   componentDidMount() {
@@ -43,6 +55,7 @@ class CheckoutConfirmContainer extends Component {
     }
   }
   getOrderPreview() {
+    console.log('blah hey hi', this.orderProps());
     this.props.dispatch(Actions.getOrderPreview(this.orderProps(), (res) => {
       if (res.error) {
         this.setState({ error: res.error });

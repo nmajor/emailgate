@@ -87,14 +87,18 @@ OrderSchema.statics.findAndBuildItemProps = function findAndBuildItemProps(query
 };
 
 OrderSchema.methods.build = function build() {
+  console.log('blah order 1');
   return this.syncCart()
   .then(() => {
+    console.log('blah order 2');
     return this.getShipping();
   })
   .then(() => {
+    console.log('blah order 3');
     return this.getTax();
   })
   .then(() => {
+    console.log('blah order 4');
     return this.getAmount();
   })
   .catch((err) => { console.log('An error happened when building an order', err); });

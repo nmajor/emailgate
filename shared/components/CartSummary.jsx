@@ -38,7 +38,7 @@ class CartSummary extends Component {
   }
   renderVoucherNotice() {
     if (this.props.cart._promoCode.kind === 'voucher') {
-      let unclaimedVoucherNotice = 'You have claimed all voucher items';
+      let unclaimedVoucherNotice = null;
 
       const productVouchers = this.props.cart._promoCode.productVouchers.map((voucher, index) => {
         const product = _.find(this.props.products, { _id: parseInt(voucher.productId, 10) });

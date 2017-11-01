@@ -21,6 +21,8 @@ class OrderView extends Component {
     </div>);
   }
   renderBillingInfoSummary() {
+    if (!this.props.order.billingAddress || !this.props.order.data.stripeToken) return null;
+
     return (<div>
       <h4>Billing Address:</h4>
       {this.renderAddressSummary(this.props.order.billingAddress)}

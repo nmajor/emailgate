@@ -12,7 +12,7 @@ const AddressSchema = new Schema({
   region: { type: String, required: [true, 'State is required'] },
   postalCode: { type: String, required: [true, 'Postal code is required'] },
   // country: { type: String, required: [true, 'Country is required'] },
-  phone: String,
+  phone: { type: String, required: [true, 'Phone number is required'] },
 }, {
   timestamps: true,
 });

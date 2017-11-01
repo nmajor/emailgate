@@ -25,7 +25,7 @@ class ViewOrderContainer extends Component {
     if (this.props.fetching.orders) {
       return <span className="alone-loading"><Loading /></span>;
     } else if (this.order) {
-      return <OrderView order={buffCart(this.order, this.props.compilations, this.props.config.products)} />;
+      return <OrderView order={buffCart(this.order, this.props.compilations, this.props.config.products)} products={this.props.config.products} />;
     }
   }
 

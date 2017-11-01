@@ -126,7 +126,7 @@ class CartView extends Component {
         const unusedVouchers = this.props.cart.unusedProductVouchers.map((unusedVoucher, index) => {
           const product = _.find(this.props.products, { _id: parseInt(unusedVoucher.productId, 10) });
 
-          return <span key={index}>{unusedVoucher.quantity} x {product.desc}</span>;
+          return <div key={index}>{unusedVoucher.quantity} x {product.desc}</div>;
         });
 
         unclaimedVoucherNotice = (<div>Unclaimed voucher items: {unusedVouchers}</div>);

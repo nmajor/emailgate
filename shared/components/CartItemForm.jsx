@@ -13,8 +13,7 @@ class CartItemForm extends Component {
     this.removeQuantity = this.removeQuantity.bind(this);
   }
   componentWillMount() {
-    console.log('blah hey', _.get(this.props.cartItem, 'props.compilation'));
-    if (!_.get(this.props.cartItem, 'props.compilation')) {
+    if (!_.get(this.props.cartItem, 'props.compilation') && this.props.remove) {
       this.props.remove(this.props.cartItem);
     }
   }
