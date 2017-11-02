@@ -1,9 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import OrderThumb from './OrderThumb';
+import _ from 'lodash';
 
 class OrdersList extends Component {
   renderOrdersList() {
-    return this.props.orders.map((order) => {
+    return _.sortBy(this.props.orders, (o) => { return -new Date(o.createdAt).getTime(); }).map((order) => {
       return <OrderThumb className="order-thumb" key={order._id} order={order} />;
     });
   }

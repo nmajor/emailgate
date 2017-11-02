@@ -12,10 +12,8 @@ import PromoCode from '../models/promoCode';
 export function getOrderPreview(req, res) {
   const order = new Order(req.body);
   order._user = req.user._id;
-  console.log('blah hey 1');
   order.build()
   .then((order) => { // eslint-disable-line no-shadow
-    console.log('blah hey order', order);
     res.json(order);
   })
   .catch((err) => { console.log('An error happened when getting an order preview', err); });

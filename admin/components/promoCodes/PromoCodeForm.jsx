@@ -18,6 +18,7 @@ class PromoCodeForm extends Component { // eslint-disable-line
         premiumColorVoucherQuantity,
         standardColorVoucherQuantity,
         bwColorVoucherQuantity,
+        email,
       },
     } = this.props;
 
@@ -43,6 +44,14 @@ class PromoCodeForm extends Component { // eslint-disable-line
           <div className="form-group">
             <label className="control-label">Black & White Quantity</label>
             <input type="text" className="form-control" {...bwColorVoucherQuantity} />
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-12">
+          <div className="form-group">
+            <label className="control-label">Email</label>
+            <input type="text" className="form-control" {...email} />
           </div>
         </div>
       </div>

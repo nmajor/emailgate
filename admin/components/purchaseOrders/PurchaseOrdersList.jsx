@@ -1,9 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import PurchaseOrdersListItem from './PurchaseOrdersListItem';
+import _ from 'lodash';
 
 class PurchaseOrdersList extends Component {
   renderOrdersList() {
-    return this.props.purchaseOrders.map((purchaseOrder) => {
+    return _.sortBy(this.props.purchaseOrders, (po) => { return -new Date(po.createdAt).getTime(); }).map((purchaseOrder) => {
       return <PurchaseOrdersListItem key={purchaseOrder._id} purchaseOrder={purchaseOrder} delete={this.props.deletePurchaseOrder} />;
     });
   }

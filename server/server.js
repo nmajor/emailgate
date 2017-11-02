@@ -79,7 +79,15 @@ socketEvents(io);
 io.use((socket, next) => { sessionMiddleware(socket.request, socket.request.res, next); });
 
 // Apply body Parser and server public assets and routes
-app.use(bodyParser.json({ limit: '20mb' }));
+
+app.use(bodyParser.json({
+  limit: '20mb',
+  verify: (req, res, buf, encoding) => {
+    if (req.originalUrl.match(/^\/webhook/)) {
+      req.rawBody = buf.toString(encoding);
+    }
+  },
+}));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(cookieParser());
 app.use(Express.static(path.resolve(__dirname, '../public')));

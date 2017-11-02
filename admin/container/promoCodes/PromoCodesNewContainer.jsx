@@ -16,6 +16,7 @@ class PromoCodesNewContainer extends Component { // eslint-disable-line
       expiresAt: props.expiresAt,
       oneTimeUse: props.oneTimeUse,
       freeShipping: props.freeShipping,
+      email: props.email,
     };
 
     _.forEach({

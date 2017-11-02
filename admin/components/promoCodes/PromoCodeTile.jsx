@@ -1,5 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import moment from 'moment';
+import _ from 'lodash';
+import products from '../../../server/products';
 
 class PromoCodeTile extends Component { // eslint-disable-line
   renderExpires() {
@@ -32,6 +34,19 @@ class PromoCodeTile extends Component { // eslint-disable-line
     };
     return (<span style={style}>{this.props.promoCode.code}</span>);
   }
+  renderVoucherProducts() {
+    if (this.props.promoCode.productVouchers && this.props.promoCode.productVouchers.length > 0) {
+      const productVouchers = this.props.promoCode.productVouchers.map((voucher) => {
+        const product = _.find(products, { _id: parseInt(voucher.productId, 10) });
+        return (<div>{voucher.quantity} x {product.desc}</div>);
+      });
+
+      return (<div>
+        Voucher Products:
+        {productVouchers}
+      </div>);
+    }
+  }
   render() {
     const style = {
       fontSize: '18px',
@@ -41,6 +56,7 @@ class PromoCodeTile extends Component { // eslint-disable-line
       <div style={style}>{this.renderCode()}{this.renderDiscount()}{this.renderUsage()}</div>
       {this.renderCreated()}
       {this.renderExpires()}
+      {this.renderVoucherProducts()}
     </div>);
   }
 }

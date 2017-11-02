@@ -30,6 +30,7 @@ const PromoCodeSchema = new Schema({
   oneTimeUse: { type: Boolean, default: false },
   freeShipping: { type: Boolean, default: false },
   orders: [{ type: String, ref: 'Order' }],
+  email: { type: String },
 }, {
   timestamps: true,
 });

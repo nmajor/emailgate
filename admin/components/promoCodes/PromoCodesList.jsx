@@ -1,9 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import PromoCodesListItem from './PromoCodesListItem';
+import _ from 'lodash';
 
 class PromoCodesList extends Component {
   renderUsersList() {
-    return this.props.promoCodes.map((promoCode) => {
+    return _.sortBy(this.props.promoCodes, (pc) => { return -new Date(pc.createdAt).getTime(); }).map((promoCode) => {
       return <PromoCodesListItem key={promoCode._id} promoCode={promoCode} />;
     });
   }
