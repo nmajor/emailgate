@@ -1,5 +1,7 @@
 import _ from 'lodash';
 import PromoCode from '../models/promoCode';
+import Order from '../models/order';
+import Address from '../models/address';
 import crypto from 'crypto';
 import products from '../products';
 
@@ -22,9 +24,38 @@ export function orderCreated(req, res) {
     });
 
     newPromo.save()
-    .then(() => {
-      res.statusCode(200);
+    .then((promoCode) => {
+      return promoCode.deliverToEmail()
+      .then(() => {
+        const { billing } = req.body;
+        const billingAddress = new Address({
+          firstName: billing.first_name,
+          lastName: billing.last_name,
+          address1: billing.address_1,
+          address2: billing.address_2,
+          city: billing.city,
+          region: billing.state,
+          postalCode: billing.postcode,
+          phone: billing.phone,
+        });
+        const newOrder = new Order({
+          amount: parseInt(req.body.total, 10) * 100,
+          discount: parseInt(req.body.discount_total, 10) * 100,
+          shipping: parseInt(req.body.shipping_total, 10) * 100,
+          tax: parseInt(req.body.total_tax, 10) * 100,
+          billingAddress: billingAddress.toObject(),
+          transaction: req.body,
+          data: { promoCodeId: promoCode._id },
+          skipBuild: true,
+        });
+
+        return newOrder.save();
+      })
+      .catch((err) => { console.log('An error happened when saving woo webhook order', err); });
     })
-    .catch((err) => { console.log('An error happened when creating a promo code from woo webhook', err); });
+    .then(() => {
+      res.send('OK');
+    })
+    .catch((err) => { console.log('An error happened when creating a promo code from woo webhook', err, err.stack); });
   }
 }

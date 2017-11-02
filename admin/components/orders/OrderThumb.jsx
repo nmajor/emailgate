@@ -34,12 +34,21 @@ class OrderThumb extends Component { // eslint-disable-line
       </div>);
     }
   }
+  renderPreBuy() {
+    if (this.props.order.data.promoCodeId) {
+      return (<div>Pre bought: <Link to={`/promo-codes/${this.props.order.data.promoCodeId}`}>{this.props.order.data.promoCodeId}</Link></div>);
+    }
+  }
   render() {
+    const firstName = _.get(this.props.order, 'shippingAddress.firstName') || _.get(this.props.order, 'billingAddress.firstName');
+
+    const lastName = _.get(this.props.order, 'shippingAddress.lastName') || _.get(this.props.order, 'billingAddress.lastName');
     return (<div className={this.props.className}>
+      {this.renderPreBuy()}
       <div>
         {this.renderAcion()}
         <Link to={`/orders/${this.props.order._id}`}>{this.props.order._id}</Link>
-        <span className="left-bumper">{this.props.order.shippingAddress.firstName} {this.props.order.shippingAddress.lastName}</span>
+        <span className="left-bumper">{firstName} {lastName}</span>
         <span className="left-bumper">${prettyPrice(this.props.order.amount)}</span>
         <span className="left-bumper">{moment(this.props.order.createdAt).format('LL')}</span>
         <span className="left-bumper">{moment(this.props.order.createdAt).fromNow()}</span>

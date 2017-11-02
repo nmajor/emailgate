@@ -9,17 +9,18 @@ class VoucherSummary {
     this.props = props;
   }
   renderVoucherProducts() {
-    return this.props.promoCode.productVouchers.map((voucher) => {
+    return this.props.promoCode.productVouchers.map((voucher, index) => {
       const product = _.find(products, { _id: parseInt(voucher.productId, 10) });
-      return <p>{voucher.quantity} x {product.desc}</p>;
+      return <p key={index}>{voucher.quantity} x {product.desc}</p>;
     });
   }
   render() {
+    // <img src="https://www.missionarymemoir.com/wp-content/uploads/2017/11/Enter-this-code-upon-check-out-1.png" role="presentation" />
     return (<table className="body-wrap">
       <tbody>
         <tr>
           <td />
-          <td className="container" bgcolor="#FFFFFF">
+          <td className="container">
             <div className="content">
               <table>
                 <tbody>
@@ -32,8 +33,12 @@ class VoucherSummary {
                       <br />
                       <h3 className="center">Your gift card is now available!</h3>
                       <div className="voucher-code">
-                        <img src="https://www.missionarymemoir.com/wp-content/uploads/2017/11/Enter-this-code-upon-check-out-1.png" role="presentation" />
-                        <div className="code-text">{this.props.promoCode.code}</div>
+                        <div className="code-outer">
+                          <div className="code-inner">
+                            <h3>Gift Card Voucher Code:</h3>
+                            <span className="code-text">{this.props.promoCode.code}</span>
+                          </div>
+                        </div>
                       </div>
                       <div style={{ border: '1px solid #CCC', padding: '10px', marginBottom: '10px' }}>
                         <p className="lead">This voucher code <span style={{ fontWeight: 'bold' }}>{this.props.promoCode.code}</span> can be redeemed at checkout, and entitles you to the following products:</p>
@@ -56,29 +61,42 @@ class VoucherSummary {
     </table>);
   }
   toString() {
-    return `<div>
-      <style>
+    // #4ABDAC
+    const headerStyles = `
+      .voucher-code {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #444;
+      }
+      .voucher-code h3 {
+        color: #444;
+        font-family: "Times New Roman", Times, serif;
+      }
+      .code-outer {
+        border: 3px solid #444;
+        padding: 20px;
+      }
+      .code-inner {
+        border: 1px solid #444;
+        padding: 40px 15px;
+      }
+      .code-text {
+        font-size: 40px;
+        font-weight: 600;
+      }
+      @media only screen and (max-width: 550px) {
         .code-text {
-          font-size: 40px;
-          position: relative;
-          text-align: center;
-          top: -210px;
-          font-weight: 600;
+          top: -170px;
         }
-        @media only screen and (max-width: 550px) {
-          .code-text {
-            top: -170px;
-          }
+      }
+      @media only screen and (max-width: 450px) {
+        .code-text {
+          top: -130px;
+          font-size: 30px;
         }
-        @media only screen and (max-width: 450px) {
-          .code-text {
-            top: -130px;
-            font-size: 30px;
-          }
-        }
-      </style>
-      ${layoutWrapper(renderToString(this.render()))}
-    </div>`;
+      }
+    `;
+    return layoutWrapper(renderToString(this.render()), headerStyles);
   }
 }
 

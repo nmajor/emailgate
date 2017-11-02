@@ -29,7 +29,7 @@ export function getActivitySummaryExampleData() {
   });
 }
 
-export function layoutWrapper(body) {
+export function layoutWrapper(body, styles) {
   const logoUrl = 'https://www.missionarymemoir.com/wp-content/uploads/2017/07/Logo-MissionaryMemoir-e1499405778612-300x37.png';
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
@@ -167,6 +167,7 @@ export function layoutWrapper(body) {
     font-weight: normal;
     font-size:14px;
     line-height:1.6;
+    color: #444;color: #444;
   }
   p.lead { font-size:17px; }
   p.last { margin-bottom:0px;}
@@ -267,6 +268,7 @@ export function layoutWrapper(body) {
     }
 
   }
+  ${styles}
   </style>
   </head>
 

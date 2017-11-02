@@ -1,6 +1,8 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
 import Order from './order';
+import VoucherWelcome from '../mailers/VoucherWelcome';
+import { sendMail } from '../util/mail';
 
 function generateCode() {
   let text = '';
@@ -63,6 +65,22 @@ PromoCodeSchema.methods.isValid = function isValid() {
     }
 
     return resolve(true);
+  });
+};
+
+PromoCodeSchema.methods.deliverToEmail = function deliverToEmail() {
+  return new Promise((resolve) => {
+    const mailer = new VoucherWelcome({ promoCode: this });
+
+    const data = {
+      from: 'Missionary Memoir <hello@missionarymemoir.com>',
+      to: this.email,
+      subject: 'Your Missionary Memoir Gift Card',
+      html: mailer.toString(),
+    };
+
+    sendMail(data);
+    resolve(this);
   });
 };
 

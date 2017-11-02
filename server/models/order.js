@@ -16,7 +16,7 @@ function buildItemProps(item) {
 }
 
 const OrderItemSchema = new Schema({
-  _id: { type: String, unique: true, default: shortid.generate },
+  _id: { type: String, unique: true, sparse: true, default: shortid.generate },
   product: {},
   productId: {
     type: String,
@@ -62,7 +62,18 @@ OrderSchema.virtual('cartId').set(function setCartId(val) {
   return;
 });
 
+OrderSchema.virtual('skipBuild').get(function getSkipBuild() {
+  return this._skipBuild;
+});
+
+OrderSchema.virtual('skipBuild').set(function setSkipBuild(val) {
+  this._skipBuild = val;
+  return;
+});
+
 OrderSchema.pre('save', function (next) { // eslint-disable-line func-names
+  if (this.skipBuild) return next();
+
   return this.build()
   .then(() => {
     next();
