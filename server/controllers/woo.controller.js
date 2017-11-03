@@ -6,6 +6,10 @@ import crypto from 'crypto';
 import products from '../products';
 
 export function orderCreated(req, res) {
+  if (!req.rawBody) {
+    console.log('Invalid webhook request', req.rawBody, req.body);
+    return res.send('invalid request');
+  }
   const secret = 'elevendollarbillsbutyouonlygotten';
   const hash = crypto.createHmac('SHA256', secret).update(req.rawBody).digest('base64');
   if (hash === req.headers['x-wc-webhook-signature']) {
@@ -57,5 +61,7 @@ export function orderCreated(req, res) {
       res.send('OK');
     })
     .catch((err) => { console.log('An error happened when creating a promo code from woo webhook', err, err.stack); });
+  } else {
+    return res.send('invalid request');
   }
 }

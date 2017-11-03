@@ -259,8 +259,8 @@ https://stripe.com/docs/testing
 
 ### Subdocument duplicate key error:
  - http://stackoverflow.com/questions/13439102/duplicate-key-error-index-on-embedded-document-in-mongoose
-> db.purchaseorders.getIndexes()
-> db.purchaseorders.dropIndex('responses._id_1')
+> db.orders.getIndexes()
+> db.orders.dropIndex('responses._id_1')
 
 
 ### Facebook Pixel Events:
