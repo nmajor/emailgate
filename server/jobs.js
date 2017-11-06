@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { sendMail } from './util/mail';
-import { getActivitySummaryData } from './mailers/helper';
+import { getActivitySummaryExampleData } from './mailers/helper';
 import ActivitySummary from './mailers/ActivitySummary';
 
 export function test() {
@@ -8,7 +8,7 @@ export function test() {
 }
 
 export function activitySummary() {
-  getActivitySummaryData()
+  getActivitySummaryExampleData()
   .then((props) => {
     const mailer = new ActivitySummary(props);
 

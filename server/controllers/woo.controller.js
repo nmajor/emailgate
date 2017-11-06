@@ -6,9 +6,10 @@ import crypto from 'crypto';
 import products from '../products';
 
 export function orderCreated(req, res) {
-  if (!req.rawBody) {
-    console.log('Invalid webhook request', req.rawBody, req.body);
-    return res.send('invalid request');
+  console.log('Webhook request', req.rawBody, req.body);
+
+  if (!req.rawBody && _.get(req, 'body.webhook_id')) {
+    return res.send('ok');
   }
   const secret = 'elevendollarbillsbutyouonlygotten';
   const hash = crypto.createHmac('SHA256', secret).update(req.rawBody).digest('base64');

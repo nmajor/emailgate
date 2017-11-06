@@ -80,7 +80,7 @@ class CoverImage extends Component {
     };
 
     return (<div style={this.imageOuterStyle()}>
-      <img style={imageInnerStyles} src={image.url} role="presentation" />;
+      <img style={imageInnerStyles} src={image.url} role="presentation" />
     </div>);
   }
 
