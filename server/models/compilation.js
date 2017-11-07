@@ -191,7 +191,8 @@ CompilationSchema.methods.updateEmails = function updateEmails() {
     // const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
     // this.meta.startindDate = (sortedEmails[0] || {}).date;
     // this.meta.endingDate = (sortedEmails[(sortedEmails.length - 1)] || {}).date;
-    this.meta.estimatedEmailPdfPages = emails.map((e) => { return e.estimatedPageCount; }).reduce((pre, cur) => { return pre + cur; });
+    const estimatedPages = emails.map((e) => { return e.estimatedPageCount; }) || [];
+    this.meta.estimatedEmailPdfPages = estimatedPages.reduce((pre, cur) => { return pre + cur; });
 
     this.emails = emails.map((email) => { return email._id; });
     return this.save();

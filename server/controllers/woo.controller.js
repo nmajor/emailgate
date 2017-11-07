@@ -59,7 +59,7 @@ export function orderCreated(req, res) {
       .catch((err) => { console.log('An error happened when saving woo webhook order', err); });
     })
     .then(() => {
-      res.send('OK');
+      res.send('ok');
     })
     .catch((err) => { console.log('An error happened when creating a promo code from woo webhook', err, err.stack); });
   } else {

@@ -214,12 +214,14 @@ export default (io) => {
         });
       })
       .then((compilation) => {
-        return Email.findOneAndRemove({ _compilation: compilation._id, _id: data.emailId })
+        return Email.findOne({ _compilation: compilation._id, _id: data.emailId })
         .then((email) => {
-          return email.remove()
-          .then(() => {
-            socket.emit('REMOVED_COMPILATION_EMAIL', email);
-          });
+          if (email) {
+            return email.remove()
+            .then(() => {
+              socket.emit('REMOVED_COMPILATION_EMAIL', email);
+            });
+          }
         })
         .then(() => {
           return compilation.updateEmails();
