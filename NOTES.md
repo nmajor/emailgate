@@ -1,3 +1,10 @@
+Print and ship postcards and letters:
+- https://print.directmailers.com
+
+- Mail servers
+https://github.com/baudehlo/Haraka
+
+
 TOP TODOS:
 - Cropping issue, when you dont touch the cropping area after upload it gets really small
  - also for full size image for the full size image
