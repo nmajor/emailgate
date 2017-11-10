@@ -11,7 +11,7 @@ export function orderCreated(req, res) {
   if (!req.rawBody && _.get(req, 'body.webhook_id')) {
     return res.send('ok');
   }
-  const secret = 'elevendollarbillsbutyouonlygotten';
+  const secret = process.env.WOO_SECRET;
   const hash = crypto.createHmac('SHA256', secret).update(req.rawBody).digest('base64');
   if (hash === req.headers['x-wc-webhook-signature']) {
     const newPromo = new PromoCode({

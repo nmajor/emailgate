@@ -1,8 +1,18 @@
 Print and ship postcards and letters:
 - https://print.directmailers.com
+- https://lob.com/
 
 - Mail servers
 https://github.com/baudehlo/Haraka
+
+- Advanced html builder
+http://grapesjs.com/demo.html
+http://innovastudio.com/content-builder.aspx
+
+Search term : javascript canvas editor library
+Canvas editors
+http://fabricjs.com/
+https://konvajs.github.io/
 
 
 TOP TODOS:
