@@ -19,27 +19,60 @@ class CompilationCard extends Component { // eslint-disable-line
       return (<Link className="btn btn-primary" to={`/compilations/${compilation._id}/pre-next`}><span className="glyphicon glyphicon-eye-open right-bumper" aria-hidden="true"></span>View</Link>);
     }
   }
-  renderInfoActions() {
+  renderInfo() {
     const { compilation } = this.props;
     const pagesCount = compilationTotalPageCountEstimate(compilation);
 
     return (<div className="actions">
-      <span className="label label-default right-bumper"><span className="glyphicon glyphicon-envelope right-bumper" aria-hidden="true"></span>{this.props.compilation.emails.length}</span>
-      <span className="label label-default right-bumper"><span className="glyphicon glyphicon-file right-bumper" aria-hidden="true"></span>{pagesCount}</span>
+      <span className="right-bumper"><span className="glyphicon glyphicon-envelope" aria-hidden="true"></span> {this.props.compilation.emails.length}</span>
+      <span className="right-bumper"><span className="glyphicon glyphicon-file" aria-hidden="true"></span> {pagesCount}</span>
+    </div>);
+  }
+  renderActions() {
+    return (<div className="actions">
       <CartCompilationButtonContainer compilation={this.props.compilation} />
       {this.renderViewAction()}
       {this.renderDeleteAction()}
     </div>);
   }
-  render() {
-    return (<div className="compilation-cart-card content-box bottom-bumper">
-      <div className="compilation-thumb">
-        <CompilationThumb compilation={this.props.compilation} />
+  renderBookInfo() {
+    return (<div className="compilation-cart-card">
+      <div>
+        <div className="compilation-thumb">
+          <CompilationThumb compilation={this.props.compilation} />
+        </div>
+        <div className="details">
+          <h3>{this.props.compilation.title}</h3>
+          <h5>{this.props.compilation.subtitle}</h5>
+          {this.renderInfo()}
+        </div>
       </div>
-      <div className="details">
-        <h3>{this.props.compilation.title}</h3>
-        <h5>{this.props.compilation.subtitle}</h5>
-        {this.renderInfoActions()}
+      {this.renderActions()}
+    </div>);
+  }
+  renderPageInfo() {
+    const { compilation } = this.props;
+    if (!compilation.slug) {
+      return (<div className="page-card">
+        <Link to={`/compilations/${compilation._id}/webpage/new`} className="btn btn-default">Create a Page or Blog</Link>
+      </div>);
+    }
+
+    return (<div className="page-card"></div>);
+  }
+  render() {
+    return (<div className="row bottom-bumper">
+      <div className="col-xs-12">
+        <div className="content-box">
+          <div className="row">
+            <div className="col-md-6">
+              {this.renderBookInfo()}
+            </div>
+            <div className="col-md-6">
+              {this.renderPageInfo()}
+            </div>
+          </div>
+        </div>
       </div>
     </div>);
   }

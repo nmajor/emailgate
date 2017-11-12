@@ -27,6 +27,10 @@ const CompilationCoverSchema = new Schema({
 const CompilationSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _user: { type: String, ref: 'User' },
+  slug: { type: String, unique: true, sparse: true },
+  webpage: {
+    title: { type: String },
+  },
   title: String,
   subtitle: String,
   coverTemplate: String,

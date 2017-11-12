@@ -747,8 +747,15 @@ input {
 .compilation-summary-details {
   // height: 19.7vw;
 }
+
+.page-card {
+  border: 1px solid #CCC;
+  padding: 20px;
+}
+
 .compilation-cart-card {
-  height: 125px;
+  border: 1px solid #CCC;
+  padding: 20px;
 
   .compilation-thumb {
     display: inline-block;
@@ -765,20 +772,20 @@ input {
   h3 { margin: 0; font-size: 20px; }
   h5 { margin: 5px 0 0 0; height: 15px; }
 
+  .actions {
+    margin-top: 6px;
+    .label {
+      padding: 8px;
+    }
+    .btn {
+      padding: 6px 10px;
+    }
+  }
+
   .details {
     height: 80px;
     display: inline-block;
     margin-left: 60px;
-
-    .actions {
-      margin-top: 6px;
-      .label {
-        padding: 8px;
-      }
-      .btn {
-        padding: 6px 10px;
-      }
-    }
 
     @media (max-width: 590px) {
       .actions {

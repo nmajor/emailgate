@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 class CompilationsList extends Component {
   renderCompilationsList() {
     if (!this.props.compilations.length || this.props.compilations.length < 1) {
-      return 'No email books';
+      return 'No experiences';
     }
 
     return this.props.compilations.map((compilation) => {
@@ -25,11 +25,9 @@ class CompilationsList extends Component {
   }
   render() {
     return (
-      <div className="compilations-list row">
-        <div className="col-lg-6">
-          {this.renderCompilationsList()}
-          {this.renderNewCompilation()}
-        </div>
+      <div className="compilations-list">
+        {this.renderCompilationsList()}
+        {this.renderNewCompilation()}
       </div>
     );
   }

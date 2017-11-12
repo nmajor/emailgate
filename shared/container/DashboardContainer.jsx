@@ -35,7 +35,7 @@ class DashboardContainer extends Component {
 
     return (<div>
       <div>
-        <h3>Email Books</h3>
+        <h3>Experiences</h3>
         <CompilationsListContainer />
       </div>
       <div className="row">
