@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { reduxForm } from 'redux-form';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import DragCropImageSelector from './DragCropImageSelector';
 // import _ from 'lodash';
 
 class WebpageForm extends Component { // eslint-disable-line
@@ -11,6 +12,14 @@ class WebpageForm extends Component { // eslint-disable-line
     this.state = {
       kind: 'discount',
     };
+
+    this.handleImageChange = this.handleImageChange.bind(this);
+  }
+  handleImageChange(props) {
+    console.log('blah in form handleImageChange', props);
+  }
+  handleNewImage(props) {
+    console.log('blah in form handleNewImage', props);
   }
   render() {
     const {
@@ -19,6 +28,7 @@ class WebpageForm extends Component { // eslint-disable-line
         webpageTitle,
         startingDate,
         endingDate,
+        mission,
       },
       error,
       handleSubmit,
@@ -27,6 +37,11 @@ class WebpageForm extends Component { // eslint-disable-line
     const slugPlaceholder = 'elderjohnjohnson';
 
     return (<form onSubmit={handleSubmit}>
+      <div className="row">
+        <div className="col-md-12 text-center">
+          <DragCropImageSelector onImageChange={this.handleImageChange} onNewImage={this.handleNewImage} height={200} width={200} />
+        </div>
+      </div>
       <div className="row">
         <div className="col-md-12">
           <div className="form-group">
@@ -83,9 +98,8 @@ class WebpageForm extends Component { // eslint-disable-line
       <div className="row">
         <div className="col-md-12">
           <div className="form-group">
-            <label className="control-label">Mission Home Address</label>
-            <input type="text" className="form-control" {...slug} placeholder={slugPlaceholder} />
-            <div className="help-block">Pleople will be able to access your webpage by going to:<br />{slug.value || slugPlaceholder}.missionarymemoir.com</div>
+            <label className="control-label">Mission</label>
+            <input type="text" className="form-control" {...mission} placeholder="Guatemala Guatemala City South Mission" />
           </div>
         </div>
       </div>

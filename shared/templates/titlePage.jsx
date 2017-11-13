@@ -52,8 +52,8 @@ class TitlePageTemplate {
   }
   renderDates() {
     if (this.startDate && this.endDate) {
-      const startDate = _.get(this.compilation, 'meta.startingDate');
-      const endDate = _.get(this.compilation, 'meta.endingDate');
+      const startDate = _.get(this.compilation, 'startingDate');
+      const endDate = _.get(this.compilation, 'endingDate');
       const prettyFormat = 'MMM YYYY';
 
       const prettyStartDate = moment(startDate).format(prettyFormat);

@@ -39,6 +39,8 @@ const CompilationSchema = new Schema({
   cover: { type: CompilationCoverSchema, default: {} },
   emails: [{ type: String, ref: 'Email' }],
   pages: [{ type: String, ref: 'Page' }],
+  startingDate: { type: Date, default: new Date },
+  endingDate: { type: Date, default: new Date },
   meta: {
     startingDate: { type: Date, default: new Date },
     endingDate: { type: Date, default: new Date },
@@ -61,6 +63,8 @@ CompilationSchema.virtual('newImages').set(function (val) { // eslint-disable-li
 });
 
 CompilationSchema.post('init', function () {  // eslint-disable-line func-names
+  this.startingDate = this.startingDate || this.meta.startingDate;
+  this.endingDate = this.endingDate || this.meta.endingDate;
   this._original = this.toObject();
 });
 
@@ -138,8 +142,8 @@ CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
     width: 419,         // this is what it naturally is. Using it to trim below.
   };
 
-  const startDate = this.meta.startingDate;
-  const endDate = this.meta.endingDate;
+  const startDate = this.startingDate;
+  const endDate = this.endingDate;
 
   const template = new covers[this.coverTemplate]({ compilation: this, bleedType: 'bleedless', startDate, endDate });
 
@@ -179,8 +183,8 @@ CompilationSchema.methods.buildCoverHtml = function buildCoverHtml() {
     // const firstEmail = sortedEmails[0] || {};
     // const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
 
-    const startDate = this.meta.startingDate;
-    const endDate = this.meta.endingDate;
+    const startDate = this.startingDate;
+    const endDate = this.endingDate;
 
     const template = new covers[this.coverTemplate]({ compilation: this, startDate, endDate, showBleed: false });
 
@@ -350,8 +354,8 @@ CompilationSchema.methods.coverPropsChanged = function coverPropsChanged() {
     'title',
     'subtitle',
     'emails',
-    'meta.startingDate',
-    'meta.endingDate',
+    'startingDate',
+    'endingDate',
   ];
 
   return _.some(coverProps, (prop) => { return !_.isEqual(_.get(current, prop), _.get(original, prop)); });

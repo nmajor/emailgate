@@ -14,8 +14,8 @@ class CompilationTitleForm extends Component {
       coverTemplate: props.compilation.coverTemplate,
       showImageSelector: false,
       coverProps: {},
-      startDate: props.compilation.meta.startingDate,
-      endDate: props.compilation.meta.endingDate,
+      startDate: props.compilation.startingDate || props.compilation.meta.startingDate,
+      endDate: props.compilation.endingDate || props.compilation.meta.endingDate,
     };
 
     this.submitForm = this.submitForm.bind(this);
@@ -77,9 +77,9 @@ class CompilationTitleForm extends Component {
       return true;
     } else if (this.state.coverTemplate !== this.props.compilation.coverTemplate) {
       return true;
-    } else if (this.state.startDate !== _.get(this.props.compilation, 'meta.startingDate')) {
+    } else if (this.state.startDate !== _.get(this.props.compilation, 'startingDate')) {
       return true;
-    } else if (this.state.endDate !== _.get(this.props.compilation, 'meta.endingDate')) {
+    } else if (this.state.endDate !== _.get(this.props.compilation, 'endingDate')) {
       return true;
     }
     return false;
@@ -96,10 +96,8 @@ class CompilationTitleForm extends Component {
       title: titleRef.value,
       subtitle: subtitleRef.value,
       coverTemplate: this.state.coverTemplate,
-      meta: {
-        startingDate: this.state.startDate,
-        endingDate: this.state.endDate,
-      },
+      startingDate: this.state.startDate,
+      endingDate: this.state.endDate,
     });
   }
   submitIfFormChanged(e) {
@@ -120,10 +118,8 @@ class CompilationTitleForm extends Component {
       title: titleRef.value,
       subtitle: subtitleRef.value,
       coverTemplate: this.state.coverTemplate,
-      meta: {
-        startingDate: this.state.startDate,
-        endingDate: this.state.endDate,
-      },
+      startingDate: this.state.startDate,
+      endingDate: this.state.endDate,
     });
   }
   back(e) {
@@ -266,10 +262,8 @@ class CompilationTitleForm extends Component {
         subtitle: subtitleRef.value || this.props.compilation.subtitle,
         cover: this.props.compilation.cover,
         images: this.props.compilation.images,
-        meta: {
-          startingDate: this.state.startDate || _.get(this.props.compilation, 'meta.startingDate'),
-          endingDate: this.state.endDate || _.get(this.props.compilation, 'meta.endingDate'),
-        },
+        startingDate: this.state.startDate || this.props.compilation.startingDate,
+        endingDate: this.state.endDate || this.props.compilation.endingDate,
       };
 
       // <div dangerouslySetInnerHTML={{ __html: coverTemplate.frontCoverToString() }}></div>;

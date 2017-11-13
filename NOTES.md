@@ -1,8 +1,18 @@
 Print and ship postcards and letters:
 - https://print.directmailers.com
+- https://lob.com/
 
 - Mail servers
 https://github.com/baudehlo/Haraka
+
+- Advanced html builder
+http://grapesjs.com/demo.html
+http://innovastudio.com/content-builder.aspx
+
+Search term : javascript canvas editor library
+Canvas editors
+http://fabricjs.com/
+https://konvajs.github.io/
 
 
 TOP TODOS:
@@ -321,7 +331,6 @@ TypeError: Cannot read property 'token' of undefined
     at flush (/tmp/node_modules/babel-polyfill/node_modules/core-js/modules/_microtask.js:18:9)
     at nextTickCallbackWith0Args (node.js:419:9)
     at process._tickDomainCallback [as _tickCallback] (node.js:389:13)
-
 
 
 Image

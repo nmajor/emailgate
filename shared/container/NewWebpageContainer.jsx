@@ -17,9 +17,13 @@ class NewWebpageContainer extends Component {
     }
 
     this.submitForm = this.submitForm.bind(this);
+    this.submitImage = this.submitImage.bind(this);
     this.back = this.back.bind(this);
   }
   submitForm() {}
+  submitImage(props) {
+    this.props.dispatch(Actions.addWebpageImage(props));
+  }
   back() {
     this.context.router.goBack();
   }
@@ -33,7 +37,7 @@ class NewWebpageContainer extends Component {
               <div className="user-card bottom-bumper">
                 <div className="card-body">
                   <h3>New Postcard Page</h3>
-                  <WebpageForm compilation={this.compilation} submitForm={this.submitForm} />
+                  <WebpageForm compilation={this.compilation} submitForm={this.submitForm} submitImage={this.submitImage} />
                 </div>
               </div>
             </div>

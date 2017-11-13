@@ -265,8 +265,8 @@ export function pageTemplateFactory(page) {
         case 'cover' :
           return resolve(new CoverTemplate(page, { compilation }));
         case 'title-page' : {
-          const startDate = compilation.meta.startingDate;
-          const endDate = compilation.meta.endingDate;
+          const startDate = compilation.startingDate;
+          const endDate = compilation.endingDate;
           return resolve(new TitlePageTemplate(page, { startDate, endDate, compilation }));
         }
         case 'message-page' :

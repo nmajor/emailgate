@@ -24,6 +24,7 @@ html, body {
 @import 'react-crop';
 @import 'compilation';
 @import 'progress-header';
+@import 'guillotine';
 
 img.emoji {
    height: 1em;
@@ -1191,6 +1192,14 @@ input {
   color: darken(#d9edf7, 50%);
   border-radius: 4px;
   border: 1px solid darken(#d9edf7, 20%);
+}
+.drag-crop-dropzone {
+  .image-dropzone {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .field-bg {

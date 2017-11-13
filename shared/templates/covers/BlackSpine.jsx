@@ -11,8 +11,8 @@ class CaseboundCoverTemplate {
     this.compilation = props.compilation;
     this.bleedType = props.bleedType || 'casebound';
     this.templatePreview = false;
-    this.startDate = _.get(props.compilation, 'meta.startingDate');
-    this.endDate = _.get(props.compilation, 'meta.endingDate');
+    this.startDate = _.get(props.compilation, 'startingDate');
+    this.endDate = _.get(props.compilation, 'endingDate');
 
     this.prettyStartDate = moment(this.startDate).format('MMM YYYY');
     this.prettyEndDate = moment(this.endDate).format('MMM YYYY');

@@ -46,8 +46,8 @@ class ViewCompilationPageContainer extends Component {
           return new covers[this.props.compilation.coverTemplate || 'BoxTitle']({ compilation: this.props.compilation, bleedType: 'bleedless' });
         }
         case 'title-page' : {
-          const startDate = this.props.compilation.meta.startingDate;
-          const endDate = this.props.compilation.meta.endingDate;
+          const startDate = this.props.compilation.startingDate;
+          const endDate = this.props.compilation.endingDate;
           return new TitlePageTemplate(page, { startDate, endDate, compilation: this.props.compilation });
         }
         case 'message-page' : {
