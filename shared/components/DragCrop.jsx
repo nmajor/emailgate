@@ -19,6 +19,8 @@ class DragCrop extends Component {
       loadJquery: false,
       loadGuillotine: false,
       picture: null,
+      naturalWidth: null,
+      naturalHeight: null,
     };
   }
   componentDidMount() {}
@@ -31,7 +33,16 @@ class DragCrop extends Component {
     this.setState({ loadJquery: true }); // eslint-disable-line
   }
   handleGuillotineDrop(data) {
-    this.props.onImageChange(data);
+    this.props.onImageChange({
+      ...data,
+      naturalWidth: this.state.naturalWidth,
+      naturalHeight: this.state.naturalHeight,
+    });
+    console.log('blah data', {
+      ...data,
+      naturalWidth: this.state.naturalWidth,
+      naturalHeight: this.state.naturalHeight,
+    });
   }
   handleJqueryLoad() {
     this.setState({ loadGuillotine: true });
@@ -44,8 +55,13 @@ class DragCrop extends Component {
       onChange: this.handleGuillotineDrop,
       init: this.props.crop,
     });
+
     picture.guillotine('fit');
-    this.setState({ picture });
+    this.setState({
+      picture,
+      naturalWidth: picture.get(0).naturalWidth,
+      naturalHeight: picture.get(0).naturalHeight,
+    });
   }
   handleRotateLeftClick() {
     this.state.picture.guillotine('rotateLeft');

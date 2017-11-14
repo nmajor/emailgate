@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import Vanilla from '../templates/webpage/Vanilla';
 // import * as Actions from '../redux/actions/index';
 
 class PreviewWebpageContainer extends Component {
@@ -7,11 +8,9 @@ class PreviewWebpageContainer extends Component {
   //   super(props, context);
   // }
   render() {
-    return (<div className="container-fluid">
-      <div className="content-box">
-        <h1>Preview</h1>
-      </div>
-    </div>);
+    const template = new Vanilla({ compilation: this.props.compilation });
+
+    return <div>{template.render()}</div>;
   }
 }
 
