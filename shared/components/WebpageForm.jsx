@@ -3,7 +3,7 @@ import { reduxForm } from 'redux-form';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import DragCropImageSelector from './DragCropImageSelector';
-// import _ from 'lodash';
+import _ from 'lodash';
 
 class WebpageForm extends Component { // eslint-disable-line
   constructor(props) {
@@ -14,18 +14,19 @@ class WebpageForm extends Component { // eslint-disable-line
     };
 
     this.handleImageChange = this.handleImageChange.bind(this);
+    this.handleNewImage = this.handleNewImage.bind(this);
   }
   handleImageChange(props) {
-    console.log('blah in form handleImageChange', props);
+    this.props.fields.webpage.imageCrop.onChange(props);
   }
-  handleNewImage(props) {
-    console.log('blah in form handleNewImage', props);
+  handleNewImage(props, cb) {
+    this.props.submitImage(props, cb);
   }
   render() {
     const {
       fields: {
         slug,
-        webpageTitle,
+        webpage,
         startingDate,
         endingDate,
         mission,
@@ -38,20 +39,27 @@ class WebpageForm extends Component { // eslint-disable-line
 
     return (<form onSubmit={handleSubmit}>
       <div className="row">
-        <div className="col-md-12 text-center">
-          <DragCropImageSelector onImageChange={this.handleImageChange} onNewImage={this.handleNewImage} height={200} width={200} />
+        <div className="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 text-center bottom-bumper">
+          <DragCropImageSelector
+            url={_.get(this.props.compilation, 'webpage.image.url')}
+            crop={_.get(this.props.compilation, 'webpage.imageCrop')}
+            onImageChange={this.handleImageChange}
+            onNewImage={this.handleNewImage}
+            height={500}
+            width={500}
+          />
         </div>
       </div>
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-sm-12">
           <div className="form-group">
             <label className="control-label">Page Title</label>
-            <input type="text" className="form-control" {...webpageTitle} placeholder="Elder John Johnson's Mission" />
+            <input type="text" className="form-control" {...webpage.title} placeholder="Elder John Johnson's Mission" />
           </div>
         </div>
       </div>
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-sm-12">
           <div className="form-group">
             <label className="control-label">Subdomain</label>
             <input type="text" className="form-control" {...slug} placeholder={slugPlaceholder} />
@@ -61,7 +69,7 @@ class WebpageForm extends Component { // eslint-disable-line
       </div>
       <hr />
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-sm-6">
           <div className="form-group">
             <label className="control-label">Mission Start Date</label>
             <DatePicker
@@ -77,7 +85,7 @@ class WebpageForm extends Component { // eslint-disable-line
             />
           </div>
         </div>
-        <div className="col-md-6">
+        <div className="col-sm-6">
           <div className="form-group">
             <label className="control-label">Mission End Date</label>
             <DatePicker
@@ -95,16 +103,61 @@ class WebpageForm extends Component { // eslint-disable-line
         </div>
       </div>
       <hr />
+      <h3 className="text-center">Mission Home Information</h3>
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-sm-12">
           <div className="form-group">
-            <label className="control-label">Mission</label>
-            <input type="text" className="form-control" {...mission} placeholder="Guatemala Guatemala City South Mission" />
+            <label className="control-label">Mission Name</label>
+            <input type="text" className="form-control" {...mission.name} placeholder="Guatemala Guatemala City South Mission" />
           </div>
         </div>
       </div>
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-sm-6">
+          <div className="form-group">
+            <label className="control-label">Address 1</label>
+            <input type="text" className="form-control" {...mission.address_1} placeholder="" />
+          </div>
+        </div>
+        <div className="col-sm-6">
+          <div className="form-group">
+            <label className="control-label">Address 2</label>
+            <input type="text" className="form-control" {...mission.address_2} placeholder="" />
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="form-group">
+            <label className="control-label">City</label>
+            <input type="text" className="form-control" {...mission.city} placeholder="" />
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-6">
+          <div className="form-group">
+            <label className="control-label">State</label>
+            <input type="text" className="form-control" {...mission.state} placeholder="" />
+          </div>
+        </div>
+        <div className="col-sm-6">
+          <div className="form-group">
+            <label className="control-label">Postal Code</label>
+            <input type="text" className="form-control" {...mission.postal_code} placeholder="" />
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="form-group">
+            <label className="control-label">Country</label>
+            <input type="text" className="form-control" {...mission.country} placeholder="" />
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-12">
           <div className="form-group text-right">
             {error && <div className="text-danger">{error}</div>}
             <button className="btn btn-success marginless-right" type="submit">Submit</button>
@@ -116,6 +169,8 @@ class WebpageForm extends Component { // eslint-disable-line
 }
 
 WebpageForm.propTypes = {
+  compilation: PropTypes.object.isRequired,
+  submitImage: PropTypes.func.isRequired,
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   error: PropTypes.string,
@@ -126,9 +181,17 @@ WebpageForm = reduxForm({ // eslint-disable-line no-class-assign
   form: 'webpage',
   fields: [
     'slug',
-    'webpageTitle',
+    'webpage.title',
+    'webpage.imageCrop',
     'startingDate',
     'endingDate',
+    'mission.name',
+    'mission.address_1',
+    'mission.address_2',
+    'mission.city',
+    'mission.state',
+    'mission.postal_code',
+    'mission.country',
   ],
 })(WebpageForm);
 

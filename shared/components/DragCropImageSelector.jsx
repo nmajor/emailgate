@@ -1,19 +1,28 @@
 import React, { PropTypes, Component } from 'react';
 import DragCrop from './DragCrop';
 import Dropzone from 'react-dropzone';
+import Loading from './Loading';
 import _ from 'lodash';
 
 class DragCropImageSelector extends Component { // eslint-disable-line
   constructor(props, context) {
     super(props, context);
 
-    this.state = {};
+    this.state = {
+      loading: false,
+    };
 
     this.onDrop = this.onDrop.bind(this);
+    this.onNewImage = this.onNewImage.bind(this);
+  }
+  onNewImage(props) {
+    this.setState({ loading: true });
+    this.props.onNewImage(props, () => {
+      this.setState({ loading: false });
+    });
   }
   onDrop(acceptedFiles) {
-    const addImage = this.props.onNewImage;
-    console.log('blah yo 1', this.props.onNewImage);
+    const addImage = this.onNewImage;
 
     _.forEach(acceptedFiles, (file) => {
       const xhr = new XMLHttpRequest();
@@ -37,8 +46,7 @@ class DragCropImageSelector extends Component { // eslint-disable-line
   renderText(text) {
     return <div className="middle-text">{text}</div>;
   }
-  renderDropZone() {
-    console.log('blah yo 2', this.props.onNewImage);
+  renderDropZone(text) {
     return (<Dropzone className="image-dropzone" activeClassName="active-image-dropzone" onDrop={this.onDrop}>
       {({ isDragActive, isDragReject, acceptedFiles, rejectedFiles }) => { // eslint-disable-line
         if (isDragActive) {
@@ -50,28 +58,42 @@ class DragCropImageSelector extends Component { // eslint-disable-line
         if (rejectedFiles.length) {
           return this.renderText('File rejected. Please try again.');
         }
-        return this.renderText('Upload Image');
+        return this.renderText(text);
       }}
     </Dropzone>);
   }
   render() {
-    if (this.props.url) {
-      return (<div>
-        <DragCrop
-          onImageChange={this.props.onImageChange}
-          height={this.props.height}
-          width={this.props.width}
-          url="/img/cover-images/field-standing.jpg"
-        />
+    if (this.state.loading) {
+      return (<div className="" style={{ display: 'inline-block', maxHeight: `${this.props.height}px`, maxWidth: `${this.props.width}px` }}>
+        <div className="alone-loading flex-centerize drag-crop-loading">
+          <Loading />
+        </div>
       </div>);
     }
 
-    return (<div className="drag-crop-dropzone" style={{ display: 'inline-block', height: `${this.props.height}px`, width: `${this.props.width}px` }}>{this.renderDropZone()}</div>);
+    if (this.props.url) {
+      return (<div>
+        <div>
+          <DragCrop
+            onImageChange={this.props.onImageChange}
+            height={this.props.height}
+            width={this.props.width}
+            url={this.props.url}
+          />
+        </div>
+        <div>
+          <div className="drag-crop-change-dropzone" style={{ display: 'inline-block', width: '100%' }}>{this.renderDropZone('Change Image')}</div>
+        </div>
+      </div>);
+    }
+
+    return (<div className="drag-crop-dropzone" style={{ display: 'inline-block', maxHeight: `${this.props.height}px`, maxWidth: `${this.props.width}px` }}>{this.renderDropZone('Upload Image')}</div>);
   }
 }
 
 DragCropImageSelector.propTypes = {
   url: PropTypes.string,
+  crop: PropTypes.object,
   onImageChange: PropTypes.func,
   onNewImage: PropTypes.func,
   height: PropTypes.number.isRequired,

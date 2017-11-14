@@ -5,6 +5,7 @@ class DragCrop extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.handleImageLoad = this.handleImageLoad.bind(this);
     this.handleJqueryLoad = this.handleJqueryLoad.bind(this);
     this.handleGuillotineLoad = this.handleGuillotineLoad.bind(this);
     this.handleGuillotineDrop = this.handleGuillotineDrop.bind(this);
@@ -20,7 +21,13 @@ class DragCrop extends Component {
       picture: null,
     };
   }
-  componentDidMount() {
+  componentDidMount() {}
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.url !== this.props.url) {
+      this.setState({ loadJquery: false, loadGuillotine: false });
+    }
+  }
+  handleImageLoad() {
     this.setState({ loadJquery: true }); // eslint-disable-line
   }
   handleGuillotineDrop(data) {
@@ -35,7 +42,9 @@ class DragCrop extends Component {
       width: this.props.width,
       height: this.props.height,
       onChange: this.handleGuillotineDrop,
+      init: this.props.crop,
     });
+    picture.guillotine('fit');
     this.setState({ picture });
   }
   handleRotateLeftClick() {
@@ -74,13 +83,14 @@ class DragCrop extends Component {
   }
   render() {
     return (
-      <div className="gui-wrapper" style={{ width: `${this.props.width}px` }}>
+      <div className="gui-wrapper" style={{ width: '100%' }}>
         {this.renderJqueryScript()}
         {this.renderGuillotineScript()}
-        <div className="gui-parent" style={{ height: `${this.props.height}px`, width: `${this.props.width}px` }}>
-          <img role="presentation" id="gui-picture" src={this.props.url} />
+        <div className="gui-header" style={{ width: '100%' }}>Drag image to reposition</div>
+        <div className="gui-parent" style={{ width: '100%' }}>
+          <img role="presentation" id="gui-picture" src={this.props.url} onLoad={this.handleImageLoad} />
         </div>
-        <div className="gui-controls" style={{ width: `${this.props.width}px` }}>
+        <div className="gui-controls" style={{ width: '100%' }}>
           {this.renderControl('zoom-in', this.handleRotateZoomInClick)}
           {this.renderControl('zoom-out', this.handleRotateZoomOutClick)}
           {this.renderControl('resize-full', this.handleFitClick)}
@@ -93,6 +103,7 @@ class DragCrop extends Component {
 
 DragCrop.propTypes = {
   url: PropTypes.string,
+  crop: PropTypes.object,
   onImageChange: PropTypes.func,
   height: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,

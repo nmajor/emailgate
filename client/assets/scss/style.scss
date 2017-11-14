@@ -99,6 +99,16 @@ img.emoji {
 .alone-loading > .loading {
   height: 30px;
 }
+.flex-centerize {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.drag-crop-loading {
+  background: #efefef;
+  border: 1px solid #ccc;
+  height: 100%;
+}
 
 h1 > .loading {
   height: 30px;
@@ -1196,6 +1206,16 @@ input {
 .drag-crop-dropzone {
   .image-dropzone {
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.drag-crop-change-dropzone {
+  margin-top: 10px;
+
+  .image-dropzone {
+    padding: 4px 0;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -20,9 +20,18 @@ class NewWebpageContainer extends Component {
     this.submitImage = this.submitImage.bind(this);
     this.back = this.back.bind(this);
   }
-  submitForm() {}
-  submitImage(props) {
-    this.props.dispatch(Actions.addWebpageImage(props));
+  componentWillReceiveProps(nextProps) {
+    this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
+  }
+  submitForm(props) {
+    return new Promise((resolve) => {
+      this.props.dispatch(Actions.updateCompilationFetch(this.compilation._id, props, () => {
+        resolve();
+      }));
+    });
+  }
+  submitImage(props, cb) {
+    this.props.dispatch(Actions.updateCompilationFetch(this.compilation._id, { webpage: { image: props } }, (cb || function () {}))); // eslint-disable-line
   }
   back() {
     this.context.router.goBack();
@@ -37,7 +46,7 @@ class NewWebpageContainer extends Component {
               <div className="user-card bottom-bumper">
                 <div className="card-body">
                   <h3>New Postcard Page</h3>
-                  <WebpageForm compilation={this.compilation} submitForm={this.submitForm} submitImage={this.submitImage} />
+                  <WebpageForm compilation={this.compilation} onSubmit={this.submitForm} submitImage={this.submitImage} initialValues={this.compilation} />
                 </div>
               </div>
             </div>

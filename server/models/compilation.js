@@ -30,6 +30,17 @@ const CompilationSchema = new Schema({
   slug: { type: String, unique: true, sparse: true },
   webpage: {
     title: { type: String },
+    image: {},
+    imageCrop: {},
+  },
+  mission: {
+    name: { type: String },
+    address_1: { type: String },
+    address_2: { type: String },
+    city: { type: String },
+    state: { type: String },
+    postal_code: { type: String },
+    country: { type: String },
   },
   title: String,
   subtitle: String,
@@ -97,11 +108,34 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
       });
     });
   }
+  console.log('blah hey 0', _.get(this, 'webpage.image'));
+
+  if (_.get(this, 'webpage.image') && !_.get(this, 'webpage.image.url')) {
+    console.log('blah hey 1');
+    const imageId = shortid.generate();
+    this.webpage.image._id = imageId;
+    console.log('blah hey 2');
+
+    tasks = tasks.then(() => {
+      console.log('blah hey 3');
+      this.webpage.image._compilation = this.id;
+      return serverHelpers.processCoverImage(this.webpage.image);
+    })
+    .then((processedImage) => {
+      console.log('blah hey 4');
+      return serverHelpers.uploadCoverImage(processedImage);
+    })
+    .then((uploadedImage) => {
+      console.log('blah hey 5');
+      this.webpage.image = uploadedImage;
+      return Promise.resolve(this);
+    });
+  }
 
   tasks.then(() => {
     next();
   })
-  .catch((err) => { console.log('an error happened compilation pre save', err); });
+  .catch((err) => { console.log('an error happened compilation pre save', err, err.stack); });
 });
 
 CompilationSchema.post('remove', function (doc) { // eslint-disable-line

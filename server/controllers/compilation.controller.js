@@ -107,9 +107,18 @@ export function patchCompilation(req, res) {
   Compilation.findOne(query)
   .then((compilation) => {
     if (req.body.title) { compilation.title = req.body.title || req.body.title; }
+    if (req.body.slug) { compilation.slug = req.body.slug || req.body.slug; }
     if (req.body.subtitle) { compilation.subtitle = req.body.subtitle || req.body.subtitle; }
+    if (req.body.startingDate) { compilation.startingDate = req.body.startingDate || req.body.startingDate; }
+    if (req.body.endingDate) { compilation.endingDate = req.body.endingDate || req.body.endingDate; }
     if (req.body.coverTemplate) { compilation.coverTemplate = req.body.coverTemplate || req.body.coverTemplate; }
     if (!_.isEmpty(req.body.newImages)) { compilation.newImages = req.body.newImages; }
+    if (!_.isEmpty(req.body.webpage)) {
+      compilation.webpage = { ...compilation.webpage, ...req.body.webpage };
+    }
+    if (!_.isEmpty(req.body.mission)) {
+      compilation.mission = { ...compilation.mission, ...req.body.mission };
+    }
     if (!_.isEmpty(req.body.meta)) {
       compilation.meta = { ...compilation.meta, ...req.body.meta };
     }

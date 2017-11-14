@@ -282,38 +282,38 @@ export function addCustomPage(compilationId, props, cb) {
   };
 }
 
-export function addWebpageImage(compilationId, props, cb) {
-  return (dispatch) => {
-    dispatch(setPropertyForCompilation(compilationId, 'saving', true));
-
-    return fetch(`${baseURL}/api/compilations/${compilationId}/add-webpage-image`, {
-      credentials: 'include',
-      method: 'post',
-      body: JSON.stringify({ imageData: props }),
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-    })
-    .then((res) => {
-      if (res.status >= 400) {
-        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
-      }
-
-      return res.json();
-    })
-    .then((res) => {
-      if (res.error) {
-        throw new Error(res.error.message);
-      }
-
-      dispatch(setCompilationPages(res));
-      cb(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  };
-}
+// export function addWebpageImage(compilationId, props, cb) {
+//   return (dispatch) => {
+//     dispatch(setPropertyForCompilation(compilationId, 'saving', true));
+//
+//     return fetch(`${baseURL}/api/compilations/${compilationId}/add-webpage-image`, {
+//       credentials: 'include',
+//       method: 'post',
+//       body: JSON.stringify({ imageData: props }),
+//       headers: new Headers({
+//         'Content-Type': 'application/json',
+//       }),
+//     })
+//     .then((res) => {
+//       if (res.status >= 400) {
+//         throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+//       }
+//
+//       return res.json();
+//     })
+//     .then((res) => {
+//       if (res.error) {
+//         throw new Error(res.error.message);
+//       }
+//
+//       dispatch(setCompilationPages(res));
+//       cb(res);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+//   };
+// }
 
 // export function addCompilationImage(compilationId, image, cb) {
 //   return (dispatch) => {
