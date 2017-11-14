@@ -15,7 +15,7 @@ import {
 } from '../util/helpers';
 import { startWorker } from '../util/docker';
 
-import EmailTemplate, { addEmbeddedAttachmentsToEmailBody } from '../../shared/templates/email';
+import EmailTemplate, { addEmbeddedAttachmentsToEmailBody } from '../../shared/templates/book/email';
 import _ from 'lodash';
 
 const EmailSchema = new Schema({

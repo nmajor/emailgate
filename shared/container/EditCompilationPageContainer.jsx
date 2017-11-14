@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import CompilationBuildContainer from './CompilationBuildContainer';
 import * as Actions from '../redux/actions/index';
-import CoverTemplate from '../templates/cover';
-import TitlePageTemplate from '../templates/titlePage';
-import MessagePageTemplate from '../templates/messagePage';
-import FullImagePageTemplate from '../templates/fullImagePage';
+import CoverTemplate from '../templates/book/cover';
+import TitlePageTemplate from '../templates/book/titlePage';
+import MessagePageTemplate from '../templates/book/messagePage';
+import FullImagePageTemplate from '../templates/book/fullImagePage';
 
 class EditCompilationPageContainer extends Component {
   constructor(props, context) {

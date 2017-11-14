@@ -1,6 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import WebpageForm from '../components/WebpageForm';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
@@ -43,12 +41,6 @@ class BuildWebpageContainer extends Component {
   }
 }
 
-BuildWebpageContainer.need = [
-  (params, cookie) => {
-    return Actions.getCompilations.bind(null, { compilationId: params.compilationId }, cookie)();
-  },
-];
-
 function mapStateToProps(store) {
   return {
     user: store.user,
@@ -62,7 +54,6 @@ BuildWebpageContainer.contextTypes = {
 
 BuildWebpageContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  params: PropTypes.object.isRequired,
   compilation: PropTypes.object.isRequired,
 };
 

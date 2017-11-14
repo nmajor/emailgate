@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 // import { Link } from 'react-router';
-import EmailTemplate from '../templates/email';
+import EmailTemplate from '../templates/book/email';
 import Loading from './Loading';
 // import FixedFooter from './FixedFooter';
 

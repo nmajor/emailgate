@@ -1,4 +1,4 @@
-import coverFonts from '../shared/templates/covers/utils/fonts';
+import coverFonts from '../shared/templates/book/covers/utils/fonts';
 import _ from 'lodash';
 
 // Render Initial HTML

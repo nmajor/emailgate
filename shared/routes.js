@@ -44,6 +44,8 @@ import OrdersDashboardContainer from './container/OrdersDashboardContainer';
 import AddressesDashboardContainer from './container/AddressesDashboardContainer';
 import WebpageContainer from './container/WebpageContainer';
 import BuildWebpageContainer from './container/BuildWebpageContainer';
+import PreviewWebpageContainer from './container/PreviewWebpageContainer';
+import ShareWebpageContainer from './container/ShareWebpageContainer';
 
 
 // components
@@ -73,6 +75,8 @@ const routes = (
 
     <Route component={WebpageContainer}>
       <Route path="/compilations/:compilationId/webpage/build" component={BuildWebpageContainer} />
+      <Route path="/compilations/:compilationId/webpage/preview" component={PreviewWebpageContainer} />
+      <Route path="/compilations/:compilationId/webpage/share" component={ShareWebpageContainer} />
     </Route>
 
     <Route component={DashboardNavWrapper}>

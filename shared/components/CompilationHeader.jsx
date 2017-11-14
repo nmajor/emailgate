@@ -6,7 +6,6 @@ import Loading from './Loading';
 class CompilationHeader extends Component { // eslint-disable-line
   renderCoverPreview() {
     const { compilation } = this.props;
-    console.log();
 
     if (_.get(compilation, 'thumbnail.url')) {
       return (<img role="presentation" src={compilation.thumbnail.url} />);

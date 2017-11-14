@@ -11,11 +11,11 @@ import sharp from 'sharp';
 import manta from 'manta';
 import shortid from 'shortid';
 
-import CoverTemplate from '../../shared/templates/cover';
-import TitlePageTemplate from '../../shared/templates/titlePage';
-import MessagePageTemplate from '../../shared/templates/messagePage';
-import TableOfContentsTemplate from '../../shared/templates/tableOfContents';
-import FullImagePageTemplate from '../../shared/templates/fullImagePage';
+import CoverTemplate from '../../shared/templates/book/cover';
+import TitlePageTemplate from '../../shared/templates/book/titlePage';
+import MessagePageTemplate from '../../shared/templates/book/messagePage';
+import TableOfContentsTemplate from '../../shared/templates/book/tableOfContents';
+import FullImagePageTemplate from '../../shared/templates/book/fullImagePage';
 
 const client = manta.createClient({
   sign: manta.privateKeySigner({

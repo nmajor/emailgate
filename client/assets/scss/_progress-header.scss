@@ -74,6 +74,8 @@
       }
     }
   }
+
+  &.webpage .spacer { width: 100px; }
   .spacer {
     border-bottom: 3px solid #4C8EFF;
     position: relative;
@@ -171,6 +173,7 @@
         }
       }
     }
+    &.webpage .spacer { width: 230px; }
     .spacer {
       border-bottom: 3px solid #4C8EFF;
       position: relative;
@@ -264,6 +267,7 @@
         }
       }
     }
+    &.webpage .spacer { width: 350px; }
     .spacer {
       border-bottom: 3px solid #4C8EFF;
       position: relative;

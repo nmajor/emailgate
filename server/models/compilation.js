@@ -8,7 +8,7 @@ import * as sharedHelpers from '../../shared/helpers';
 import * as serverHelpers from '../util/helpers';
 import { htmlToPdf } from '../util/pdf';
 import { startWorker } from '../util/docker';
-import covers from '../../shared/templates/covers';
+import covers from '../../shared/templates/book/covers';
 
 const CompilationCoverSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },

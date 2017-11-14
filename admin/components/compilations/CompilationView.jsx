@@ -3,7 +3,7 @@ import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import JsonViewer from '../JsonViewer';
-import covers from '../../../shared/templates/covers';
+import covers from '../../../shared/templates/book/covers';
 import CompilationSpineWidthForm from './CompilationSpineWidthForm';
 import BuildLogs from './BuildLogs';
 

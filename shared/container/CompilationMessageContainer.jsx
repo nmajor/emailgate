@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Modal from '../components/Modal';
 import CompilationBuildContainer from './CompilationBuildContainer';
 import CompilationMessageForm from '../components/CompilationMessageForm';
-import MessagePageTemplate from '../templates/messagePage';
+import MessagePageTemplate from '../templates/book/messagePage';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';

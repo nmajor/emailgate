@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import EmailTemplate, { addEmbeddedAttachmentsToEmailBody } from '../templates/email';
+import EmailTemplate, { addEmbeddedAttachmentsToEmailBody } from '../templates/book/email';
 
 class EmailView extends Component {
   constructor(props, context) {

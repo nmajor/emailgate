@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { emailPageMap } from '../helpers';
 import * as Actions from '../redux/actions/index';
-// import CoverTemplate from '../templates/cover';
-import TitlePageTemplate from '../templates/titlePage';
-import MessagePageTemplate from '../templates/messagePage';
-import TableOfContentsTemplate from '../templates/tableOfContents';
-import FullImagePageTemplate from '../templates/fullImagePage';
+// import CoverTemplate from '../templates/book/cover';
+import TitlePageTemplate from '../templates/book/titlePage';
+import MessagePageTemplate from '../templates/book/messagePage';
+import TableOfContentsTemplate from '../templates/book/tableOfContents';
+import FullImagePageTemplate from '../templates/book/fullImagePage';
 import CompilationBuildContainer from './CompilationBuildContainer';
-import covers from '../templates/covers';
+import covers from '../templates/book/covers';
 
 class ViewCompilationPageContainer extends Component {
   constructor(props, context) {

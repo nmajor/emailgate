@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ImageSelector from './ImageSelector';
 import Loading from './Loading';
-import covers from '../templates/covers';
+import covers from '../templates/book/covers';
 import _ from 'lodash';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';

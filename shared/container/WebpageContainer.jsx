@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import _ from 'lodash';
+import WebpageProgressHeader from '../components/WebpageProgressHeader';
 
 class WebpageContainer extends Component {
   constructor(props, context) {
@@ -14,9 +15,16 @@ class WebpageContainer extends Component {
     } else {
       this.compilation = {};
     }
+
+    this.currentCompilationPath = this.getCurrentPath(this.props);
   }
   componentWillReceiveProps(nextProps) {
     this.compilation = _.find(nextProps.compilations, { _id: nextProps.params.compilationId }) || {};
+    this.currentCompilationPath = this.getCurrentPath(nextProps);
+  }
+  getCurrentPath(props) {
+    const path = props.routes[props.routes.length - 1].path;
+    return path.split('/')[4];
   }
   renderChildren() {
     if (this.props.children && !_.isEmpty(this.compilation)) {
@@ -29,6 +37,7 @@ class WebpageContainer extends Component {
     return (
       <div className="new-compilation-container">
         <Header />
+        <WebpageProgressHeader compilation={this.compilation} currentPath={this.currentCompilationPath} />
         {this.renderChildren()}
         <Footer />
       </div>

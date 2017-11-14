@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 
 import React, { Component } from 'react';
-import { getCoverImage } from '../../../helpers';
+import { getCoverImage } from '../../../../helpers';
 
 class CoverImage extends Component {
   constructor(props) { // eslint-disable-line

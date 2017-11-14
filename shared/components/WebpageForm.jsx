@@ -19,13 +19,6 @@ class WebpageForm extends Component { // eslint-disable-line
   handleNewImage(props, cb) {
     this.props.submitImage(props, cb);
   }
-  renderSubmitting() {
-    if (this.props.submitting) {
-      return 'blah';
-      console.log('blah renderSubmitting', this.props.submitting);
-      return <span className="button-loading"><Loading /></span>;
-    }
-  }
   render() {
     const {
       fields: {

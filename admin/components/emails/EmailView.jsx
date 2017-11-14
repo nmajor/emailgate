@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import EmailTemplate from '../../../shared/templates/email';
+import EmailTemplate from '../../../shared/templates/book/email';
 
 class EmailView extends Component { // eslint-disable-line
   constructor(props, context) {
