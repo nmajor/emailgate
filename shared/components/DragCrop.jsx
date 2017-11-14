@@ -38,11 +38,6 @@ class DragCrop extends Component {
       naturalWidth: this.state.naturalWidth,
       naturalHeight: this.state.naturalHeight,
     });
-    console.log('blah data', {
-      ...data,
-      naturalWidth: this.state.naturalWidth,
-      naturalHeight: this.state.naturalHeight,
-    });
   }
   handleJqueryLoad() {
     this.setState({ loadGuillotine: true });

@@ -14,6 +14,7 @@ import passport from 'passport';
 
 import appInitialState from '../shared/initialState';
 import adminInitialState from '../admin/initialState';
+import experienceInitialState from '../experience/initialState';
 
 // Initialize the Express App
 const app = new Express();
@@ -32,6 +33,7 @@ if (process.env.NODE_ENV !== 'production') {
 // React And Redux Setup
 import * as appConfigureStore from '../shared/redux/configureStore';
 import * as adminConfigureStore from '../admin/redux/configureStore';
+import * as experienceConfigureStore from '../experience/redux/configureStore';
 import { Provider } from 'react-redux';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -40,6 +42,7 @@ import { match, RouterContext } from 'react-router';
 // Import required modules
 import appRoutes from '../shared/routes';
 import adminRoutes from '../admin/routes';
+import experienceRoutes from '../experience/routes';
 import { fetchComponentData } from './util/fetchData';
 import index from './routes/index.routes';
 import api from './routes/api.routes';
@@ -49,9 +52,10 @@ import mailer from './routes/mailer.routes';
 import socketEvents from './events/index';
 import sessionMiddleware from './session-middleware';
 
-import { mainPage, adminPage } from './render';
+import { mainPage, adminPage, experiencePage } from './render';
 
 import User from './models/user';
+import Compilation from './models/compilation';
 
 passport.use(User.createStrategy());
 
@@ -102,16 +106,46 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
-  let routes = appRoutes;
-  let renderPage = mainPage;
-  let initialState = appInitialState;
-  let configureStore = appConfigureStore;
+  const domains = ['missionarymemoir', 'localhost:8000'];
+  const domainParts = req.headers.host.split('.');
+  const subdomain = domains.indexOf(domainParts[0]) > -1 ? null : domainParts[0];
 
-  if (req.headers.host.substring(0, 6) === 'admin.') {
+  if (subdomain === 'app' || !subdomain) {
+    renderReact(req, res, { subdomain: 'app' });
+  } else if (subdomain === 'admin') {
+    renderReact(req, res, { subdomain: 'admin' });
+  } else {
+    Compilation.findOne({ slug: subdomain })
+    .then((compilation) => {
+      if (compilation) {
+        renderReact(req, res, { subdomain: 'experience', compilation });
+      } else {
+        return res.status(404).sendfile('./public/404.html');
+      }
+    });
+  }
+});
+
+function renderReact(req, res, props) {
+  const subdomain = props.subdomain;
+
+  let routes = experienceRoutes;
+  let renderPage = experiencePage;
+  let initialState = experienceInitialState;
+  let configureStore = experienceConfigureStore;
+
+  if (subdomain === 'admin') {
     routes = adminRoutes;
     renderPage = adminPage;
     initialState = adminInitialState;
     configureStore = adminConfigureStore;
+  } else if (subdomain === 'app') {
+    routes = appRoutes;
+    renderPage = mainPage;
+    initialState = appInitialState;
+    configureStore = appConfigureStore;
+  } else {
+    initialState.compilation = props.compilation;
   }
 
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => { // eslint-disable-line consistent-return
@@ -144,7 +178,7 @@ app.use((req, res) => {
         res.end(mainPage('Error', initialState));
       });
   });
-});
+}
 
 const server = http.createServer(app);
 io.attach(server);

@@ -1,0 +1,7 @@
+export const SET_COMPILATION = 'SET_COMPILATION';
+
+export const SET_USER = 'SET_USER';
+export const SET_USER_ERRORS = 'SET_USER_ERRORS';
+export const SET_PROPERTY_FOR_USER = 'SET_PROPERTY_FOR_USER';
+export const RESET_STATE = 'RESET_STATE';
+export const CLEAR_USER = 'CLEAR_USER';

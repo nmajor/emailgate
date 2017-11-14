@@ -14,6 +14,7 @@ module.exports = {
   entry: {
     app: [__dirname + '/client/index', 'webpack-hot-middleware/client'],
     admin: [__dirname + '/client/admin', 'webpack-hot-middleware/client'],
+    experience: [__dirname + '/client/experience', 'webpack-hot-middleware/client'],
   },
 
   output: {

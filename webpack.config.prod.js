@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     app: __dirname + "/client/index.js",
     admin: __dirname + "/client/admin.js",
+    experience: __dirname + "/client/experience.js",
   },
 
   output: {
