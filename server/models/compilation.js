@@ -108,25 +108,19 @@ CompilationSchema.pre('save', function (next) { // eslint-disable-line func-name
       });
     });
   }
-  console.log('blah hey 0', _.get(this, 'webpage.image'));
 
   if (_.get(this, 'webpage.image') && !_.get(this, 'webpage.image.url')) {
-    console.log('blah hey 1');
     const imageId = shortid.generate();
     this.webpage.image._id = imageId;
-    console.log('blah hey 2');
 
     tasks = tasks.then(() => {
-      console.log('blah hey 3');
       this.webpage.image._compilation = this.id;
       return serverHelpers.processCoverImage(this.webpage.image);
     })
     .then((processedImage) => {
-      console.log('blah hey 4');
       return serverHelpers.uploadCoverImage(processedImage);
     })
     .then((uploadedImage) => {
-      console.log('blah hey 5');
       this.webpage.image = uploadedImage;
       return Promise.resolve(this);
     });

@@ -54,7 +54,7 @@ class CompilationCard extends Component { // eslint-disable-line
     const { compilation } = this.props;
     if (!compilation.slug) {
       return (<div className="page-card">
-        <Link to={`/compilations/${compilation._id}/webpage/new`} className="btn btn-default">Create a Page or Blog</Link>
+        <Link to={`/compilations/${compilation._id}/webpage/build`} className="btn btn-default">Create a Page or Blog</Link>
       </div>);
     }
 

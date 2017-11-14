@@ -42,7 +42,8 @@ import EmailAccountsDashbaordContainer from './container/EmailAccountsDashboardC
 import AccountDashboardContainer from './container/AccountDashboardContainer';
 import OrdersDashboardContainer from './container/OrdersDashboardContainer';
 import AddressesDashboardContainer from './container/AddressesDashboardContainer';
-import NewWebpageContainer from './container/NewWebpageContainer';
+import WebpageContainer from './container/WebpageContainer';
+import BuildWebpageContainer from './container/BuildWebpageContainer';
 
 
 // components
@@ -69,7 +70,10 @@ const routes = (
     <Route path="/accounts/new" component={NewAccountContainer} />
     <Route path="/accounts/:id/edit" component={EditAccountContainer} />
     <Route path="/compilations/new" component={NewCompilationContainer} />
-    <Route path="/compilations/:compilationId/webpage/new" component={NewWebpageContainer} />
+
+    <Route component={WebpageContainer}>
+      <Route path="/compilations/:compilationId/webpage/build" component={BuildWebpageContainer} />
+    </Route>
 
     <Route component={DashboardNavWrapper}>
       <Route path="/dashboard" component={DashboardContainer} />

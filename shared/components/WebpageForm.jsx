@@ -4,14 +4,11 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import DragCropImageSelector from './DragCropImageSelector';
 import _ from 'lodash';
+import Loading from './Loading';
 
 class WebpageForm extends Component { // eslint-disable-line
   constructor(props) {
     super(props);
-
-    this.state = {
-      kind: 'discount',
-    };
 
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleNewImage = this.handleNewImage.bind(this);
@@ -22,6 +19,13 @@ class WebpageForm extends Component { // eslint-disable-line
   handleNewImage(props, cb) {
     this.props.submitImage(props, cb);
   }
+  renderSubmitting() {
+    if (this.props.submitting) {
+      return 'blah';
+      console.log('blah renderSubmitting', this.props.submitting);
+      return <span className="button-loading"><Loading /></span>;
+    }
+  }
   render() {
     const {
       fields: {
@@ -31,6 +35,7 @@ class WebpageForm extends Component { // eslint-disable-line
         endingDate,
         mission,
       },
+      submitting,
       error,
       handleSubmit,
     } = this.props;
@@ -116,13 +121,13 @@ class WebpageForm extends Component { // eslint-disable-line
         <div className="col-sm-6">
           <div className="form-group">
             <label className="control-label">Address 1</label>
-            <input type="text" className="form-control" {...mission.address_1} placeholder="" />
+            <input type="text" className="form-control" {...mission.address_1} />
           </div>
         </div>
         <div className="col-sm-6">
           <div className="form-group">
             <label className="control-label">Address 2</label>
-            <input type="text" className="form-control" {...mission.address_2} placeholder="" />
+            <input type="text" className="form-control" {...mission.address_2} />
           </div>
         </div>
       </div>
@@ -130,7 +135,7 @@ class WebpageForm extends Component { // eslint-disable-line
         <div className="col-sm-12">
           <div className="form-group">
             <label className="control-label">City</label>
-            <input type="text" className="form-control" {...mission.city} placeholder="" />
+            <input type="text" className="form-control" {...mission.city} />
           </div>
         </div>
       </div>
@@ -160,7 +165,7 @@ class WebpageForm extends Component { // eslint-disable-line
         <div className="col-sm-12">
           <div className="form-group text-right">
             {error && <div className="text-danger">{error}</div>}
-            <button className="btn btn-success marginless-right" type="submit">Submit</button>
+            <button className="btn btn-success marginless-right" type="submit">Submit {submitting && <span className="button-loading"><Loading /></span>}</button>
           </div>
         </div>
       </div>
