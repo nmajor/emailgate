@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 // Render Initial HTML
 export function mainPage(html, renderedState) {
-  const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
+  const cssPath = process.env.NODE_ENV === 'production' ? '/css/app.styles.css' : '';
   const fbPixel = process.env.FB_PIXEL;
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
   const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join('\n');
@@ -80,7 +80,7 @@ export function mainPage(html, renderedState) {
 }
 
 export function adminPage(html, renderedState) {
-  const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
+  const cssPath = process.env.NODE_ENV === 'production' ? '/css/admin.styles.css' : '';
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
   const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join('\n');
   return `
@@ -123,7 +123,7 @@ export function adminPage(html, renderedState) {
 }
 
 export function experiencePage(html, renderedState) {
-  const cssPath = process.env.NODE_ENV === 'production' ? '/css/style.css' : '';
+  const cssPath = process.env.NODE_ENV === 'production' ? '/css/experience.styles.css' : '';
   const cssInclude = cssPath ? `<link rel=\"stylesheet\" href=${cssPath} />` : '';
   const fontIncludes = _.map(coverFonts, (data) => { return data.link; }).join('\n');
   return `

@@ -2,4 +2,5 @@
 // import baseURL from '../../baseURL';
 // import socket from '../../../client/socket';
 
-export * from './compilationsActions';
+export * from './compilationActions';
+export * from './postcardActions';

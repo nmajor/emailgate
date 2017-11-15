@@ -60,6 +60,6 @@ module.exports = {
         warnings: false,
       }
     }),
-    new ExtractTextPlugin("css/style.css"),
+    new ExtractTextPlugin("css/[name].styles.css"),
   ],
 };

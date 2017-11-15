@@ -52,13 +52,12 @@ class CompilationCard extends Component { // eslint-disable-line
   }
   renderPageInfo() {
     const { compilation } = this.props;
-    if (!compilation.slug) {
-      return (<div className="page-card">
-        <Link to={`/compilations/${compilation._id}/webpage/build`} className="btn btn-default">Create a Page or Blog</Link>
-      </div>);
-    }
+    let text = 'Create a Page or Blog'
+    if (compilation.slug) { text = 'View Page or blog' }
 
-    return (<div className="page-card"></div>);
+    return (<div className="page-card">
+      <Link to={`/compilations/${compilation._id}/webpage/build`} className="btn btn-default">{text}</Link>
+    </div>);
   }
   render() {
     return (<div className="row bottom-bumper">

@@ -1,0 +1,54 @@
+@import 'postcard-page';
+@import '../../../assets/scss/guillotine';
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.postcard-aspect-wrapper {
+  width: 100%;
+  /* whatever width you want */
+  display: inline-block;
+  position: relative;
+
+  &:after {
+    padding-top: 66.67%;
+    /* 16:9 ratio */
+    display: block;
+    content: '';
+  }
+}
+.postcard-aspect-main {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  /* fill parent */
+  background-color: deepskyblue;
+  /* let's see it! */
+  color: white;
+}
+
+.image-dropzone {
+  position: relative;
+
+  .change-image {
+    position: absolute;
+    right: 7px;
+    top: 30px;
+    color: #efefef;
+    z-index: 2;
+    border: 1px solid #efefef;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background-color: rgba(33, 33, 33, 0.7);
+    cursor: pointer;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

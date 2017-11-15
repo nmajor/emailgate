@@ -55,15 +55,17 @@ body.guillotine-dragging, body.guillotine-dragging * {
 .gui-parent {
   display: inline-block;
   overflow: hidden;
+  margin-bottom: -5px;
 }
 .gui-header {
   display: inline-block;
-  background-color: #efefef;
+  background-color: #1b1b1b;
   text-align: center;
   line-height: 24px;
   font-size: 14px;
-  color: #888;
+  color: #CCC;
   border-radius: 3px 3px 0 0;
+  font-weight: 400;
 }
 .gui-controls {
   display: inline-block;
@@ -71,7 +73,7 @@ body.guillotine-dragging, body.guillotine-dragging * {
   text-align: center;
   line-height: 35px;
   font-size: 16px;
-  color: #888;
+  color: #AAA;
   border-radius: 0 0 3px 3px;
 
   .control {

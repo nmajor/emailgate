@@ -97,7 +97,7 @@ class DragCrop extends Component {
       <div className="gui-wrapper" style={{ width: '100%' }}>
         {this.renderJqueryScript()}
         {this.renderGuillotineScript()}
-        <div className="gui-header" style={{ width: '100%' }}>Drag image to reposition</div>
+        <div className="gui-header" style={{ width: '100%' }}>Zoom and drag image to reposition</div>
         <div className="gui-parent" style={{ width: '100%' }}>
           <img role="presentation" id="gui-picture" src={this.props.url} onLoad={this.handleImageLoad} />
         </div>
