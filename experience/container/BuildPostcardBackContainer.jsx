@@ -10,7 +10,7 @@ class BuildPostcardFrontContainer extends Component { // eslint-disable-line
     this.handleWindowResize = this.handleWindowResize.bind(this);
 
     //              width / height
-    this.aspectRatio = (4 / 6);
+    this.aspectRatio = (6 / 4);
     this.state = {
       previewElmWidth: null,
     };
@@ -21,6 +21,13 @@ class BuildPostcardFrontContainer extends Component { // eslint-disable-line
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize, true);
+  }
+  getPreviewHeight() {
+    if (this.state.previewElmWidth) {
+      return (1 / this.aspectRatio) * this.state.previewElmWidth
+    }
+
+    return 20;
   }
   handleWindowResize() {
     this.setState({ previewElmWidth: this.refs['postcard-back-preview'].offsetWidth });
@@ -38,7 +45,7 @@ class BuildPostcardFrontContainer extends Component { // eslint-disable-line
         <textarea className="back-text" onChange={this.handleTextChange} value={this.props.postcard.backText} />
       </div>
       <div className="col-sm-6">
-        <div ref="postcard-back-preview" style={{ height: `${}px` }}>
+        <div className="postcard-back-preview" ref="postcard-back-preview" style={{ height: `${this.getPreviewHeight()}px` }}>
           {this.props.postcard.backText}
         </div>
       </div>
