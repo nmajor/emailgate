@@ -1,0 +1,19 @@
+.postcard-back {
+  position: relative;
+
+  .content {
+    width: 30%;
+    height: 100%;
+  }
+  .back-text {
+    width: 100%;
+  }
+  .no-content-zone {
+    background: #CCC;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 60%;
+    height: 60%;
+  }
+}

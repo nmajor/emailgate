@@ -9,7 +9,8 @@ class BuildPostcardContainer extends Component { // eslint-disable-line
     super(props, context);
 
     this.state = {
-      step: 'front',
+      // step: 'front',
+      step: 'back',
     };
   }
   renderStep(text, step) {

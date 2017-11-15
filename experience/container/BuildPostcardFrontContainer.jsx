@@ -58,10 +58,6 @@ function mapStateToProps(store) {
   };
 }
 
-BuildPostcardBackContainer.contextTypes = {
-  router: PropTypes.object.isRequired,
-};
-
 BuildPostcardBackContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
   postcard: PropTypes.object.isRequired,

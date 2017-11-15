@@ -1,28 +1,62 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-// import * as Actions from '../redux/actions/index';
+import * as Actions from '../redux/actions/index';
 
 class BuildPostcardFrontContainer extends Component { // eslint-disable-line
-  // constructor(props, context) {
-  //   super(props, context);
-  // }
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleWindowResize = this.handleWindowResize.bind(this);
+
+    //              width / height
+    this.aspectRatio = (4 / 6);
+    this.state = {
+      previewElmWidth: null,
+    };
+  }
+  componentDidMount() {
+    this.handleWindowResize();
+    window.addEventListener('resize', this.handleWindowResize, true);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize, true);
+  }
+  handleWindowResize() {
+    this.setState({ previewElmWidth: this.refs['postcard-back-preview'].offsetWidth });
+    console.log(this.refs['postcard-back-preview']);
+    console.log(this.refs['postcard-back-preview'].offsetWidth);
+  }
+  handleTextChange(event) {
+    const text = event.target.value;
+    this.props.dispatch(Actions.setPostcardProps({ backText: text }));
+  }
   render() {
     // const { compilation } = this.props;
-
-    return (<div className="postcard-back postcard-aspect-wrapper">
-      <div className="postcard-aspect-main">
-        Back
+    return (<div className="postcard-back row">
+      <div className="col-sm-6">
+        <textarea className="back-text" onChange={this.handleTextChange} value={this.props.postcard.backText} />
+      </div>
+      <div className="col-sm-6">
+        <div ref="postcard-back-preview" style={{ height: `${}px` }}>
+          {this.props.postcard.backText}
+        </div>
       </div>
     </div>);
+
+    // return ();
   }
 }
 
-BuildPostcardFrontContainer.contextTypes = {
-  router: PropTypes.object.isRequired,
-};
+function mapStateToProps(store) {
+  return {
+    postcard: store.postcard,
+  };
+}
 
 BuildPostcardFrontContainer.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  postcard: PropTypes.object.isRequired,
 };
 
-export default connect()(BuildPostcardFrontContainer);
+export default connect(mapStateToProps)(BuildPostcardFrontContainer);
