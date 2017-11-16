@@ -3,7 +3,7 @@ import feedFinder from 'feed-finder';
 import request from 'request';
 import { parseString } from 'xml2js';
 import { sanitizeEmailBodyPreview } from './helpers';
-import { serializeQuery } from '../../shared/helpers';
+import { serializeQuery, youtubeUrlToThumbnailUrl } from '../../shared/helpers';
 
 // https://developers.google.com/blogger/docs/2.0/json/reference/
 // FEED - https://developers.google.com/blogger/docs/2.0/developers_guide_protocol
@@ -110,13 +110,36 @@ function processEmailFromBloggerEntry(entry) {
     // headers: email.headers,
     to: [],
     from: [],
-    subject: entry.title[0]._,
+    subject: entry.title[0]._ || '',
     // messageId: email.messageId,
     // text: email.text,
-    body: entry.content[0]._,
-    bodyPreview: sanitizeEmailBodyPreview(entry.content[0]._),
+    body: processBlogBody(entry.content[0]._ || ''),
+    bodyPreview: sanitizeEmailBodyPreview(entry.content[0]._ || ''),
     attachments: [],
   };
+}
+
+function processBlogBody(body) {
+  // return body;
+  const reg = new RegExp('(<a[^>]*>)?<iframe[^>]*src=".*?youtu.*?".*?>(</a>)?');
+  return body.replace(reg, (match) => {
+    const thumbnailSrcReg = /<iframe.*? data-thumbnail-src="(.*?)"/;
+    const thumbSrcUrl = thumbnailSrcReg.exec(match)[1];
+
+    if (thumbSrcUrl) {
+      return `<img style="max-width: 480px;" src="${thumbSrcUrl}">`;
+    }
+
+    const urlReg = /<iframe.*? src="(.*?)"/;
+    const url = urlReg.exec(match)[1];
+
+    if (url) {
+      const youtubeUrl = youtubeUrlToThumbnailUrl(url);
+      return `<img style="width: 100%;" src="${youtubeUrl}">`;
+    }
+
+    return match;
+  });
 }
 
 function readFeed(url) {

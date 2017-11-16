@@ -305,7 +305,7 @@ export function resizeAttachment(attachment) {
     sharp(contentBuffer)
     .max(maxWidthPx, maxWidthPx)
     .toBuffer((err, outputBuffer, info) => {
-      if (err) { console.log('An error happened while resizing attachment image', err); }
+      if (err) { return console.log('An error happened while resizing attachment image', err, attachment); }
 
       attachment.content = outputBuffer.toString('base64'); // eslint-disable-line
       attachment.resizeInfo = info; // eslint-disable-line
@@ -502,7 +502,7 @@ export function downloadFile(url) {
 }
 
 export function getAllImageSources(str) {
-  const reg = /img.*?src="(.*?)"/g;
+  const reg = /<img.*? src="(.*?)"/g;
   let matches = [];
   const output = [];
   while (matches = reg.exec(str)) { // eslint-disable-line

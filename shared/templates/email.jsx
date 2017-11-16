@@ -444,11 +444,15 @@ class EmailTemplate {
     return <div className="rendered-email-subject" style={divStyle} dangerouslySetInnerHTML={{ __html: twemoji.parse(subject) }} />;
   }
   renderBodyDangerously(body) {
+    if (!body) return <div></div>;
+
     const divStyle = this.bodyStyles();
 
     return <div className="rendered-email-body" style={divStyle} dangerouslySetInnerHTML={{ __html: twemoji.parse(body) }} />;
   }
   renderBody(body) {
+    if (!body) return <div></div>;
+
     const divStyle = this.bodyStyles();
 
     return <div style={divStyle}>{body}</div>;
