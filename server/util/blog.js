@@ -124,21 +124,25 @@ function processBlogBody(body) {
   const reg = new RegExp('(<a[^>]*>)?<iframe[^>]*src=".*?youtu.*?".*?>(</a>)?');
   return body.replace(reg, (match) => {
     const thumbnailSrcReg = /<iframe.*? data-thumbnail-src="(.*?)"/;
-    const thumbSrcUrl = thumbnailSrcReg.exec(match)[1];
+    const thumbSrcMatch = thumbnailSrcReg.exec(match);
+    const thumbSrcUrl = thumbSrcMatch ? thumbSrcMatch[1] : undefined;
 
     if (thumbSrcUrl) {
       return `<img style="max-width: 480px;" src="${thumbSrcUrl}">`;
     }
 
     const urlReg = /<iframe.*? src="(.*?)"/;
-    const url = urlReg.exec(match)[1];
+    const urlMatch = urlReg.exec(match);
+    const url = urlMatch ? urlMatch[1] : undefined;
 
     if (url) {
       const youtubeUrl = youtubeUrlToThumbnailUrl(url);
-      return `<img style="width: 100%;" src="${youtubeUrl}">`;
+      if (youtubeUrl !== url) {
+        return `<img style="width: 100%;" src="${youtubeUrl}">`;
+      }
     }
 
-    return match;
+    return '';
   });
 }
 
