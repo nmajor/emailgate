@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
+import PostcardBack from '../components/PostcardBack';
 
 class BuildPostcardFrontContainer extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -18,21 +19,21 @@ class BuildPostcardFrontContainer extends Component { // eslint-disable-line
   componentDidMount() {
     this.handleWindowResize();
     window.addEventListener('resize', this.handleWindowResize, true);
+    setTimeout(() => { this.handleWindowResize(); }, 100);
+    setTimeout(() => { this.handleWindowResize(); }, 100);
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize, true);
   }
   getPreviewHeight() {
     if (this.state.previewElmWidth) {
-      return (1 / this.aspectRatio) * this.state.previewElmWidth
+      return (1 / this.aspectRatio) * this.state.previewElmWidth;
     }
 
     return 20;
   }
   handleWindowResize() {
     this.setState({ previewElmWidth: this.refs['postcard-back-preview'].offsetWidth });
-    console.log(this.refs['postcard-back-preview']);
-    console.log(this.refs['postcard-back-preview'].offsetWidth);
   }
   handleTextChange(event) {
     const text = event.target.value;
@@ -40,13 +41,19 @@ class BuildPostcardFrontContainer extends Component { // eslint-disable-line
   }
   render() {
     // const { compilation } = this.props;
-    return (<div className="postcard-back row">
+    const postcardHeight = this.getPreviewHeight();
+    return (<div className="row">
       <div className="col-sm-6">
         <textarea className="back-text" onChange={this.handleTextChange} value={this.props.postcard.backText} />
       </div>
       <div className="col-sm-6">
-        <div className="postcard-back-preview" ref="postcard-back-preview" style={{ height: `${this.getPreviewHeight()}px` }}>
-          {this.props.postcard.backText}
+        <div ref="postcard-back-preview" className="postcard-back-preview">
+          <PostcardBack
+            height={postcardHeight || 0}
+            width={this.state.previewElmWidth || 0}
+            units="px"
+            content={this.props.postcard.backText || ''}
+          />
         </div>
       </div>
     </div>);

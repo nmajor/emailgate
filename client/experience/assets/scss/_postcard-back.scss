@@ -1,23 +1,44 @@
 .postcard-back {
   position: relative;
 
-  .content {
-    width: 30%;
-    height: 100%;
-  }
-  .back-text {
-    width: 100%;
-  }
-  .no-content-zone {
-    background: #CCC;
+  .safe-area {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    width: 60%;
-    height: 60%;
-  }
+    width: 94%;
+    height: 94%;
+    left: 3%;
+    top: 3%;
 
-  .postcard-back-preview {
-    border: 1px solid #CCC;
+    .content-wrapper {
+      position: absolute;
+      width: 40%;
+      height: 100%;
+
+      .content {
+        height: 100%;
+        padding: 3% 3% 3% 2%;
+        display: flex;
+        align-items: center;
+      }
+    }
+    .no-content-wrapper {
+      position: absolute;
+      left: 40%;
+      width: 60%;
+      height: 100%;
+
+      .logo {
+        height: 32%;
+      }
+      .ink-free {
+        background: #CCC;
+        height: 68%;
+      }
+    }
   }
+}
+.postcard-back-preview {
+  border: 1px solid #CCC;
+}
+.back-text {
+  width: 100%;
 }

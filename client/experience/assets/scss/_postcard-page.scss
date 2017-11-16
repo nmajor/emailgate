@@ -29,12 +29,17 @@
     }
 
     .build-postcard-steps {
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
       justify-content: space-around;
       flex-direction: row;
 
       .step {
+        border: 3px solid #333;
+        border-radius: 50%;
+        padding: 8px 5px;
+
         &:hover {
           cursor: pointer;
         }
@@ -44,5 +49,10 @@
         }
       }
     }
+  }
+
+  .gui-parent {
+    border: 1px solid #CCC;
+    padding: 2%;
   }
 }
