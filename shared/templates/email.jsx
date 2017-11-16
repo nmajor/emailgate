@@ -463,7 +463,7 @@ class EmailTemplate {
     let emailBody = email.embeddedBody || email.body;
     emailBody = _.isEmpty(email.bodyPreview) ? 'No email body' : emailBody;
 
-    return (<div style={{ fontSize: '20px' }}>
+    return (<div className="email-template" style={{ fontSize: '20px' }}>
       {this.renderDate(moment(email.date).format('LL'))}
       {this.renderSubjectDangerously(email.subject || 'No subject')}
       {this.renderFrom(this.processEmailUser(email.from))}
@@ -514,6 +514,7 @@ class EmailTemplate {
         margin: 0 .05em 0 .1em;
         vertical-align: -0.1em;
       }
+      .email-template table { width: 100% }
     </style>
     <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
