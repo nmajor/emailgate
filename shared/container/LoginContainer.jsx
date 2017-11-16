@@ -27,7 +27,8 @@ class LoginContainer extends Component {
   }
 
   redirectToDashboard() {
-    this.context.router.push('/dashboard');
+    window.location.href = '/dashboard';
+    // this.context.router.push('/dashboard');
   }
 
   render() {

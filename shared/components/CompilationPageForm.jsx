@@ -11,6 +11,10 @@ class CompilationPageForm extends Component {
     this.setFormState = this.setFormState.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.rotateImage = this.rotateImage.bind(this);
+
+    this.state = {
+      error: '',
+    };
   }
   componentWillReceiveProps(nextProps) {
     this.template = nextProps.templateFactory(nextProps.page);
@@ -25,6 +29,10 @@ class CompilationPageForm extends Component {
       newState = {}; // eslint-disable-line no-param-reassign
       newState[event.target.getAttribute('name')] = event.target.innerHTML; // eslint-disable-line no-param-reassign
     }
+    if (!newState.error) {
+      newState.error = '';
+    }
+
     this.setState(newState);
 
     if (submitAfter) {
@@ -49,10 +57,16 @@ class CompilationPageForm extends Component {
       return <span className="button-loading"><Loading /></span>;
     }
   }
+  renderErrors() {
+    if (this.state.error) {
+      return (<div className="text-danger">{this.state.error}</div>);
+    }
+  }
   render() {
     return (<div>
       <div className="compilation-page">
         <div className="page-container">
+          {this.renderErrors()}
           {this.renderForm()}
         </div>
       </div>

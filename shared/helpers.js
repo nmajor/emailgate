@@ -368,3 +368,19 @@ export function clientIsMobile() {
   })(navigator.userAgent || navigator.vendor || window.opera);
   return check;
 }
+
+export function youtubeParser(url) {
+  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[7].length === 11) ? match[7] : false;
+}
+
+export function youtubeUrlToThumbnailUrl(url) {
+  const youtubeId = youtubeParser(url);
+
+  if (youtubeId) {
+    return `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
+  }
+
+  return url;
+}

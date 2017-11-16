@@ -43,6 +43,8 @@ AccountSchema.set('toJSON', {
 });
 
 AccountSchema.pre('save', function (next) { // eslint-disable-line func-names
+  this.email = this.email.trim();
+
   if (this.kind === 'blog') {
     blog.findFeedPath(this)
     .then((results) => {
