@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import PostcardBack from '../components/PostcardBack';
+import autosize from 'autosize';
 
 class BuildPostcardFrontContainer extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -17,6 +18,8 @@ class BuildPostcardFrontContainer extends Component { // eslint-disable-line
     };
   }
   componentDidMount() {
+    console.log('blah hey there', this.refs['postcard-back-preview']);
+    autosize(this.refs['postcard-text-input']);
     this.handleWindowResize();
     window.addEventListener('resize', this.handleWindowResize, true);
     setTimeout(() => { this.handleWindowResize(); }, 100);
@@ -44,7 +47,7 @@ class BuildPostcardFrontContainer extends Component { // eslint-disable-line
     const postcardHeight = this.getPreviewHeight();
     return (<div className="row">
       <div className="col-sm-6">
-        <textarea className="back-text" onChange={this.handleTextChange} value={this.props.postcard.backText} />
+        <textarea ref="postcard-text-input" className="back-text" onChange={this.handleTextChange} value={this.props.postcard.backText} />
       </div>
       <div className="col-sm-6">
         <div ref="postcard-back-preview" className="postcard-back-preview">

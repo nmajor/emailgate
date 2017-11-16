@@ -4,7 +4,7 @@ npm-debug.log
 .idea/
 dump.rdb
 .vscode/
-public/js/bundle.js
+public/js/*.bundle.js
 public/js/bundle.js.map
 public/css/style.css
 public/css/style.css.map
