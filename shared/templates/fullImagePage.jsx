@@ -16,6 +16,7 @@ class ImageInput extends Component {
     // console.log('Rejected files: ', rejectedFiles);
 
     const setFormState = this.props.setFormState;
+    const currentImage = this.props.image;
 
     _.forEach(acceptedFiles, (file) => {
       const xhr = new XMLHttpRequest();
@@ -32,7 +33,11 @@ class ImageInput extends Component {
           content: (new Buffer(this.response)).toString('base64'),
         };
 
-        setFormState(undefined, { image }, true);
+        if (image.contentType === 'application/pdf') {
+          setFormState(undefined, { error: 'Sorry, we currently dont support PDFs. Please convert to an image first. Here is a tool that can help with that: https://docs.zone/pdf-to-jpg', image: currentImage }, false);
+        } else {
+          setFormState(undefined, { image }, true);
+        }
       };
       xhr.send();
     });
