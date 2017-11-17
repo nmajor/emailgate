@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Script from 'react-load-script';
+import _ from 'lodash';
 
 class DragCrop extends Component {
   constructor(props, context) {
@@ -51,7 +52,9 @@ class DragCrop extends Component {
       init: this.props.crop,
     });
 
-    picture.guillotine('fit');
+    if (_.isEmpty(this.props.crop)) {
+      picture.guillotine('fit');
+    }
     this.setState({
       picture,
       naturalWidth: picture.get(0).naturalWidth,

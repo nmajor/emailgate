@@ -48,6 +48,7 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
           url={getImageUrl(this.props.postcard.image)}
           height={400}
           width={600}
+          crop={this.props.postcard.imageCrop || {}}
         />);
       case 'filter':
         return <FilterFrontImageContainer />;

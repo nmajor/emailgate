@@ -11,9 +11,9 @@ class WebpageForm extends Component { // eslint-disable-line
       fields: {
         returnAddress,
       },
-      submitting,
-      error,
-      handleSubmit,
+      // submitting,
+      // error,
+      // handleSubmit,
     } = this.props;
 
     return (<form onSubmit={handleSubmit}>

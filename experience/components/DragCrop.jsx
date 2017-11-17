@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Script from 'react-load-script';
+import _ from 'lodash';
 
 class DragCrop extends Component {
   constructor(props, context) {
@@ -52,6 +53,9 @@ class DragCrop extends Component {
   }
   handleGuillotineLoad() {
     const picture = $('#gui-picture'); // eslint-disable-line
+
+    console.log('blah hey crop', this.props.crop);
+
     picture.guillotine({
       width: this.props.width,
       height: this.props.height,
@@ -59,7 +63,10 @@ class DragCrop extends Component {
       init: this.props.crop,
     });
 
-    picture.guillotine('fit');
+    if (_.isEmpty(this.props.crop)) {
+      picture.guillotine('fit');
+    }
+
     this.setState({
       picture,
       naturalWidth: picture.get(0).naturalWidth,
