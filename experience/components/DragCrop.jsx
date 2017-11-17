@@ -30,6 +30,14 @@ class DragCrop extends Component {
     }
   }
   handleImageLoad() {
+    const picture = $('#gui-picture'); // eslint-disable-line
+
+    this.setState({
+      picture,
+      naturalWidth: picture.get(0).naturalWidth,
+      naturalHeight: picture.get(0).naturalHeight,
+    });
+
     this.setState({ loadJquery: true }); // eslint-disable-line
   }
   handleGuillotineDrop(data) {
@@ -97,7 +105,7 @@ class DragCrop extends Component {
       <div className="gui-wrapper" style={{ width: '100%' }}>
         {this.renderJqueryScript()}
         {this.renderGuillotineScript()}
-        <div className="gui-header" style={{ width: '100%' }}>Zoom and drag image to reposition</div>
+        <div className="gui-header" style={{ width: '100%' }}>Drag image to reposition</div>
         <div className="gui-parent" style={{ width: '100%' }}>
           <img role="presentation" id="gui-picture" src={this.props.url} onLoad={this.handleImageLoad} />
         </div>
