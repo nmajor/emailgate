@@ -153,6 +153,8 @@ export function experiencePage(html, renderedState) {
           window.__INITIAL_STATE__ = ${JSON.stringify(renderedState)};
         </script>
 
+        <script src="https://checkout.stripe.com/checkout.js"></script>
+
         <script src="/js/experience.bundle.js"></script>
 
         <!-- Theme Javascript Files -->

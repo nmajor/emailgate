@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 // import * as Actions from '../redux/actions/index';
 import BuildPostcardBackContainer from './BuildPostcardBackContainer';
 import BuildPostcardFrontContainer from './BuildPostcardFrontContainer';
+import CheckoutPostcardContainer from './CheckoutPostcardContainer';
 
 class BuildPostcardContainer extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -10,7 +11,7 @@ class BuildPostcardContainer extends Component { // eslint-disable-line
 
     this.state = {
       // step: 'front',
-      step: 'back',
+      step: 'send',
     };
   }
   renderStep(text, step) {
@@ -36,7 +37,7 @@ class BuildPostcardContainer extends Component { // eslint-disable-line
       case 'front':
         return <BuildPostcardFrontContainer />;
       case 'send':
-        return <div></div>;
+        return <CheckoutPostcardContainer />;
       default:
         return null;
     }

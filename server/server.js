@@ -146,6 +146,9 @@ function renderReact(req, res, props) {
     configureStore = appConfigureStore;
   } else {
     initialState.compilation = props.compilation;
+    initialState.config = {
+      stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    };
   }
 
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => { // eslint-disable-line consistent-return
