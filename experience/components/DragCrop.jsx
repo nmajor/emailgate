@@ -54,8 +54,6 @@ class DragCrop extends Component {
   handleGuillotineLoad() {
     const picture = $('#gui-picture'); // eslint-disable-line
 
-    console.log('blah hey crop', this.props.crop);
-
     picture.guillotine({
       width: this.props.width,
       height: this.props.height,

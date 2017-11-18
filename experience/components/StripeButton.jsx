@@ -8,11 +8,8 @@ class CheckoutPostcardContainer extends Component { // eslint-disable-line
     this.handleButtonClick = this.handleButtonClick.bind(this);
   }
   componentDidMount() {
-    console.log('blah 1');
     try {
-      console.log('blah 1');
       if (StripeCheckout) { // eslint-disable-line no-undef
-        console.log('blah 2');
         this.handler = StripeCheckout.configure({ // eslint-disable-line no-undef
           key: this.props.stripePublishableKey,
           image: 'https://stripe.com/img/documentation/checkout/marketplace.png',

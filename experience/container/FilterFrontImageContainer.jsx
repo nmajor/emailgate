@@ -6,15 +6,23 @@ import { getImageUrl, getRandomImageUrl } from '../helpers';
 import ImageCanvas from '../components/ImageCanvas';
 
 class FilterFrontImageContainer extends Component { // eslint-disable-line
-  // constructor(props, context) {
-  //   super(props, context);
-  // }
+  constructor(props, context) {
+    super(props, context);
+
+    this.canvasPassback = this.canvasPassback.bind(this);
+  }
+  canvasPassback(canvas, context) {
+    console.log('blah hey there from filter front', canvas, context);
+  }
   render() {
     return (<div className="front-filter">
-      <ImageCanvas
-        imageUrl={getImageUrl(this.props.postcard.image)}
-        crop={this.props.postcard.imageCrop}
-      />
+      <div className="preview">
+        <ImageCanvas
+          imageUrl={getImageUrl(this.props.postcard.image)}
+          crop={this.props.postcard.imageCrop}
+          passback={this.canvasPassback}
+        />
+      </div>
     </div>);
   }
 }

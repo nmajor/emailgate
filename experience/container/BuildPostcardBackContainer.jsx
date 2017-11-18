@@ -18,7 +18,6 @@ class BuildPostcardFrontContainer extends Component { // eslint-disable-line
     };
   }
   componentDidMount() {
-    console.log('blah hey there', this.refs['postcard-back-preview']);
     autosize(this.refs['postcard-text-input']);
     this.handleWindowResize();
     window.addEventListener('resize', this.handleWindowResize, true);

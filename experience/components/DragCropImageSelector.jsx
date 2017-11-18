@@ -70,8 +70,6 @@ class DragCropImageSelector extends Component { // eslint-disable-line
       </div>);
     }
 
-    console.log('blah hey crop selector', this.props.crop);
-
     if (this.props.url) {
       return (<div>
         {this.renderDropZone(changeImage)}

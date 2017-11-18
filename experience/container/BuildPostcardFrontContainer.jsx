@@ -59,7 +59,6 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
     }
   }
   render() {
-    console.log('blah hey 1', this.props.postcard);
     // const { compilation } = this.props;
     return (<div>
       {this.renderCurrentOption()}
