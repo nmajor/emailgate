@@ -155,6 +155,8 @@ export function experiencePage(html, renderedState) {
 
         <script src="https://checkout.stripe.com/checkout.js"></script>
 
+        <script src="/js/jquery-1.8.3.min.js"></script>
+        <script src="/js/jquery.guillotine.min.js"></script>
         <script src="/js/experience.bundle.js"></script>
 
         <!-- Theme Javascript Files -->

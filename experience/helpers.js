@@ -11,8 +11,7 @@ export function getImageUrl(image) {
 }
 
 export function getRandomImageUrl() {
-  return '/img/Apollo17_full.jpg';
-  // return 'https://source.unsplash.com/collection/140375/214';
+  return 'http://i.imgur.com/147o0SAl.jpg';
 
   // const rangeMin = 1;
   // const rangeMax = 400;
