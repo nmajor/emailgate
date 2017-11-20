@@ -29,8 +29,9 @@ class DragCrop extends Component {
     this.loadImage();
   }
   componentWillReceiveProps(nextProps) {
+    console.log('blah hey componentWillReceiveProps', nextProps.url, this.props.url);
     if (nextProps.url !== this.props.url) {
-      this.state.picture.guillotine('remove');
+      if (this.state.picture.guillotine) this.state.picture.guillotine('remove');
       this.setState({ loadJquery: false, loadGuillotine: false });
     }
   }

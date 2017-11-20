@@ -5,6 +5,8 @@ if (process.env.NODE_ENV === 'production') { require('newrelic'); } // eslint-di
 //   global.window = {};
 // }
 
+import { getRandomImageUrl } from '../experience/helpers';
+
 import Express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -148,6 +150,9 @@ function renderReact(req, res, props) {
     initialState.compilation = props.compilation;
     initialState.config = {
       stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    };
+    initialState.postcard = {
+      image: { url: getRandomImageUrl() }, // eslint-disable-line global-require
     };
   }
 

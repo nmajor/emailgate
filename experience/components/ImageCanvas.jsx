@@ -53,9 +53,6 @@ class ImageCanvas extends Component { // eslint-disable-line
     const ctx = canvas.getContext('2d');
     const { crop } = this.props;
 
-    console.log('blah hey hi', crop.w * (1 / crop.scale),
-    crop.h * (1 / crop.scale));
-
     ctx.drawImage(
       img,
       crop.x * (1 / crop.scale), // sourceX

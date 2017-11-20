@@ -154,14 +154,10 @@ export function experiencePage(html, renderedState) {
         </script>
 
         <script src="https://checkout.stripe.com/checkout.js"></script>
-
         <script src="/js/jquery-1.8.3.min.js"></script>
-        <script src="/js/jquery.guillotine.min.js"></script>
+        <script src="/js/caman.full.min.js"></script>
         <script src="/js/experience.bundle.js"></script>
 
-        <!-- Theme Javascript Files -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="/js/ie10-viewport-bug-workaround.js"></script>
       </body>

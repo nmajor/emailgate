@@ -2,39 +2,28 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import Script from 'react-load-script';
 // import * as Actions from '../redux/actions/index';
-import { getImageUrl, getRandomImageUrl, cropImage } from '../helpers';
-import CamanImage from '../components/CamanImage';
+import { getImageUrl, getRandomImageUrl } from '../helpers';
+import ImageCanvas from '../components/ImageCanvas';
 
 class FilterFrontImageContainer extends Component { // eslint-disable-line
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      imageUrl: null,
-    };
-
-    this.handleImageSubmit = this.handleImageSubmit.bind(this);
+    this.canvasPassback = this.canvasPassback.bind(this);
   }
-  componentDidMount() {
-    cropImage(getImageUrl(this.props.postcard.image), this.props.postcard.imageCrop)
-    .then((url) => {
-      this.setState({ imageUrl: url });
-    });
-  }
-  handleImageSubmit(data) {
-    console.log('blah handleImageSubmit', data);
+  canvasPassback(canvas, context) {
+    console.log('blah hey there from filter front', canvas, context);
   }
   render() {
-    if (this.state.imageUrl) {
-      return (
-        <CamanImage
-          url={this.state.imageUrl}
-          onSubmit={this.handleImageSubmit}
+    return (<div className="front-filter">
+      <div className="preview">
+        <ImageCanvas
+          imageUrl={getImageUrl(this.props.postcard.image)}
+          crop={this.props.postcard.imageCrop}
+          passback={this.canvasPassback}
         />
-      );
-    }
-
-    return <div></div>;
+      </div>
+    </div>);
   }
 }
 

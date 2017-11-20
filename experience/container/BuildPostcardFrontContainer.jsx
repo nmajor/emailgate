@@ -14,6 +14,11 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
       step: 'crop',
     };
 
+    // this.imageWidth = 1200;
+    this.imageWidth = 600;
+    // this.imageHeight = 800;
+    this.imageHeight = 400;
+
     this.handleNewImage = this.handleNewImage.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
   }
@@ -47,8 +52,8 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
           onNewImage={this.handleNewImage}
           onImageChange={this.handleImageChange}
           url={getImageUrl(this.props.postcard.image)}
-          height={400}
-          width={600}
+          height={this.imageHeight}
+          width={this.imageWidth}
           crop={this.props.postcard.imageCrop || {}}
         />);
       case 'filter':
@@ -60,6 +65,7 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
     }
   }
   render() {
+    console.log('blah hey postcrd', this.props.postcard);
     // const { compilation } = this.props;
     return (<div>
       {this.renderCurrentOption()}
@@ -76,10 +82,6 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
 
 function mapStateToProps(store) {
   const { postcard } = store;
-  if (!postcard.image) {
-    postcard.image = { url: getRandomImageUrl() };
-  }
-
   return {
     postcard,
   };
