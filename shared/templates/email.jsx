@@ -514,7 +514,7 @@ class EmailTemplate {
         margin: 0 .05em 0 .1em;
         vertical-align: -0.1em;
       }
-      .email-template table { width: 100% }
+      .email-template table { width: 100%; text-align: center; }
     </style>
     <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
