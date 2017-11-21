@@ -275,7 +275,7 @@ export default (io) => {
         })
         .then(compilation => Page.findOne({ _compilation: compilation._id, _id: data.pageId }))
         .then((page) => {
-          page.content = data.newData; // eslint-disable-line no-param-reassign
+          page.content = { ...(page.content || {}), ...data.newData }; // eslint-disable-line no-param-reassign
           return page.save();
         })
         .then((page) => {

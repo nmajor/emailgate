@@ -325,6 +325,8 @@ export function processCoverImage(image) {
 
     sharp(contentBuffer)
     .resize(maxWidthPx)
+    .max()
+    .withoutEnlargement()
     .toBuffer((err, outputBuffer, info) => {
       if (err) { reject('An error happened while resizing attachment image', err); }
 

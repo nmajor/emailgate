@@ -4,11 +4,12 @@ html, body {
   background: #f8f8f8;
 }
 .allheight { height: 100% }
-.email-template table { width: 100% }
+.email-template table { width: 100%; text-align: center; }
 @import 'variables';
 @import 'header';
 @import 'footer';
 @import 'email-form';
+@import 'page-form';
 @import 'accounts-list';
 @import 'addresses';
 @import 'compilations-list';
