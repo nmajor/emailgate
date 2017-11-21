@@ -7,6 +7,8 @@ import {
   processCoverImage,
   uploadPageImage,
   rotateImageAttachment,
+  sanitizeEmailBody,
+  sanitizeEmailBodyPreview,
 } from '../util/helpers';
 import { pageMeta } from '../../shared/helpers';
 
@@ -53,6 +55,11 @@ PageSchema.pre('save', function (next) { // eslint-disable-line func-names
         return Promise.resolve(this);
       });
     });
+  }
+
+  if (this.propChanged('content.message') && !_.isEmpty(this.content.message)) {
+    this.content.message = sanitizeEmailBody(this.content.message);
+    this.content.messagePreview = sanitizeEmailBodyPreview(this.content.message).substring(0, 50);
   }
 
   tasks = tasks.then(() => { return this.getHtml(); });

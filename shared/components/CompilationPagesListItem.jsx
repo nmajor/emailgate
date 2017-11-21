@@ -66,8 +66,9 @@ class CompilationPagesListItem extends Component {
       let text = 'Edit this page to change its content.';
 
       if (page.content) {
-        text = page.content.message.substring(0, 50);
-        if (page.content.message.length > text.length) {
+        text = page.content.message.substring(0, 50).replace(/&n?b?s?p?;?/, ' ');
+        if (page.content.messagePreview) text = page.content.messagePreview;
+        if (page.content.length > text.length) {
           text = `${text}...`;
         }
       }

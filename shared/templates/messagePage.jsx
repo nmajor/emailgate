@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactQuill from 'react-quill';
 import { renderToString } from 'react-dom/server';
 
 class MessagePageTemplate {
@@ -26,6 +27,16 @@ class MessagePageTemplate {
 
     return <div style={divStyle}>{message}</div>;
   }
+  renderMessageDangerously(message) {
+    const divStyle = {
+      fontFamily: '\'Libre Baskerville\', serif',
+      fontSize: '13px',
+      textAlign: 'left',
+      padding: '250px 10px 0 10px',
+    };
+
+    return <div style={divStyle} dangerouslySetInnerHTML={{ __html: message }} />;
+  }
   renderSignature(signature) {
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif',
@@ -39,16 +50,19 @@ class MessagePageTemplate {
 
   render() {
     return (<div style={{ fontSize: '20px', padding: '0 50px' }}>
-      {this.renderMessage(this.content.message)}
+      {this.renderMessageDangerously(this.content.message)}
       {this.renderSignature(this.content.signature)}
     </div>);
   }
-
   renderForm(setFormState) {
-    const messageInput = <div className="editable" name="message" contentEditable onBlur={setFormState}>{this.content.message}</div>;
+    function setMessageState(value) {
+      setFormState(undefined, { message: value });
+    }
+
+    const messageInput = <ReactQuill className="editable" name="message" toolbar={false} styles={false} defaultValue={this.content.message} onChange={setMessageState} />;
     const signatureInput = <div className="editable" name="signature" contentEditable onBlur={setFormState}>{this.content.signature}</div>;
 
-    return (<div style={{ fontSize: '20px', padding: '0 50px' }}>
+    return (<div className="page-form" style={{ fontSize: '20px', padding: '0 50px' }}>
       {this.renderMessage(messageInput)}
       {this.renderSignature(signatureInput)}
     </div>);

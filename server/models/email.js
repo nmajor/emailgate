@@ -22,7 +22,7 @@ const EmailSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
   _compilation: { type: String, ref: 'Compilation' },
   remote_id: String,
-  date: { type: Date, default: new Date(0) },
+  date: { type: Date, default: Date.now },
   mid: String,
   to: [],
   from: [],
@@ -105,7 +105,7 @@ EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {
 
 EmailSchema.methods.rotateImageAttachment = function (attachmentContentId, angle) { // eslint-disable-line func-names
   return new Promise((resolve) => {
-    const attachmentIndex = _.findIndex(this.attachments, (attachment) => { return attachment.contentId === attachmentContentId; });
+    const attachmentIndex = _.findIndex(this.attachments, (attachment) => { return attachment._id === attachmentContentId || attachment.md5 === attachmentContentId; });
     const attachment = this.attachments[attachmentIndex];
 
     rotateImageAttachment(attachment, angle)
@@ -149,6 +149,7 @@ EmailSchema.methods.processEmailAttachments = function processEmailAttachments()
 
   newAttachments = _.map(newAttachments, (a) => {
     a._compilation = this._compilation;
+    a._id = shortid.generate();
     return a;
   });
 
@@ -158,7 +159,11 @@ EmailSchema.methods.processEmailAttachments = function processEmailAttachments()
     }))
     .then((resizedAttachments) => {
       return Promise.all(resizedAttachments.map((attachment) => {
-        return uploadAttachment(attachment);
+        return uploadAttachment(attachment)
+        .then((savedAttachment) => {
+          savedAttachment.saving = undefined;
+          return savedAttachment;
+        });
       }))
       .catch((err) => { console.log('An error happened uploading attachments', err, err.stack); });
     })

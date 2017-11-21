@@ -217,7 +217,7 @@ class AttachmentInput extends Component { // eslint-disable-line
   rotateAttachment(contentId) {
     const { attachments } = this.props.email;
     const newState = {};
-    const attachmentIndex = _.findIndex(attachments, (a) => { return a.contentId === contentId; });
+    const attachmentIndex = _.findIndex(attachments, (a) => { return a._id === contentId || a.md5 === contentId; });
     const newAttachment = Object.assign({}, attachments[attachmentIndex]);
     newAttachment.rotating = true;
     this.props.rotateAttachment(contentId);
@@ -258,7 +258,7 @@ class AttachmentInput extends Component { // eslint-disable-line
       return (<div className="attachment-actions">
         <div
           className="btn btn-primary btn-xs-true"
-          onClick={() => { this.rotateAttachment(attachment.contentId); }}
+          onClick={() => { this.rotateAttachment(attachment.contentId || attachment.md5); }}
         >
           <span className="glyphicon glyphicon-repeat" aria-hidden="true"></span>
         </div>
@@ -291,7 +291,7 @@ class AttachmentInput extends Component { // eslint-disable-line
       let spinner = null;
       if (attachment.rotating) {
         spinner = (<div className="spinner">Rotating...</div>);
-      } else if (attachment.saving) {
+      } else if (attachment.saving && !attachment.url) {
         spinner = (<div className="spinner">Saving...</div>);
       }
 

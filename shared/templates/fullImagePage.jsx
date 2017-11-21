@@ -66,8 +66,8 @@ class ImageInput extends Component {
     return <span>Click on the placeholder to add an image.</span>;
   }
   render() {
-    return (<div>
-      <div className="row bottom-bumper">
+    return (<div style={{ height: '100%', width: '100%' }}>
+      <div className="row bottom-bumper" style={{ height: '100%', width: '100%' }}>
         <div className="col-sm-8">{this.renderHelperText()}</div>
         <div className="col-sm-4 text-right">
           {this.renderRotateButton()}
@@ -144,7 +144,7 @@ class FullImagePageTemplate {
         justifyContent: 'center',
       }}
     >
-      <img style={{ height: '100%', width: '100%', display: 'block' }} role="presentation" src={src} />
+      <img style={{ maxHeight: '100%', maxWidth: '100%', display: 'block' }} role="presentation" src={src} />
       {spinner}
     </div>);
   }
@@ -161,7 +161,7 @@ class FullImagePageTemplate {
     return <div style={divStyle}>{header || this.content.header}</div>;
   }
   render() {
-    return (<div>
+    return (<div style={{ width: '100%', height: '100%' }}>
       {this.renderHeader()}
       {this.renderImage()}
     </div>);
