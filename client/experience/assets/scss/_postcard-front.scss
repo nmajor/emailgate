@@ -1,0 +1,16 @@
+.postcard-front-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 20px;
+
+  .option {
+    &:hover {
+      cursor: pointer;
+    }
+
+    &.active {
+      font-weight: bold;
+    }
+  }
+}

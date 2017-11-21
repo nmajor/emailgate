@@ -25,6 +25,7 @@ export function cropImage(url, crop) {
     const ctx = canvas.getContext('2d');
     const image = new Image();
     image.crossOrigin = 'Anonymous';
+    image.origin = 'Anonymous';
 
     image.src = url;
     image.onload = () => {

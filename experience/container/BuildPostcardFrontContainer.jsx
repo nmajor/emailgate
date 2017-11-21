@@ -26,7 +26,6 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
     this.props.dispatch(Actions.setPostcardProps({ image: props, imageCrop: undefined }));
   }
   handleImageChange(props) {
-    console.log('blah hey imageCrop', { imageCrop: props });
     this.props.dispatch(Actions.setPostcardProps({ imageCrop: props }));
   }
   renderOption(text, step) {
@@ -65,7 +64,6 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
     }
   }
   render() {
-    console.log('blah hey postcrd', this.props.postcard);
     // const { compilation } = this.props;
     return (<div>
       {this.renderCurrentOption()}

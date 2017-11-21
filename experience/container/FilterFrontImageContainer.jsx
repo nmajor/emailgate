@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 // import Script from 'react-load-script';
 // import * as Actions from '../redux/actions/index';
 import { getImageUrl, getRandomImageUrl, cropImage } from '../helpers';
-import CamanImage from '../components/CamanImage';
+import FilterImage from '../components/FilterImage';
 
 class FilterFrontImageContainer extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -27,7 +27,7 @@ class FilterFrontImageContainer extends Component { // eslint-disable-line
   render() {
     if (this.state.imageUrl) {
       return (
-        <CamanImage
+        <FilterImage
           url={this.state.imageUrl}
           onSubmit={this.handleImageSubmit}
         />
