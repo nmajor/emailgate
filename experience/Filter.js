@@ -160,23 +160,41 @@ class Filter {
     const d = pixels.data;
     for (let i = 0; i < d.length; i += 4) {
       const pixelNum = i / 4;
-      const pos = [pixelNum % pixels.width, parseInt(pixelNum / pixels.width, 10)];
-      const diff = [Math.abs(mid[0] - pos[0]), Math.abs(mid[1] - pos[1])];
+      const pos = [-(mid[0] - pixelNum % pixels.width), mid[1] - parseInt(pixelNum / pixels.width, 10)];
+      const diff = [pos[0], pos[1]];
       const dist = Math.sqrt(Math.pow(diff[0], 2) + Math.pow(diff[1] * (pixels.width / pixels.height), 2));
       // const dist = Math.sqrt(Math.pow(diff[0], 2) + Math.pow(diff[1], 2));
-      const slope = -(mid[1] - pos[1]) / (mid[0] - pos[0]);
-
+      const slope = (pos[1] - mid[1]) / (pos[0] - mid[0]);
+      const y = slope * (pixels.width / 2);
+      const x = (pixels.height / 2) / slope;
+      const edgeIntercept = [Math.max(x, (pixels.height / 2)), Math.max(y, (pixels.width / 2))];
 
       if (pos[0] === 60 || pos[1] === 40) {
         console.log('blah hey hi', pixelNum, pos, diff, dist, mid);
       }
 
-      if ((pos[0] === 60) || (pos[1] === 40)) {
-        d[i] = 250;
-        d[i + 1] = 250;
-        d[i + 2] = 250;
-        d[i + 3] = 255;
-      } else if (dist > 100) {
+      // if ((pos[0] === -120) && (pos[1] === 80)) {
+      //   d[i] = 250;
+      //   d[i + 1] = 0;
+      //   d[i + 2] = 0;
+      //   d[i + 3] = 255;
+      // } else if ((pos[0] === 120) && (pos[1] === 80)) {
+      //   d[i] = 250;
+      //   d[i + 1] = 250;
+      //   d[i + 2] = 250;
+      //   d[i + 3] = 255;
+      // } else if ((pos[0] === 120) && (pos[1] === -80)) {
+      //   d[i] = 0;
+      //   d[i + 1] = 250;
+      //   d[i + 2] = 0;
+      //   d[i + 3] = 255;
+      // } else if ((pos[0] === -120) && (pos[1] === -80)) {
+      //   d[i] = 0;
+      //   d[i + 1] = 0;
+      //   d[i + 2] = 250;
+      //   d[i + 3] = 255;
+      // } else
+      if (dist > 100) {
         d[i] = 0;
         d[i + 1] = 0;
         d[i + 2] = 0;
