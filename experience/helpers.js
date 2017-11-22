@@ -45,31 +45,20 @@ export function cropImage(url, crop) {
       // ctx.translate((canvas.width / 2) - crop.x, (canvas.height / 2) - crop.y);
       // ctx.rotate(180 * Math.PI / 180);
 
-      ctx.translate(canvas.width, canvas.height - crop.y);
+      ctx.translate(canvas.width, canvas.height);
       ctx.rotate((180 * Math.PI / 180));
+
       ctx.drawImage(
         image,
-        // 0,
-        // 0,
-        crop.x, // destX
-        crop.y, // destY
+        crop.x, // sourceX
+        crop.y, // sourceY
+        crop.w, // sourceWidth
+        crop.h, // sourceHeight
+        0, // destX
+        0, // destY
         canvas.width, // destWidth
         canvas.height, // destHeight
       );
-
-      // ctx.drawImage(
-      //   image,
-      //   crop.x, // sourceX
-      //   crop.y, // sourceY
-      //   crop.w, // sourceWidth
-      //   crop.h, // sourceHeight
-      //   0, // destX
-      //   0, // destY
-      //   canvas.width, // destWidth
-      //   canvas.height, // destHeight
-      // );
-
-      console.log(canvas);
 
       resolve(canvas.toDataURL());
     };

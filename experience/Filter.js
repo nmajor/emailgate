@@ -49,7 +49,7 @@ class Filter {
     }
     return pixels;
   }
-    brightness(pixels, adjustment) {
+  brightness(pixels, adjustment) {
     adjustment = adjustment || 128;
 
     const d = pixels.data;
@@ -74,8 +74,8 @@ class Filter {
     return pixels;
   }
   overlayColor(pixels, hex, alpha) {
-    const fg = this._colorHexToRgb(hex) || this._colorHexToRgb('#fef7d9');
-    fg[3] = alpha || 0.3;
+    const fg = this._colorHexToRgb(hex) || this._colorHexToRgb('#ffcc00');
+    fg[3] = alpha || 0.2;
 
     const r = pixels.data;
     for (let i = 0; i < r.length; i += 4) {
@@ -154,11 +154,54 @@ class Filter {
     }
     return pixels;
   }
+  vignette(pixels) {
+    const mid = [pixels.width / 2, pixels.height / 2];
+    console.log('blah ho', mid, pixels);
+    const d = pixels.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const pixelNum = i / 4;
+      const pos = [pixelNum % pixels.width, parseInt(pixelNum / pixels.width, 10)];
+      const diff = [Math.abs(mid[0] - pos[0]), Math.abs(mid[1] - pos[1])];
+      const dist = Math.sqrt(Math.pow(diff[0], 2) + Math.pow(diff[1] * (pixels.width / pixels.height), 2));
+      // const dist = Math.sqrt(Math.pow(diff[0], 2) + Math.pow(diff[1], 2));
+      const slope = -(mid[1] - pos[1]) / (mid[0] - pos[0]);
 
-  Amaro(pixels) {
+
+      if (pos[0] === 60 || pos[1] === 40) {
+        console.log('blah hey hi', pixelNum, pos, diff, dist, mid);
+      }
+
+      if ((pos[0] === 60) || (pos[1] === 40)) {
+        d[i] = 250;
+        d[i + 1] = 250;
+        d[i + 2] = 250;
+        d[i + 3] = 255;
+      } else if (dist > 100) {
+        d[i] = 0;
+        d[i + 1] = 0;
+        d[i + 2] = 0;
+        d[i + 3] = 255;
+      }
+    }
+    return pixels;
+  }
+
+  One(pixels) {
     // pixels = this.brightness(pixels, 10);
-    pixels = this.overlayColor(pixels, '#ffcc00', 0.3);
-    // pixels = this.levels(pixels, 'b', 10);
+    pixels = this.overlayColor(pixels, '#ffcc00', 0.2);
+    pixels = this.levels(pixels, 'b', 30);
+    return pixels;
+  }
+  Two(pixels) {
+    pixels = this.brightness(pixels, -20);
+    pixels = this.overlayColor(pixels, '#ffcc00', 0.2);
+    pixels = this.levels(pixels, 'b', 30);
+    return pixels;
+  }
+  Three(pixels) {
+    pixels = this.brightness(pixels, -20);
+    pixels = this.overlayColor(pixels, '#ffcc00', 0.2);
+    pixels = this.levels(pixels, 'b', 30);
     return pixels;
   }
 

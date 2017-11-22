@@ -40,6 +40,10 @@
 // Da'  = Da × Sa + Sa × (1 - Da) + Da × (1 - Sa)
 //      = Sa + Da - Sa × Da
 
+
+// Vignette Notes
+// http://forums.codeguru.com/showthread.php?452138-radial-gradient
+
 import React, { PropTypes, Component } from 'react';
 import Filter from '../Filter';
 
@@ -54,7 +58,10 @@ class FilterImage extends Component { // eslint-disable-line
       'brightness',
       'contrast',
       'overlayColor',
-      'Amaro',
+      'One',
+      'Two',
+      'Three',
+      'vignette',
     ];
 
     this.applyFilter = this.applyFilter.bind(this);
@@ -84,9 +91,9 @@ class FilterImage extends Component { // eslint-disable-line
     this.setState({ rendering: false });
   }
   renderFilterOptions() {
-    // return this.filters.map((filter, index) => {
-    //   return (<div key={index} onClick={() => { this.setState({ filter }); }}>{filter}</div>);
-    // });
+    return this.filters.map((filter, index) => {
+      return (<div key={index} onClick={() => { this.setState({ filter }); }}>{filter}</div>);
+    });
   }
   renderRendering() {
     if (this.state.rendering) {
