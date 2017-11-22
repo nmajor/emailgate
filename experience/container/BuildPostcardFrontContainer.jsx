@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../redux/actions/index';
 import DragCropImageSelector from '../components/DragCropImageSelector';
 import FilterFrontImageContainer from './FilterFrontImageContainer';
-import { getImageUrl, getRandomImageUrl } from '../helpers';
+import { getImageUrl } from '../helpers';
 
 class BuildPostcardBackContainer extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -23,10 +23,10 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
     this.handleImageChange = this.handleImageChange.bind(this);
   }
   handleNewImage(props) {
-    this.props.dispatch(Actions.setPostcardProps({ image: props, imageCrop: undefined }));
+    this.props.dispatch(Actions.updatePostcardImage(props));
   }
   handleImageChange(props) {
-    this.props.dispatch(Actions.setPostcardProps({ imageCrop: props }));
+    this.props.dispatch(Actions.updatePostcardImageCrop(props));
   }
   renderOption(text, step) {
     const selected = step === this.state.step;

@@ -49,7 +49,7 @@ class Filter {
     }
     return pixels;
   }
-  brightness(pixels, adjustment) {
+    brightness(pixels, adjustment) {
     adjustment = adjustment || 128;
 
     const d = pixels.data;
@@ -74,27 +74,18 @@ class Filter {
     return pixels;
   }
   overlayColor(pixels, hex, alpha) {
-    const rgb = this._colorHexToRgb(hex) || this._colorHexToRgb('#fef7d9');
-    const bg = [rgb[0] / 255, rgb[1] / 255, rgb[2] / 255, alpha || 0.2];
-    console.log('blah hey', rgb);
-    console.log('blah hey', bg);
-    // fg[3] = alpha || 200;
+    const fg = this._colorHexToRgb(hex) || this._colorHexToRgb('#fef7d9');
+    fg[3] = alpha || 0.3;
 
     const r = pixels.data;
-    console.log('blah r', r[48]);
     for (let i = 0; i < r.length; i += 4) {
-      // const fg = [r[i], r[i + 1], r[i + 2], r[i + 3]];
-      const rA = (1 - r[i + 3]) * (1 - bg[3]);
+      const bg = [r[i], r[i + 1], r[i + 2], r[i + 3] / 255];
+      const aF = bg[3] + fg[3] - bg[3] * fg[3];
 
-      r[i] = r[i] * r[i + 3] / rA + bg[0] * bg[3] * (1 - r[i + 3]) / rA;
-      r[i + 1] = r[i + 1] * r[i + 3] / rA + bg[1] * bg[3] * (1 - r[i + 3]) / rA;
-      r[i + 2] = r[i + 2] * r[i + 3] / rA + bg[2] * bg[3] * (1 - r[i + 3]) / rA;
-      r[i + 3] = rA;
-
-      if (i < 50) {
-        console.log('blah 1', i, r[i + 3], rA);
-        console.log('blah 2', [r[i], r[i + 1], r[i + 1], r[i + 3]]);
-      }
+      r[i] = ((fg[0] * fg[3]) + (bg[0] * bg[3]) * (1 - fg[3])) / aF;
+      r[i + 1] = ((fg[1] * fg[3]) + (bg[1] * bg[3]) * (1 - fg[3])) / aF;
+      r[i + 2] = ((fg[2] * fg[3]) + (bg[2] * bg[3]) * (1 - fg[3])) / aF;
+      r[i + 3] = (aF * 255);
     }
     return pixels;
   }
@@ -147,6 +138,28 @@ class Filter {
       }
     }
     return output;
+  }
+  levels(pixels, color, adjustment) {
+    color = color || 'r';
+
+    const colorOffsetMap = {
+      r: 0,
+      g: 1,
+      b: 2,
+    };
+    const offset = colorOffsetMap[color];
+    const d = pixels.data;
+    for (let i = 0; i < d.length; i += 4) {
+      d[i + offset] = this._truncatePixelValue(adjustment + d[i + offset]);
+    }
+    return pixels;
+  }
+
+  Amaro(pixels) {
+    // pixels = this.brightness(pixels, 10);
+    pixels = this.overlayColor(pixels, '#ffcc00', 0.3);
+    // pixels = this.levels(pixels, 'b', 10);
+    return pixels;
   }
 
   _createImageData(w, h) {

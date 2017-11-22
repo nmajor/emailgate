@@ -1,9 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import Script from 'react-load-script';
-// import * as Actions from '../redux/actions/index';
+import * as Actions from '../redux/actions/index';
 import { getImageUrl, getRandomImageUrl, cropImage } from '../helpers';
 import FilterImage from '../components/FilterImage';
+import _ from 'lodash';
 
 class FilterFrontImageContainer extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -13,13 +14,32 @@ class FilterFrontImageContainer extends Component { // eslint-disable-line
       imageUrl: null,
     };
 
+    this.loadImageUrl = this.loadImageUrl.bind(this);
     this.handleImageSubmit = this.handleImageSubmit.bind(this);
   }
   componentDidMount() {
-    cropImage(getImageUrl(this.props.postcard.image), this.props.postcard.imageCrop)
-    .then((url) => {
-      this.setState({ imageUrl: url });
-    });
+    const { imageCrop, scaledImage } = this.props.postcard;
+    if (!_.get(scaledImage, 'url') || imageCrop.updatedAt > scaledImage.updatedAt) {
+      this.props.dispatch(Actions.scalePostcardImage(this.props.postcard));
+    } else {
+      this.loadImageUrl();
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    const scaledImageUrl = _.get(this.props.postcard, 'scaledImage.url');
+    const nextScaledImageUrl = _.get(nextProps.postcard, 'scaledImage.url');
+    if (nextScaledImageUrl && scaledImageUrl !== nextScaledImageUrl) {
+      this.loadImageUrl(nextScaledImageUrl);
+    }
+  }
+  loadImageUrl(url) {
+    const scaledImageUrl = url || _.get(this.props.postcard, 'scaledImage.url');
+    if (scaledImageUrl) {
+      cropImage(scaledImageUrl, this.props.postcard.imageCrop)
+      .then((croppedUrl) => {
+        this.setState({ imageUrl: croppedUrl });
+      });
+    }
   }
   handleImageSubmit(data) {
     console.log('blah handleImageSubmit', data);
