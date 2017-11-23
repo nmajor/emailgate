@@ -26,8 +26,6 @@ export function cropImage(url, crop) {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
-    // ctx.rotate(crop.angle * Math.PI / 180);
-
     const image = new Image();
     image.crossOrigin = 'Anonymous';
     image.origin = 'Anonymous';
@@ -36,17 +34,6 @@ export function cropImage(url, crop) {
     image.onload = () => {
       canvas.width = crop.w;
       canvas.height = crop.h;
-      // ctx.clearRect(0, 0, canvas.width, canvas.width);
-      // ctx.translate(canvas.width, canvas.height);
-      // ctx.rotate(crop.angle * Math.PI / 180);
-
-      // ctx.translate(canvas.width / 2, canvas.height / 2);
-      // ctx.translate(canvas.width, canvas.height);
-      // ctx.translate((canvas.width / 2) - crop.x, (canvas.height / 2) - crop.y);
-      // ctx.rotate(180 * Math.PI / 180);
-
-      ctx.translate(canvas.width, canvas.height);
-      ctx.rotate((180 * Math.PI / 180));
 
       ctx.drawImage(
         image,
@@ -56,6 +43,43 @@ export function cropImage(url, crop) {
         crop.h, // sourceHeight
         0, // destX
         0, // destY
+        canvas.width, // destWidth
+        canvas.height, // destHeight
+      );
+
+      // console.log(canvas.toDataURL());
+
+      resolve(canvas.toDataURL());
+    };
+  });
+}
+
+export function rotateImage(url, crop) {
+  return new Promise((resolve) => {
+    console.log('blah 1');
+    if (crop.angle === 0) return resolve(url);
+    console.log('blah 2');
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const image = new Image();
+    image.crossOrigin = 'Anonymous';
+    image.origin = 'Anonymous';
+
+    image.src = url;
+    image.onload = () => {
+      console.log('blah 3');
+      canvas.width = image.width;
+      canvas.height = image.height;
+
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate((crop.angle * Math.PI / 180));
+
+      ctx.drawImage(
+        image,
+        -image.width/2, // destX
+        -image.height/2, // destY
         canvas.width, // destWidth
         canvas.height, // destHeight
       );

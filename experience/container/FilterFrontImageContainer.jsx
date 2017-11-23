@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import Script from 'react-load-script';
 import * as Actions from '../redux/actions/index';
-import { getImageUrl, getRandomImageUrl, cropImage } from '../helpers';
+import { rotateImage, getRandomImageUrl, cropImage } from '../helpers';
 import FilterImage from '../components/FilterImage';
 import _ from 'lodash';
 
@@ -18,27 +18,24 @@ class FilterFrontImageContainer extends Component { // eslint-disable-line
     this.handleImageSubmit = this.handleImageSubmit.bind(this);
   }
   componentDidMount() {
-    const { imageCrop, scaledImage } = this.props.postcard;
-    if (!_.get(scaledImage, 'url') || imageCrop.updatedAt > scaledImage.updatedAt) {
-      this.props.dispatch(Actions.scalePostcardImage(this.props.postcard));
+    const { imageCrop, croppedImage } = this.props.postcard;
+    if (!_.get(croppedImage, 'url') || imageCrop.updatedAt > croppedImage.updatedAt) {
+      this.props.dispatch(Actions.cropPostcardImage(this.props.postcard));
     } else {
       this.loadImageUrl();
     }
   }
   componentWillReceiveProps(nextProps) {
-    const scaledImageUrl = _.get(this.props.postcard, 'scaledImage.url');
-    const nextScaledImageUrl = _.get(nextProps.postcard, 'scaledImage.url');
-    if (nextScaledImageUrl && scaledImageUrl !== nextScaledImageUrl) {
-      this.loadImageUrl(nextScaledImageUrl);
+    const croppedImageUrl = _.get(this.props.postcard, 'croppedImage.url');
+    const nextCroppedImageUrl = _.get(nextProps.postcard, 'croppedImage.url');
+    if (nextCroppedImageUrl && croppedImageUrl !== nextCroppedImageUrl) {
+      this.loadImageUrl(nextCroppedImageUrl);
     }
   }
   loadImageUrl(url) {
-    const scaledImageUrl = url || _.get(this.props.postcard, 'scaledImage.url');
-    if (scaledImageUrl) {
-      cropImage(scaledImageUrl, this.props.postcard.imageCrop)
-      .then((croppedUrl) => {
-        this.setState({ imageUrl: croppedUrl });
-      });
+    const imageUrl = url || _.get(this.props.postcard, 'croppedImage.url');
+    if (imageUrl) {
+      this.setState({ imageUrl });
     }
   }
   handleImageSubmit(data) {

@@ -2,7 +2,7 @@ import * as ActionTypes from '../constants';
 // import fetch from 'isomorphic-fetch';
 // import baseURL from '../../../shared/baseURL';
 // import socket from '../../../client/socket';
-import { getImageUrl, resizeImage } from '../../helpers';
+import { getImageUrl, resizeImage, rotateImage, cropImage } from '../../helpers';
 
 export function setPostcard(postcard) {
   return {
@@ -42,13 +42,20 @@ export function updatePostcardImageCrop(props) {
   };
 }
 
-export function scalePostcardImage(postcard) {
+export function cropPostcardImage(postcard) {
   return (dispatch) => {
-    resizeImage(getImageUrl(postcard.image), postcard.imageCrop.scale)
+    const { imageCrop } = postcard;
+
+    resizeImage(getImageUrl(postcard.image), imageCrop.scale)
+    .then((resizedImageUrl) => {
+      return rotateImage(resizedImageUrl, imageCrop);
+    })
+    .then((rotatedUrl) => {
+      return cropImage(rotatedUrl, imageCrop);
+    })
     .then((url) => {
-      console.log('blah hey 1', url.substr(0, 100));
       dispatch(setPostcardProps({
-        scaledImage: {
+        croppedImage: {
           url,
           updatedAt: Date.now(),
         },
