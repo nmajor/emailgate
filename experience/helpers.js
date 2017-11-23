@@ -56,9 +56,7 @@ export function cropImage(url, crop) {
 
 export function rotateImage(url, crop) {
   return new Promise((resolve) => {
-    console.log('blah 1');
     if (crop.angle === 0) return resolve(url);
-    console.log('blah 2');
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -69,19 +67,28 @@ export function rotateImage(url, crop) {
 
     image.src = url;
     image.onload = () => {
-      console.log('blah 3');
-      canvas.width = image.width;
-      canvas.height = image.height;
+      if (crop.angle === 90 || crop.angle === 270) {
+        canvas.width = image.height;
+        canvas.height = image.width;
+      } else {
+        canvas.width = image.width;
+        canvas.height = image.height;
+      }
 
-      ctx.translate(canvas.width / 2, canvas.height / 2);
+      if (crop.angle === 90 || crop.angle === 270) {
+        ctx.translate(image.height / 2, image.width / 2);
+      } else {
+        ctx.translate(image.width / 2, image.height / 2);
+      }
+
       ctx.rotate((crop.angle * Math.PI / 180));
 
       ctx.drawImage(
         image,
-        -image.width/2, // destX
-        -image.height/2, // destY
-        canvas.width, // destWidth
-        canvas.height, // destHeight
+        -image.width / 2, // destX
+        -image.height / 2, // destY
+        image.width, // destWidth
+        image.height, // destHeight
       );
 
       resolve(canvas.toDataURL());
@@ -95,6 +102,23 @@ export function resizeImage(url, scale) {
     const to = document.createElement('canvas');
     to.width = from.width * scale;
     to.height = from.height * scale;
+
+    return pica.resize(from, to, {
+      unsharpAmount: 80,
+      unsharpRadius: 0.6,
+      unsharpThreshold: 2,
+    });
+  }).then((result) => {
+    return Promise.resolve(result.toDataURL());
+  });
+}
+
+export function resizeToWidth(url, width) {
+  return imageCanvas(url)
+  .then((from) => {
+    const to = document.createElement('canvas');
+    to.width = width;
+    to.height = (width / from.width) * from.height;
 
     return pica.resize(from, to, {
       unsharpAmount: 80,

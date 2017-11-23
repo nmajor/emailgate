@@ -2,7 +2,7 @@ import * as ActionTypes from '../constants';
 // import fetch from 'isomorphic-fetch';
 // import baseURL from '../../../shared/baseURL';
 // import socket from '../../../client/socket';
-import { getImageUrl, resizeImage, rotateImage, cropImage } from '../../helpers';
+import { getImageUrl, resizeImage, rotateImage, cropImage, resizeToWidth } from '../../helpers';
 
 export function setPostcard(postcard) {
   return {
@@ -27,6 +27,8 @@ export function updatePostcardImage(props) {
         updatedAt: Date.now(),
       },
       imageCrop: undefined,
+      croppedImage: undefined,
+      thumbnail: undefined,
     }));
   };
 }
@@ -38,6 +40,8 @@ export function updatePostcardImageCrop(props) {
         ...props,
         updatedAt: Date.now(),
       },
+      croppedImage: undefined,
+      thumbnail: undefined,
     }));
   };
 }
@@ -54,12 +58,19 @@ export function cropPostcardImage(postcard) {
       return cropImage(rotatedUrl, imageCrop);
     })
     .then((url) => {
-      dispatch(setPostcardProps({
-        croppedImage: {
-          url,
-          updatedAt: Date.now(),
-        },
-      }));
+      return resizeToWidth(url, 100)
+      .then((thumbnailUrl) => {
+        dispatch(setPostcardProps({
+          croppedImage: {
+            url,
+            updatedAt: Date.now(),
+          },
+          thumbnail: {
+            url: thumbnailUrl,
+            updatedAt: Date.now(),
+          },
+        }));
+      });
     });
   };
 }

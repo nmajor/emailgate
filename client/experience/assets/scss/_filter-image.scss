@@ -6,4 +6,19 @@
     img { width: 100%; }
     canvas { width: 100% !important; height: inherit !important; }
   }
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+
+    .filter-option-thumb {
+      display: inline-block;
+
+      .option-image {
+        display: flex;
+      }
+      .option-desc {
+        text-align: center;
+      }
+    }
+  }
 }

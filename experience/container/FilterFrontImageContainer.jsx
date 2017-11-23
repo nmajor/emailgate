@@ -10,48 +10,31 @@ class FilterFrontImageContainer extends Component { // eslint-disable-line
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      imageUrl: null,
-    };
-
-    this.loadImageUrl = this.loadImageUrl.bind(this);
     this.handleImageSubmit = this.handleImageSubmit.bind(this);
   }
   componentDidMount() {
-    const { imageCrop, croppedImage } = this.props.postcard;
-    if (!_.get(croppedImage, 'url') || imageCrop.updatedAt > croppedImage.updatedAt) {
+    const { croppedImage } = this.props.postcard;
+    if (!_.get(croppedImage, 'url')) {
       this.props.dispatch(Actions.cropPostcardImage(this.props.postcard));
-    } else {
-      this.loadImageUrl();
-    }
-  }
-  componentWillReceiveProps(nextProps) {
-    const croppedImageUrl = _.get(this.props.postcard, 'croppedImage.url');
-    const nextCroppedImageUrl = _.get(nextProps.postcard, 'croppedImage.url');
-    if (nextCroppedImageUrl && croppedImageUrl !== nextCroppedImageUrl) {
-      this.loadImageUrl(nextCroppedImageUrl);
-    }
-  }
-  loadImageUrl(url) {
-    const imageUrl = url || _.get(this.props.postcard, 'croppedImage.url');
-    if (imageUrl) {
-      this.setState({ imageUrl });
     }
   }
   handleImageSubmit(data) {
     console.log('blah handleImageSubmit', data);
   }
   render() {
-    if (this.state.imageUrl) {
-      return (
+    if (_.get(this.props.postcard, 'croppedImage.url')) {
+      return (<div>
         <FilterImage
-          url={this.state.imageUrl}
+          url={this.props.postcard.croppedImage.url}
+          thumbnailUrl={this.props.postcard.thumbnail.url}
           onSubmit={this.handleImageSubmit}
         />
-      );
+      </div>);
     }
 
-    return <div></div>;
+    return (<div className="postcard-aspect-wrapper">
+      <div className="postcard-aspect-main"></div>
+    </div>);
   }
 }
 
