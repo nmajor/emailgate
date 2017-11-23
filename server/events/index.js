@@ -466,29 +466,38 @@ export default (io) => {
     socket.on('RUN_ADMIN_TASK', (data) => {
       console.log('RUN_ADMIN_TASK', data);
 
-      User.findOne({ email: socket.request.session.passport.user })
-      .then(userIsAdmin)
-      .then(() => {
-        Compilation.find({})
-        .then((compilations) => {
-          let tasks = Promise.resolve();
+      // Email.findOne({ _id: '' })
+      // .then((email) => {
+      //   email.body = "";
+      //   return email.save();
+      // })
+      // .then(() => {
+      //   console.log('blah finished');
+      // })
 
-          _.forEach(compilations, (compilation) => {
-            tasks = tasks.then(() => {
-              return compilation.buildThumbnail()
-              .then((comp) => {
-                return comp.save();
-              });
-            });
-          });
-
-          return tasks;
-        });
-      })
-      .then(() => {
-        console.log('ADMIN TASK COMPLETE');
-      })
-      .catch((err) => { console.log('An error happened when running the admin task', err); });
+      // User.findOne({ email: socket.request.session.passport.user })
+      // .then(userIsAdmin)
+      // .then(() => {
+      //   Compilation.find({})
+      //   .then((compilations) => {
+      //     let tasks = Promise.resolve();
+      //
+      //     _.forEach(compilations, (compilation) => {
+      //       tasks = tasks.then(() => {
+      //         return compilation.buildThumbnail()
+      //         .then((comp) => {
+      //           return comp.save();
+      //         });
+      //       });
+      //     });
+      //
+      //     return tasks;
+      //   });
+      // })
+      // .then(() => {
+      //   console.log('ADMIN TASK COMPLETE');
+      // })
+      // .catch((err) => { console.log('An error happened when running the admin task', err); });
     });
 
     socket.on('disconnect', () => {

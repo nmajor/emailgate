@@ -514,7 +514,21 @@ class EmailTemplate {
         margin: 0 .05em 0 .1em;
         vertical-align: -0.1em;
       }
-      .email-template table { width: 100%; text-align: center; }
+      .email-template table {
+        width: 100%;
+        text-align: center;
+        page-break-inside: avoid !important;
+      }
+      .email-template table tr td {
+        color: #333;
+        font-family: 'Libre Baskerville', serif !important;
+        line-height: 16px;
+        font-size: 8px;
+      }
+      .email-template table tr td img {
+        max-height: 245 !important;
+        margin-top: 0 !important;
+      }
     </style>
     <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>

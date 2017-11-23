@@ -37,7 +37,7 @@ class CartSummary extends Component {
     }
   }
   renderVoucherNotice() {
-    if (this.props.cart._promoCode.kind === 'voucher') {
+    if (_.get(this.props.cart, '_promoCode.kind') === 'voucher') {
       let unclaimedVoucherNotice = null;
 
       const productVouchers = this.props.cart._promoCode.productVouchers.map((voucher, index) => {
