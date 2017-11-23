@@ -154,52 +154,49 @@ class Filter {
     }
     return pixels;
   }
-  vignette(pixels) {
+  vignette(pixels, level) {
+    level = level || 8;
+    level = 1 / level;
+
     const mid = [pixels.width / 2, pixels.height / 2];
-    console.log('blah ho', mid, pixels);
     const d = pixels.data;
     for (let i = 0; i < d.length; i += 4) {
       const pixelNum = i / 4;
+      // Get the position relative to the center
       const pos = [-(mid[0] - pixelNum % pixels.width), mid[1] - parseInt(pixelNum / pixels.width, 10)];
-      const diff = [pos[0], pos[1]];
-      const dist = Math.sqrt(Math.pow(diff[0], 2) + Math.pow(diff[1] * (pixels.width / pixels.height), 2));
-      // const dist = Math.sqrt(Math.pow(diff[0], 2) + Math.pow(diff[1], 2));
-      const slope = (pos[1] - mid[1]) / (pos[0] - mid[0]);
-      const y = slope * (pixels.width / 2);
-      const x = (pixels.height / 2) / slope;
-      const edgeIntercept = [Math.max(x, (pixels.height / 2)), Math.max(y, (pixels.width / 2))];
 
-      if (pos[0] === 60 || pos[1] === 40) {
-        console.log('blah hey hi', pixelNum, pos, diff, dist, mid);
+      // Calculate the distance using the pythagorean theorem
+      // Also offset it by w/h to make it eliptical
+      const dist = Math.sqrt(Math.pow(pos[0], 2) + Math.pow(pos[1] * (pixels.width / pixels.height), 2));
+
+      // By only adjusting when the distance is equal to height/2
+      // It will only affect the corners
+      if (dist > mid[1]) {
+        const adjustment = level * Math.pow((dist - mid[1]) * level, 2);
+
+        d[i] = d[i] - adjustment;
+        d[i + 1] = d[i + 1] - adjustment;
+        d[i + 2] = d[i + 2] - adjustment;
+        d[i + 3] = d[i + 3];
       }
 
-      // if ((pos[0] === -120) && (pos[1] === 80)) {
-      //   d[i] = 250;
-      //   d[i + 1] = 0;
-      //   d[i + 2] = 0;
-      //   d[i + 3] = 255;
-      // } else if ((pos[0] === 120) && (pos[1] === 80)) {
-      //   d[i] = 250;
-      //   d[i + 1] = 250;
-      //   d[i + 2] = 250;
-      //   d[i + 3] = 255;
-      // } else if ((pos[0] === 120) && (pos[1] === -80)) {
-      //   d[i] = 0;
-      //   d[i + 1] = 250;
-      //   d[i + 2] = 0;
-      //   d[i + 3] = 255;
-      // } else if ((pos[0] === -120) && (pos[1] === -80)) {
-      //   d[i] = 0;
-      //   d[i + 1] = 0;
-      //   d[i + 2] = 250;
-      //   d[i + 3] = 255;
-      // } else
-      if (dist > 100) {
-        d[i] = 0;
-        d[i + 1] = 0;
-        d[i + 2] = 0;
-        d[i + 3] = 255;
-      }
+      // Unused calculations for the intercept distance
+      // The original intention was to use this to calculate the
+      // Percentage distance from the edge
+      // const slope = (pos[1]) / (pos[0]);
+      //
+      // const xBoundry = (pixels.width / 2) * (pos[0] / Math.abs(pos[0]));
+      // const yBoundry = (pixels.height / 2) * (pos[1] / Math.abs(pos[1]));
+      //
+      // const yIntercept = slope * xBoundry;
+      // const xIntercept = yBoundry / slope;
+      //
+      // const intercept = [
+      //   xBoundry > 0 ? Math.min(xBoundry, xIntercept) : Math.max(xBoundry, xIntercept),
+      //   yBoundry > 0 ? Math.min(yBoundry, yIntercept) : Math.max(yBoundry, yIntercept),
+      // ];
+      //
+      // const interceptDist = Math.sqrt(Math.pow(intercept[0], 2) + Math.pow(intercept[1], 2));
     }
     return pixels;
   }
@@ -220,6 +217,13 @@ class Filter {
     pixels = this.brightness(pixels, -20);
     pixels = this.overlayColor(pixels, '#ffcc00', 0.2);
     pixels = this.levels(pixels, 'b', 30);
+    return pixels;
+  }
+  Four(pixels) {
+    pixels = this.brightness(pixels, -20);
+    pixels = this.overlayColor(pixels, '#ffcc00', 0.2);
+    pixels = this.levels(pixels, 'b', 30);
+    pixels = this.vignette(pixels);
     return pixels;
   }
 
