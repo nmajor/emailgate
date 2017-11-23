@@ -108,7 +108,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Server Side Rendering based on routes matched by React-router.
 app.use((req, res) => {
-  const domains = ['missionarymemoir', 'localhost:8000'];
+  const domains = ['missionarymemoir', `localhost:${process.env.PORT}`];
   const domainParts = req.headers.host.split('.');
   const subdomain = domains.indexOf(domainParts[0]) > -1 ? null : domainParts[0];
 
