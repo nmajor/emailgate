@@ -43,6 +43,8 @@
 
 // Vignette Notes
 // http://forums.codeguru.com/showthread.php?452138-radial-gradient
+// https://bsou.io/posts/color-gradients-with-python
+// https://stackoverflow.com/questions/22607043/color-gradient-algorithm
 
 import React, { PropTypes, Component } from 'react';
 import Filter from '../Filter';
@@ -61,6 +63,7 @@ class FilterImage extends Component { // eslint-disable-line
       'One',
       'Two',
       'Three',
+      'Four',
       'vignette',
     ];
 
