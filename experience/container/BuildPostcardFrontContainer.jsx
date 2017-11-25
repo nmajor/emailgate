@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../redux/actions/index';
-import DragCropImageSelector from '../components/DragCropImageSelector';
+// import * as Actions from '../redux/actions/index';
+import CropFrontImageContainer from './CropFrontImageContainer';
 import FilterFrontImageContainer from './FilterFrontImageContainer';
-import { getImageUrl } from '../helpers';
+import StampFrontImageContainer from './StampFrontImageContainer';
 
 class BuildPostcardBackContainer extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -13,20 +13,6 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
       imageUrl: null,
       step: 'crop',
     };
-
-    // this.imageWidth = 1200;
-    this.imageWidth = 600;
-    // this.imageHeight = 800;
-    this.imageHeight = 400;
-
-    this.handleNewImage = this.handleNewImage.bind(this);
-    this.handleImageChange = this.handleImageChange.bind(this);
-  }
-  handleNewImage(props) {
-    this.props.dispatch(Actions.updatePostcardImage(props));
-  }
-  handleImageChange(props) {
-    this.props.dispatch(Actions.updatePostcardImageCrop(props));
   }
   renderOption(text, step) {
     const selected = step === this.state.step;
@@ -47,34 +33,20 @@ class BuildPostcardBackContainer extends Component { // eslint-disable-line
   renderCurrentOption() {
     switch (this.state.step) {
       case 'crop':
-        return (<DragCropImageSelector
-          onNewImage={this.handleNewImage}
-          onImageChange={this.handleImageChange}
-          url={getImageUrl(this.props.postcard.image)}
-          height={this.imageHeight}
-          width={this.imageWidth}
-          crop={this.props.postcard.imageCrop || {}}
-        />);
+        return (<CropFrontImageContainer />);
       case 'filter':
         return <FilterFrontImageContainer />;
       case 'customize':
-        return <div>customize</div>;
+        return <StampFrontImageContainer />;
       default:
         return null;
     }
   }
   render() {
-    // const { compilation } = this.props;
     return (<div>
       {this.renderCurrentOption()}
       {this.renderFrontOptions()}
     </div>);
-
-    // return (<div className="postcard-back postcard-aspect-wrapper">
-    //   <div className="postcard-aspect-main">
-    //
-    //   </div>
-    // </div>);
   }
 }
 

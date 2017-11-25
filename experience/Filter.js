@@ -19,6 +19,11 @@ class Filter {
     canvas.getContext('2d').putImageData(pixels, 0, 0);
     return canvas;
   }
+  toDataURL(pixels) {
+    const canvas = this.getCanvas(pixels.width, pixels.height);
+    canvas.getContext('2d').putImageData(pixels, 0, 0);
+    return canvas.toDataURL();
+  }
   filterImage(filter, varArgs) {
     varArgs = varArgs || [];
 

@@ -18,8 +18,6 @@ export function setPostcardProps(props) {
   };
 }
 
-
-
 export function updatePostcardImage(props) {
   return (dispatch) => {
     dispatch(setPostcardProps({
@@ -41,6 +39,7 @@ export function updatePostcardImageCrop(props) {
         updatedAt: Date.now(),
       },
       croppedImage: undefined,
+      filteredImage: undefined,
       thumbnail: undefined,
     }));
   };
@@ -69,8 +68,20 @@ export function cropPostcardImage(postcard) {
             url: thumbnailUrl,
             updatedAt: Date.now(),
           },
+          filteredImage: undefined,
         }));
       });
     });
+  };
+}
+
+export function filterPostcardImage(props) {
+  return (dispatch) => {
+    dispatch(setPostcardProps({
+      filteredImage: {
+        ...props,
+        updatedAt: Date.now(),
+      },
+    }));
   };
 }

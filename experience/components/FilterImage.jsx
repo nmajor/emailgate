@@ -21,20 +21,26 @@ class FilterImage extends Component { // eslint-disable-line
 
     this.applyFilter = this.applyFilter.bind(this);
 
-    this.image = this.img || new Image();
-    // this.image.onload = () => { this.drawCanvas(this.img); };
-    this.image.src = this.props.url;
-
     this.state = {
-      imageUrl: props.url,
-      filter: null,
+      filter: 'original',
       rendering: false,
+      imageLoaded: false,
     };
+
+    this.image = this.image || new Image();
+    this.image.onload = () => { this.setState({ imageLoaded: true }); };
+    this.image.src = this.props.url;
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.filter !== this.state.filter) {
       this.applyFilter();
     }
+  }
+  componentWillUnmount() {
+    const filter = new Filter(this.image);
+    const res = filter.filterImage(this.state.filter);
+    const url = filter.toDataURL(res);
+    this.props.onSubmit(url);
   }
   applyFilter() {
     this.setState({ rendering: true });
@@ -45,14 +51,16 @@ class FilterImage extends Component { // eslint-disable-line
     this.setState({ rendering: false });
   }
   renderFilterOptions() {
-    return this.filters.map((filter, index) => {
-      return (<FilterOptionThumb
-        key={index}
-        filter={filter}
-        thumbnailUrl={this.props.thumbnailUrl}
-        onClick={() => { this.setState({ filter }); }}
-      />);
-    });
+    if (this.state.imageLoaded) {
+      return this.filters.map((filter, index) => {
+        return (<FilterOptionThumb
+          key={index}
+          filter={filter}
+          thumbnailUrl={this.props.thumbnailUrl}
+          onClick={() => { this.setState({ filter }); }}
+        />);
+      });
+    }
   }
   renderRendering() {
     if (this.state.rendering) {
@@ -60,11 +68,9 @@ class FilterImage extends Component { // eslint-disable-line
     }
   }
   renderImage() {
-    if (this.state.filter) {
-      return (<div id={`filter-image-${this.state.filter}`} role="presentation" />);
-    }
-
-    return (<img role="presentation" src={this.props.url} />);
+    return (<div id={`filter-image-${this.state.filter}`} role="presentation">
+      <img role="presentation" src={this.props.url} />
+    </div>);
   }
   render() {
     return (<div className="filter-image-wrapper">

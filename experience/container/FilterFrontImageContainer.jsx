@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 // import Script from 'react-load-script';
 import * as Actions from '../redux/actions/index';
-import { rotateImage, getRandomImageUrl, cropImage } from '../helpers';
 import FilterImage from '../components/FilterImage';
 import _ from 'lodash';
 
@@ -12,14 +11,8 @@ class FilterFrontImageContainer extends Component { // eslint-disable-line
 
     this.handleImageSubmit = this.handleImageSubmit.bind(this);
   }
-  componentDidMount() {
-    const { croppedImage } = this.props.postcard;
-    if (!_.get(croppedImage, 'url')) {
-      this.props.dispatch(Actions.cropPostcardImage(this.props.postcard));
-    }
-  }
   handleImageSubmit(data) {
-    console.log('blah handleImageSubmit', data);
+    this.props.dispatch(Actions.filterPostcardImage({ url: data }));
   }
   render() {
     if (_.get(this.props.postcard, 'croppedImage.url')) {
@@ -40,9 +33,6 @@ class FilterFrontImageContainer extends Component { // eslint-disable-line
 
 function mapStateToProps(store) {
   const { postcard } = store;
-  if (!postcard.image) {
-    postcard.image = { url: getRandomImageUrl() };
-  }
 
   return {
     postcard,
