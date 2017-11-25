@@ -50,7 +50,9 @@ class Filter {
     return pixels;
   }
   brightness(pixels, adjustment) {
-    adjustment = adjustment || 128;
+    // adjustment -100..100
+    adjustment = adjustment || 10;
+    adjustment = (adjustment / 100) * 255;
 
     const d = pixels.data;
     for (let i = 0; i < d.length; i += 4) {
@@ -61,21 +63,26 @@ class Filter {
     return pixels;
   }
   contrast(pixels, adjustment) {
-    adjustment = adjustment || 30;
+    // adjustment -100..100
+    adjustment = adjustment || 10;
+    adjustment = (adjustment / 100) * 255;
+
     const adjFactor = (259 * (adjustment + 255)) / (255 * (259 - adjustment));
 
     const d = pixels.data;
     for (let i = 0; i < d.length; i += 4) {
-      d[i] = this._truncatePixelValue(adjFactor * d[i]);
-      d[i + 1] = this._truncatePixelValue(adjFactor * d[i + 1]);
-      d[i + 2] = this._truncatePixelValue(adjFactor * d[i + 2]);
-      if (i < 200) { console.log(d[i + 3]); }
+      d[i] = this._truncatePixelValue(adjFactor * (d[i] - 128) + 128);
+      d[i + 1] = this._truncatePixelValue(adjFactor * (d[i + 1] - 128) + 128);
+      d[i + 2] = this._truncatePixelValue(adjFactor * (d[i + 2] - 128) + 128);
     }
     return pixels;
   }
-  overlayColor(pixels, hex, alpha) {
+  overlayColor(pixels, hex, level) {
+    // level 0..100
+    level = level || 10;
+    level = level / 100;
     const fg = this._colorHexToRgb(hex) || this._colorHexToRgb('#ffcc00');
-    fg[3] = alpha || 0.2;
+    fg[3] = level;
 
     const r = pixels.data;
     for (let i = 0; i < r.length; i += 4) {
@@ -140,6 +147,9 @@ class Filter {
     return output;
   }
   levels(pixels, color, adjustment) {
+    // adjustment -100..100
+    adjustment = adjustment || 10;
+    adjustment = (adjustment / 100) * 255;
     color = color || 'r';
 
     const colorOffsetMap = {
@@ -154,11 +164,17 @@ class Filter {
     }
     return pixels;
   }
-  vignette(pixels, level) {
-    level = level || 8;
-    level = 1 / level;
+  vignette(pixels, radius, spread) {
+    // spread 1..10
+    // radius 1..10
+    spread = spread || 5;
+    spread = (spread / 10) * 20;
+    spread = 1 / spread;
 
     const mid = [pixels.width / 2, pixels.height / 2];
+    radius = radius || 5;
+    radius = ((mid[1] / 2) + ((mid[1] / 10) * radius));
+
     const d = pixels.data;
     for (let i = 0; i < d.length; i += 4) {
       const pixelNum = i / 4;
@@ -171,8 +187,8 @@ class Filter {
 
       // By only adjusting when the distance is equal to height/2
       // It will only affect the corners
-      if (dist > mid[1]) {
-        const adjustment = level * Math.pow((dist - mid[1]) * level, 2);
+      if (dist > radius) {
+        const adjustment = spread * Math.pow((dist - radius) * spread, 2);
 
         d[i] = d[i] - adjustment;
         d[i + 1] = d[i + 1] - adjustment;
@@ -200,30 +216,76 @@ class Filter {
     }
     return pixels;
   }
+  saturation(pixels, adjustment) {
+    // adjustment -100..100
+    adjustment = adjustment || 20;
+    adjustment = 1 + ((adjustment / 100) * 4);
+
+    const d = pixels.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const hsv = this._rgbToHsv([d[i], d[i + 1], d[i + 2]]);
+      if (adjustment > 0) {
+        hsv[1] = hsv[1] * adjustment;
+      } else {
+        hsv[1] = hsv[1] / Math.abs(adjustment);
+      }
+      const rgb = this._hsvToRgb(hsv);
+      d[i] = rgb[0];
+      d[i + 1] = rgb[1];
+      d[i + 2] = rgb[2];
+    }
+    return pixels;
+  }
+  hue(pixels, adjustment) {
+    // adjustment -100..100
+    adjustment = adjustment || 20;
+    adjustment = 1 + ((adjustment / 100) * 4);
+
+    const d = pixels.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const hsv = this._rgbToHsv([d[i], d[i + 1], d[i + 2]]);
+      if (adjustment > 0) {
+        hsv[0] = hsv[0] * adjustment;
+      } else {
+        hsv[0] = hsv[0] / Math.abs(adjustment);
+      }
+      const rgb = this._hsvToRgb(hsv);
+      d[i] = rgb[0];
+      d[i + 1] = rgb[1];
+      d[i + 2] = rgb[2];
+    }
+    return pixels;
+  }
+  Filter1(pixels) {
+    pixels = this.levels(pixels, 'b', 23);
+    pixels = this.overlayColor(pixels, '#ffcc00', 20);
+    pixels = this.brightness(pixels, -10);
+    pixels = this.vignette(pixels, 5, 5);
+    return pixels;
+  }
+  Filter2(pixels) {
+    pixels = this.brightness(pixels, -10);
+    pixels = this.contrast(pixels, 5);
+    pixels = this.overlayColor(pixels, '#eddd9e', 10);
+    pixels = this.saturation(pixels, -8);
+    pixels = this.vignette(pixels, 3, 6);
+    return pixels;
+  }
 
   One(pixels) {
-    // pixels = this.brightness(pixels, 10);
-    pixels = this.overlayColor(pixels, '#ffcc00', 0.2);
-    pixels = this.levels(pixels, 'b', 30);
+    pixels = this.levels(pixels, 'r', 5);
     return pixels;
   }
   Two(pixels) {
-    pixels = this.brightness(pixels, -20);
-    pixels = this.overlayColor(pixels, '#ffcc00', 0.2);
-    pixels = this.levels(pixels, 'b', 30);
+    pixels = this.levels(pixels, 'r', 5);
+    pixels = this.brightness(pixels, -10);
+    pixels = this.contrast(pixels, 10);
     return pixels;
   }
   Three(pixels) {
-    pixels = this.brightness(pixels, -20);
-    pixels = this.overlayColor(pixels, '#ffcc00', 0.2);
-    pixels = this.levels(pixels, 'b', 30);
     return pixels;
   }
   Four(pixels) {
-    pixels = this.brightness(pixels, -20);
-    pixels = this.overlayColor(pixels, '#ffcc00', 0.2);
-    pixels = this.levels(pixels, 'b', 30);
-    pixels = this.vignette(pixels);
     return pixels;
   }
 
@@ -244,6 +306,83 @@ class Filter {
       parseInt(result[2], 16), // g
       parseInt(result[3], 16), // b
     ] : null;
+  }
+  _rgbToHsv(rgb) {
+    const r = rgb[0] / 255;
+    const g = rgb[1] / 255;
+    const b = rgb[2] / 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h = max;
+    let s = max;
+    const v = max;
+
+    const d = max - min;
+    s = max === 0 ? 0 : d / max;
+
+    if (max === min) {
+      h = 0; // achromatic
+    } else {
+      switch (max) { // eslint-disable-line default-case
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+
+      h /= 6;
+    }
+
+    return [h, s, v];
+  }
+  _hsvToRgb(hsv) {
+    const h = hsv[0];
+    const s = hsv[1];
+    const v = hsv[2];
+    let r;
+    let g;
+    let b;
+
+    const i = Math.floor(h * 6);
+    const f = h * 6 - i;
+    const p = v * (1 - s);
+    const q = v * (1 - f * s);
+    const t = v * (1 - (1 - f) * s);
+
+    switch (i % 6) { // eslint-disable-line default-case
+      case 0:
+        r = v;
+        g = t;
+        b = p;
+        break;
+      case 1:
+        r = q;
+        g = v;
+        b = p;
+        break;
+      case 2:
+        r = p;
+        g = v;
+        b = t;
+        break;
+      case 3:
+        r = p;
+        g = q;
+        b = v;
+        break;
+      case 4:
+        r = t;
+        g = p;
+        b = v;
+        break;
+      case 5:
+        r = v;
+        g = p;
+        b = q;
+        break;
+    }
+
+    return [r * 255, g * 255, b * 255];
   }
 }
 

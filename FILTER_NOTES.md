@@ -45,3 +45,7 @@
 // http://forums.codeguru.com/showthread.php?452138-radial-gradient
 // https://bsou.io/posts/color-gradients-with-python
 // https://stackoverflow.com/questions/22607043/color-gradient-algorithm
+
+// Hue Saturation
+// https://stackoverflow.com/questions/13806483/increase-or-decrease-color-saturation
+// https://gist.github.com/mjackson/5311256

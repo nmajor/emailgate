@@ -9,16 +9,14 @@ class FilterImage extends Component { // eslint-disable-line
     this.filters = [
       'original',
       'grayscale',
-      'Four',
+      'Filter1',
+      'Filter2',
 
-      'convolute',
-      'brightness',
-      'contrast',
-      'overlayColor',
+      'hue',
       'One',
       'Two',
       'Three',
-      'vignette',
+      'Four',
     ];
 
     this.applyFilter = this.applyFilter.bind(this);
