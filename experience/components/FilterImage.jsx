@@ -9,8 +9,8 @@ class FilterImage extends Component { // eslint-disable-line
     this.filters = [
       'original',
       'grayscale',
-      'Filter1',
       'Filter2',
+      'Filter1',
 
       'hue',
       'One',
@@ -22,7 +22,6 @@ class FilterImage extends Component { // eslint-disable-line
     this.applyFilter = this.applyFilter.bind(this);
 
     this.state = {
-      filter: 'original',
       rendering: false,
       imageLoaded: false,
     };
@@ -31,23 +30,26 @@ class FilterImage extends Component { // eslint-disable-line
     this.image.onload = () => { this.setState({ imageLoaded: true }); };
     this.image.src = this.props.url;
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.filter !== this.state.filter) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.filterData.filter !== this.props.filterData.filter) {
       this.applyFilter();
     }
   }
   componentWillUnmount() {
     const filter = new Filter(this.image);
-    const res = filter.filterImage(this.state.filter);
+    const res = filter.filterImage(this.props.filterData.filter);
     const url = filter.toDataURL(res);
     this.props.onSubmit(url);
+  }
+  setFilter(filter) {
+    this.props.onSubmit({ filter });
   }
   applyFilter() {
     this.setState({ rendering: true });
     const filter = new Filter(this.image);
-    const res = filter.filterImage(this.state.filter);
+    const res = filter.filterImage(this.props.filterData.filter);
     const canvas = filter.toCanvas(res);
-    $(`#filter-image-${this.state.filter}`).html(canvas); // eslint-disable-line no-undef
+    $(`#filter-image-${this.props.filterData.filter}`).html(canvas); // eslint-disable-line no-undef
     this.setState({ rendering: false });
   }
   renderFilterOptions() {
@@ -57,7 +59,7 @@ class FilterImage extends Component { // eslint-disable-line
           key={index}
           filter={filter}
           thumbnailUrl={this.props.thumbnailUrl}
-          onClick={() => { this.setState({ filter }); }}
+          onClick={() => { this.setFilter(filter); }}
         />);
       });
     }
@@ -68,7 +70,7 @@ class FilterImage extends Component { // eslint-disable-line
     }
   }
   renderImage() {
-    return (<div id={`filter-image-${this.state.filter}`} role="presentation">
+    return (<div className="filter-image" id={`filter-image-${this.props.filterData.filter}`} role="presentation">
       <img role="presentation" src={this.props.url} />
     </div>);
   }
@@ -88,6 +90,7 @@ class FilterImage extends Component { // eslint-disable-line
 FilterImage.propTypes = {
   url: PropTypes.string.isRequired,
   thumbnailUrl: PropTypes.string.isRequired,
+  filterData: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
 

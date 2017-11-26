@@ -75,10 +75,10 @@ export function cropPostcardImage(postcard) {
   };
 }
 
-export function filterPostcardImage(props) {
+export function updatePostcardFilterData(props) {
   return (dispatch) => {
     dispatch(setPostcardProps({
-      filteredImage: {
+      filterData: {
         ...props,
         updatedAt: Date.now(),
       },

@@ -12,7 +12,7 @@ class FilterFrontImageContainer extends Component { // eslint-disable-line
     this.handleImageSubmit = this.handleImageSubmit.bind(this);
   }
   handleImageSubmit(data) {
-    this.props.dispatch(Actions.filterPostcardImage({ url: data }));
+    this.props.dispatch(Actions.updatePostcardFilterData(data));
   }
   render() {
     if (_.get(this.props.postcard, 'croppedImage.url')) {
@@ -20,6 +20,7 @@ class FilterFrontImageContainer extends Component { // eslint-disable-line
         <FilterImage
           url={this.props.postcard.croppedImage.url}
           thumbnailUrl={this.props.postcard.thumbnail.url}
+          filterData={this.props.postcard.filterData || {}}
           onSubmit={this.handleImageSubmit}
         />
       </div>);
