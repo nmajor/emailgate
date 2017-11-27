@@ -35,12 +35,6 @@ class FilterImage extends Component { // eslint-disable-line
       this.applyFilter();
     }
   }
-  componentWillUnmount() {
-    const filter = new Filter(this.image);
-    const res = filter.filterImage(this.props.filterData.filter);
-    const url = filter.toDataURL(res);
-    this.props.onSubmit(url);
-  }
   setFilter(filter) {
     this.props.onSubmit({ filter });
   }

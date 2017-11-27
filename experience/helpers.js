@@ -56,6 +56,7 @@ export function cropImage(url, crop) {
 
 export function rotateImage(url, crop) {
   return new Promise((resolve) => {
+    crop.angle = 180;
     if (crop.angle === 0) return resolve(url);
 
     const canvas = document.createElement('canvas');
