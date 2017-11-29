@@ -150,6 +150,7 @@ export default (io) => {
           _.forEach(emails, (emailData) => {
             tasks = tasks.then(() => {
               const newEmail = new Email(emailData);
+              newEmail._account = account._id;
               newEmail._compilation = compilation._id;
               return newEmail.save()
               .then((email) => {
@@ -466,14 +467,18 @@ export default (io) => {
     socket.on('RUN_ADMIN_TASK', (data) => {
       console.log('RUN_ADMIN_TASK', data);
 
-      // Email.findOne({ _id: '' })
-      // .then((email) => {
-      //   email.body = "";
-      //   return email.save();
-      // })
-      // .then(() => {
-      //   console.log('blah finished');
-      // })
+      Email.findOne({ _id: 'rJfl8idslM' })
+      .populate('_account')
+      .then((email) => {
+        return email._account.getEmailById(email.remoteId)
+        .then((emails) => {
+          email.body = emails[0].body;
+          return email.save();
+        });
+      })
+      .then(() => {
+        console.log('blah finished');
+      });
 
       // User.findOne({ email: socket.request.session.passport.user })
       // .then(userIsAdmin)

@@ -90,7 +90,7 @@
     "react-image-crop": "3.0.1",
     "react-json-tree": "0.10.3",
     "react-modal": "^1.4.0",
-    "react-quill": "^0.4.1",
+    "react-quill": "^1.2.0",
     "react-redux": "^4.1.2",
     "react-router": "^2.0.0-rc5",
     "react-slick": "^0.14.11",

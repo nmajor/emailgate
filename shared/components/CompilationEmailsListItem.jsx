@@ -38,7 +38,7 @@ class CompilationEmailsListItem extends Component {
     }
   }
   renderRebuildPdfAction() {
-    if (_.get(this.props.email, 'pdf.url') && this.props.user.isAdmin) {
+    if (this.props.user.isAdmin) {
       let text = <span><span className="glyphicon glyphicon-refresh" aria-hidden="true"></span> PDF</span>;
       if (this.props.email.rebuilding) { text = <span>Rebuilding</span>; }
       return (<span className="btn btn-success" onClick={this.rebuildPdf}>

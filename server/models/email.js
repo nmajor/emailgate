@@ -36,6 +36,7 @@ const EmailSchema = new Schema({
   estimatedPageCount: { type: Number, default: 3 },
   pdf: {},
   source: { type: String, default: 'gmail' },
+  _account: { type: String, ref: 'Account' },
 }, {
   timestamps: true,
 });
