@@ -85,3 +85,13 @@ export function updatePostcardFilterData(props) {
     }));
   };
 }
+
+export function updatePostcardStampData(props) {
+  return (dispatch) => {
+    dispatch(setPostcardProps({
+      stampData: {
+        ...props,
+      },
+    }));
+  };
+}
