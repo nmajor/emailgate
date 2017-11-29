@@ -70,16 +70,120 @@ export function emojify(text) {
 }
 
 export function sanitizeEmailBody(text) {
-  return sanitizeHtml(text, {
+  function pluckStyle(str, style, processValue) {
+    processValue = processValue || function (val) { return val; }; // eslint-disable-line
+
+    const regex = new RegExp(`${style}:\\s?(.*?)(;|$)`);
+    const match = regex.exec(str);
+    if (match) {
+      return `${style}: ${processValue(match[1])};`;
+    }
+
+    return '';
+  }
+
+  function limitStyleValue(val, limit) {
+    const regex = /^(\d+)(.*)/;
+    const match = regex.exec(val);
+    if (match && match[1]) {
+      let newNum = match[1];
+      if (newNum > limit) {
+        newNum = limit;
+      }
+      return `${newNum}${match[2]}`;
+    }
+
+    return val;
+  }
+
+  const sanitaryText = sanitizeHtml(text, {
     allowedTags: [
       'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
       'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
-      'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre',
+      'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'span',
     ],
     allowedAttributes: {
       a: [],
+      div: ['class', 'style'],
+      span: ['style'],
     },
+    transformTags: {
+      div: (tagName, attribs) => {
+        const newAttribs = {};
+        if (attribs.style) {
+          let newStyle = '';
+          newStyle += pluckStyle(attribs.style, 'text-indent');
+          newStyle += pluckStyle(attribs.style, 'font-weight');
+          newStyle += pluckStyle(attribs.style, 'margin-top', (val) => {
+            return limitStyleValue(val, 10);
+          });
+          newStyle += pluckStyle(attribs.style, 'margin-bottom', (val) => {
+            return limitStyleValue(val, 10);
+          });
+
+          if (newStyle !== '') {
+            newAttribs.style = newStyle;
+          }
+        }
+
+        return {
+          tagName: 'div',
+          attribs: newAttribs,
+        };
+      },
+      table: () => {
+        return {
+          tagName: 'div',
+          attribs: {
+            class: 'image-caption-wrap',
+          },
+        };
+      },
+      td: () => {
+        return {
+          tagName: 'div',
+        };
+      },
+      span: (tagName, attribs) => {
+        const newAttribs = {};
+        if (attribs.style) {
+          let newStyle = '';
+          newStyle += pluckStyle(attribs.style, 'font-weight');
+
+          if (newStyle !== '') {
+            newAttribs.style = newStyle;
+          }
+        }
+
+        return {
+          tagName: 'span',
+          attribs: newAttribs,
+        };
+      },
+      audio: () => {
+        return {
+          tagName: '',
+          text: '',
+        };
+      },
+    },
+    // allowedStyles: {
+    //   '*': {
+    //     'text-align': [/^left$/, /^right$/, /^center$/],
+    //   },
+    //   div: {
+    //     'text-indent': [/^.*?$/],
+    //     'margin-bottom': [/^.*?$/],
+    //     'margin-top': [/^.*?$/],
+    //     'line-height': [/^nothing$/],
+    //   },
+    //   span: {
+    //     'font-weight': [/^.*?$/],
+    //   },
+    // },
   });
+
+  return sanitaryText.replace(/\u00A0/g, ' ');
 }
 
 export function sanitizeEmailSubject(text) {

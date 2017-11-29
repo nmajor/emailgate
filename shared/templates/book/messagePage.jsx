@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactQuill from 'react-quill';
 import { renderToString } from 'react-dom/server';
 
 class MessagePageTemplate {
@@ -59,7 +58,13 @@ class MessagePageTemplate {
       setFormState(undefined, { message: value });
     }
 
-    const messageInput = <ReactQuill className="editable" name="message" toolbar={false} styles={false} defaultValue={this.content.message} onChange={setMessageState} />;
+    let messageInput = <textarea />;
+    try {
+      const ReactQuill = require('react-quill'); // eslint-disable-line global-require
+
+      messageInput = <ReactQuill className="editable" name="message" toolbar={false} styles={false} defaultValue={this.content.message} onChange={setMessageState} />;
+    } catch (err) {} // eslint-disable-line
+
     const signatureInput = <div className="editable" name="signature" contentEditable onBlur={setFormState}>{this.content.signature}</div>;
 
     return (<div className="page-form" style={{ fontSize: '20px', padding: '0 50px' }}>

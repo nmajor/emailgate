@@ -37,6 +37,7 @@ class CompilationComponentsList extends Component {
         componentProps={this.props.componentProps || {}}
         user={this.props.user}
         rebuildPdf={this.props.rebuildPdf}
+        reImportEmailBody={this.props.reImportEmailBody}
       />);
     });
   }
@@ -92,6 +93,7 @@ CompilationComponentsList.propTypes = {
   componentProps: PropTypes.object,
   rotateAttachment: PropTypes.func,
   rebuildPdf: PropTypes.func,
+  reImportEmailBody: PropTypes.func,
   user: PropTypes.object.isRequired,
 };
 

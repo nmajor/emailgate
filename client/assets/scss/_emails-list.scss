@@ -113,3 +113,25 @@
     }
   }
 }
+
+.email-template {
+  table { width: 100%; text-align: center; }
+  ol { margin-left: 20px; }
+  .image-caption-wrap {
+    text-align: center;
+    color: #333;
+    font-family: 'Montserrat', sans-serif !important;
+    line-height: 10px;
+    font-size: 8px;
+    page-break-inside: avoid !important;
+  }
+  br {
+    content: "";
+    margin: 2em;
+    display: block;
+    font-size: 40%;
+  }
+  blockquote {
+    margin: 8px 0;
+  }
+}

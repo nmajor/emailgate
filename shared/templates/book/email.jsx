@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { renderToString } from 'react-dom/server';
 import Dropzone from 'react-dropzone';
 import moment from 'moment';
-import ReactQuill from 'react-quill';
 import DatePicker from 'react-datepicker';
 import _ from 'lodash';
 import twemoji from 'twemoji';
@@ -51,11 +50,11 @@ function renderAttachment(attachment, index, options) {
   } else if (attachment.content && ['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
     const dataUriPrefix = `data:${attachment.contentType};base64,`;
     // const imageString = (new Buffer(attachment.content)).toString('base64');
-    imageTag = (<img role="presentation" styfvle={divStyle} key={attachment._id || attachment.id || index} src={dataUriPrefix + attachment.content} />);
+    imageTag = (<img role="presentation" style={divStyle} key={attachment._id || attachment.id || index} src={dataUriPrefix + attachment.content} />);
   }
 
   if (options.centered) {
-    return (<div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+    return (<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%', textAlign: 'center' }}>
       {imageTag}
     </div>);
   }
@@ -473,7 +472,13 @@ class EmailTemplate {
   }
 
   renderForm(setFormState, setBodyState, props) {
-    const bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
+    let bodyInput = <textarea />;
+    try {
+      const ReactQuill = require('react-quill');  // eslint-disable-line global-require
+
+      bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
+    } catch (err) {} // eslint-disable-line
+
     const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;
     const fromInput = <EmailUserInput email={this.email} field="from" setFormState={setFormState} />;
 
@@ -517,17 +522,44 @@ class EmailTemplate {
       .email-template table {
         width: 100%;
         text-align: center;
+      }
+      .email-template table tbody {
         page-break-inside: avoid !important;
       }
       .email-template table tr td {
         color: #333;
-        font-family: 'Libre Baskerville', serif !important;
+        font-family: 'Montserrat', sans-serif !important;
         line-height: 16px;
         font-size: 8px;
       }
       .email-template table tr td img {
-        max-height: 245 !important;
+        max-height: 245px !important;
         margin-top: 0 !important;
+      }
+      .email-template .image-caption-wrap {
+        text-align: center;
+        color: #333;
+        font-family: 'Montserrat', sans-serif !important;
+        line-height: 10px;
+        font-size: 8px;
+        page-break-inside: avoid !important;
+      }
+      .email-template .image-caption-wrap img {
+        max-height: 245px !important;
+        margin-top: 0 !important;
+        margin-bottom: 5px;
+      }
+      .email-template ol {
+        margin-left: 30px;
+      }
+      .email-template br {
+        content: "";
+        margin: 2em;
+        display: block;
+        font-size: 40%;
+      }
+      .email-template blockquote {
+        margin: 8px 0;
       }
     </style>
     <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>

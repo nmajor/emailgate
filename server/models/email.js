@@ -36,8 +36,18 @@ const EmailSchema = new Schema({
   estimatedPageCount: { type: Number, default: 3 },
   pdf: {},
   source: { type: String, default: 'gmail' },
+  _account: { type: String, ref: 'Account' },
 }, {
   timestamps: true,
+});
+
+EmailSchema.virtual('reProcessImages').get(function () { // eslint-disable-line func-names
+  return this._reProcessImages || undefined;
+});
+
+EmailSchema.virtual('reProcessImages').set(function (val) { // eslint-disable-line func-names
+  this._reProcessImages = val;
+  return;
 });
 
 EmailSchema.post('init', function () {  // eslint-disable-line func-names
@@ -62,9 +72,25 @@ EmailSchema.post('remove', (doc) => {
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   Promise.resolve()
   .then(() => {
-    if (this.source === 'blogger' && !this._original) {
+    if (this.source === 'blogger' && (!this._original || this.reProcessImages)) {
+      let tasks = Promise.resolve();
+      if (this.attachments) {
+        _.forEach(this.attachments, (attachment) => {
+          tasks = tasks.then(() => {
+            return removeFile(attachment.path)
+            .then(() => {
+              const attIndex = _.findIndex(this.attachments, { _id: attachment._id });
+              this.attachments = [
+                ...this.attachments.slice(0, attIndex),
+                ...this.attachments.slice(attIndex + 1),
+              ];
+            });
+          });
+        });
+      }
       this.attachmentStyle = 'embedded';
-      return this.processEmbeddedImages();
+      tasks = tasks.then(() => { return this.processEmbeddedImages(); });
+      return tasks;
     }
 
     return this.processEmailAttachments();
@@ -90,7 +116,7 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
   .then(() => {
     next();
   })
-  .catch((err) => { console.log('An error happened when saving an email', err); });
+  .catch((err) => { console.log('An error happened when saving an email', err, err.stack); });
 });
 
 EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {
