@@ -9,6 +9,10 @@ class CompilationComponentsListContainer extends Component {
     super(props, context);
 
     this.rebuildPdf = this.rebuildPdf.bind(this);
+    this.reImportEmailBody = this.reImportEmailBody.bind(this);
+  }
+  reImportEmailBody(id) {
+    this.props.dispatch(Actions.reImportEmailBody(id));
   }
   rebuildPdf(type, id) {
     if (type === 'email') {
@@ -33,6 +37,7 @@ class CompilationComponentsListContainer extends Component {
       componentProps={this.props.componentProps}
       user={this.props.user}
       rebuildPdf={this.rebuildPdf}
+      reImportEmailBody={this.reImportEmailBody}
     />);
   }
   render() {

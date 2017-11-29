@@ -121,8 +121,17 @@
     text-align: center;
     color: #333;
     font-family: 'Montserrat', sans-serif !important;
-    line-height: 16px;
+    line-height: 10px;
     font-size: 8px;
     page-break-inside: avoid !important;
+  }
+  br {
+    content: "";
+    margin: 2em;
+    display: block;
+    font-size: 40%;
+  }
+  blockquote {
+    margin: 8px 0;
   }
 }

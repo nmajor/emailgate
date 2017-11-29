@@ -13,6 +13,10 @@ class CompilationEmailsListItem extends Component {
 
     this.submitForm = this.submitForm.bind(this);
     this.rebuildPdf = this.rebuildPdf.bind(this);
+    this.reImportEmailBody = this.reImportEmailBody.bind(this);
+  }
+  reImportEmailBody() {
+    this.props.reImportEmailBody(this.props.email._id);
   }
   rebuildPdf() {
     this.props.rebuildPdf('email', this.props.email._id);
@@ -42,6 +46,15 @@ class CompilationEmailsListItem extends Component {
       let text = <span><span className="glyphicon glyphicon-refresh" aria-hidden="true"></span> PDF</span>;
       if (this.props.email.rebuilding) { text = <span>Rebuilding</span>; }
       return (<span className="btn btn-success" onClick={this.rebuildPdf}>
+        {text}
+      </span>);
+    }
+  }
+  renderReImportBodyAction() {
+    if (this.props.user.isAdmin && this.props.email.remote_id && this.props.email._account) {
+      let text = <span><span className="glyphicon glyphicon-refresh" aria-hidden="true"></span> ReImport Body</span>;
+      if (this.props.email.reimporting) { text = <span>Rebuilding</span>; }
+      return (<span className="btn btn-warning" onClick={this.reImportEmailBody}>
         {text}
       </span>);
     }
@@ -93,6 +106,7 @@ class CompilationEmailsListItem extends Component {
   }
   renderThumbActions() {
     return (<div className="email-thumb list-item-actions">
+      {this.renderReImportBodyAction()}
       {this.renderRebuildPdfAction()}
       {this.renderPdfAction()}
       {this.renderShowAction()}
@@ -155,6 +169,7 @@ CompilationEmailsListItem.propTypes = {
   componentProps: PropTypes.object,
   user: PropTypes.object.isRequired,
   rebuildPdf: PropTypes.func,
+  reImportEmailBody: PropTypes.func,
 };
 
 export default CompilationEmailsListItem;

@@ -429,6 +429,28 @@ export default (io) => {
       .catch((err) => { console.log('An error happened when rebuilding an email pdf', err); });
     });
 
+    socket.on('REIMPORT_EMAIL_BODY', (data) => {
+      console.log('REIMPORT_EMAIL_BODY', data);
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(userIsAdmin)
+      .then(() => Email.findOne({ _id: data.emailId }))
+      .then((email) => {
+        return Account.findOne({ _id: email._account || 'B1xQfKskz' })
+        .then((account) => {
+          return account.getEmailById(email.remote_id);
+        })
+        .then((freshEmail) => {
+          email.body = freshEmail.body;
+          email.reProcessImages = true;
+          return email.save();
+        })
+        .then((savedEmail) => {
+          socket.emit('UPDATED_COMPILATION_EMAIL', savedEmail);
+        });
+      })
+      .catch((err) => { console.log('An error happened when rebuilding an email pdf', err); });
+    });
+
     socket.on('RESAVE_ALL_COMPILATION_COMPONENTS', (data) => {
       console.log('RESAVE_ALL_COMPILATION_COMPONENTS', data);
       User.findOne({ email: socket.request.session.passport.user })
@@ -467,18 +489,27 @@ export default (io) => {
     socket.on('RUN_ADMIN_TASK', (data) => {
       console.log('RUN_ADMIN_TASK', data);
 
-      Email.findOne({ _id: 'rJfl8idslM' })
+      Email.findOne({ _id: 'B1GyB2jkG' })
       .populate('_account')
       .then((email) => {
-        return email._account.getEmailById(email.remoteId)
-        .then((emails) => {
-          email.body = emails[0].body;
-          return email.save();
-        });
+        return email.save();
       })
       .then(() => {
-        console.log('blah finished');
+        console.log('RUN_ADMIN_TASK finished');
       });
+
+      // Email.findOne({ _id: 'r1rcLxicJM' })
+      // .populate('_account')
+      // .then((email) => {
+      //   return email._account.getEmailById(email.remoteId)
+      //   .then((emails) => {
+      //     email.body = emails[0].body;
+      //     return email.save();
+      //   });
+      // })
+      // .then(() => {
+      //   console.log('RUN_ADMIN_TASK finished');
+      // });
 
       // User.findOne({ email: socket.request.session.passport.user })
       // .then(userIsAdmin)

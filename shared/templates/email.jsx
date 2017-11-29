@@ -533,19 +533,33 @@ class EmailTemplate {
         font-size: 8px;
       }
       .email-template table tr td img {
-        max-height: 245 !important;
+        max-height: 245px !important;
         margin-top: 0 !important;
       }
       .email-template .image-caption-wrap {
         text-align: center;
         color: #333;
         font-family: 'Montserrat', sans-serif !important;
-        line-height: 16px;
+        line-height: 10px;
         font-size: 8px;
         page-break-inside: avoid !important;
       }
+      .email-template .image-caption-wrap img {
+        max-height: 245px !important;
+        margin-top: 0 !important;
+        margin-bottom: 5px;
+      }
       .email-template ol {
         margin-left: 30px;
+      }
+      .email-template br {
+        content: "";
+        margin: 2em;
+        display: block;
+        font-size: 40%;
+      }
+      .email-template blockquote {
+        margin: 8px 0;
       }
     </style>
     <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville' rel='stylesheet' type='text/css'>

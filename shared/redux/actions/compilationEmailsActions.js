@@ -182,3 +182,12 @@ export function rebuildEmailPdf(id) {
     });
   };
 }
+
+export function reImportEmailBody(id) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilationEmail({ _id: id }, 'reimporting', true));
+    socket.emit('REIMPORT_EMAIL_BODY', {
+      emailId: id,
+    });
+  };
+}

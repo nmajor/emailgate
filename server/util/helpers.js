@@ -73,7 +73,7 @@ export function sanitizeEmailBody(text) {
   function pluckStyle(str, style, processValue) {
     processValue = processValue || function (val) { return val; }; // eslint-disable-line
 
-    const regex = /text-indent:\s?(.*?)(;|$)/;
+    const regex = new RegExp(`${style}:\\s?(.*?)(;|$)`);
     const match = regex.exec(str);
     if (match) {
       return `${style}: ${processValue(match[1])};`;
@@ -96,11 +96,11 @@ export function sanitizeEmailBody(text) {
     return val;
   }
 
-  return sanitizeHtml(text, {
+  const sanitaryText = sanitizeHtml(text, {
     allowedTags: [
       'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
       'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
-      'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre',
+      'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'span',
     ],
     allowedAttributes: {
       a: [],
@@ -121,7 +121,9 @@ export function sanitizeEmailBody(text) {
             return limitStyleValue(val, 10);
           });
 
-          newAttribs.style = newStyle;
+          if (newStyle !== '') {
+            newAttribs.style = newStyle;
+          }
         }
 
         return {
@@ -148,7 +150,9 @@ export function sanitizeEmailBody(text) {
           let newStyle = '';
           newStyle += pluckStyle(attribs.style, 'font-weight');
 
-          newAttribs.style = newStyle;
+          if (newStyle !== '') {
+            newAttribs.style = newStyle;
+          }
         }
 
         return {
@@ -178,6 +182,8 @@ export function sanitizeEmailBody(text) {
     //   },
     // },
   });
+
+  return sanitaryText.replace(/\u00A0/g, ' ');
 }
 
 export function sanitizeEmailSubject(text) {
