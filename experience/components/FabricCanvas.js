@@ -2,6 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import shortid from 'shortid';
 import _ from 'lodash';
 import ReactModal from 'react-modal';
+import FabricTextForm from './FabricTextForm';
+import FontFaceObserver from 'fontfaceobserver';
 
 class FabricCanvas extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -12,7 +14,9 @@ class FabricCanvas extends Component { // eslint-disable-line
     this.handleWindowResize = this.handleWindowResize.bind(this);
     this.handleResizeFinished = this.handleResizeFinished.bind(this);
     this.handleObjectModified = this.handleObjectModified.bind(this);
+    this.addObject = this.addObject.bind(this);
     this.addText = this.addText.bind(this);
+    this.closeModal = this.closeModal.bind(this);
 
     this.experiment = this.experiment.bind(this);
 
@@ -74,25 +78,40 @@ class FabricCanvas extends Component { // eslint-disable-line
   canvasElmId() {
     return 'stamp-front-image-canvas';
   }
-  addText() {
-    const text = new fabric.Text('hello world 2', { // eslint-disable-line no-undef
-      id: shortid.generate(),
-      left: 100,
-      top: 100,
-      fontFamily: 'Impact',
-      stroke: '#fff',
-      strokeWidth: 1,
-    });
-
+  addObject(obj) {
+    console.log('blah adding object');
     const objects = _.get(this.props, 'initialData.objects') || [];
     this.props.onChange({
       objects: [
         ...objects,
-        text.toJSON(['id']),
+        obj.toJSON(['id']),
       ],
     });
 
-    this.fCanvas.add(text);
+    this.fCanvas.add(obj);
+  }
+  addText(props) {
+    console.log('blah hey addtext', props.font.family);
+    const font = props.font.name || 'Arial, Helvetica, sans-serif';
+    const obj = new fabric.Text(props.text, { // eslint-disable-line no-undef
+      id: shortid.generate(),
+      left: this.fCanvas.width / 2,
+      top: this.fCanvas.height / 2,
+      fontFamily: font,
+      fill: props.color,
+      stroke: '#fff',
+      strokeWidth: 0.5,
+    });
+
+    this.addObject(obj);
+    // const fontObj = new FontFaceObserver(font, { style: 'cursive' });
+    // fontObj.load()
+    // .then(() => {
+    //   console.log('blah hey Available');
+    //
+    // }, () => {
+    //   console.log('blah hey Unavailable');
+    // });
   }
   loadImage() {
     this.image = this.image || new Image();
@@ -145,15 +164,55 @@ class FabricCanvas extends Component { // eslint-disable-line
   experiment() {
     this.setState({ showModal: true });
   }
+  closeModal() {
+    this.setState({ showModal: false });
+  }
   renderModal() {
+    const styles = {
+      overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1,
+        backgroundColor: 'rgba(20, 20, 20, 0.75)',
+        display: 'flex',
+        alignItems: 'center',
+      },
+      content: {
+        top: '40px',
+        left: '40px',
+        right: '40px',
+        bottom: '40px',
+        border: '1px solid rgb(204, 204, 204)',
+        background: 'rgb(255, 255, 255)',
+        overflow: 'auto',
+        borderRadius: '4px',
+        outline: 'none',
+        padding: '20px',
+      },
+    };
+
     if (this.state.showModal) {
-      return (<ReactModal>
-        hi
+      return (<ReactModal
+        portalClassName="container"
+        contentLabel=""
+        isOpen
+        className="col-md-4 col-md-offset-4"
+        style={styles}
+      >
+        <FabricTextForm
+          obj={{}}
+          onClose={this.closeModal}
+          onSubmit={(props) => { this.addText(props); this.closeModal(); }}
+        />
       </ReactModal>);
     }
   }
   render() {
     return (<div>
+      {this.renderModal()}
       <div ref="measure-width" />
       <div style={{ width: this.state.width, height: this.state.height }}>
         <canvas id={this.canvasElmId()} />
