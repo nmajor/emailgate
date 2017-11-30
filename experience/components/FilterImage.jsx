@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import Filter from '../Filter';
 import FilterOptionThumb from './FilterOptionThumb';
+import _ from 'lodash';
 
 class FilterImage extends Component { // eslint-disable-line
   constructor(props, context) {
@@ -27,7 +28,13 @@ class FilterImage extends Component { // eslint-disable-line
     };
 
     this.image = this.image || new Image();
-    this.image.onload = () => { this.setState({ imageLoaded: true }); };
+    this.image.onload = () => {
+      this.setState({ imageLoaded: true });
+      if (_.get(props, 'filterData.filter')) {
+        console.log('blah constructor', this.props.filterData.filter);
+        this.applyFilter();
+      }
+    };
     this.image.src = this.props.url;
   }
   componentDidUpdate(prevProps) {
@@ -35,8 +42,14 @@ class FilterImage extends Component { // eslint-disable-line
       this.applyFilter();
     }
   }
+  componentWillUnmount() {
+    const filter = new Filter(this.image);
+    console.log('blah unmount in filter', this.props.filterData.filter);
+    const res = filter.filterImage(this.props.filterData.filter);
+    this.props.onSubmit({ url: filter.toDataURL(res) });
+  }
   setFilter(filter) {
-    this.props.onSubmit({ filter });
+    this.props.onChange({ filter });
   }
   applyFilter() {
     this.setState({ rendering: true });
@@ -86,6 +99,7 @@ FilterImage.propTypes = {
   thumbnailUrl: PropTypes.string.isRequired,
   filterData: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default FilterImage;

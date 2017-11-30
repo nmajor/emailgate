@@ -69,6 +69,7 @@ export function cropPostcardImage(postcard) {
             updatedAt: Date.now(),
           },
           filteredImage: undefined,
+          stamppedImage: undefined,
         }));
       });
     });
@@ -86,11 +87,33 @@ export function updatePostcardFilterData(props) {
   };
 }
 
+export function updatePostcardFilteredImage(props) {
+  return (dispatch) => {
+    dispatch(setPostcardProps({
+      filteredImage: {
+        ...props,
+        updatedAt: Date.now(),
+      },
+    }));
+  };
+}
+
 export function updatePostcardStampData(props) {
   return (dispatch) => {
     dispatch(setPostcardProps({
       stampData: {
         ...props,
+      },
+    }));
+  };
+}
+
+export function updatePostcardStamppedImage(props) {
+  return (dispatch) => {
+    dispatch(setPostcardProps({
+      stamppedImage: {
+        ...props,
+        updatedAt: Date.now(),
       },
     }));
   };
