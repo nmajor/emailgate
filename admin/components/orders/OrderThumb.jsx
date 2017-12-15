@@ -21,11 +21,10 @@ class OrderThumb extends Component { // eslint-disable-line
     }
   }
   renderCartItemProps() {
-    if (this.props.order.items.length > 0 && _.some(this.props.order.items, (item) => { return item.props.compilation; })) {
+    if (this.props.order.items.length > 0 && _.some(this.props.order.items, (item) => { return item.props.compilationId; })) {
       const itemProps = this.props.order.items.map((item) => {
         return (<div key={item._id}>
-          <Link to={`/compilations/${item.props.compilationId}`}>{item.props.compilation._id}</Link>
-          {item.props.compilation.pdf ? <span>Has PDF</span> : <span>No PDF</span>}
+          {item.quantity} x <Link to={`/compilations/${item.props.compilationId}`}>{item.props.compilationId} - {item.props.compilationTitle}</Link>
         </div>);
       });
 
@@ -40,6 +39,7 @@ class OrderThumb extends Component { // eslint-disable-line
     }
   }
   render() {
+    console.log('blah hi', this.props.order._user);
     const firstName = _.get(this.props.order, 'shippingAddress.firstName') || _.get(this.props.order, 'billingAddress.firstName');
 
     const lastName = _.get(this.props.order, 'shippingAddress.lastName') || _.get(this.props.order, 'billingAddress.lastName');
@@ -49,6 +49,7 @@ class OrderThumb extends Component { // eslint-disable-line
         {this.renderAcion()}
         <Link to={`/orders/${this.props.order._id}`}>{this.props.order._id}</Link>
         <span className="left-bumper">{firstName} {lastName}</span>
+        <span> {_.get(this.props.order, '_user.email')}</span>
         <span className="left-bumper">${prettyPrice(this.props.order.amount)}</span>
         <span className="left-bumper">{moment(this.props.order.createdAt).format('LL')}</span>
         <span className="left-bumper">{moment(this.props.order.createdAt).fromNow()}</span>

@@ -21,7 +21,9 @@ export function getOrders(cookie) {
       fetchOptions.credentials = 'include';
     }
 
-    return fetch(`${baseURL}/api/admin/orders`, fetchOptions)
+    const query = { includeItemProps: true };
+
+    return fetch(`${baseURL}/api/admin/orders?${serializeQuery(query)}`, fetchOptions)
     .then((res) => {
       if (res.status >= 400) {
         throw new Error(`Bad response from server ${res.status} ${res.statusText}`);

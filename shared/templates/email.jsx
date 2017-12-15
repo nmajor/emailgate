@@ -416,8 +416,10 @@ class EmailTemplate {
   bodyStyles() {
     return {
       fontFamily: '\'Libre Baskerville\', serif !important',
-      lineHeight: '16px',
+      lineHeight: '14px',
+      // lineHeight: '12px',
       fontSize: '9px',
+      // fontSize: '8px',
       marginTop: '20px',
     };
   }

@@ -64,6 +64,8 @@ class CompilationComponentsList extends Component {
         <CompilationPagesListItem
           page={page}
           show={show}
+          user={this.props.user}
+          rebuildPdf={this.props.rebuildPdf}
           edit={this.props.edit}
           componentProps={this.props.componentProps || {}}
         />

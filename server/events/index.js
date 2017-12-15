@@ -423,8 +423,26 @@ export default (io) => {
           console.log(info.message);
         });
       })
+      .then(() => Email.findOne({ _id: data.emailId }))
       .then((email) => {
         socket.emit('UPDATED_COMPILATION_EMAIL', email);
+      })
+      .catch((err) => { console.log('An error happened when rebuilding an email pdf', err); });
+    });
+
+    socket.on('REBUILD_COMPILTION_PAGE_PDF', (data) => {
+      console.log('REBUILD_COMPILTION_PAGE_PDF', data);
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(userIsAdmin)
+      .then(() => Page.findOne({ _id: data.pageId }))
+      .then((page) => {
+        return page.buildPdf((info) => {
+          console.log(info.message);
+        });
+      })
+      .then(() => Page.findOne({ _id: data.pageId }))
+      .then((page) => {
+        socket.emit('UPDATED_COMPILATION_PAGE', page);
       })
       .catch((err) => { console.log('An error happened when rebuilding an email pdf', err); });
     });

@@ -58,7 +58,7 @@ function parseStreamChunk(chunk, cb) {
       const entry = JSON.parse(logEntryString);
       cb(entry);
     } catch (e) {
-      console.log(e);
+      // console.log(e, e.stack);
       console.log(logEntryString);
     }
   }

@@ -11,6 +11,7 @@ import {
   sanitizeEmailBodyPreview,
 } from '../util/helpers';
 import { pageMeta } from '../../shared/helpers';
+import { startWorker } from '../util/docker';
 
 const PageSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -109,6 +110,15 @@ PageSchema.methods.rotateContentImage = function rotateContentImage(angle) {
     })
     .then(() => { return resolve(this); });
   });
+};
+
+PageSchema.methods.buildPdf = function buildPdf(statusCb) {
+  statusCb = statusCb || function() {}; // eslint-disable-line
+  return this.save()
+  .then(() => {
+    return startWorker({ compilationId: this._compilation, pageId: this._id, kind: 'page-pdf' }, statusCb);
+  })
+  .then(() => { return this; });
 };
 
 export default Mongoose.model('Page', PageSchema);

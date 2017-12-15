@@ -70,7 +70,7 @@ class LowSquarePic extends CoverBase {
         <div style={{
           height: '115px',
           position: 'relative',
-          letterSpacing: '5px',
+          letterSpacing: '3px',
           fontWeight: '600',
           fontSize: '33px',
           lineHeight: '40px',

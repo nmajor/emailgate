@@ -151,3 +151,12 @@ export function rotateCompilationPageImage(compilationId, page) {
     });
   };
 }
+
+export function rebuildPagePdf(id) {
+  return (dispatch) => {
+    dispatch(setPropertyForCompilationPage({ _id: id }, 'rebuilding', true));
+    socket.emit('REBUILD_COMPILTION_PAGE_PDF', {
+      pageId: id,
+    });
+  };
+}

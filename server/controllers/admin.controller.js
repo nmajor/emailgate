@@ -65,9 +65,15 @@ export function getOrders(req, res) {
   const query = {};
 
   if (req.query.nullPurchaseOrder) { query._purchaseOrder = { $eq: null }; }
+  if (req.query.hasShippingAddress) { query.shippingAddress = { $ne: [{}, null] }; }
+
+  console.log('blah hi', req.query);
 
   new Promise((resolve) => {
-    if (req.query.includeItemProps) { return resolve(Order.findAndBuildItemProps(query)); }
+    if (req.query.includeItemProps) {
+      return resolve(Order.findAndBuildItemProps(query));
+    }
+
     return resolve(Order.find(query));
   })
   .then((orders) => {
