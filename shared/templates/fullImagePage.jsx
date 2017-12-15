@@ -118,7 +118,7 @@ class FullImagePageTemplate {
     return this.content;
   }
   renderImage() {
-    const image = this.content.image || this.defaultContent.image;
+    const image = this.content.image || this.defaultContent.image || {};
 
     let spinner = null;
     if (image.rotating) {
