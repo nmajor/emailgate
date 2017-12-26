@@ -23,7 +23,7 @@ class TableOfContentsTemplate {
 
     const subjectStyle = {
       fontFamily: '\'Montserrat\', sans-serif',
-      fontSize: '14px',
+      fontSize: '12px',
       textAlign: 'left',
       fontWeight: 'bold',
       marginBottom: '0',
@@ -53,7 +53,7 @@ class TableOfContentsTemplate {
     return (
       <div className="unbreakable" key={index} style={entryStyle}>
         <div style={subjectStyle} dangerouslySetInnerHTML={{ __html: twemoji.parse(subject) }} />
-        <div style={{ lineHeight: '8px', marginBottom: '4px' }}>
+        <div style={{ lineHeight: '7px', marginBottom: '3px' }}>
           <div style={dateStyle}>{prettyDate}{this.renderAttachmentIcons(email)}</div>
           <div style={pageStyle}>{pageNum}</div>
         </div>
@@ -66,7 +66,7 @@ class TableOfContentsTemplate {
       //   return (<span style={{ marginRight: '3px' }} className="glyphicon glyphicon-picture" aria-hidden="true"></span>);
       // });
 
-      return <span><span style={{ margin: '0 10px' }}>-</span><span style={{ marginRight: '3px' }} className="glyphicon glyphicon-picture" aria-hidden="true"></span> x {email.attachments.length}</span>;
+      return <span><span style={{ margin: '0 5px' }}>-</span><span style={{ marginRight: '3px' }} className="glyphicon glyphicon-picture" aria-hidden="true"></span> x {email.attachments.length}</span>;
     }
   }
   renderEntries() {

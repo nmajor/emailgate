@@ -53,11 +53,13 @@ class AddOrderOptionsListItem extends Component { // eslint-disable-line
     }
   }
   render() {
+    const address = _.get(this.props.order, 'shippingAddress') || _.get(this.props.order, 'shippingAddress') || {};
+
     return (<div className={this.props.className}>
       <div>
         {this.renderAcion()}
         <Link to={`/orders/${this.props.order._id}`}>{this.props.order._id}</Link>
-        <span className="left-bumper">{this.props.order.shippingAddress.firstName} {this.props.order.shippingAddress.lastName}</span>
+        <span className="left-bumper">{address.firstName} {address.lastName}</span>
         <span className="left-bumper">{moment(this.props.order.createdAt).format('LL')}</span>
         <span className="left-bumper">${prettyPrice(this.props.order.amount)}</span>
       </div>

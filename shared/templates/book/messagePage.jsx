@@ -21,7 +21,7 @@ class MessagePageTemplate {
       fontFamily: '\'Libre Baskerville\', serif',
       fontSize: '13px',
       textAlign: 'left',
-      padding: '250px 10px 0 10px',
+      padding: '0 10px',
     };
 
     return <div style={divStyle}>{message}</div>;
@@ -31,7 +31,7 @@ class MessagePageTemplate {
       fontFamily: '\'Libre Baskerville\', serif',
       fontSize: '13px',
       textAlign: 'left',
-      padding: '250px 10px 0 10px',
+      padding: '0 10px',
     };
 
     return <div style={divStyle} dangerouslySetInnerHTML={{ __html: message }} />;
@@ -41,16 +41,30 @@ class MessagePageTemplate {
       fontFamily: '\'Montserrat\', sans-serif',
       fontSize: '16px',
       textAlign: 'left',
-      padding: '15px 10px 250px 10px',
+      padding: '15px 10px 0px 10px',
     };
 
     return <div style={divStyle}>{signature}</div>;
   }
 
   render() {
-    return (<div style={{ fontSize: '20px', padding: '0 50px' }}>
-      {this.renderMessageDangerously(this.content.message)}
-      {this.renderSignature(this.content.signature)}
+    return (<div
+      style={{
+        height: '560px',
+        display: 'table',
+      }}
+    >
+      <div
+        style={{
+          fontSize: '20px',
+          padding: '0 20px',
+          verticalAlign: 'middle',
+          display: 'table-cell',
+        }}
+      >
+        {this.renderMessageDangerously(this.content.message)}
+        {this.renderSignature(this.content.signature)}
+      </div>
     </div>);
   }
   renderForm(setFormState) {

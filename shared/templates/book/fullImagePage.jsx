@@ -118,7 +118,7 @@ class FullImagePageTemplate {
     return this.content;
   }
   renderImage() {
-    const image = this.content.image;
+    const image = this.content.image || this.defaultContent.image || {};
 
     let spinner = null;
     if (image.rotating) {
@@ -132,26 +132,25 @@ class FullImagePageTemplate {
       const dataUriPrefix = `data:${image.contentType};base64,`;
       src = dataUriPrefix + image.content;
     }
+    return <img style={{ maxHeight: '100%', maxWidth: '100%', display: 'block' }} role="presentation" src={src} />;
 
-    return (<div
-      className="image-wrapper"
-      style={{
-        position: 'relative',
-        height: '100%',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <img style={{ maxHeight: '100%', maxWidth: '100%', display: 'block' }} role="presentation" src={src} />
-      {spinner}
-    </div>);
+    // return (<div
+    //   className="image-wrapper"
+    //   style={{
+    //     position: 'relative',
+    //     height: '100%',
+    //     width: '100%',
+    //   }}
+    // >
+    //   <img style={{ maxHeight: '100%', maxWidth: '100%', display: 'block' }} role="presentation" src={src} />
+    //   {spinner}
+    // </div>);
   }
   renderHeader(header) {
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
       fontWeight: 'bold',
+      textAlign: 'center',
       fontSize: '18px',
       marginBottom: '10px',
     };
@@ -161,9 +160,23 @@ class FullImagePageTemplate {
     return <div style={divStyle}>{header || this.content.header}</div>;
   }
   render() {
-    return (<div style={{ width: '100%', height: '100%' }}>
-      {this.renderHeader()}
-      {this.renderImage()}
+    return (<div
+      style={{
+        height: '560px',
+        display: 'table',
+      }}
+    >
+      <div
+        style={{
+          verticalAlign: 'middle',
+          textAlign: 'center',
+          display: 'table-cell',
+          width: '100%',
+        }}
+      >
+        {this.renderHeader()}
+        {this.renderImage()}
+      </div>
     </div>);
   }
   renderForm(setFormState, rotateImage) {

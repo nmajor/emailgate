@@ -34,6 +34,13 @@ class CompilationEmailsListItem extends Component {
       <span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
     </Link>);
   }
+  renderPdfPageCount() {
+    if (_.get(this.props.email, 'pdf.pageCount') && this.props.user.isAdmin) {
+      return (<div className="label label-default label-sm">
+        <span className="glyphicon glyphicon-file" aria-hidden="true"></span> {_.get(this.props.email, 'pdf.pageCount')}
+      </div>);
+    }
+  }
   renderPdfAction() {
     if (_.get(this.props.email, 'pdf.url') && this.props.user.isAdmin) {
       return (<a target="_blank" className="btn btn-primary" href={this.props.email.pdf.url}>
@@ -106,6 +113,7 @@ class CompilationEmailsListItem extends Component {
   }
   renderThumbActions() {
     return (<div className="email-thumb list-item-actions">
+      {this.renderPdfPageCount()}
       {this.renderReImportBodyAction()}
       {this.renderRebuildPdfAction()}
       {this.renderPdfAction()}

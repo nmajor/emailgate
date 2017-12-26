@@ -302,6 +302,23 @@ CompilationSchema.methods.seedPages = function seedPages() {
 CompilationSchema.methods.buildPdf = function buildPdf(statusCb) {
   statusCb = statusCb || function() {}; // eslint-disable-line
 
+  // return Promise.all([
+  //   this.getEmailPositionMap(),
+  //   this.getEmailPageMap(),
+  //   this.getPagePositionMap(),
+  // ])
+  // .then((results) => {
+  //   const [emailPositionMap, emailPageMap, pagePositionMap] = results;
+  //
+  //   return startWorker({
+  //     compilationId: this.id,
+  //     kind: 'compilation-pdf',
+  //     emailPositionMap,
+  //     emailPageMap,
+  //     pagePositionMap,
+  //   }, statusCb);
+  // });
+
   // return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
   // .then((pages) => {
   //   return Promise.all(pages.map((page) => {

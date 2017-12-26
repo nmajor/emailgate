@@ -18,7 +18,7 @@ class CompilationComponentsListContainer extends Component {
     if (type === 'email') {
       this.props.dispatch(Actions.rebuildEmailPdf(id));
     } else if (type === 'page') {
-      console.log('Not implemented yet');
+      this.props.dispatch(Actions.rebuildPagePdf(id));
     }
   }
   renderCompilationComponentsList() {

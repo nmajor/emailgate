@@ -103,6 +103,10 @@ function requestShipToItems(order) {
 }
 
 function requestShipTo(order) {
+  // UPS Ground Residential: UPSGSRNA
+  // UPS Next Day Air Residential: UPSNDAR
+  // UPS Second Day Air Residential: UPSSDAR
+
   return {
     AddressId: getAddressId(order.shippingAddress),
     Currency: 'USD',

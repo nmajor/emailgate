@@ -4,15 +4,43 @@ import { pageMeta, isPageEditable } from '../helpers';
 import CompilationPageView from './CompilationPageView';
 import CompilationPageForm from './CompilationPageForm';
 import Loading from './Loading';
+import _ from 'lodash';
 
 class CompilationPagesListItem extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.submitForm = this.submitForm.bind(this);
+    this.rebuildPdf = this.rebuildPdf.bind(this);
   }
   submitForm() {
     this.refs.form.submitForm();
+  }
+  rebuildPdf() {
+    this.props.rebuildPdf('page', this.props.page._id);
+  }
+  renderPdfAction() {
+    if (_.get(this.props.page, 'pdf.url') && this.props.user.isAdmin) {
+      return (<a target="_blank" className="btn btn-primary" href={this.props.page.pdf.url}>
+        <span className="glyphicon glyphicon-file" aria-hidden="true"></span> PDF
+      </a>);
+    }
+  }
+  renderPdfPageCount() {
+    if (_.get(this.props.page, 'pdf.pageCount') && this.props.user.isAdmin) {
+      return (<div className="label label-default label-sm">
+        <span className="glyphicon glyphicon-file" aria-hidden="true"></span> {_.get(this.props.page, 'pdf.pageCount')}
+      </div>);
+    }
+  }
+  renderRebuildPdfAction() {
+    if (this.props.user.isAdmin) {
+      let text = <span><span className="glyphicon glyphicon-refresh" aria-hidden="true"></span> PDF</span>;
+      if (this.props.page.rebuilding) { text = <span>Rebuilding</span>; }
+      return (<span className="btn btn-success" onClick={this.rebuildPdf}>
+        {text}
+      </span>);
+    }
   }
   renderHideAction() {
     return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build`}>
@@ -20,9 +48,9 @@ class CompilationPagesListItem extends Component {
     </Link>);
   }
   renderShowAction() {
-    return (<div className="btn btn-default">
+    return (<Link className="btn btn-default" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
       <span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-    </div>);
+    </Link>);
   }
   renderEditAction() {
     if (!isPageEditable(this.props.page)) { return null; }
@@ -78,17 +106,36 @@ class CompilationPagesListItem extends Component {
 
     return null;
   }
-  renderPageThumb() {
-    return (<Link className="compilation-pages-list-item list-item" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
-      <div className="list-item-actions page-thumb">
-        {this.renderShowAction()}
-      </div>
-      <div className="type">
-        <span className="glyphicon glyphicon-file" aria-hidden="true"></span> Page
-      </div>
-      {pageMeta(this.props.page).desc}{this.renderPageHelperText()}
-    </Link>);
+  renderThumbActions() {
+    return (<div className="list-item-actions page-thumb">
+      {this.renderPdfPageCount()}
+      {this.renderRebuildPdfAction()}
+      {this.renderPdfAction()}
+      {this.renderShowAction()}
+    </div>);
   }
+  renderPageThumb() {
+    return (<div className="relative">
+      {this.renderThumbActions()}
+      <div
+        className="compilation-pages-list-item list-item"
+        onClick={() => {
+          this.context.router.push(`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`);
+        }}
+      >
+        <div className="type">
+          <span className="glyphicon glyphicon-file" aria-hidden="true"></span> Page
+        </div>
+        {pageMeta(this.props.page).desc}{this.renderPageHelperText()}
+      </div>
+    </div>);
+  }
+  // renderPageThumb() {
+  //   return (<Link className="compilation-pages-list-item list-item" to={`/compilations/${this.props.page._compilation}/build/pages/${this.props.page._id}`}>
+  //
+  //
+  //   </Link>);
+  // }
   renderPageListItem() {
     if (this.props.show === 'view') {
       return (<div className="relative">
@@ -124,10 +171,16 @@ class CompilationPagesListItem extends Component {
   }
 }
 
+CompilationPagesListItem.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
+
 CompilationPagesListItem.propTypes = {
   page: PropTypes.object.isRequired,
   show: PropTypes.string,
   edit: PropTypes.func,
+  user: PropTypes.object.isRequired,
+  rebuildPdf: PropTypes.func,
   componentProps: PropTypes.object,
 };
 

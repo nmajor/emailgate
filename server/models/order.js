@@ -82,6 +82,7 @@ OrderSchema.pre('save', function (next) { // eslint-disable-line func-names
 
 OrderSchema.statics.findAndBuildItemProps = function findAndBuildItemProps(query) {
   return this.find(query)
+  .populate('_user')
   .then((orders) => {
     return Promise.all(orders.map((order) => {
       order = order.toJSON(); // eslint-disable-line no-param-reassign

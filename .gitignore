@@ -14,4 +14,4 @@ secret.env
 container/myemailbook*
 container/app_missionarymemoir_com*
 newrelic_agent.log
-public/img/tmp/*
+public/img/tmp

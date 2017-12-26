@@ -131,7 +131,7 @@ EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {
 
 EmailSchema.methods.rotateImageAttachment = function (attachmentContentId, angle) { // eslint-disable-line func-names
   return new Promise((resolve) => {
-    const attachmentIndex = _.findIndex(this.attachments, (attachment) => { return attachment._id === attachmentContentId || attachment.md5 === attachmentContentId; });
+    const attachmentIndex = _.findIndex(this.attachments, (attachment) => { return attachment._id === attachmentContentId || attachment.md5 === attachmentContentId || attachment.contentId === attachmentContentId; });
     const attachment = this.attachments[attachmentIndex];
 
     rotateImageAttachment(attachment, angle)

@@ -21,7 +21,7 @@ class PurchaseOrderShowContainer extends Component { // eslint-disable-line
     }
   }
   getAddableOrders() {
-    this.props.dispatch(Actions.queryOrders({ nullPurchaseOrder: true, includeItemProps: true }, (addableOrders) => {
+    this.props.dispatch(Actions.queryOrders({ nullPurchaseOrder: true, includeItemProps: true, hasShippingAddress: true }, (addableOrders) => {
       this.setState({ addableOrders });
     }));
   }
