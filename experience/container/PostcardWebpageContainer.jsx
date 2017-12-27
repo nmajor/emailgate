@@ -16,11 +16,11 @@ class PostcardWebpageContainer extends Component { // eslint-disable-line
     const resize = 0.5;
 
     return (<div
+      className="profile-image-cropp-wrapper"
       style={{
         width: `${crop.w * resize}px`,
         height: `${crop.h * resize}px`,
         overflow: 'hidden',
-        borderRadius: '50%',
       }}
     >
       <img
@@ -36,22 +36,15 @@ class PostcardWebpageContainer extends Component { // eslint-disable-line
   render() {
     const { compilation } = this.props;
 
-    return (<div className="postcard-page-container">
+    return (<div className="profile-page-container">
       <div className="container-fluid profile-container">
-        <div className="row">
-          <div className="col-md-12 centered">
-            <div className="profile-box">
-              {this.renderImage()}
-              <h3>{compilation.webpage.title}</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="container postcard-container">
-        <div className="row">
-          <div className="col-md-12 centered">
-            <div className="postcard-box">
-              <BuildPostcardContainer />
+        <div className="banner-body">
+          <div className="row">
+            <div className="col-md-12 centered">
+              <div className="profile-box">
+                {this.renderImage()}
+                <h3>{compilation.webpage.title}</h3>
+              </div>
             </div>
           </div>
         </div>

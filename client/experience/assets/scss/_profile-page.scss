@@ -1,0 +1,58 @@
+.profile-page-container {
+  background-color: #eee;
+
+  .profile-container:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.6;
+    background-image: url('/img/wheatfield.jpg');
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+  }
+
+  .profile-container {
+    background: #108dc7;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #ef8e38, #108dc7);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #ef8e38, #108dc7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+    position: relative;
+    overflow: hidden;
+
+    .banner-body {
+      padding: 50px;
+      padding: 50px;
+      z-index: 2;
+      position: relative;
+    }
+  }
+
+  .profile-container {
+    .profile-box {
+      color: #eee;
+      // padding: 30px;
+      // border-radius: 5px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      .profile-image-cropp-wrapper {
+        border: 5px solid #FFF;
+        border-radius: 50%;
+      }
+    }
+  }
+}

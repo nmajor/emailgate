@@ -5,6 +5,8 @@ import BuildPostcardBackContainer from './BuildPostcardBackContainer';
 import BuildPostcardFrontContainer from './BuildPostcardFrontContainer';
 import CheckoutPostcardContainer from './CheckoutPostcardContainer';
 
+import icons from '../icons';
+
 class BuildPostcardContainer extends Component { // eslint-disable-line
   constructor(props, context) {
     super(props, context);
@@ -20,7 +22,9 @@ class BuildPostcardContainer extends Component { // eslint-disable-line
       className={`step ${selected ? 'active' : ''}`}
       onClick={() => { this.setState({ step }); }}
     >
-      {text}
+      {icons[step].renderVector()}
+      <div className="hidden">{icons[step].attribution}</div>
+      <div>{text}</div>
     </div>);
   }
   renderStepOptions() {
@@ -43,7 +47,7 @@ class BuildPostcardContainer extends Component { // eslint-disable-line
     }
   }
   render() {
-    return (<div className="">
+    return (<div className="postcard-page-container">
       {this.renderStepOptions()}
       {this.renderCurrentStepContainer()}
     </div>);

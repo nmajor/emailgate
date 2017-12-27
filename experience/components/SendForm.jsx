@@ -16,7 +16,7 @@ class WebpageForm extends Component { // eslint-disable-line
       // handleSubmit,
     } = this.props;
 
-    return (<form onSubmit={handleSubmit}>
+    return (<form onSubmit={() => {}}>
       <div className="row">
         <div className="col-sm-12">
           <div className="form-group">
