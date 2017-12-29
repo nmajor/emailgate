@@ -39,7 +39,6 @@ class OrderThumb extends Component { // eslint-disable-line
     }
   }
   render() {
-    console.log('blah hi', this.props.order._user);
     const firstName = _.get(this.props.order, 'shippingAddress.firstName') || _.get(this.props.order, 'billingAddress.firstName');
 
     const lastName = _.get(this.props.order, 'shippingAddress.lastName') || _.get(this.props.order, 'billingAddress.lastName');

@@ -199,6 +199,10 @@ export function requestItems(orders) {
 }
 
 export function requestOrder(purchaseOrder, orders) {
+  // SL10 - Economy (I think)
+  // SL20 - Express (I think)
+  // SL30 - Rush (I think)
+
   return {
     BillToAddressId: 'addr-bill',
     Id: getPurchaseOrderId(purchaseOrder),
