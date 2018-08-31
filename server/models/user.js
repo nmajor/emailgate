@@ -132,7 +132,7 @@ UserSchema.methods.generateResetPasswordToken = function generateResetPasswordTo
 UserSchema.methods.sendForgotPassword = function sendForgotPassword() {
   return this.generateResetPasswordToken()
   .then((savedUser) => {
-    const resetPasswordUrl = `http://emailgate.nmajor.com/reset/${savedUser.resetPasswordToken}`;
+    const resetPasswordUrl = `http://app.missionarymemoir.com/reset/${savedUser.resetPasswordToken}`;
 
     return sendMail({
       to: this.email,
