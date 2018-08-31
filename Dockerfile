@@ -15,7 +15,7 @@ RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD package.json /tmp/package.json
 RUN cd /tmp && npm install --production
-RUN npm -g install webpack
+RUN npm -g install webpack@1.13.0
 
 ADD container/containerbuddy/containerbuddy /sbin/containerbuddy
 ADD container/nginx.conf /etc/nginx/nginx.conf
