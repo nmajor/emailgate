@@ -18,7 +18,7 @@ export function addEmbeddedAttachmentsToEmailBody(email) {
   if (!placeholderedAttachments || placeholderedAttachments.length === 0) { return email; }
 
   const placeholderMap = _.fromPairs(placeholderedAttachments.map((att, index) => {
-    att.url = att.originalSrc;
+    att.url = att.url || att.originalSrc;
     return [_.escapeRegExp(att.tagPlaceholder), renderToString(renderAttachment(att, index, { centered: true }))];
   }));
 
@@ -54,7 +54,7 @@ function renderAttachment(attachment, index, options) {
   }
 
   if (options.centered) {
-    return (<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%', textAlign: 'center' }}>
+    return (<div attachmentId={attachment._id} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%', textAlign: 'center' }}>
       {imageTag}
     </div>);
   }
@@ -217,7 +217,6 @@ class AttachmentInput extends Component { // eslint-disable-line
     const { attachments } = this.props.email;
     const newState = {};
     const attachmentIndex = _.findIndex(attachments, (a) => {
-      console.log('blah hi contentId', contentId);
       return a._id === contentId || a.md5 === contentId || a.contentId === contentId;
     });
 
@@ -230,6 +229,7 @@ class AttachmentInput extends Component { // eslint-disable-line
       ...attachments.slice(attachmentIndex + 1),
     ];
     this.props.setFormState(undefined, newState);
+
 
     // const { attachments } = this.props.email;
     // const attachment = attachments[index];
@@ -258,7 +258,7 @@ class AttachmentInput extends Component { // eslint-disable-line
   }
   renderAttachmentActions(attachment, index) {
     if (attachment.url) {
-      return (<div className="attachment-actions">
+      return (<div className={`attachment-actions attachment-${attachment._id}-actions`}>
         <div
           className="btn btn-primary btn-xs-true"
           onClick={() => { this.rotateAttachment(attachment._id || attachment.md5 || attachment.contentId); }}
@@ -289,8 +289,6 @@ class AttachmentInput extends Component { // eslint-disable-line
       textAlign: 'center',
     };
 
-    console.log('blah hi', this.props.email.attachments);
-
     const imageComponents = this.props.email.attachments.map((attachment, index) => {
       let spinner = null;
       if (attachment.rotating) {
@@ -300,7 +298,7 @@ class AttachmentInput extends Component { // eslint-disable-line
       }
 
       if (attachment.url) {
-        return (<div className="attachment-wrapper" style={wrapperStyle} key={index}>
+        return (<div className="attachment-wrapper" id={`attachment-${attachment._id}`} style={wrapperStyle} key={index}>
           {spinner}
           {this.renderAttachmentActions(attachment, index)}
           <img role="presentation" style={divStyle} src={`${attachment.url}?t=${attachment.updatedAt}`} />
@@ -308,7 +306,7 @@ class AttachmentInput extends Component { // eslint-disable-line
       } else if (attachment.content && ['image/jpeg', 'image/png'].indexOf(attachment.contentType) > -1) {
         const dataUriPrefix = `data:${attachment.contentType};base64,`;
 
-        return (<div className="attachment-wrapper" style={wrapperStyle} key={index}>
+        return (<div className="attachment-wrapper" id={`attachment-${attachment._id}`} style={wrapperStyle} key={index}>
         {spinner}
           {this.renderAttachmentActions(attachment, index)}
           <img role="presentation" style={divStyle} src={dataUriPrefix + attachment.content} />
@@ -431,7 +429,7 @@ class EmailTemplate {
   renderSubject(subject) {
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
-      fontWeight: 'bold',
+      fontWeight: '400',
       fontSize: '18px',
       marginBottom: '3px',
     };
@@ -442,7 +440,7 @@ class EmailTemplate {
     // IMPORTANT if you change the fontSize here, also change it in the style of renderToString and the css for the class rendered-email-subject
     const divStyle = {
       fontFamily: '\'Montserrat\', sans-serif !important',
-      fontWeight: 'bold',
+      fontWeight: '400',
       fontSize: '18px',
       marginBottom: '3px',
     };
@@ -466,8 +464,8 @@ class EmailTemplate {
 
   render() {
     const email = this.email;
-    let emailBody = email.embeddedBody || email.body;
-    emailBody = _.isEmpty(email.bodyPreview) ? 'No email body' : emailBody;
+    const emailBody = email.embeddedBody || email.body;
+    // emailBody = _.isEmpty(email.bodyPreview) ? 'No email body' : emailBody;
 
     return (<div className="email-template" style={{ fontSize: '20px' }}>
       {this.renderDate(moment(email.date).format('LL'))}
@@ -479,11 +477,11 @@ class EmailTemplate {
   }
 
   renderForm(setFormState, setBodyState, props) {
-    let bodyInput = <textarea />;
+    let bodyInput = <textarea className="editable" id="email-body" name="body" contentEditable onBlur={setFormState}>{this.email.body}</textarea>;
     try {
       const ReactQuill = require('react-quill');  // eslint-disable-line global-require
 
-      bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
+      // bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
     } catch (err) {} // eslint-disable-line
 
     const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;
@@ -532,6 +530,12 @@ class EmailTemplate {
       }
       .email-template table tbody {
         page-break-inside: avoid !important;
+      }
+      .full-height {
+        height: 610px;
+      }
+      .full-height img {
+        max-height: 610px !important;
       }
       .email-template table tr td {
         color: #333;
