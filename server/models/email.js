@@ -1,5 +1,6 @@
 import Mongoose, { Schema } from 'mongoose';
 import shortid from 'shortid';
+import * as pdfShop from '../util/pdfShop';
 import Page from './page';
 import {
   sanitizeEmailBody,
@@ -14,6 +15,7 @@ import {
   replaceImgTag,
 } from '../util/helpers';
 import { startWorker } from '../util/docker';
+import { stringToSha1 } from '../../shared/helpers';
 
 import EmailTemplate, { addEmbeddedAttachmentsToEmailBody } from '../../shared/templates/email';
 import _ from 'lodash';
@@ -33,7 +35,8 @@ const EmailSchema = new Schema({
   template: String,
   attachments: [],
   attachmentStyle: { type: String, default: 'default' },
-  estimatedPageCount: { type: Number, default: 3 },
+  pageCount: { type: Number, default: 0 },
+  fullHtmlSha1: String,
   pdf: {},
   source: { type: String, default: 'gmail' },
   _account: { type: String, ref: 'Account' },
@@ -96,6 +99,10 @@ EmailSchema.pre('save', function (next) { // eslint-disable-line func-names
     return this.processEmailAttachments();
   })
   .then(() => {
+    this.body = this.body.replace(/\<(p|span)\>[a-zA-Z0-9_]{0,15}\.(jpg|jpeg|png)\<\/(p|span)\>/gi, '').replace(/\<(p|span)\>(<>|&lt;&gt;)\<\/(p|span)\>/g, '').replace(/\<(p|span)\>(SANY|IMG|DSC)_?[0-9_]{0,10}\<\/(p|span)\>/g, '');
+
+    // .replace(/\<br\s?\/?\>\s?\"?undefined\"?/, '<br />')
+
     if (this.propChanged('body') && !_.isEmpty(this.body)) {
       this.body = sanitizeEmailBody(this.body);
       this.body = trimKnownBodyFluff(this.body);
@@ -125,8 +132,28 @@ EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {
     const template = new EmailTemplate(addEmbeddedAttachmentsToEmailBody(this));
     const html = template.toString();
     this.template = html;
+
+    const fullHtml = this.template.replace('[[BODY]]', this.body);
+    this.fullHtmlSha1 = stringToSha1(fullHtml);
+    console.log('blah hello fullHtmlSha1', this.fullHtmlSha1);
+
     resolve(this);
   });
+};
+
+EmailSchema.methods.updatePdf = function updatePdf() {
+  if (this.pdf && this.fullHtmlSha1 === this.pdf.htmlSha1) {
+    return Promise.resolve(this);
+  }
+
+  const html = this.template.replace('[[BODY]]', this.body);
+  return pdfShop.createPdf(html)
+  .then((pdfRes) => {
+    console.log('blah hello pdfRes', pdfRes);
+    this.pageCount = pdfRes.pageCount;
+    this.pdf = pdfRes;
+    return this.save();
+  }).catch((err) => console.log(`There was an error building the pdf for email ${this._id}, from compilation ${this._compilation}`, err));
 };
 
 EmailSchema.methods.rotateImageAttachment = function (attachmentContentId, angle) { // eslint-disable-line func-names
@@ -144,7 +171,8 @@ EmailSchema.methods.rotateImageAttachment = function (attachmentContentId, angle
         updatedAttachment,
         ...this.attachments.slice(attachmentIndex + 1),
       ];
-      return this.save();
+      return this.save()
+      .catch((er) => {console.log('blah hey error saging', er);});
     })
     .then(() => { return resolve(this); });
   });

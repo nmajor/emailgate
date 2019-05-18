@@ -2,6 +2,7 @@ import Account from '../models/account';
 import User from '../models/user';
 import Compilation from '../models/compilation';
 import Email from '../models/email';
+import Order from '../models/order';
 import Page from '../models/page';
 import Cart from '../models/cart';
 import _ from 'lodash';
@@ -137,7 +138,13 @@ export default (io) => {
       .then((user) => {
         return Promise.all([
           Account.findOne({ _user: user._id, _id: data.accountId }),
-          Compilation.findOne({ _user: user._id, _id: data.compilationId }),
+          userIsAdminSafe(user)
+          .then((isAdmin) => {
+            if (isAdmin) {
+              return Compilation.findOne({ _id: data.compilationId });
+            }
+            return Compilation.findOne({ _user: user._id, _id: data.compilationId });
+          }),
         ]);
       })
       .then((results) => {
@@ -249,7 +256,9 @@ export default (io) => {
         .then(compilation => Email.findOne({ _compilation: compilation._id, _id: data.emailId }))
         .then((email) => {
           if (data.newData.subject) { email.subject = data.newData.subject; } // eslint-disable-line no-param-reassign
-          if (data.newData.body) { email.body = data.newData.body; } // eslint-disable-line no-param-reassign
+          if (data.newData.body) {
+            email.body = decodeURIComponent(data.newData.body);
+          } // eslint-disable-line no-param-reassign
           if (data.newData.date) { email.date = data.newData.date; } // eslint-disable-line no-param-reassign
           if (data.newData.from) { email.from = data.newData.from; } // eslint-disable-line no-param-reassign
           if (data.newData.attachments) { email.attachments = data.newData.attachments; } // eslint-disable-line no-param-reassign
@@ -257,6 +266,12 @@ export default (io) => {
         })
         .then((email) => {
           socket.emit('UPDATED_COMPILATION_EMAIL', email);
+
+          return email.updatePdf();
+        })
+        .then((email) => {
+          socket.emit('UPDATED_COMPILATION_EMAIL', email);
+
           return Promise.resolve(email);
         });
       })
@@ -392,6 +407,45 @@ export default (io) => {
       });
     });
 
+    socket.on('ADMIN_UPDATE_ORDER', (data) => {
+      console.log('ADMIN_UPDATE_ORDER', data);
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(userIsAdmin)
+      .then(() => Order.findOne({ _id: data.orderId }))
+      .then((order) => {
+        if (order && data.props.shippingMethod) {
+          console.log('blah hello data.props.shippingMethod', data.props.shippingMethod);
+          return Order.update({ _id: data.orderId }, { $set: { shippingMethod: data.props.shippingMethod } });
+        }
+        return Promise.resolve();
+      })
+      .then(() => Order.findOne({ _id: data.orderId }))
+      .then((order) => {
+        socket.emit('UPDATED_ORDER', order);
+      });
+    });
+
+    socket.on('BUILD_COMPILATION_EMAILS_PDFS_DOCKER', (data) => {
+      console.log('BUILD_COMPILATION_EMAILS_PDFS_DOCKER', data);
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(userIsAdmin)
+      .then(() => Compilation.findOne({ _id: data.compilationId }))
+      .then((compilation) => {
+        return compilation.buildEmailsPdfs((info) => {
+          socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: info });
+        });
+      })
+      .then(() => {
+        return Compilation.findOne({ _id: data.compilationId });
+      })
+      .then(() => {
+        // socket.emit('UPDATED_COMPILATION', compilation);
+      })
+      .catch((err) => {
+        socket.emit('COMPILATION_LOG_ENTRY', { compilationId: data.compilationId, entry: err });
+      });
+    });
+
     socket.on('BUILD_COMPILATION_COVER_PDF', (data) => {
       console.log('BUILD_COMPILATION_COVER_PDF', data);
       User.findOne({ email: socket.request.session.passport.user })
@@ -415,6 +469,21 @@ export default (io) => {
 
     socket.on('REBUILD_COMPILTION_EMAIL_PDF', (data) => {
       console.log('REBUILD_COMPILTION_EMAIL_PDF', data);
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(userIsAdmin)
+      .then(() => Email.findOne({ _id: data.emailId }))
+      .then((email) => email.save())
+      .then((email) => {
+        return email.updatePdf();
+      })
+      .then((email) => {
+        socket.emit('UPDATED_COMPILATION_EMAIL', email);
+      })
+      .catch((err) => { console.log('An error happened when rebuilding an email pdf', err); });
+    });
+
+    socket.on('REBUILD_COMPILTION_EMAIL_PDF_DOCKER', (data) => {
+      console.log('REBUILD_COMPILTION_EMAIL_PDF_DOCKER', data);
       User.findOne({ email: socket.request.session.passport.user })
       .then(userIsAdmin)
       .then(() => Email.findOne({ _id: data.emailId }))
@@ -484,6 +553,7 @@ export default (io) => {
         .then((results) => {
           const [pages, emails] = results;
           const components = [...pages, ...emails];
+
           let tasks = Promise.resolve();
 
           _.forEach(components, (component, index) => {
@@ -499,6 +569,45 @@ export default (io) => {
         })
         .then(() => {
           socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: { type: 'status', message: 'Resave complete!!' } });
+        });
+      })
+      .catch((err) => { console.log('An error happened resaving all compilation components', err); });
+    });
+
+    socket.on('BUILD_COMPILATION_EMAILS_PDFS', (data) => {
+      console.log('BUILD_COMPILATION_EMAILS_PDFS', data);
+      User.findOne({ email: socket.request.session.passport.user })
+      .then(userIsAdmin)
+      .then(() => Compilation.findOne({ _id: data.compilationId }))
+      .then((compilation) => {
+        socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: { type: 'status', message: 'Resaving all compilation components' } });
+
+        return Promise.all([
+          Page.find({ _compilation: compilation._id }),
+          Email.find({ _compilation: compilation._id }),
+        ])
+        .then((results) => {
+          const [pages, emails] = results;
+          const components = [...pages, ...emails];
+
+          let tasks = Promise.resolve();
+
+          _.forEach(emails, (component, index) => {
+            tasks = tasks.then(() => {
+              return component.save();
+            })
+            .then((email) => {
+              return email.updatePdf();
+            })
+            .then(() => {
+              socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: { type: 'status', message: `Resaved ${index + 1} out of ${components.length}` } });
+            });
+          });
+
+          return tasks;
+        })
+        .then(() => {
+          socket.emit('COMPILATION_LOG_ENTRY', { compilationId: compilation._id, entry: { type: 'status', message: 'Pdf builds complete' } });
         });
       })
       .catch((err) => { console.log('An error happened resaving all compilation components', err); });

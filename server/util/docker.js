@@ -1,43 +1,52 @@
 require('dotenv').config({ silent: true });
 import _ from 'lodash';
+import fs from 'fs';
 import Docker from 'dockerode';
 
 function getDockerObject() {
-  if (process.env.NODE_ENV === 'production') {
+  const socket = process.env.DOCKER_SOCKET;
+  const isSocket = fs.existsSync(socket) ? fs.statSync(socket).isSocket() : false;
+
+  if (isSocket) {
+    console.log('blah connecting to docker socket');
     return new Docker({
-      port: process.env.DOCKER_PORT,
-      host: process.env.DOCKER_HOST,
-      ca: (new Buffer(process.env.DOCKER_CA, 'base64').toString('utf8')),
-      cert: (new Buffer(process.env.DOCKER_CERT, 'base64').toString('utf8')),
-      key: (new Buffer(process.env.DOCKER_KEY, 'base64').toString('utf8')),
+      socketPath: socket,
     });
   }
 
-  return new Docker();
+  console.log('blah non-socket connection');
+  return new Docker({
+    port: process.env.DOCKER_PORT,
+    host: process.env.DOCKER_HOST,
+    // ca: process.env.DOCKER_CA && (new Buffer(process.env.DOCKER_CA, 'base64').toString('utf8')),
+    // cert: process.env.DOCKER_CERT && (new Buffer(process.env.DOCKER_CERT, 'base64').toString('utf8')),
+    // key: process.env.DOCKER_KEY && (new Buffer(process.env.DOCKER_KEY, 'base64').toString('utf8')),
+  });
 }
 
 const docker = getDockerObject();
 
-function pullImage(image) {
-  return new Promise((resolve, reject) => {
-    if (image.indexOf('/') > -1) {
-      docker.pull(`${image}:latest`, (err, stream) => {
-        if (err) { return reject(err); }
-
-        stream.on('error', (err) => { // eslint-disable-line no-shadow
-          console.log(`An error happened ${err.message}`);
-        });
-
-        stream.on('end', () => {
-          resolve();
-        });
-        // streaming output from pull...
-      });
-    } else {
-      resolve();
-    }
-  });
-}
+// function pullImage(image) {
+//   console.log('blah pulling image');
+//   return new Promise((resolve, reject) => {
+//     if (image.indexOf('/') > -1) {
+//       docker.pull(`${image}:latest`, (err, stream) => {
+//         if (err) { return reject(err); }
+//
+//         stream.on('error', (err) => { // eslint-disable-line no-shadow
+//           console.log(`An error happened ${err.message}`);
+//         });
+//
+//         stream.on('end', () => {
+//           resolve();
+//         });
+//         // streaming output from pull...
+//       });
+//     } else {
+//       resolve();
+//     }
+//   });
+// }
 
 function parseStreamChunk(chunk, cb) {
   const logEntryString = chunk.toString('utf8');
@@ -138,6 +147,10 @@ function findContainer(name) {
 }
 
 function createContainer(config) {
+  // docker.listImages((err, images) => {
+  //   console.log('blah hello images', images);
+  // });
+
   return new Promise((resolve, reject) => {
     docker.createContainer(config, (err, container) => { // eslint-disable-line no-shadow
       if (err) { return reject(err); }
@@ -146,13 +159,17 @@ function createContainer(config) {
   });
 }
 
-function findOrCreateContainer(config, task) {
+function findOrCreateContainer(config, task, status, compilation) {
   return new Promise((resolve, reject) => {
     config.Env.push(`TASK=${encodeTask(task)}`);
-    console.log(config.Env);
+    // console.log(config.Env);
+    console.log('blah hey config', config);
 
-    findContainer(config.name)
+    const containerName = _.isEmpty(compilation) ? config.name : `${config.name}-${compilation._id}`;
+
+    findContainer(containerName)
     .then((container) => {
+      console.log('blah hello findOrCreateContainer');
       if (!container) { return resolve(createContainer(config)); }
 
       if (container) {
@@ -205,15 +222,12 @@ function getEnv() {
   });
 }
 
-export function startWorker(task, statusCb) {
+export function startWorker(task, statusCb, compilation) {
   return getEnv()
   .then((env) => {
     const containerConfig = getDockerConfig(env, task);
 
-    return pullImage(containerConfig.Image)
-    .then(() => {
-      return findOrCreateContainer(containerConfig, task, statusCb);
-    })
+    return findOrCreateContainer(containerConfig, task, statusCb, compilation)
     .then((container) => {
       return attachToContainer(container, statusCb);
     });

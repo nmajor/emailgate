@@ -1,13 +1,20 @@
 import * as ActionTypes from '../constants';
 // import fetch from 'isomorphic-fetch';
 import baseURL from '../../../shared/baseURL';
-// import socket from '../../../client/socket';
+import socket from '../../../client/socket';
 import { serializeQuery } from '../../../shared/helpers';
 
 export function setOrders(orders) {
   return {
     type: ActionTypes.SET_ORDERS,
     orders,
+  };
+}
+
+export function updateOrderInOrders(order) {
+  return {
+    type: ActionTypes.UPDATE_ORDER_IN_ORDERS,
+    order,
   };
 }
 
@@ -68,5 +75,11 @@ export function queryOrders(query, cb) {
     .catch((err) => {
       console.log(err);
     });
+  };
+}
+
+export function updateOrder(orderId, props) {
+  return () => {
+    socket.emit('ADMIN_UPDATE_ORDER', { orderId, props });
   };
 }

@@ -25,7 +25,7 @@ class TableOfContentsTemplate {
       fontFamily: '\'Montserrat\', sans-serif',
       fontSize: '12px',
       textAlign: 'left',
-      fontWeight: 'bold',
+      fontWeight: '400',
       marginBottom: '0',
       maxWidth: '90%',
     };

@@ -174,12 +174,18 @@ export function updateCompilationEmail(compilationId, email, newData) {
   };
 }
 
-export function rebuildEmailPdf(id) {
+export function rebuildEmailPdf(id, type) {
   return (dispatch) => {
     dispatch(setPropertyForCompilationEmail({ _id: id }, 'rebuilding', true));
-    socket.emit('REBUILD_COMPILTION_EMAIL_PDF', {
-      emailId: id,
-    });
+    if (type === 'docker') {
+      socket.emit('REBUILD_COMPILTION_EMAIL_PDF_DOCKER', {
+        emailId: id,
+      });
+    } else {
+      socket.emit('REBUILD_COMPILTION_EMAIL_PDF', {
+        emailId: id,
+      });
+    }
   };
 }
 

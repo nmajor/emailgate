@@ -133,7 +133,7 @@ export function emailPageMap(emails) {
   let page = 1;
   _.forEach(mySortedEmails, (email) => {
     email.pdf = email.pdf || {}; // eslint-disable-line no-param-reassign
-    const pageCount = email.pdf.pageCount || email.estimatedPageCount;
+    const pageCount = parseInt(email.pageCount || _.get(email, 'pdf.meta.pageCount') || email.pdf.pageCount || email.estimatedPageCount, 10);
     pageMap[email._id] = page;
     page += pageCount;
   });
@@ -367,6 +367,12 @@ export function clientIsMobile() {
     }
   })(navigator.userAgent || navigator.vendor || window.opera);
   return check;
+}
+
+export function stringToSha1(string) {
+  const hash = require('crypto').createHash('sha1');
+  hash.update(string);
+  return hash.digest('hex');
 }
 
 export function youtubeParser(url) {

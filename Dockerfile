@@ -1,7 +1,10 @@
 FROM node:4.2.6
 
 RUN apt-get update -qq
-RUN apt-get install -y bzip2 libfontconfig nginx supervisor
+RUN apt-get install -y bzip2
+RUN apt-get install -y libfontconfig
+RUN apt-get install -y nginx
+RUN apt-get install -y supervisor
 RUN mkdir -p /var/log/nginx /var/log/supervisor
 
 # Download and install phantomjs

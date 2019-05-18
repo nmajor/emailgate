@@ -39,6 +39,16 @@ socket.on('UPDATED_COMPILATION', (compilation) => {
   store.dispatch(Actions.updateCompilationInCompilations(compilation));
 });
 
+socket.on('UPDATED_ORDER', (order) => {
+  console.log('event UPDATED_ORDER', order);
+  store.dispatch(Actions.updateOrderInOrders(order));
+});
+
+socket.on('UPDATED_PURCHASE_ORDER', (purchaseOrder) => {
+  console.log('event UPDATED_PURCHASE_ORDER', purchaseOrder);
+  store.dispatch(Actions.updatePurchaseOrderInPurchaseOrders(purchaseOrder));
+});
+
 socket.on('COMPILATION_LOG_ENTRY', (data) => {
   console.log('event COMPILATION_LOG_ENTRY');
   store.dispatch(Actions.appendToCompilationLog(data.compilationId, data.entry));

@@ -31,6 +31,7 @@ const OrderItemSchema = new Schema({
   voucher: Number,
   quantity: { type: Number, required: true },
   props: {},
+  shippingMethod: { type: String, default: 'UPSGSRNA' },
 });
 
 const OrderSchema = new Schema({
@@ -109,7 +110,7 @@ OrderSchema.methods.build = function build() {
   .then(() => {
     return this.getAmount();
   })
-  .catch((err) => { console.log('An error happened when building an order', err); });
+  .catch((err) => { console.log('An error happened when building an order', err, err.stack); console.error(err); });
 };
 
 OrderSchema.methods.syncCart = function syncCart() {

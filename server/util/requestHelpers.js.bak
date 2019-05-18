@@ -53,6 +53,17 @@ const productBookTypeIdMap = {
   4: 14,
 };
 
+// const productBookTypeIdMap = {
+//   // 4314 - Standard Color 6 x 9 in or 229 x 152 mm Case Laminate on Standard 70 White w/Gloss Lam
+//   1: 4314,
+//
+//   // 97   - Premium Color 6 x 9 in or 229 - 152 mm Case Laminate on White w/Gloss Lam
+//   3: 97,
+//
+//   // 14   - B&W 6 x 9 in or 229 x 152 mm Case Laminate on White w/Gloss Lam
+//   4: 14,
+// };
+
 const returnToAddress = {
   Id: 'addr-return',
   City: 'Pleasant Grove',
@@ -96,7 +107,7 @@ function requestShipToItems(order) {
       ItemId: getItemId(item.props.compilation),
       Qty: item.quantity,
       PackingSlip: {
-        ActualSellingPrice: _.round((item.product.price / 100.0), 2),
+        ActualSellingPrice: item.product.price,
       },
     };
   });
@@ -104,15 +115,14 @@ function requestShipToItems(order) {
 
 function requestShipTo(order) {
   // UPS Ground Residential: UPSGSRNA
-  // UPS Next Day Air Residential: UPSNDAR
   // UPS Second Day Air Residential: UPSSDAR
+  // UPS Next Day Air Residential: UPSNDAR
 
   return {
     AddressId: getAddressId(order.shippingAddress),
     Currency: 'USD',
     Items: requestShipToItems(order),
-    Method: 'UPSGSRNA',
-    // Method: order.shippingMethod,
+    Method: 'UPSSDAR',
     OrgId: '1',
     PackingSlip: {
       Currency: 'USD',
@@ -165,11 +175,11 @@ export function requestItem(item) {
     BindingType: 'Hardcover',
     BookTypeId: productBookTypeIdMap[item.product._id],
     BookBlock: {
-      FileVersion: moment(compilation.pdf.meta.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
+      FileVersion: moment(compilation.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
       Url: compilationUrl(compilation),
     },
     Cover: {
-      FileVersion: moment(compilation.cover.pdf.meta.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
+      FileVersion: moment(compilation.cover.pdf.lastModified, 'ddd, DD MMM YYYY HH:mm:SS zz').format('YYYY-MM-DD HH:mm:SS'),
       Url: compilationCoverUrl(compilation),
     },
     EndSheet: {
@@ -209,7 +219,6 @@ export function requestOrder(purchaseOrder, orders) {
     BillToAddressId: 'addr-bill',
     Id: getPurchaseOrderId(purchaseOrder),
     ReturnToAddressId: 'addr-return',
-    // ServiceLevel: purchaseOrder.serviceLevel,
     ServiceLevel: 'SL10',
     ShipTos: requestShipTos(orders),
   };

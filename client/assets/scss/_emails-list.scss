@@ -8,6 +8,7 @@
   float: right;
   right: 0;
   z-index: 1;
+  display: flex;
 
   .btn {
     margin-right: 0;
@@ -115,6 +116,12 @@
 }
 
 .email-template {
+  .full-height {
+    height: 560px;
+  }
+  .full-height img {
+    max-height: 560px !important;
+  }
   table { width: 100%; text-align: center; }
   ol { margin-left: 20px; }
   .image-caption-wrap {

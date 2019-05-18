@@ -31,6 +31,7 @@ class OrdersWrapper extends Component { // eslint-disable-line
 
 OrdersWrapper.need = [
   (params, cookie) => {
+    console.log('blah need getOrders');
     return Actions.getOrders.bind(null, cookie)();
   },
 ];

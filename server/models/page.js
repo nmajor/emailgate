@@ -12,6 +12,8 @@ import {
 } from '../util/helpers';
 import { pageMeta } from '../../shared/helpers';
 import { startWorker } from '../util/docker';
+import * as pdfShop from '../util/pdfShop';
+import { stringToSha1 } from '../../shared/helpers';
 
 const PageSchema = new Schema({
   _id: { type: String, unique: true, default: shortid.generate },
@@ -20,8 +22,9 @@ const PageSchema = new Schema({
   html: String,
   content: {},
   position: Number,
+  fullHtmlSha1: String,
   pdf: {},
-  estimatedPageCount: { type: Number, default: 1 },
+  pageCount: { type: Number, default: 0 },
 }, {
   timestamps: true,
 });
@@ -78,10 +81,26 @@ PageSchema.methods.getHtml = function getHtml() {
   return pageTemplateFactory(this)
   .then((template) => {
     this.html = template.toString();
+    this.fullHtmlSha1 = stringToSha1(this.html);
 
     return Promise.resolve(this);
   })
   .catch((err) => { console.log('an error happend getting page html', err); });
+};
+
+PageSchema.methods.updatePdf = function updatePdf(force) {
+  if (!force && this.pdf && this.pdf.url && this.fullHtmlSha1 === this.pdf.htmlSha1) {
+    console.log('Skipping page updatePdf');
+    return Promise.resolve(this);
+  }
+  console.log('Updating page pdf');
+  return pdfShop.createPdf(this.html)
+  .then((pdfRes) => {
+    console.log('Results: ', pdfRes);
+    this.pageCount = pdfRes.pageCount;
+    this.pdf = pdfRes;
+    return this.save();
+  });
 };
 
 PageSchema.methods.propChanged = function propChanged(propsString) {

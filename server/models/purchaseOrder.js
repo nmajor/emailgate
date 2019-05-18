@@ -35,6 +35,7 @@ const PurchaseOrderSchema = new Schema({
   orders: [{ type: String, ref: 'Order' }],
   responses: [PurchaseOrderResponseSchema],
   sentAt: Date,
+  serviceLevel: { type: String, default: 'SL10' },
 }, {
   timestamps: true,
 });

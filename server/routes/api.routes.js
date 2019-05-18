@@ -216,15 +216,16 @@ router.get('/compilations/:id/email-page-map', ensureAuthenticated, getCompilati
 router.get('/compilations/:id/pages', ensureAuthenticated, PageController.getCompilationPages);
 router.put('/compilations/:compilationId/emails/:emailId/rotate-attachment', ensureAuthenticated, EmailController.rotateImageAttachment);
 
-router.get('/admin/settings', ensureAuthenticated, ensureAdmin, AdminController.getSettings);
-router.post('/admin/settings/:name', ensureAuthenticated, ensureAdmin, AdminController.updateSetting);
-router.get('/admin/users', ensureAuthenticated, ensureAdmin, AdminController.getUsers);
-router.get('/admin/compilations', ensureAuthenticated, ensureAdmin, AdminController.getCompilations);
-router.put('/admin/compilations/:id', ensureAuthenticated, ensureAdmin, AdminController.patchCompilation);
-router.patch('/admin/compilations/:id', ensureAuthenticated, ensureAdmin, AdminController.patchCompilation);
-router.get('/admin/orders', ensureAuthenticated, ensureAdmin, AdminController.getOrders);
-router.get('/admin/emails/:id', ensureAuthenticated, ensureAdmin, AdminController.findEmail);
-router.get('/admin/pages/:id', ensureAuthenticated, ensureAdmin, AdminController.findPage);
+router.get('/admin/settings', AdminController.getSettings);
+router.post('/admin/settings/:name', AdminController.updateSetting);
+router.get('/admin/users', AdminController.getUsers);
+router.get('/admin/compilations', AdminController.getCompilations);
+router.get('/admin/compilations/:id', AdminController.getCompilation);
+router.put('/admin/compilations/:id', AdminController.patchCompilation);
+router.patch('/admin/compilations/:id', AdminController.patchCompilation);
+router.get('/admin/orders', AdminController.getOrders);
+router.get('/admin/emails/:id', AdminController.findEmail);
+router.get('/admin/pages/:id', AdminController.findPage);
 
 router.get('/admin/purchase-orders', ensureAuthenticated, ensureAdmin, PurchaseOrderController.get);
 router.get('/admin/purchase-orders/:id', ensureAuthenticated, ensureAdmin, PurchaseOrderController.findOne);

@@ -69,6 +69,41 @@ export function getCompilations(cookie) {
   };
 }
 
+export function getCompilation(cookie, compilationId) {
+  return (dispatch) => {
+    // dispatch(setPropertyForFetching('compilations', true));
+
+    const fetchOptions = {};
+
+    if (cookie) {
+      fetchOptions.headers = { cookie };
+    } else {
+      fetchOptions.credentials = 'include';
+    }
+
+    return fetch(`${baseURL}/api/admin/compilation/${compilationId}`, fetchOptions)
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      // dispatch(setPropertyForFetching('compilations', false));
+      dispatch(setCompilations([res]));
+    })
+    .catch((err) => {
+      // dispatch(setPropertyForFetching('compilations', false));
+      console.log(err);
+    });
+  };
+}
+
 export function updateCompilation(compilationId, props) {
   return (dispatch) => {
     return fetch(`${baseURL}/api/admin/compilations/${compilationId}`, {
@@ -99,11 +134,7 @@ export function updateCompilation(compilationId, props) {
   };
 }
 
-export function buildCompilationPdf(compilationId) {
-  return () => {
-    socket.emit('BUILD_COMPILATION_PDF', { compilationId });
-  };
-}
+
 
 export function buildCompilationCoverPdf(compilationId) {
   return () => {
@@ -114,6 +145,24 @@ export function buildCompilationCoverPdf(compilationId) {
 export function resaveAllComponents(compilationId) {
   return () => {
     socket.emit('RESAVE_ALL_COMPILATION_COMPONENTS', { compilationId });
+  };
+}
+
+export function buildEmailPdfs(compilationId) {
+  return () => {
+    socket.emit('BUILD_COMPILATION_EMAILS_PDFS', { compilationId });
+  };
+}
+
+export function buildEmailPdfsDocker(compilationId) {
+  return () => {
+    socket.emit('BUILD_COMPILATION_EMAILS_PDFS_DOCKER', { compilationId });
+  };
+}
+
+export function compilePdfs(compilationId) {
+  return () => {
+    socket.emit('BUILD_COMPILATION_PDF', { compilationId });
   };
 }
 

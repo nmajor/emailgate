@@ -41,10 +41,24 @@ class OrderView extends Component { // eslint-disable-line
     </div>);
   }
   render() {
+    // UPS Ground Residential: UPSGSRNA
+    // UPS Next Day Air Residential: UPSNDAR
+    // UPS Second Day Air Residential: UPSSDAR
+    const { order } = this.props;
     return (<div>
       <div>
         <h3>Details</h3>
         {this.renderDetails()}
+      </div>
+      <div>
+        <div>Shipping Method</div>
+        <div className="btn-group" role="group" aria-label="...">
+          <button onClick={() => this.props.setOrderShippingMethod('UPSGSRNA')} type="button" className={`btn btn-${order.shippingMethod === 'UPSGSRNA' ? 'primary' : 'default'}`}>UPSGSRNA - UPS Ground Residential</button>
+
+          <button onClick={() => this.props.setOrderShippingMethod('UPSSDAR')} type="button" className={`btn btn-${order.shippingMethod === 'UPSSDAR' ? 'primary' : 'default'}`}>UPSSDAR - UPS Second Day Air Residential</button>
+
+          <button onClick={() => this.props.setOrderShippingMethod('UPSNDAR')} type="button" className={`btn btn-${order.shippingMethod === 'UPSNDAR' ? 'primary' : 'default'}`}>UPSNDAR - UPS Next Day Air Residential</button>
+        </div>
       </div>
       <div>
         <h3>Shipping Address</h3>
@@ -64,6 +78,7 @@ class OrderView extends Component { // eslint-disable-line
 
 OrderView.propTypes = {
   order: PropTypes.object.isRequired,
+  setOrderShippingMethod: PropTypes.func.isRequired,
 };
 
 export default OrderView;

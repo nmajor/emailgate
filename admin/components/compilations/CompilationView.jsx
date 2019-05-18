@@ -14,6 +14,7 @@ class CompilationView extends Component { // eslint-disable-line
     super(props, context);
     this.state = {
       compilationEmails: [],
+      compilationPages: [],
     };
 
     this.resaveAllComponents = this.resaveAllComponents.bind(this);
@@ -34,6 +35,22 @@ class CompilationView extends Component { // eslint-disable-line
 
       this.setState({ compilationEmails: res });
     });
+
+    fetch(`${baseURL}/api/compilations/${this.props.compilation._id}/pages`, { credentials: 'include' })
+    .then((res) => {
+      if (res.status >= 400) {
+        throw new Error(`Bad response from server ${res.status} ${res.statusText}`);
+      }
+
+      return res.json();
+    })
+    .then((res) => {
+      if (res.error) {
+        throw new Error(res.error.message);
+      }
+
+      this.setState({ compilationPages: res });
+    });
   }
   resaveAllComponents() {
     this.props.resaveAllComponents();
@@ -41,8 +58,27 @@ class CompilationView extends Component { // eslint-disable-line
   renderEmailPreviews() {
     return this.state.compilationEmails.map((email) => {
       return (<div className="bottom-bumper">
+        <div>{moment(email.date).format('LL')}</div>
         <span><strong>{email.subject}</strong></span> - <span>{email.bodyPreview}</span>
       </div>);
+    });
+  }
+  renderEmailPdfStatus() {
+    return this.state.compilationEmails.map((email) => {
+      if (email.fullHtmlSha1 && email.pdf && email.pdf.url && email.pdf.htmlSha1 && email.fullHtmlSha1 === email.pdf.htmlSha1) {
+        return <div className="text-success">0</div>;
+      }
+      return <a target="_blank" href={`${location.origin.replace('admin.', '')}/compilations/${email._compilation}/build/emails/${email._id}`} className="text-danger">X</a>;
+    });
+  }
+  renderPagePdfStatus() {
+    return this.state.compilationPages.map((page) => {
+      if (page.fullHtmlSha1 && page.pdf && page.pdf.url && page.pdf.htmlSha1 && page.fullHtmlSha1 === page.pdf.htmlSha1) {
+        return <div className="text-success">0</div>;
+      } if (page.type === 'cover') {
+        return null;
+      }
+      return <a target="_blank" href={`${location.origin.replace('admin.', '')}/compilations/${page._compilation}/build/emails/${page._id}`} className="text-danger">X</a>;
     });
   }
   renderErrorLog() {
@@ -55,7 +91,7 @@ class CompilationView extends Component { // eslint-disable-line
   }
   renderPdfLink() {
     if (this.props.compilation.pdf && this.props.compilation.pdf.url) {
-      return <a className="btn btn-default right-bumper" target="_blank" href={this.props.compilation.pdf.url}>Compilation Pdf {this.props.compilation.pdf.lastModified ? moment(this.props.compilation.pdf.updatedAt).fromNow() : ''}</a>;
+      return <a className="btn btn-default right-bumper" target="_blank" href={this.props.compilation.pdf.url}>Compilation Pdf {moment(this.props.compilation.pdf.updatedAt || this.props.compilation.pdf.meta.updatedAt).fromNow()}</a>;
     }
   }
   renderCoverPdfLink() {
@@ -83,7 +119,7 @@ class CompilationView extends Component { // eslint-disable-line
   renderPdfActions() {
     return (<div>
       {this.renderPdfLink()}
-      <button className="btn btn-success right-bumper" onClick={this.props.buildPdf}>Build PDF</button>
+      <button className="btn btn-success right-bumper" onClick={this.props.compilePdfs}>Compile PDFs</button>
     </div>);
   }
   renderBuildCoverAction() {
@@ -125,7 +161,7 @@ class CompilationView extends Component { // eslint-disable-line
     return <a className="btn btn-warning bottom-bumper right-bumper" href={`${window.location.protocol}//${host}/compilations/${this.props.compilation._id}/build`}>Edit</a>;
   }
   renderResaveAllComponentsAction() {
-    return <div className="btn btn-success bottom-bumper" onClick={this.resaveAllComponents}>Resave All Components</div>;
+    return <div className="btn btn-success bottom-bumper right-bumper" onClick={this.resaveAllComponents}>Resave All Components</div>;
   }
   renderCoverHtml() {
     if (this.props.compilation.cover && this.props.compilation.cover.html) {
@@ -136,12 +172,25 @@ class CompilationView extends Component { // eslint-disable-line
     }
   }
   render() {
+    if (!this.props.compilation) { return <div>No compilation</div>; }
     return (<div>
       <h1>{this.props.compilation.title}</h1>
       <h3>{this.props.compilation.subtitle}</h3>
       <div>
         {this.renderCompilationBuildLink()}
         {this.renderResaveAllComponentsAction()}
+        <button className="btn btn-success bottom-bumper right-bumper" onClick={this.props.buildEmailPdfs}>Build Email PDFs</button>
+        <button className="btn btn-success bottom-bumper right-bumper" onClick={this.props.buildEmailPdfsDocker}>Build Email PDFs Docker</button>
+      </div>
+      <div className="row">
+        <div className="col-sm-6">
+          <div className="padded-box bottom-bumper">
+            <div>Pages</div>
+            <div style={{ display: 'flex' }}>{this.renderPagePdfStatus()}</div>
+            <div>Emails</div>
+            <div style={{ display: 'flex' }}>{this.renderEmailPdfStatus()}</div>
+          </div>
+        </div>
       </div>
       <div className="row">
         <div className="col-sm-6">
@@ -173,7 +222,9 @@ class CompilationView extends Component { // eslint-disable-line
 
 CompilationView.propTypes = {
   compilation: PropTypes.object.isRequired,
-  buildPdf: PropTypes.func.isRequired,
+  compilePdfs: PropTypes.func.isRequired,
+  buildEmailPdfsDocker: PropTypes.func.isRequired,
+  buildEmailPdfs: PropTypes.func.isRequired,
   buildCoverPdf: PropTypes.func.isRequired,
   submitSpineWidth: PropTypes.func.isRequired,
   resaveAllComponents: PropTypes.func.isRequired,

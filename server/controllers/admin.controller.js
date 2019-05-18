@@ -15,9 +15,19 @@ export function getUsers(req, res) {
 
 export function getCompilations(req, res) {
   Compilation.find({})
+  .sort({ updatedAt: -1 })
+  .limit(100)
   .populate('pages _user')
   .then((compilations) => {
     res.json(compilations);
+  });
+}
+
+export function getCompilation(req, res) {
+  Compilation.findOne({ _id: req.params.id })
+  .populate('pages _user')
+  .then((compilation) => {
+    res.json(compilation);
   });
 }
 
@@ -66,8 +76,6 @@ export function getOrders(req, res) {
 
   if (req.query.nullPurchaseOrder) { query._purchaseOrder = { $eq: null }; }
   if (req.query.hasShippingAddress) { query.shippingAddress = { $ne: [{}, null] }; }
-
-  console.log('blah hi', req.query);
 
   new Promise((resolve) => {
     if (req.query.includeItemProps) {

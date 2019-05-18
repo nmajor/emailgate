@@ -126,6 +126,12 @@ export function sanitizeEmailBody(text) {
           }
         }
 
+        if (attribs.class === 'image-caption-wrap') {
+          newAttribs.class = 'image-caption-wrap';
+        } else if (attribs.class === 'full-height') {
+          newAttribs.class = 'full-height';
+        }
+
         return {
           tagName: 'div',
           attribs: newAttribs,
@@ -279,7 +285,7 @@ export function processEmail(email, options = {}) {
         attachments = _.filter(attachments, (a) => { return a.content; });
         return Promise.all(attachments.map(resizeAttachment))
         .then((resizedAttachments) => {
-          processedEmail.attachments = resizedAttachments;
+          processedEmail.attachments = _.compact(resizedAttachments);
           return resolve(processedEmail);
         });
       }
@@ -409,7 +415,7 @@ export function resizeAttachment(attachment) {
     sharp(contentBuffer)
     .max(maxWidthPx, maxWidthPx)
     .toBuffer((err, outputBuffer, info) => {
-      if (err) { return console.log('An error happened while resizing attachment image', err, attachment); }
+      if (err) { console.log('An error happened while resizing attachment image', err, attachment); return resolve(null); }
 
       attachment.content = outputBuffer.toString('base64'); // eslint-disable-line
       attachment.resizeInfo = info; // eslint-disable-line
@@ -464,6 +470,12 @@ export function extractImage(image, extractOptions) {
 
 export function rotateImageAttachment(attachment, angle) {
   return new Promise((resolve) => {
+    console.log('blah hello trying');
+
+    if (/blogspot\.com/.test(attachment.url)) {
+      attachment.url = `https://us-east.manta.joyent.com/${attachment.path}`;
+    }
+
     const request = require('request').defaults({ encoding: null }); // eslint-disable-line
     request.get(attachment.url, (err, res, contentBuffer) => {
       sharp(contentBuffer)

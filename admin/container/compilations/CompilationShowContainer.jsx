@@ -1,19 +1,28 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import CompilationView from '../../components/compilations/CompilationView';
 import * as Actions from '../../redux/actions/index';
 
 class CompilationShowContainer extends Component { // eslint-disable-line
   constructor(props, context) {
     super(props, context);
-    this.buildPdf = this.buildPdf.bind(this);
+    this.compilePdfs = this.compilePdfs.bind(this);
+    this.buildEmailPdfs = this.buildEmailPdfs.bind(this);
+    this.buildEmailPdfsDocker = this.buildEmailPdfsDocker.bind(this);
     this.buildCoverPdf = this.buildCoverPdf.bind(this);
     this.submitSpineWidth = this.submitSpineWidth.bind(this);
     this.resaveAllComponents = this.resaveAllComponents.bind(this);
     this.clearCompilationLogs = this.clearCompilationLogs.bind(this);
   }
-  buildPdf() {
-    this.props.dispatch(Actions.buildCompilationPdf(this.props.compilation._id));
+  buildEmailPdfs() {
+    this.props.dispatch(Actions.buildEmailPdfs(this.props.compilation._id));
+  }
+  buildEmailPdfsDocker() {
+    this.props.dispatch(Actions.buildEmailPdfsDocker(this.props.compilation._id));
+  }
+  compilePdfs() {
+    this.props.dispatch(Actions.compilePdfs(this.props.compilation._id));
   }
   buildCoverPdf() {
     this.props.dispatch(Actions.buildCompilationCoverPdf(this.props.compilation._id));
@@ -28,10 +37,26 @@ class CompilationShowContainer extends Component { // eslint-disable-line
     this.props.dispatch(Actions.clearCompilationLogs(this.props.compilation._id));
   }
   render() {
-    return (<div>
-      <CompilationView compilation={this.props.compilation} buildPdf={this.buildPdf} buildCoverPdf={this.buildCoverPdf} submitSpineWidth={this.submitSpineWidth} resaveAllComponents={this.resaveAllComponents} clearCompilationLogs={this.clearCompilationLogs} />
-    </div>);
+    if (this.props.compilation) {
+      return (<div>
+        <CompilationView compilation={this.props.compilation} buildEmailPdfsDocker={this.buildEmailPdfsDocker} buildEmailPdfs={this.buildEmailPdfs} compilePdfs={this.compilePdfs} buildCoverPdf={this.buildCoverPdf} submitSpineWidth={this.submitSpineWidth} resaveAllComponents={this.resaveAllComponents} clearCompilationLogs={this.clearCompilationLogs} />
+      </div>);
+    }
+
+    return <div>Trying to load compilation</div>;
   }
+}
+
+CompilationShowContainer.need = [
+  // (params, cookie) => {
+  //   return Actions.getCompilation.bind(null, cookie)();
+  // },
+];
+
+function mapStateToProps(state, params) {
+  return {
+    compilations: _.find(state.compilations, { _id: params.compilationId }),
+  };
 }
 
 CompilationShowContainer.propTypes = {
@@ -39,4 +64,4 @@ CompilationShowContainer.propTypes = {
   compilation: PropTypes.object,
 };
 
-export default connect()(CompilationShowContainer);
+export default connect(mapStateToProps)(CompilationShowContainer);

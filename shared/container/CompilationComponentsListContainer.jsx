@@ -14,11 +14,12 @@ class CompilationComponentsListContainer extends Component {
   reImportEmailBody(id) {
     this.props.dispatch(Actions.reImportEmailBody(id));
   }
-  rebuildPdf(type, id) {
+  rebuildPdf(type, id, kind) {
+    console.log('blah hello kind', kind);
     if (type === 'email') {
-      this.props.dispatch(Actions.rebuildEmailPdf(id));
+      this.props.dispatch(Actions.rebuildEmailPdf(id, kind));
     } else if (type === 'page') {
-      this.props.dispatch(Actions.rebuildPagePdf(id));
+      this.props.dispatch(Actions.rebuildPagePdf(id, kind));
     }
   }
   renderCompilationComponentsList() {

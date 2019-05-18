@@ -469,7 +469,7 @@ class EmailTemplate {
 
     return (<div className="email-template" style={{ fontSize: '20px' }}>
       {this.renderDate(moment(email.date).format('LL'))}
-      {this.renderSubjectDangerously(email.subject || 'No subject')}
+      {this.renderSubjectDangerously(email.subject || '')}
       {this.renderFrom(this.processEmailUser(email.from))}
       {this.renderBodyDangerously(emailBody)}
       {this.renderAttachments(email.attachments)}
@@ -481,7 +481,7 @@ class EmailTemplate {
     try {
       const ReactQuill = require('react-quill');  // eslint-disable-line global-require
 
-      // bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
+      bodyInput = <ReactQuill className="editable" name="body" toolbar={false} styles={false} defaultValue={this.email.body} onChange={setBodyState} />;
     } catch (err) {} // eslint-disable-line
 
     const subjectInput = <div className="editable" name="subject" contentEditable onBlur={setFormState}>{this.email.subject}</div>;

@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import moment from 'moment';
 import EmailView from './EmailView';
 import CompilationEmailForm from './CompilationEmailForm';
+import EmailPdfButton from './EmailPdfButton';
 import Loading from './Loading';
 import twemoji from 'twemoji';
 import _ from 'lodash';
@@ -12,14 +13,13 @@ class CompilationEmailsListItem extends Component {
     super(props, context);
 
     this.submitForm = this.submitForm.bind(this);
-    this.rebuildPdf = this.rebuildPdf.bind(this);
     this.reImportEmailBody = this.reImportEmailBody.bind(this);
+  }
+  hasValidPdf() {
+    return this.props.email.pdf && this.props.email.fullHtmlSha1 && this.props.email.pdf.htmlSha1 === this.props.email.fullHtmlSha1;
   }
   reImportEmailBody() {
     this.props.reImportEmailBody(this.props.email._id);
-  }
-  rebuildPdf() {
-    this.props.rebuildPdf('email', this.props.email._id);
   }
   submitForm() {
     this.refs.form.submitForm();
@@ -35,27 +35,20 @@ class CompilationEmailsListItem extends Component {
     </Link>);
   }
   renderPdfPageCount() {
-    if (_.get(this.props.email, 'pdf.pageCount') && this.props.user.isAdmin) {
+    const pageCount = _.get(this.props.email, 'pdf.pageCount') || _.get(this.props.email, 'pdf.meta.pageCount');
+
+    if (pageCount && this.hasValidPdf()) {
       return (<div className="label label-default label-sm">
-        <span className="glyphicon glyphicon-file" aria-hidden="true"></span> {_.get(this.props.email, 'pdf.pageCount')}
+        <span className="glyphicon glyphicon-file" aria-hidden="true"></span> {_.get(this.props.email, 'pdf.pageCount') || _.get(this.props.email, 'pdf.meta.pageCount')}
       </div>);
     }
   }
-  renderPdfAction() {
-    if (_.get(this.props.email, 'pdf.url') && this.props.user.isAdmin) {
-      return (<a target="_blank" className="btn btn-primary" href={this.props.email.pdf.url}>
-        <span className="glyphicon glyphicon-file" aria-hidden="true"></span> PDF
-      </a>);
-    }
-  }
-  renderRebuildPdfAction() {
-    if (this.props.user.isAdmin) {
-      let text = <span><span className="glyphicon glyphicon-refresh" aria-hidden="true"></span> PDF</span>;
-      if (this.props.email.rebuilding) { text = <span>Rebuilding</span>; }
-      return (<span className="btn btn-success" onClick={this.rebuildPdf}>
-        {text}
-      </span>);
-    }
+  renderPdfActions() {
+    return (<EmailPdfButton
+      email={this.props.email}
+      user={this.props.user}
+      rebuildPdf={this.props.rebuildPdf}
+    />);
   }
   renderReImportBodyAction() {
     if (this.props.user.isAdmin && this.props.email.remote_id && this.props.email._account) {
@@ -99,6 +92,11 @@ class CompilationEmailsListItem extends Component {
     const subject = this.props.email.subject || 'No subject';
     return <div className="subject" dangerouslySetInnerHTML={{ __html: twemoji.parse(subject) }}></div>;
   }
+  renderFrom() {
+    const users = this.props.email.from.map(u => u.name || u.email);
+
+    return <div className="">{users.join(', ')}</div>;
+  }
   renderBodyPreview() {
     return <div>{_.isEmpty(this.props.email.bodyPreview) ? 'No email body' : this.props.email.bodyPreview}</div>;
   }
@@ -115,8 +113,7 @@ class CompilationEmailsListItem extends Component {
     return (<div className="email-thumb list-item-actions">
       {this.renderPdfPageCount()}
       {this.renderReImportBodyAction()}
-      {this.renderRebuildPdfAction()}
-      {this.renderPdfAction()}
+      {this.renderPdfActions()}
       {this.renderShowAction()}
     </div>);
   }
@@ -131,12 +128,14 @@ class CompilationEmailsListItem extends Component {
       >
         {this.renderDate()}
         {this.renderSubject()}
+        {this.renderFrom()}
         {this.renderBodyPreview()}
       </div>
     </div>);
   }
   renderEmailListItem() {
     if (this.props.show === 'view') {
+      console.log('blah hello pdf', this.props.email.pdf);
       return (<div className="relative">
         <div className="list-item-actions">
           {this.renderEditAction()}

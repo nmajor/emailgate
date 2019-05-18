@@ -75,6 +75,7 @@ class PurchaseOrderView extends Component { // eslint-disable-line
         <div>
           <h3>Request <span className="btn btn-default btn-xs-true" onClick={this.props.rebuildRequest}><span className="glyphicon glyphicon-refresh" aria-hidden="true"></span></span></h3>
           <PurchaseOrderRequest purchaseOrder={this.props.purchaseOrder} />
+          <div>{JSON.stringify(this.props.purchaseOrder.request)}</div>
         </div>
       </div>
       <div className="col-md-6">

@@ -186,12 +186,12 @@ CompilationSchema.methods.buildCoverHtml = function buildCoverHtml() {
 
 CompilationSchema.methods.updateEmails = function updateEmails() {
   return Email.find({ _compilation: this._id })
-  .select('_id date estimatedPageCount')
+  .select('_id date pageCount')
   .then((emails) => {
     // const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
     // this.meta.startindDate = (sortedEmails[0] || {}).date;
     // this.meta.endingDate = (sortedEmails[(sortedEmails.length - 1)] || {}).date;
-    const estimatedPages = emails.map((e) => { return e.estimatedPageCount; }) || [];
+    const estimatedPages = emails.map((e) => { return e.pageCount; }) || [];
     this.meta.estimatedEmailPdfPages = estimatedPages.reduce((pre, cur) => { return pre + cur; }, 0);
 
     this.emails = emails.map((email) => { return email._id; });
@@ -263,9 +263,16 @@ CompilationSchema.methods.seedPages = function seedPages() {
   });
 };
 
+CompilationSchema.methods.buildEmailsPdfs = function buildEmailsPdfs(statusCb) {
+  statusCb = statusCb || function() {}; // eslint-disable-line
+
+  return startWorker({ compilationId: this.id, kind: 'compilation-emails-pdf' }, statusCb);
+};
+
 CompilationSchema.methods.buildPdf = function buildPdf(statusCb) {
   statusCb = statusCb || function() {}; // eslint-disable-line
 
+  // COMPILATION ONLY
   // return Promise.all([
   //   this.getEmailPositionMap(),
   //   this.getEmailPageMap(),
@@ -283,6 +290,7 @@ CompilationSchema.methods.buildPdf = function buildPdf(statusCb) {
   //   }, statusCb);
   // });
 
+  // PAGES ONLY
   // return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
   // .then((pages) => {
   //   return Promise.all(pages.map((page) => {
@@ -293,27 +301,25 @@ CompilationSchema.methods.buildPdf = function buildPdf(statusCb) {
   //   return startWorker({ compilationId: this.id, kind: 'compilation-pages-pdf' }, statusCb);
   // });
 
-  return startWorker({ compilationId: this.id, kind: 'compilation-emails-pdf' }, statusCb)
-  .then(() => {
-    return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
-    .then((pages) => {
-      return Promise.all(pages.map((page) => {
-        return page.save();
-      }));
-    });
-  })
-  .then(() => {
-    return startWorker({ compilationId: this.id, kind: 'compilation-pages-pdf' }, statusCb);
+  // PAGES AND COMPILATION ONLY
+  return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
+  .then((pages) => {
+    return Promise.all(pages.map((page) => {
+      return page.save().then((p) => p.updatePdf(true));
+    }));
   })
   .then(() => {
     return Promise.all([
       this.getEmailPositionMap(),
       this.getEmailPageMap(),
       this.getPagePositionMap(),
+      this.getBareEmailObjs(),
+      this.getBarePageObjs(),
     ]);
   })
   .then((results) => {
-    const [emailPositionMap, emailPageMap, pagePositionMap] = results;
+    const [emailPositionMap, emailPageMap, pagePositionMap, bareEmailObjs, barePageObjs] = results;
+    console.log('blah hello', emailPageMap);
 
     return startWorker({
       compilationId: this.id,
@@ -321,7 +327,91 @@ CompilationSchema.methods.buildPdf = function buildPdf(statusCb) {
       emailPositionMap,
       emailPageMap,
       pagePositionMap,
+      bareEmailObjs,
+      barePageObjs,
     }, statusCb);
+  })
+  .catch(err => console.error(err));
+
+
+  // FULL
+  // return startWorker({ compilationId: this.id, kind: 'compilation-emails-pdf' }, statusCb)
+  // .then(() => {
+  //   return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
+  //   .then((pages) => {
+  //     return Promise.all(pages.map((page) => {
+  //       return page.save();
+  //     }));
+  //   });
+  // })
+  // .then(() => {
+  //   return startWorker({ compilationId: this.id, kind: 'compilation-pages-pdf' }, statusCb);
+  // })
+  // .then(() => {
+  //   return Promise.all([
+  //     this.getEmailPositionMap(),
+  //     this.getEmailPageMap(),
+  //     this.getPagePositionMap(),
+  //   ]);
+  // })
+  // .then((results) => {
+  //   const [emailPositionMap, emailPageMap, pagePositionMap] = results;
+  //
+  //   return startWorker({
+  //     compilationId: this.id,
+  //     kind: 'compilation-pdf',
+  //     emailPositionMap,
+  //     emailPageMap,
+  //     pagePositionMap,
+  //   }, statusCb);
+  // });
+};
+
+CompilationSchema.methods.getBarePageObjs = function getBarePageObjs() {
+  return Page.find({ _compilation: this._id })
+  .then((pages) => _.compact(pages.map((page) => {
+    if (page.pdf && page.pdf.url) {
+      return { _id: page._id, pdf: { url: page.pdf.url, pageCount: page.pdf.pageCount } };
+    }
+    console.log('blah missing page pdf', page);
+    return undefined;
+  })));
+};
+
+CompilationSchema.methods.getBareEmailObjs = function getBareEmailObjs() {
+  return Email.find({ _compilation: this._id })
+  .then((emails) => _.compact(emails.map((email) => {
+    if (email.pdf && email.pdf.url) {
+      return { _id: email._id, pdf: { url: email.pdf.url, pageCount: email.pdf.pageCount } };
+    }
+    console.log('blah missing email pdf', email);
+    return undefined;
+  })));
+};
+
+CompilationSchema.methods.getPagePdfMap = function getPagePdfMap() {
+  return Page.find({ _compilation: this._id })
+  .then((pages) => {
+    const pdfMap = {};
+
+    _.forEach(pages, (page) => {
+      pdfMap[page._id] = page.pdf.url;
+    });
+
+    return Promise.resolve(pdfMap);
+  });
+};
+
+CompilationSchema.methods.getEmailPdfMap = function getEmailPdfMap() {
+  return Email.find({ _compilation: this._id })
+  .then((emails) => {
+    const pdfMap = {};
+
+    _.forEach(emails, (email) => {
+      pdfMap[email._id] = email.pdf.url;
+    });
+
+    return Promise.resolve(pdfMap);
   });
 };
 
