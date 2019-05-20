@@ -1,6 +1,8 @@
 FROM node:4.2.6
 
-RUN apt-get update -qq
+RUN sed -i '/jessie-updates/d' /etc/apt/sources.list  
+
+RUN apt-get -o Acquire::Check-Valid-Until=false update -qq
 RUN apt-get install -y bzip2
 RUN apt-get install -y libfontconfig
 RUN apt-get install -y nginx
