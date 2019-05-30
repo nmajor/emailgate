@@ -35,6 +35,7 @@ WORKDIR $APP_HOME
 ADD . $APP_HOME
 RUN touch ./.env
 RUN ln -sfF /tmp/node_modules $APP_HOME/node_modules
+RUN npm run build-server
 
 RUN webpack -p --config webpack.config.prod.js
 
