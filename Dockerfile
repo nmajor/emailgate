@@ -1,6 +1,6 @@
-FROM node:4.2.6
+FROM node:8.11.3
 
-RUN sed -i '/jessie-updates/d' /etc/apt/sources.list  
+RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
 
 RUN apt-get -o Acquire::Check-Valid-Until=false update -qq
 RUN apt-get install -y bzip2
