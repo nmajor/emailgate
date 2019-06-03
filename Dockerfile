@@ -26,8 +26,6 @@ ADD container/containerbuddy/containerbuddy /sbin/containerbuddy
 ADD container/nginx.conf /etc/nginx/nginx.conf
 ADD container/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN mkdir -p /var/ssl
-
 ENV APP_HOME /var/app
 RUN mkdir -p $APP_HOME
 

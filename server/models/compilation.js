@@ -464,4 +464,8 @@ CompilationSchema.methods.broadcast = function broadcast() {
   io.to(`users/${this._user}`).emit('UPDATED_COMPILATION', this);
 };
 
+// CompilationSchema.methods.duplicate = function () {
+//
+// };
+
 export default Mongoose.model('Compilation', CompilationSchema);
