@@ -413,7 +413,7 @@ export function resizeAttachment(attachment) {
     const contentBuffer = new Buffer(attachment.content, 'base64');
 
     sharp(contentBuffer)
-    .max(maxWidthPx, maxWidthPx)
+    .resize({ width: maxWidthPx, height: maxWidthPx, fit: 'inside' })
     .toBuffer((err, outputBuffer, info) => {
       if (err) { console.log('An error happened while resizing attachment image', err, attachment); return resolve(null); }
 
@@ -434,9 +434,7 @@ export function processCoverImage(image) {
     const contentBuffer = new Buffer(image.content, 'base64');
 
     sharp(contentBuffer)
-    .resize(maxWidthPx)
-    .max()
-    .withoutEnlargement()
+    .resize({ width: maxWidthPx, height: maxWidthPx, fit: 'inside' })
     .toBuffer((err, outputBuffer, info) => {
       if (err) { reject('An error happened while resizing attachment image', err); }
 

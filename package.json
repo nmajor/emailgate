@@ -7,7 +7,7 @@
     "test:server": "NODE_ENV=test PORT=8080 MONGO_URL=mongodb://localhost:27017/mern-test mocha --compilers js:babel-register --recursive server/tests/**/*.spec.js",
     "start": "NODE_ENV=development node index.js",
     "start:dev": "DOCKER_SOCKET='' DOCKER_HOST=104.248.184.121 DOCKER_PORT=2375 NODE_ENV=development babel-node --presets es2015,stage-2 index.js",
-    "start:dev-socket": "DOCKER_SOCKET=/var/run/docker.sock NODE_ENV=development nodemon --watch server index.js",
+    "start:dev-socket": "DOCKER_SOCKET=/var/run/docker.sock NODE_ENV=development babel-node --presets es2015,stage-2 index.js",
     "start:prod": "NODE_ENV=production node build/index.js",
     "bs": "npm run clean && npm run build && npm run start:prod",
     "minify": "cleancss -o static/css/app.min.css static/css/app.css",

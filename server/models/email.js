@@ -63,13 +63,13 @@ EmailSchema.post('remove', (doc) => {
     if (page) { return page.save(); }
   });
 
-  _.forEach(doc.attachments, (attachment) => {
-    removeFile(attachment.path);
-  });
-
-  if (doc.pdf && doc.pdf.path) {
-    removeFile(doc.pdf.path);
-  }
+  // _.forEach(doc.attachments, (attachment) => {
+  //   removeFile(attachment.path);
+  // });
+  //
+  // if (doc.pdf && doc.pdf.path) {
+  //   removeFile(doc.pdf.path);
+  // }
 });
 
 EmailSchema.pre('save', function (next) { // eslint-disable-line func-names

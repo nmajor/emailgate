@@ -616,14 +616,22 @@ export default (io) => {
     socket.on('RUN_ADMIN_TASK', (data) => {
       console.log('RUN_ADMIN_TASK', data);
 
-      Email.findOne({ _id: 'B1GyB2jkG' })
-      .populate('_account')
-      .then((email) => {
-        return email.save();
-      })
-      .then(() => {
-        console.log('RUN_ADMIN_TASK finished');
+      // OLD Customer Split book id = SdLoWlGIO
+      // NEW Customer Split book id = BqqS4Ue7V
+
+      Compilation.findOne({ _id: 'SdLoWlGIO' })
+      .then((compilation) => {
+        return compilation.duplicate();
       });
+
+      // Email.findOne({ _id: 'B1GyB2jkG' })
+      // .populate('_account')
+      // .then((email) => {
+      //   return email.save();
+      // })
+      // .then(() => {
+      //   console.log('RUN_ADMIN_TASK finished');
+      // });
 
       // Email.findOne({ _id: 'r1rcLxicJM' })
       // .populate('_account')

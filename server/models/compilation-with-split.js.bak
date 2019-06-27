@@ -1,0 +1,540 @@
+import Mongoose, { Schema } from 'mongoose';
+import shortid from 'shortid';
+import _ from 'lodash';
+import io from '../io';
+import Email from './email';
+import Page from './page';
+import * as sharedHelpers from '../../shared/helpers';
+import * as serverHelpers from '../util/helpers';
+import { htmlToPdf } from '../util/pdf';
+import { startWorker } from '../util/docker';
+import covers from '../../shared/templates/covers';
+
+// const CompilationCoverSchema = new Schema({
+//   _id: { type: String, unique: true, default: shortid.generate },
+//   style: { type: String, default: 'casebound' },
+//   spineWidth: Number,
+//   height: Number,
+//   width: Number,
+//   html: String,
+//   pdf: {},
+//   templateConfig: {},
+//   meta: {},
+// }, {
+//   timestamps: true,
+// });
+
+const CompilationSchema = new Schema({
+  _id: { type: String, unique: true, default: shortid.generate },
+  _user: { type: String, ref: 'User' },
+  title: String,
+  subtitle: String,
+  coverTemplate: String,
+  thumbnail: { type: Object, default: { url: '/img/cover-thumbs/thumbnail-placeholder.png' } },
+  images: [],
+  cover: {},
+  emails: [{ type: String, ref: 'Email' }],
+  pages: [{ type: String, ref: 'Page' }],
+  meta: {
+    startingDate: { type: Date, default: new Date },
+    endingDate: { type: Date, default: new Date },
+    estimatedEmailPdfPages: Number,
+    estimatedPagePdfPages: Number,
+    creatingUserAgent: String,
+  },
+  pdf: {},
+}, {
+  timestamps: true,
+});
+
+CompilationSchema.virtual('newImages').get(function () { // eslint-disable-line func-names
+  return this._newImages || [];
+});
+
+CompilationSchema.virtual('newImages').set(function (val) { // eslint-disable-line func-names
+  this._newImages = val;
+  return;
+});
+
+CompilationSchema.post('init', function () {  // eslint-disable-line func-names
+  this._original = this.toObject();
+});
+
+// CompilationSchema.post('save', (doc) => {
+//   io.to('everyone').emit('UPDATED_COMPILATION', { title: 'Bogus title' });
+//   // io.broadcast.to('priv/John').emit(...)
+// });
+
+CompilationSchema.pre('save', function (next) { // eslint-disable-line func-names
+  let tasks = Promise.resolve();
+
+  if (this.newImages.length > 0) {
+    _.forEach(this.newImages, (image) => {
+      const imageId = shortid.generate();
+      image._id = imageId;
+
+      tasks = tasks.then(() => {
+        image._compilation = this.id;
+        return serverHelpers.processCoverImage(image);
+      })
+      .then((processedImage) => {
+        return serverHelpers.uploadCoverImage(processedImage);
+      })
+      .then((uploadedImage) => {
+        this.images.push(uploadedImage);
+        return Promise.resolve(this);
+      })
+      .then(() => {
+        this.newImages = [];
+      });
+    });
+  }
+
+  tasks.then(() => {
+    next();
+  })
+  .catch((err) => { console.log('an error happened compilation pre save', err); });
+});
+
+CompilationSchema.post('remove', function (doc) { // eslint-disable-line
+  // Page.remove({ _compilation: doc._id });
+  // Email.remove({ _compilation: doc._id });
+
+  // serverHelpers.removeDir(doc.publicFolderBase());
+
+  // if (_.get(doc, 'pdf.path')) {
+  //   serverHelpers.removeFile(doc.pdf.path);
+  // }
+  //
+  // if (_.get(doc, 'cover.pdf.path')) {
+  //   serverHelpers.removeFile(doc.cover.pdf.path);
+  // }
+});
+
+CompilationSchema.methods.publicFolderBase = function publicFolderBase() {
+  if (_.get(this, 'pdf.path')) {
+    const regex = new RegExp(`^.*${this._id}`);
+    return regex.exec(this.pdf.path)[0];
+  } else if (_.get(this, 'pdf.path')) {
+    const regex = new RegExp(`^.*${this._id}`);
+    return regex.exec(this.pdf.path)[0];
+  }
+
+  const publicPath = (process.env.NODE_ENV !== 'production' ? `${process.env.MANTA_APP_PUBLIC_PATH}/dev` : process.env.MANTA_APP_PUBLIC_PATH);
+  return `${publicPath}/compilations/${this._id}`;
+};
+
+CompilationSchema.methods.buildThumbnail = function buildThumbnail() {
+  if (!this.coverTemplate) { return Promise.resolve(this); }
+
+  const thumbnailOptions = {
+    type: 'png',             // allowed file types: png, jpeg, pdf
+    quality: '75',
+    height: 666,        // Dont change height/width, this option doesnt seem to work so
+    width: 419,         // this is what it naturally is. Using it to trim below.
+  };
+
+  const startDate = this.meta.startingDate;
+  const endDate = this.meta.endingDate;
+
+  const template = new covers[this.coverTemplate]({ compilation: this, bleedType: 'bleedless', startDate, endDate });
+
+  return htmlToPdf(template.frontCoverToString(), thumbnailOptions)
+  .then((imgBuffer) => {
+    const image = {
+      content: imgBuffer.toString('base64'),
+      contentType: 'image/png',
+      updatedAt: Date.now(),
+      _compilation: this._id,
+    };
+    return Promise.resolve(image);
+  })
+  .then((image) => {
+    return serverHelpers.extractImage(image, {
+      top: 0,
+      left: 0,
+      height: thumbnailOptions.height,
+      width: thumbnailOptions.width,
+    });
+  })
+  .then((image) => {
+    return serverHelpers.uploadCoverThumbnailImage(image);
+  })
+  .then((image) => {
+    this.thumbnail = image;
+    return Promise.resolve(this);
+  })
+  .catch((err) => { console.log('An error happened when trying to update compilation thumbnail', err); });
+};
+
+CompilationSchema.methods.buildCoverHtml = function buildCoverHtml() {
+  return this.updateCoverDimentions()
+  // .then(() => { return Email.find({ _compilation: this._id }); })
+  .then(() => {
+    console.log('blah hey this.cover buildCoverHtml', this.cover);
+    // const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+    // const firstEmail = sortedEmails[0] || {};
+    // const lastEmail = sortedEmails[(sortedEmails.length - 1)] || {};
+
+    const startDate = this.meta.startingDate;
+    const endDate = this.meta.endingDate;
+
+    const template = new covers[this.coverTemplate]({ compilation: this, startDate, endDate, showBleed: false });
+
+    this.cover.html = template.toString();
+  });
+};
+
+CompilationSchema.methods.updateEmails = function updateEmails() {
+  return Email.find({ _compilation: this._id })
+  .select('_id date pageCount')
+  .then((emails) => {
+    // const sortedEmails = _.sortBy(emails, (email) => { return email.date; });
+    // this.meta.startindDate = (sortedEmails[0] || {}).date;
+    // this.meta.endingDate = (sortedEmails[(sortedEmails.length - 1)] || {}).date;
+    const estimatedPages = emails.map((e) => { return e.pageCount; }) || [];
+    this.meta.estimatedEmailPdfPages = estimatedPages.reduce((pre, cur) => { return pre + cur; }, 0);
+
+    this.emails = emails.map((email) => { return email._id; });
+    return this.save();
+  });
+};
+
+CompilationSchema.methods.updatePages = function updatePages() {
+  return Page.find({ _compilation: this._id })
+  .select('_id estimatedPageCount')
+  .then((pages) => {
+    this.pages = pages.map((page) => { return page._id; });
+    this.meta.estimatedPagePdfPages = pages.map((p) => { return p.estimatedPageCount; }).reduce((pre, cur) => { return pre + cur; });
+    return this.save();
+  });
+};
+
+CompilationSchema.methods.updatePagePositions = function updatePages() {
+  return Page.find({ _compilation: this._id })
+  .then((pages) => {
+    return Promise.all(sharedHelpers.sortedPages(pages).map((page, index) => {
+      if (page.position !== (index + 1)) {
+        page.position = index + 1;
+        return page.save();
+      }
+      return Promise.resolve();
+    }));
+  });
+};
+
+CompilationSchema.methods.buildCoverPdf = function buildCoverPdf(statusCb) {
+  return this.buildCoverHtml()
+  .then(() => {
+    console.log('blah hey buildCoverPdf', this._id, this.cover);
+    return this.save();
+  })
+  .then((comp) => {
+    return comp.save();
+    // return startWorker({ compilationId: this._id, kind: 'compilation-cover-pdf' }, statusCb);
+  })
+  .then((comp) => {
+    console.log('blah hey comp after', this._id, JSON.stringify(comp.cover, null, 2));
+    return startWorker({ compilationId: this._id, kind: 'compilation-cover-pdf' }, statusCb);
+  })
+  .catch((er) => console.log('blah hi er', er));
+};
+
+CompilationSchema.methods.updateCoverDimentions = function getCoverDimentions() {
+  const template = new covers.Default({ compilation: this });
+  const dimentions = template.getCoverDimentions();
+  console.log('blah hey from updateCoverDimentions', dimentions);
+
+  this.cover.height = dimentions.height;
+  this.cover.width = dimentions.width;
+
+  console.log('blah hey this.cover updateCoverDimentions', this.cover);
+  return Promise.resolve(this);
+};
+
+CompilationSchema.methods.seedPages = function seedPages() {
+  return Page.count({ _compilation: this._id })
+  .then((count) => {
+    if (count === 0) {
+      let tasks = Promise.resolve();
+      _.forEach(Page.defaultPages(), (pageData) => {
+        tasks = tasks.then(() => {
+          const newPage = new Page(pageData);
+          newPage._compilation = this._id;
+          return newPage.save();
+        });
+      });
+
+      tasks = tasks.then(() => {
+        this.updatePages();
+      });
+
+      return tasks;
+    }
+
+    return Promise.resolve();
+  });
+};
+
+CompilationSchema.methods.buildEmailsPdfs = function buildEmailsPdfs(statusCb) {
+  statusCb = statusCb || function() {}; // eslint-disable-line
+
+  return startWorker({ compilationId: this.id, kind: 'compilation-emails-pdf' }, statusCb);
+};
+
+CompilationSchema.methods.buildPdf = function buildPdf(statusCb) {
+  statusCb = statusCb || function() {}; // eslint-disable-line
+
+  // COMPILATION ONLY
+  // return Promise.all([
+  //   this.getEmailPositionMap(),
+  //   this.getEmailPageMap(),
+  //   this.getPagePositionMap(),
+  // ])
+  // .then((results) => {
+  //   const [emailPositionMap, emailPageMap, pagePositionMap] = results;
+  //
+  //   return startWorker({
+  //     compilationId: this.id,
+  //     kind: 'compilation-pdf',
+  //     emailPositionMap,
+  //     emailPageMap,
+  //     pagePositionMap,
+  //   }, statusCb);
+  // });
+
+  // PAGES ONLY
+  // return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
+  // .then((pages) => {
+  //   return Promise.all(pages.map((page) => {
+  //     return page.save();
+  //   }));
+  // })
+  // .then(() => {
+  //   return startWorker({ compilationId: this.id, kind: 'compilation-pages-pdf' }, statusCb);
+  // });
+
+  // PAGES AND COMPILATION ONLY
+  return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
+  .then((pages) => {
+    return Promise.all(pages.map((page) => {
+      return page.save().then((p) => p.updatePdf(true));
+    }));
+  })
+  .then(() => {
+    return Promise.all([
+      this.getEmailPositionMap(),
+      this.getEmailPageMap(),
+      this.getPagePositionMap(),
+      this.getBareEmailObjs(),
+      this.getBarePageObjs(),
+    ]);
+  })
+  .then((results) => {
+    const [emailPositionMap, emailPageMap, pagePositionMap, bareEmailObjs, barePageObjs] = results;
+    console.log('blah hello', emailPageMap);
+
+    return startWorker({
+      compilationId: this.id,
+      kind: 'compilation-pdf',
+      emailPositionMap,
+      emailPageMap,
+      pagePositionMap,
+      bareEmailObjs,
+      barePageObjs,
+    }, statusCb);
+  })
+  .catch(err => console.error(err));
+
+
+  // FULL
+  // return startWorker({ compilationId: this.id, kind: 'compilation-emails-pdf' }, statusCb)
+  // .then(() => {
+  //   return Page.find({ _compilation: this._id, type: { $in: ['table-of-contents', 'title-page'] } })
+  //   .then((pages) => {
+  //     return Promise.all(pages.map((page) => {
+  //       return page.save();
+  //     }));
+  //   });
+  // })
+  // .then(() => {
+  //   return startWorker({ compilationId: this.id, kind: 'compilation-pages-pdf' }, statusCb);
+  // })
+  // .then(() => {
+  //   return Promise.all([
+  //     this.getEmailPositionMap(),
+  //     this.getEmailPageMap(),
+  //     this.getPagePositionMap(),
+  //   ]);
+  // })
+  // .then((results) => {
+  //   const [emailPositionMap, emailPageMap, pagePositionMap] = results;
+  //
+  //   return startWorker({
+  //     compilationId: this.id,
+  //     kind: 'compilation-pdf',
+  //     emailPositionMap,
+  //     emailPageMap,
+  //     pagePositionMap,
+  //   }, statusCb);
+  // });
+};
+
+CompilationSchema.methods.getBarePageObjs = function getBarePageObjs() {
+  return Page.find({ _compilation: this._id })
+  .then((pages) => _.compact(pages.map((page) => {
+    if (page.pdf && page.pdf.url) {
+      return { _id: page._id, pdf: { url: page.pdf.url, pageCount: page.pdf.pageCount } };
+    }
+    console.log('blah missing page pdf', page);
+    return undefined;
+  })));
+};
+
+CompilationSchema.methods.getBareEmailObjs = function getBareEmailObjs() {
+  return Email.find({ _compilation: this._id })
+  .then((emails) => _.compact(emails.map((email) => {
+    if (email.pdf && email.pdf.url) {
+      return { _id: email._id, pdf: { url: email.pdf.url, pageCount: email.pdf.pageCount } };
+    }
+    console.log('blah missing email pdf', email);
+    return undefined;
+  })));
+};
+
+CompilationSchema.methods.getPagePdfMap = function getPagePdfMap() {
+  return Page.find({ _compilation: this._id })
+  .then((pages) => {
+    const pdfMap = {};
+
+    _.forEach(pages, (page) => {
+      pdfMap[page._id] = page.pdf.url;
+    });
+
+    return Promise.resolve(pdfMap);
+  });
+};
+
+CompilationSchema.methods.getEmailPdfMap = function getEmailPdfMap() {
+  return Email.find({ _compilation: this._id })
+  .then((emails) => {
+    const pdfMap = {};
+
+    _.forEach(emails, (email) => {
+      pdfMap[email._id] = email.pdf.url;
+    });
+
+    return Promise.resolve(pdfMap);
+  });
+};
+
+CompilationSchema.methods.getEmailPositionMap = function getEmailPositionMap() {
+  return Email.find({ _compilation: this._id })
+  .then((emails) => {
+    const sortedEmails = sharedHelpers.sortedEmails(emails);
+    const positionMap = {};
+
+    _.forEach(sortedEmails, (email, index) => {
+      positionMap[email._id] = index;
+    });
+    return Promise.resolve(positionMap);
+  });
+};
+
+CompilationSchema.methods.getEmailPageMap = function getEmailPageMap() {
+  return serverHelpers.emailPageMap(this._id);
+};
+
+CompilationSchema.methods.getPagePositionMap = function getPagePositionMap() {
+  return Page.find({ _compilation: this._id })
+  .then((pages) => {
+    const sortedPages = sharedHelpers.sortedPages(pages);
+    const positionMap = {};
+
+    _.forEach(sortedPages, (page, index) => {
+      positionMap[page._id] = index;
+    });
+    return Promise.resolve(positionMap);
+  });
+};
+
+CompilationSchema.methods.coverPropsChanged = function coverPropsChanged() {
+  const original = this._original || {};
+  const current = this.toObject();
+  const coverProps = [
+    'image.updatedAt',
+    'title',
+    'subtitle',
+    'emails',
+    'meta.startingDate',
+    'meta.endingDate',
+  ];
+
+  return _.some(coverProps, (prop) => { return !_.isEqual(_.get(current, prop), _.get(original, prop)); });
+};
+
+CompilationSchema.methods.broadcast = function broadcast() {
+  io.to(`users/${this._user}`).emit('UPDATED_COMPILATION', this);
+};
+
+CompilationSchema.methods.duplicate = function () {
+  const oldId = this._id;
+  const newCompProps = JSON.parse(JSON.stringify({ ...this.toObject(), _id: shortid.generate() }));
+
+  let newComp = new this.constructor(newCompProps);
+  newComp.cover = { ...this.cover, _id: shortid.generate() };
+  console.log('blah hey oldId', oldId);
+
+  return Promise.all([
+    newComp.save(),
+    Email.find({ _compilation: oldId }),
+    // Page.find({ _compilation: oldId }),
+  ])
+  .then(([compilation, emails]) => {
+    console.log('blah hey saved compilation',
+    compilation._id,
+    emails.length);
+
+    newComp = compilation;
+
+    const sortedEmails = sharedHelpers.sortedEmails(emails);
+
+    console.log('blah hey sortedEmails', sortedEmails.length);
+
+    const lastIndex = sortedEmails.length - 1;
+    console.log('blah last index', lastIndex);
+
+    const halfIndex = parseInt(lastIndex / 2, 10);
+    console.log('blah hey halfIndex', halfIndex);
+
+    let updateE = Promise.resolve();
+    const changeEmails = sortedEmails.slice(0, halfIndex);
+    _.forEach(changeEmails, (e) => {
+      updateE = updateE.then(() => {
+        e._compilation = newComp._id;
+        return e.save();
+      });
+    });
+
+    // const updateEmails = emails.map((e) => {
+    //   const newEmailProps = JSON.parse(JSON.stringify({ ...e.toObject(), _id: shortid.generate(), _compilation: compilation._id }));
+    //   const email = new Email(newEmailProps);
+    //   return email.save().then((em) => console.log('blah saved email', em._id));
+    // });
+
+    // const updatePages = pages.map((p) => {
+    //   const newPageProps = JSON.parse(JSON.stringify({ ...p.toObjecT(), _id: shortid.generate(), _compilation: compilation._id }));
+    //   const page = new Page(newPageProps);
+    //   return page.save().then((pa) => console.log('blah saved page', pa._id));
+    // });
+
+    return updateE;
+  })
+  .then(() => Promise.resolve([
+    this.updateEmails(),
+    newComp.updateEmails(),
+  ]))
+  .then(() => console.log('Duplicate complete'));
+};
+
+export default Mongoose.model('Compilation', CompilationSchema);
