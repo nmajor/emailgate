@@ -15,6 +15,12 @@ class CompilationShowContainer extends Component { // eslint-disable-line
     this.resaveAllComponents = this.resaveAllComponents.bind(this);
     this.clearCompilationLogs = this.clearCompilationLogs.bind(this);
   }
+  componentDidMount() {
+    console.log('blah componentDidMount', this.props.compilationId);
+    if (!this.props.compilation) {
+      this.props.dispatch(Actions.getCompilation(undefined, this.props.compilationId));
+    }
+  }
   buildEmailPdfs() {
     this.props.dispatch(Actions.buildEmailPdfs(this.props.compilation._id));
   }
@@ -53,15 +59,17 @@ CompilationShowContainer.need = [
   // },
 ];
 
-function mapStateToProps(state, params) {
+function mapStateToProps(state, { params }) {
   return {
-    compilations: _.find(state.compilations, { _id: params.compilationId }),
+    compilation: _.find(state.compilations, { _id: params.compilationId }),
+    compilationId: params.compilationId,
   };
 }
 
 CompilationShowContainer.propTypes = {
   dispatch: PropTypes.func,
   compilation: PropTypes.object,
+  compilationId: PropTypes.string,
 };
 
 export default connect(mapStateToProps)(CompilationShowContainer);

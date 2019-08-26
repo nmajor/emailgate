@@ -15,7 +15,7 @@ import { buildRequest } from '../util/requestHelpers';
 // }
 
 const PurchaseOrderResponseSchema = new Schema({
-  _id: { type: String, unique: true, default: shortid.generate },
+  _id: { type: String, default: shortid.generate },
   status: String,
   body: {},
 }, {
@@ -52,76 +52,135 @@ PurchaseOrderSchema.methods.sendRequest = function sendRequest() {
   const url = require('url'); // eslint-disable-line
 
   const config = JSON.parse(process.env.LS_CONFIG);
-  const lsUrl = url.parse(config.url);
+  // const lsUrl = url.parse(config.url);
   const request = Object.assign({}, this.request);
   request.Auth = config.auth;
   request.CustomerId = config.customerId;
 
   const options = {
-    hostname: lsUrl.hostname,
-    path: lsUrl.pathname,
-    method: 'POST',
+    url: config.url,
+    method: 'post',
     headers: {
       'Content-Type': 'application/json',
     },
+    data: JSON.stringify(request),
   };
+  //
+  // return require('superagent')
+  // .post(options.url)
+  // .send(request) // sends a JSON post body
+  // .end((err, res) => {
+  //   console.log('blah hey res', res);
+  //   const body = res.body;
+  //   if (body) {
+  //     let status = 'SENT';
+  //
+  //     if (body.errors === 'yes') {
+  //       status = 'ERROR';
+  //     } else if (_.get(body, 'information.orderStatus')) {
+  //       status = _.get(body, 'information.orderStatus');
+  //     }
+  //
+  //     const response = {
+  //       status,
+  //       body,
+  //     };
+  //
+  //     this.status = status;
+  //     this.responses.push(response);
+  //   } else {
+  //     this.status = 'NORESPONSEBODY';
+  //     console.log('no response body');
+  //   }
+  //
+  //   return this.save();
+  // })
+  // .catch((err) => { console.log('An error happened when submitting Purchase Order request', err); });
 
-  const https = require('https'); // eslint-disable-line
-  // const https = requestLogger(require('https')); // eslint-disable-line
 
-  return new Promise((resolve, reject) => {
-    const req = https.request(options, (res) => {
-      this.sentAt = new Date();
+  const axios = require('axios');
+  return axios(options)
+  .then((res) => {
+    const body = res.data;
+    if (body) {
+      let status = 'SENT';
 
-      let body = '';
+      if (body.errors === 'yes') {
+        status = 'ERROR';
+      } else if (_.get(body, 'information.orderStatus')) {
+        status = _.get(body, 'information.orderStatus');
+      }
 
-      res.on('data', (chunk) => {
-        body += chunk;
-      });
+      const response = {
+        status,
+        body,
+      };
 
-      req.on('error', (e) => {
-        reject(`problem with response: ${e.message}`);
-      });
+      this.status = status;
+      this.responses.push(response);
+    } else {
+      this.status = 'NORESPONSEBODY';
+      console.log('no response body');
+    }
 
-      res.on('end', () => {
-        if (body) {
-          let status = 'SENT';
-          try {
-            body = JSON.parse(body);
-          } catch (err) {
-            console.log('an error happened when sending a purchase order request', err);
-          }
-
-          if (body.errors === 'yes') {
-            status = 'ERROR';
-          } else if (_.get(body, 'information.orderStatus')) {
-            status = _.get(body, 'information.orderStatus');
-          }
-
-          const response = {
-            status,
-            body,
-          };
-
-          this.status = status;
-          this.responses.push(response);
-        } else {
-          this.status = 'NORESPONSEBODY';
-          console.log('no response body');
-        }
-
-        resolve(this.save());
-      });
-    });
-
-    req.on('error', (e) => {
-      console.log(`problem with request: ${e.message}`);
-    });
-
-    req.write(JSON.stringify(request));
-    req.end();
+    return this.save();
   })
   .catch((err) => { console.log('An error happened when submitting Purchase Order request', err); });
+
+
+  // const https = require('https'); // eslint-disable-line
+  // // const https = requestLogger(require('https')); // eslint-disable-line
+  //
+  // return new Promise((resolve, reject) => {
+  //   const req = https.request(options, (res) => {
+  //     this.sentAt = new Date();
+  //
+  //     let body = '';
+  //
+  //     res.on('data', (chunk) => {
+  //       body += chunk;
+  //     });
+  //
+  //     res.on('end', () => {
+  //       if (body) {
+  //         let status = 'SENT';
+  //         try {
+  //           body = JSON.parse(body);
+  //         } catch (err) {
+  //           console.log('an error happened when sending a purchase order request', err);
+  //         }
+  //
+  //         if (body.errors === 'yes') {
+  //           status = 'ERROR';
+  //         } else if (_.get(body, 'information.orderStatus')) {
+  //           status = _.get(body, 'information.orderStatus');
+  //         }
+  //
+  //         const response = {
+  //           status,
+  //           body,
+  //         };
+  //
+  //         this.status = status;
+  //         this.responses.push(response);
+  //       } else {
+  //         this.status = 'NORESPONSEBODY';
+  //         console.log('no response body');
+  //       }
+  //
+  //       resolve(this.save());
+  //     });
+  //   });
+  //
+  //   req.on('error', (e) => {
+  //     console.error(e);
+  //     console.log(`problem with request: ${e.message}`);
+  //   });
+  //
+  //   req.write(JSON.stringify(request));
+  //   req.end();
+  // })
+  // .catch((err) => { console.log('An error happened when submitting Purchase Order request', err); });
 };
 
 PurchaseOrderSchema.methods.updateOrders = function updateOrders() {

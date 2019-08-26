@@ -81,7 +81,7 @@ export function getCompilation(cookie, compilationId) {
       fetchOptions.credentials = 'include';
     }
 
-    return fetch(`${baseURL}/api/admin/compilation/${compilationId}`, fetchOptions)
+    return fetch(`${baseURL}/api/admin/compilations/${compilationId}`, fetchOptions)
     .then((res) => {
       if (res.status >= 400) {
         throw new Error(`Bad response from server ${res.status} ${res.statusText}`);

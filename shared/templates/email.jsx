@@ -6,6 +6,9 @@ import DatePicker from 'react-datepicker';
 import _ from 'lodash';
 import twemoji from 'twemoji';
 
+const smallPics = false;
+const smallText = false;
+
 // import { rotateImage } from '../helpers';
 
 export function addEmbeddedAttachmentsToEmailBody(email) {
@@ -35,8 +38,7 @@ function renderAttachment(attachment, index, options) {
   const divStyle = {
     maxWidth: '100%',
     marginTop: options.centered ? '3px' : '5px',
-    maxHeight: '275px',
-    // maxHeight: '170px',
+    maxHeight: smallPics ? '170px' : '275px',
     marginLeft: 'auto',
     marginRight: 'auto',
   };
@@ -356,6 +358,8 @@ class EmailTemplate {
     // this.email.subject = this.email.subject || '';
     // this.email.body = this.email.body || '';
 
+    this.smallText = smallText;
+
     this.render = this.render.bind(this);
     this.renderForm = this.renderForm.bind(this);
     this.toString = this.toString.bind(this);
@@ -419,10 +423,8 @@ class EmailTemplate {
   bodyStyles() {
     return {
       fontFamily: '\'Libre Baskerville\', serif !important',
-      lineHeight: '14px',
-      // lineHeight: '12px',
-      fontSize: '9px',
-      // fontSize: '8px',
+      lineHeight: this.smallText ? '12px' : '14px',
+      fontSize: this.smallText ? '8px' : '9px',
       marginTop: '20px',
     };
   }

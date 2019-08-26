@@ -135,8 +135,6 @@ EmailSchema.methods.getTemplateHtml = function getTemplateHtml() {
 
     const fullHtml = this.template.replace('[[BODY]]', this.body);
     this.fullHtmlSha1 = stringToSha1(fullHtml);
-    console.log('blah hello fullHtmlSha1', this.fullHtmlSha1);
-
     resolve(this);
   });
 };
