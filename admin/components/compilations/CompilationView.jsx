@@ -65,7 +65,6 @@ class CompilationView extends Component { // eslint-disable-line
   }
   renderEmailPdfStatus() {
     return this.state.compilationEmails.map((email) => {
-      console.log('blah hi', email.fullHtmlSha1, email.pdf, email.pdf.url, email.pdf.htmlSha1);
       if (email.fullHtmlSha1 && email.pdf && email.pdf.url && email.pdf.htmlSha1 && email.fullHtmlSha1 === email.pdf.htmlSha1) {
         return <div className="text-success">0</div>;
       }
