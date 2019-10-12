@@ -8,8 +8,12 @@ import * as sharedHelpers from '../../shared/helpers';
 import _ from 'lodash';
 import sanitizeHtml from 'sanitize-html';
 import sharp from 'sharp';
-import manta from 'manta';
 import shortid from 'shortid';
+import {
+  uploadImage,
+  removeDir as _removeDir,
+  removeFile as _removeFile,
+} from './s3';
 
 import CoverTemplate from '../../shared/templates/cover';
 import TitlePageTemplate from '../../shared/templates/titlePage';
@@ -17,16 +21,13 @@ import MessagePageTemplate from '../../shared/templates/messagePage';
 import TableOfContentsTemplate from '../../shared/templates/tableOfContents';
 import FullImagePageTemplate from '../../shared/templates/fullImagePage';
 
-const client = manta.createClient({
-  sign: manta.privateKeySigner({
-    key: process.env.MANTA_APP_KEY.replace(/\\n/g, '\n'),
-    keyId: process.env.MANTA_APP_KEY_ID,
-    user: process.env.MANTA_APP_USER,
-  }),
-  user: process.env.MANTA_APP_USER,
-  url: process.env.MANTA_APP_URL,
-  connectTimeout: 25000,
-});
+export function removeDir(path) {
+  return _removeDir(path);
+}
+
+export function removeFile(path) {
+  return _removeFile(path);
+}
 
 export function imapifyFilter(filter) {
   const imapFilter = ['ALL'];
@@ -468,11 +469,10 @@ export function extractImage(image, extractOptions) {
 
 export function rotateImageAttachment(attachment, angle) {
   return new Promise((resolve) => {
-    console.log('blah hello trying');
-
-    if (/blogspot\.com/.test(attachment.url)) {
-      attachment.url = `https://us-east.manta.joyent.com/${attachment.path}`;
-    }
+    // I think this was a hack to roatate blogspot images.
+    // if (/blogspot\.com/.test(attachment.url)) {
+    //   attachment.url = `https://us-east.manta.joyent.com/${attachment.path}`;
+    // }
 
     const request = require('request').defaults({ encoding: null }); // eslint-disable-line
     request.get(attachment.url, (err, res, contentBuffer) => {
@@ -496,28 +496,6 @@ export function bufferToStream(buffer) {
   return bufferStream;
 }
 
-export function removeFile(path) {
-  return new Promise((resolve, reject) => {
-    client.unlink(path, (err, results) => {
-      if (err) { return reject({ message: err.message, err, path }); }
-
-      resolve(results);
-    });
-  })
-  .catch((err) => { console.log('Error happened when removing file', err); });
-}
-
-export function removeDir(path) {
-  return new Promise((resolve, reject) => {
-    client.rmr(path, (err, results) => {
-      if (err) { return reject({ message: err.message, err, path }); }
-
-      resolve(results);
-    });
-  })
-  .catch((err) => { console.log('Error happened when removing dir', err); });
-}
-
 export function uploadAttachment(attachment) {
   return uploadImage(attachment, `compilations/${attachment._compilation}/attachments`);
 }
@@ -536,57 +514,7 @@ export function uploadCoverThumbnailImage(image) {
   return uploadImage(image, `compilations/${image._compilation}`);
 }
 
-export function uploadImage(image, path) {
-  return new Promise((resolve, reject) => {
-    let filename = image.fileName;
 
-    if (image._id) {
-      filename = `${image._id}-${filename}`;
-    }
-
-    const fullPath = `${process.env.MANTA_APP_PUBLIC_PATH}/${path}/${filename}`;
-    const buffer = new Buffer(image.content, 'base64');
-
-    const options = {
-      mkdirs: true,
-      headers: {
-        'Access-Control-Allow-Headers': 'Range',
-        'Access-Control-Expose-Headers': 'Accept-Ranges, Content-Encoding, Content-Length, Content-Range',
-        'Access-Control-Allow-Origin': '*',
-      },
-    };
-
-    client.put(fullPath, bufferToStream(buffer), options, (err) => {
-      if (err) { return reject(err); }
-
-      const uploadedAt = Date.now();
-
-      client.info(fullPath, (newErr, results) => {
-        if (newErr) { return reject({ message: newErr.message, newErr, fullPath }); }
-
-        const url = `${process.env.MANTA_APP_URL}/${fullPath}?${uploadedAt}`;
-        image.content = undefined;
-        image.uploading = undefined;
-
-        resolve({
-          ...image,
-
-          url,
-          uploadedAt,
-          path: fullPath,
-
-          extension: results.extension,
-          lastModified: results.headers['last-modified'],
-          type: results.type,
-          etag: results.etag,
-          md5: results.md5,
-          size: results.size,
-          fileResults: results,
-        });
-      });
-    });
-  });
-}
 
 export function downloadFile(url) {
   const request = require('request').defaults({ encoding: null }); // eslint-disable-line

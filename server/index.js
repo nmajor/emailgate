@@ -1,4 +1,3 @@
-require('dotenv').config();
 if (process.env.NODE_ENV === 'production') { require('newrelic'); } // eslint-disable-line global-require
 
 // if (typeof window === 'undefined') {
