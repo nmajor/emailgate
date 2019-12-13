@@ -81,7 +81,7 @@
     "node-ensure": "0.0.0",
     "node-sass": "^4.12.0",
     "node-schedule": "^1.2.4",
-    "npm": "^3.8.6",
+    "npm": "^6.13.4",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "nmajor/passport-local-mongoose",
