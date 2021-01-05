@@ -25,7 +25,7 @@
     "url": ""
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-cli": "^6.26.0",
     "babel-loader": "^6.2.1",
     "babel-plugin-react-transform": "^2.0.0",
