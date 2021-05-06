@@ -107,7 +107,7 @@
     "redux-form": "^5.2.3",
     "redux-thunk": "^1.0.3",
     "request": "^2.88.0",
-    "sanitize-html": "^1.20.0",
+    "sanitize-html": "^2.3.2",
     "sass-loader": "^3.1.2",
     "sharp": "^0.22.1",
     "shortid": "^2.2.4",
