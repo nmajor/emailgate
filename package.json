@@ -79,7 +79,7 @@
     "mongoose": "^4.3.7",
     "newrelic": "^1.28.3",
     "node-ensure": "0.0.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "node-schedule": "^1.2.4",
     "npm": "^3.8.6",
     "passport": "^0.3.2",
