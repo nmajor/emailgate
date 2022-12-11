@@ -53,7 +53,7 @@
     "docker-stream-cleanser": "^0.3.0",
     "dockerode": "^2.2.10",
     "dotenv": "^2.0.0",
-    "express": "^4.13.4",
+    "express": "^4.17.3",
     "express-session": "^1.13.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "feed-finder": "^0.2.0",
